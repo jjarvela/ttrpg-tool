@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .bg-color-default {
+    @apply bg-white dark:bg-black85;
+  }
+  .bg-color-dark {
+    @apply bg-black25 dark:bg-black;
+  }
+
+  .text-color-default {
+    @apply text-black dark:text-white;
+  }
+}
+
+@layer utilities {
+}
+

@@ -1,9 +1,12 @@
-/** @type {import('tailwindcss').Config} */
+import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: "class",
+const config: Config = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -31,7 +34,7 @@ export default {
       colors: {
         primary: "#65AE45",
         secondary: "#F2F2F2",
-        black: "1F1C20",
+        black: "#1F1C20",
         black85: "#403E42",
         black75: "#575558",
         black50: "#8F8D8F",
@@ -42,7 +45,7 @@ export default {
         warningHover: "#FF3333",
         warningDark: "#EA2626",
         warningBgDark: "#332424",
-        accent: "FFD700",
+        accent: "#FFD700",
       },
       screens: {
         sm: "640px",
@@ -63,3 +66,5 @@ export default {
   },
   plugins: [],
 };
+export default config;
+
