@@ -1,0 +1,161 @@
+openapi: 3.0.0
+
+info:
+  title: GuildHouse API definition.
+  version: 0.0.1
+
+components:
+  schemas:
+    ## Common Schemas ##
+    Id:
+      description: numerical id.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+
+    date:
+      type: string
+      format: date
+
+    uuid:
+      type: string
+      format: uuid
+      example: d8a935c3-62dd-4315-b4a6-638579214891
+
+    ## Data Schemas ##
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        uid:
+          type: string
+          format: uuid
+        username:
+          type: string
+        password_hash:
+          type: string
+          format: password
+        email:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ## Error response ##
+    errorResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          enum:
+            - 400
+            - 409
+            - 401
+            - 500
+          description: Status of response.
+        err:
+          type: array
+          items:
+            type: object
+            properties:
+              keyword:
+                type: string
+                description: Class of error
+              message:
+                type: string
+                description: Description of error
+
+  responses:
+    OK:
+      description: OK
+    Id:
+      description: Id of the deleted item.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Id"
+    errorResponse:
+      description: Error object.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+
+paths:
+  ### USERS ###
+  /user/{userId}:
+    get:
+      summary: get user data by userId
+      operationId: getUser
+      tags:
+        - user
+      responses:
+        "200":
+          description: returns the user data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
+    put:
+      summary: Update user data
+      operationId: updateUser
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+    delete:
+      summary: delete user
+      operationId: deleteUser
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/Id"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
