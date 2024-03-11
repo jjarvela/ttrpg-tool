@@ -4,6 +4,69 @@ info:
   title: GuildHouse API definition.
   version: 0.0.1
 
+paths:
+  ### USERS ###
+  /user/{userId}:
+    get:
+      summary: get user data by userId
+      operationId: getUser
+      tags:
+        - user
+      responses:
+        "200":
+          description: returns the user data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
+    put:
+      summary: Update user data
+      operationId: updateUser
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          $ref: "#/components/responses/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+    delete:
+      summary: delete user
+      operationId: deleteUser
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/Id"
+        "400":
+          $ref: "#/components/responses/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
 components:
   schemas:
     ## Common Schemas ##
@@ -44,6 +107,14 @@ components:
         created_at:
           type: string
           format: date-time
+        screen_name:
+          type: string
+        timezone:
+          type: string
+        person-description:
+          type: string
+        profile_image:
+          type: integer
 
     ## Error response ##
     errorResponse:
@@ -84,78 +155,3 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/errorResponse"
-
-paths:
-  ### USERS ###
-  /user/{userId}:
-    get:
-      summary: get user data by userId
-      operationId: getUser
-      tags:
-        - user
-      responses:
-        "200":
-          description: returns the user data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "400":
-          description: Error object.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/responses/errorResponse"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-
-    put:
-      summary: Update user data
-      operationId: updateUser
-      tags:
-        - user
-      responses:
-        "200":
-          $ref: "#/components/responses/OK"
-        "400":
-          description: Error object.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/responses/errorResponse"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/User"
-
-    delete:
-      summary: delete user
-      operationId: deleteUser
-      tags:
-        - user
-      responses:
-        "200":
-          $ref: "#/components/responses/Id"
-        "400":
-          description: Error object.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/responses/errorResponse"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
