@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-to-accent: linear-gradient(70deg, #65ae45 0%, #ffd700 100%);
+  --primary-to-light: linear-gradient(70deg, #65ae45 0%, #d9ebd1 100%);
+  --primary-to-dark: linear-gradient(70deg, #65ae45 0%, #314029 100%);
+}
+
+@layer base {
+  .bg-color-default {
+    @apply bg-white dark:bg-black85;
+  }
+  .bg-color-dark {
+    @apply bg-black25 dark:bg-black;
+  }
+
+  .bg-gradient-light {
+    background: var(--primary-to-light);
+    background-color: #d9ebd1;
+  }
+
+  .bg-gradient-dark {
+    background: var(--primary-to-dark);
+    background-color: #314029;
+  }
+
+  .bg-primary-soft {
+    @apply bg-[#d9ebd1] dark:bg-[#314029];
+  }
+
+  .bg-primary-mid {
+    @apply bg-[#B2D7A2] dark:bg-[#426532];
+  }
+
+  .bg-primary-harsh {
+    @apply bg-[#8BC274] dark:bg-[#54893C];
+  }
+
+  .bg-primary-gradient {
+    @apply bg-gradient-light dark:bg-gradient-dark;
+  }
+
+  .text-color-default {
+    @apply text-black dark:text-white;
+  }
+
+  .text-primary-soft {
+    @apply text-[#d9ebd1] dark:text-[#314029];
+  }
+
+  .text-primary-mid {
+    @apply text-[#B2D7A2] dark:text-[#426532];
+  }
+
+  .text-primary-harsh {
+    @apply text-[#8BC274] dark:text-[#54893C];
+  }
+
+  .text-primary-gradient {
+    @apply bg-gradient-light bg-clip-text dark:bg-gradient-dark text-transparent;
+  }
+
+  .text-accent-gradient {
+    background: var(--primary-to-accent);
+    background-color: #65ae45;
+    color: transparent;
+    background-clip: text;
+  }
+
+  h1 {
+    @apply font-heading text-md-4xl xl:text-4xl;
+    font-weight: 700;
+  }
+
+  h2 {
+    @apply font-heading text-md-3xl xl:text-3xl;
+    font-weight: 700;
+  }
+
+  h3 {
+    @apply font-heading text-md-2xl xl:text-2xl;
+    font-weight: 400;
+  }
+
+  h4 {
+    @apply font-heading text-md-xl xl:text-xl;
+    font-weight: 400;
+  }
+
+  h5 {
+    @apply font-heading text-md-lg xl:text-lg;
+    font-weight: 400;
+  }
+
+  p {
+    @apply text-base;
+  }
+
+  small {
+    @apply text-sm;
+  }
+}
+
+@layer utilities {
+}
+
