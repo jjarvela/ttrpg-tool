@@ -1,16 +1,21 @@
 import { DetailedHTMLProps } from "react";
-
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
 interface RowWrapperProps
   extends DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   > {
   breakPoint?: string;
+  align?: string; //tailwind classes for aligning content/items
+  justify?: string; //tailwind classes for justifying content/items
   className?: string;
 }
 
 export default function RowWrapper({
   breakPoint,
+  align,
+  justify,
   className,
   children,
 }: RowWrapperProps) {
@@ -32,9 +37,16 @@ export default function RowWrapper({
     }
   };
 
+  const baseClasses = clsx("flex", breakPoint && setBreakPoint(breakPoint));
+
   return (
     <div
-      className={`flex ${breakPoint ? setBreakPoint(breakPoint) : ""} ${className ? className : ""}`}
+      className={twMerge(
+        baseClasses,
+        align && align,
+        justify && justify,
+        className && className,
+      )}
     >
       {children}
     </div>

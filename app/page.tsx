@@ -1,3 +1,4 @@
+import ColumnWrapper from "./_components/wrappers/ColumnWrapper";
 import RowWrapper from "./_components/wrappers/RowWrapper";
 
 export default function Home() {
@@ -10,13 +11,15 @@ export default function Home() {
         </p>
       </div>
 
-      <RowWrapper
-        breakPoint="lg"
-        className="before:bg-gradient-radial after:bg-gradient-conic relative z-[-1] place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:from-white before:to-transparent  before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] sm:before:w-[480px] sm:after:w-[240px] lg:gap-4 before:lg:h-[360px] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40"
-      >
+      <RowWrapper breakPoint="lg">
         <h1>Test</h1>
         <h2>Test</h2>
       </RowWrapper>
+
+      <ColumnWrapper align="items-end" className="w-[60%]">
+        <h1>test</h1>
+        <h2>test2</h2>
+      </ColumnWrapper>
 
       <h1 className="text-accent-gradient">Index page</h1>
       <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
