@@ -26,7 +26,7 @@ export default function Home() {
         maxLength={100}
         rows={5}
         borderless
-        className="bg-black w-[50%]"
+        className="w-[50%] bg-black25 dark:bg-black75"
       />
 
       <ColumnWrapper align="items-end" className="w-[60%]">
