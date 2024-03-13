@@ -1,3 +1,4 @@
+import NumberInput from "./_components/inputs/NumberInput";
 import PasswordInput from "./_components/inputs/PasswordInput";
 import TextAreaInput from "./_components/inputs/TextAreaInput";
 import TextInput from "./_components/inputs/TextInput";
@@ -21,6 +22,7 @@ export default function Home() {
 
       <TextInput />
       <PasswordInput />
+      <NumberInput min={1} max={5} />
       <TextAreaInput
         value={"sdfdfsg"}
         maxLength={100}
