@@ -24,7 +24,7 @@ export default function TextAreaInput({
   return (
     <ColumnWrapper
       className={twMerge(
-        "m-2 gap[1rem] border-black50 border-[1px] py-1 px-2 rounded-xl",
+        "gap[1rem] m-2 rounded-xl border-[1px] border-black50 px-2 py-1",
         borderless && "border-none",
         className,
       )}
@@ -33,11 +33,11 @@ export default function TextAreaInput({
       <textarea
         value={value}
         maxLength={maxLength}
-        className="bg-transparent outline-none border-none text-black50 focus:text-black focus:dark:text-white scrollbar-thin scrollbar-extra-margin resize-none w-full"
+        className="scrollbar-thin scrollbar-extra-margin w-full resize-none border-none bg-transparent text-black85 outline-none focus:text-black dark:text-black25 focus:dark:text-white"
         {...rest}
       ></textarea>
       {maxLength && (
-        <p className="text-black50 self-end">
+        <p className="self-end text-black85 dark:text-black25">
           {typeof value === "string" && value.length > 0 ? value.length : "0"}/
           {maxLength}
         </p>
