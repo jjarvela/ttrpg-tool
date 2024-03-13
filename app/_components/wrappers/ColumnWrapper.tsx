@@ -16,6 +16,7 @@ export default function ColumnWrapper({
   justify,
   className,
   children,
+  ...rest
 }: ColumnWrapperProps) {
   return (
     <div
@@ -25,6 +26,7 @@ export default function ColumnWrapper({
         justify && justify,
         className && className,
       )}
+      {...rest}
     >
       {children}
     </div>

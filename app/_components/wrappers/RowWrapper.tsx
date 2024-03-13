@@ -18,6 +18,7 @@ export default function RowWrapper({
   justify,
   className,
   children,
+  ...rest
 }: RowWrapperProps) {
   //return correct tailwind classes based on set breakpoint
   const setBreakPoint = (breakPoint: string) => {
@@ -47,6 +48,7 @@ export default function RowWrapper({
         justify && justify,
         className && className,
       )}
+      {...rest}
     >
       {children}
     </div>
