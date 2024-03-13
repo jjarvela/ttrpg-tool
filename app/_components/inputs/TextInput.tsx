@@ -25,7 +25,7 @@ export default function TextInput({
   return (
     <RowWrapper
       className={twMerge(
-        "gap[1rem] m-2 rounded-xl border-[1px] border-black50 px-2 py-1",
+        "m-2 w-max gap-1 rounded-xl border-[1px] border-black50 px-2 py-1",
         borderless && "border-none",
         className,
       )}
