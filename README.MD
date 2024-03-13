@@ -14,21 +14,21 @@ We've chosen to develop a Discord-like platform tailored for Tabletop Role-Playi
 
 - [List any external APIs here]
 
-## Database
+### Database
 
 - **PostgreSQL**: Chosen as the database management system for its robustness and reliability.
 
-## Backend & Frontend
+### Backend & Frontend
 
 - **Next.js**: Used for both backend and frontend development. Next.js provides server-side rendering capabilities, making it suitable for building dynamic web applications with a unified codebase.
 
-## Backend Libraries
+### Backend Libraries
 
 - **Prisma ORM**: Leveraged for database operations, providing a type-safe and efficient interface for interacting with the PostgreSQL database.
 - **Jest / SuperTest**: Employed for unit and integration testing to ensure the reliability of backend functionalities.
 - **Winston**: Utilized for logging to facilitate debugging and monitoring.
 
-## Frontend Libraries
+### Frontend Libraries
 
 - **Vitest / Cypress**: Chosen for testing the frontend components and ensuring their functionality.
 - **Tailwind**: Employed for styling and UI components to ensure a sleek and modern user interface.
