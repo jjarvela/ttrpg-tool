@@ -38,7 +38,10 @@ export default function RowWrapper({
     }
   };
 
-  const baseClasses = clsx("flex", breakPoint && setBreakPoint(breakPoint));
+  const baseClasses = clsx(
+    "flex content-center items-center gap-2",
+    breakPoint && setBreakPoint(breakPoint),
+  );
 
   return (
     <div
