@@ -86,7 +86,7 @@ export default function NumberInput({
             }
             handleChange && handleChange(e);
           }}
-          className="border-none bg-transparent py-1 text-end text-black85 outline-none focus:appearance-none focus:text-black dark:text-black25 focus:dark:text-white"
+          className="border-none bg-transparent text-end text-black85 outline-none placeholder:text-black50 focus:appearance-none focus:text-black dark:text-black25 focus:dark:text-white"
           type="number"
           {...rest}
         ></input>
