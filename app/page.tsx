@@ -1,7 +1,4 @@
-import NumberInput from "./_components/inputs/NumberInput";
-import PasswordInput from "./_components/inputs/PasswordInput";
-import TextAreaInput from "./_components/inputs/TextAreaInput";
-import TextInput from "./_components/inputs/TextInput";
+import FormDemo from "./_components/FormDemo";
 import ColumnWrapper from "./_components/wrappers/ColumnWrapper";
 import RowWrapper from "./_components/wrappers/RowWrapper";
 
@@ -20,16 +17,7 @@ export default function Home() {
         <h2>Test</h2>
       </RowWrapper>
 
-      <TextInput />
-      <PasswordInput />
-      <NumberInput min={1} max={5} />
-      <TextAreaInput
-        value={"sdfdfsg"}
-        maxLength={100}
-        rows={5}
-        borderless
-        className="w-[50%] bg-black25 dark:bg-black75"
-      />
+      <FormDemo />
 
       <ColumnWrapper align="items-end" className="w-[60%]">
         <h1>test</h1>
