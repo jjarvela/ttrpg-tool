@@ -1,1 +1,0 @@
-### ttrpg-tool API documentation
