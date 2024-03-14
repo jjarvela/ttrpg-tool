@@ -4,6 +4,7 @@ import NumberInput from "./inputs/NumberInput";
 import PasswordInput from "./inputs/PasswordInput";
 import TextAreaInput from "./inputs/TextAreaInput";
 import TextInput from "./inputs/TextInput";
+import ToggleInput from "./inputs/ToggleInput";
 
 export default function FormDemo() {
   return (
@@ -27,6 +28,9 @@ export default function FormDemo() {
         borderless
         className=" bg-black25 dark:bg-black75"
       />
+
+      <ToggleInput id="demo-toggle"/>
+      <ToggleInput id="demo-toggle2" label="This is a demo toggle" checkedColour="bg-accent"/>
     </form>
   );
 }
