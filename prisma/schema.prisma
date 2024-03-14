@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      Int                       @id @default(autoincrement())
+  uid                     String                    @unique
+  username                String
+  password_hash           String
+  email                   String
+  created_at              DateTime
+  screen_name             String?
+  timezone                String?
+  person_description      String?
+  profile_image           String?
+  server_members          ServerMember[]
+  ConversationParticipant ConversationParticipant[]
+  Message                 Message[]
+}
+
+model Server {
+  id             Int            @id @default(autoincrement())
+  uid            String         @unique
+  socket_id      String?
+  server_name    String
+  jamboard       String?
+  gameboard      String?
+  created_at     DateTime
+  description    String?
+  server_members ServerMember[]
+  channels       Channel[]
+  characters     Character[]
+}
+
+model ServerMember {
+  id         Int     @id @default(autoincrement())
+  server_uid String
+  member_uid String
+  role       String
+  nickname   String?
+  icon       String?
+  server     Server  @relation(fields: [server_uid], references: [uid])
+  user       User    @relation(fields: [member_uid], references: [uid])
+}
+
+model Channel {
+  id           Int            @id @default(autoincrement())
+  uid          String         @unique
+  server_uid   String
+  channel_name String
+  channel_type String
+  server       Server         @relation(fields: [server_uid], references: [uid])
+  Conversation Conversation[]
+}
+
+model Conversation {
+  id           Int                       @id @default(autoincrement())
+  uid          String                    @unique
+  channel_id   String
+  created_at   DateTime
+  messages     Message[]
+  participants ConversationParticipant[]
+  channel      Channel                   @relation(fields: [channel_id], references: [uid])
+}
+
+model ConversationParticipant {
+  id              Int          @id @default(autoincrement())
+  conversation    Conversation @relation(fields: [conversation_id], references: [id])
+  conversation_id Int
+  participant     User         @relation(fields: [participant_id], references: [id])
+  participant_id  Int
+}
+
+model Message {
+  id               Int          @id @default(autoincrement())
+  uid              String
+  conversation_uid String
+  sender_uid       String
+  message          String
+  created_at       DateTime
+  conversation     Conversation @relation(fields: [conversation_uid], references: [uid])
+  sender           User         @relation(fields: [sender_uid], references: [uid])
+}
+
+model Character {
+  id        Int    @id @default(autoincrement())
+  uid       String
+  server_id Int
+  name      String
+  server    Server @relation(fields: [server_id], references: [id])
+}
