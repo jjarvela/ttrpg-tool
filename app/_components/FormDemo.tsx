@@ -1,5 +1,6 @@
 "use client";
 
+import DropdownSelection from "./inputs/DropdownSelection";
 import NumberInput from "./inputs/NumberInput";
 import PasswordInput from "./inputs/PasswordInput";
 import TextAreaInput from "./inputs/TextAreaInput";
@@ -31,6 +32,9 @@ export default function FormDemo() {
 
       <ToggleInput id="demo-toggle"/>
       <ToggleInput id="demo-toggle2" label="This is a demo toggle" checkedColour="bg-accent"/>
+
+      <DropdownSelection options={[{label: "One", value: 1}, {label: "Two", value: 2}, {label: "Three", value: 3}]} />
+      <DropdownSelection options={[{label: "One", value: 1}, {label: "Two", value: 2}, {label: "Three", value: 3}]} defaultSelected={[{label: "Two", value: 2}, {label: "Three", value: 3}]} multiple />
     </form>
   );
 }
