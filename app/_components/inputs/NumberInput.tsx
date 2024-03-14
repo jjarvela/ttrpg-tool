@@ -69,7 +69,22 @@ export default function NumberInput({
           max={max}
           onChange={(e) => {
             setNumber(e.target.value);
+
             if (min) {
+              if (Number(e.target.value) <= min && !reachedMin)
+                setReachedMin(true);
+              else if (Number(e.target.value) > min && reachedMin)
+                setReachedMin(false);
+            }
+            if (max) {
+              if (Number(e.target.value) >= max && !reachedMax)
+                setReachedMax(true);
+              else if (Number(e.target.value) < max && reachedMax)
+                setReachedMax(false);
+            }
+            handleChange && handleChange(e);
+          }}
+          onBlur={(e) => {if (min) {
               if (Number(e.target.value) < min) setNumber(min);
               if (Number(e.target.value) <= min && !reachedMin)
                 setReachedMin(true);
@@ -83,9 +98,7 @@ export default function NumberInput({
                 setReachedMax(true);
               else if (Number(e.target.value) < max && reachedMax)
                 setReachedMax(false);
-            }
-            handleChange && handleChange(e);
-          }}
+            }}}
           className="border-none bg-transparent text-end text-black85 outline-none placeholder:text-black50 focus:appearance-none focus:text-black dark:text-black25 focus:dark:text-white"
           type="number"
           {...rest}

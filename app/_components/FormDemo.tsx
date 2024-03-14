@@ -11,8 +11,8 @@ export default function FormDemo() {
       <TextInput onChange={(e) => console.log(e.target.value)} />
       <PasswordInput onChange={(e) => console.log(e.target.value)} />
       <NumberInput
-        min={1}
-        max={5}
+        min={3}
+        max={20}
         handleChange={(e) => console.log(e!.target.value)}
       />
       <TextAreaInput
