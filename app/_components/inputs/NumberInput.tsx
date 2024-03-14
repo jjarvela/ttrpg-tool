@@ -22,6 +22,7 @@ interface NumberInputProps
 
 export default function NumberInput({
   value,
+  step,
   min,
   max,
   borderless,
@@ -65,11 +66,13 @@ export default function NumberInput({
         <input
           ref={inputRef}
           value={number}
+          step={step || 1}
           min={min}
           max={max}
           onChange={(e) => {
             setNumber(e.target.value);
 
+            //handle max and min check to disable spinners if necessary
             if (min) {
               if (Number(e.target.value) <= min && !reachedMin)
                 setReachedMin(true);
@@ -84,7 +87,12 @@ export default function NumberInput({
             }
             handleChange && handleChange(e);
           }}
-          onBlur={(e) => {if (min) {
+          onBlur={(e) => {
+            //if input number does not fall within accepted step, set to closest smaller accepted number
+            if(step && Number(number) % Number(step) !== 1) setNumber(Number(number) - (Number(number) % Number(step)));
+
+            //if input number is not within allowed range, set to min or max respectively
+            if (min) {
               if (Number(e.target.value) < min) setNumber(min);
               if (Number(e.target.value) <= min && !reachedMin)
                 setReachedMin(true);
@@ -106,12 +114,14 @@ export default function NumberInput({
         <ColumnWrapper className="gap-0 p-0">
           <NumberInputSpinner
             input={inputRef}
+            step={step ? parseFloat(step?.toString()) : 1}
             disabled={reachedMax}
             dispatchChange={dispatchChange}
             method="add"
           />
           <NumberInputSpinner
             input={inputRef}
+            step={step ? parseFloat(step?.toString()) : 1}
             disabled={reachedMin}
             dispatchChange={dispatchChange}
             method="subtract"
@@ -131,6 +141,7 @@ interface NumberInputSpinnerProps
   input: React.RefObject<HTMLInputElement>;
   method: "add" | "subtract";
   dispatchChange: (value: number) => void;
+  step: number;
   min?: number;
   max?: number;
   isDisabled?: boolean;
@@ -141,6 +152,7 @@ function NumberInputSpinner({
   input,
   method,
   dispatchChange,
+  step,
   min,
   max,
   ...rest
@@ -153,10 +165,10 @@ function NumberInputSpinner({
         if (!input.current) return;
         if (method === "add") {
           const current = parseFloat(input.current.value) || 0;
-          dispatchChange(current + 1);
+          dispatchChange(current + step);
         } else {
           const current = parseFloat(input.current.value) || 0;
-          dispatchChange(current - 1);
+          dispatchChange(current - step);
         }
       }}
       {...rest}
