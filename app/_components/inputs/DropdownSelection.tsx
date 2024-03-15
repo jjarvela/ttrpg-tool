@@ -1,9 +1,4 @@
-import {
-  DetailedHTMLProps,
-  OptionHTMLAttributes,
-  useRef,
-  useState,
-} from "react";
+import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import RowWrapper from "../wrappers/RowWrapper";
 import MaterialSymbolsLightChevronLeftRounded from "../../../icons/MaterialSymbolsLightChevronLeftRounded";
@@ -11,7 +6,6 @@ import MaterialSymbolsLightCloseRounded from "../../../icons/MaterialSymbolsLigh
 import ColumnWrapper from "../wrappers/ColumnWrapper";
 import clsx from "clsx";
 import MaterialSymbolsLightCheckSmallRounded from "../../../icons/MaterialSymbolsLightCheckSmallRounded";
-import { abort } from "process";
 import handleClickOutside from "../../../utils/handleClickOutside";
 
 type Option = { label: string; value: string | number | boolean };
