@@ -28,8 +28,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+# env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -37,4 +38,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
->>>>>>> db6f0032df2c29920f1a5168f4118f31858c0f13
+
+# Prisma
+/prisma/migrations/
