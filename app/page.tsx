@@ -1,10 +1,11 @@
 import FormDemo from "./_components/FormDemo";
 import ColumnWrapper from "./_components/wrappers/ColumnWrapper";
+import Main from "./_components/wrappers/PageMain";
 import RowWrapper from "./_components/wrappers/RowWrapper";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <Main className="items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         <p className="bg-primary-soft fixed left-0 top-0 flex w-full justify-center border-b-[1px] border-black50 lg:static lg:w-auto lg:rounded-xl lg:border-none lg:p-4 dark:from-inherit">
           Get started by editing&nbsp;
@@ -94,6 +95,6 @@ export default function Home() {
           </p>
         </a>
       </div>
-    </main>
+    </Main>
   );
 }
