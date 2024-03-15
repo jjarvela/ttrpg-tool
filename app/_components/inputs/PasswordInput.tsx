@@ -35,7 +35,7 @@ export default function PasswordInput({
     >
       {startElement}
       <input
-        className="w-full border-none bg-transparent text-black85 outline-none focus:text-black dark:text-black25 focus:dark:text-white"
+        className="w-full border-none bg-transparent text-black85 outline-none placeholder:text-black50 focus:text-black dark:text-black25 focus:dark:text-white"
         type={showPassword ? "text" : "password"}
         {...rest}
       ></input>

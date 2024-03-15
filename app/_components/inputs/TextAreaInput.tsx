@@ -33,7 +33,7 @@ export default function TextAreaInput({
       <textarea
         value={value}
         maxLength={maxLength}
-        className="scrollbar-thin scrollbar-extra-margin w-full resize-none border-none bg-transparent text-black85 outline-none focus:text-black dark:text-black25 focus:dark:text-white"
+        className="scrollbar-thin scrollbar-extra-margin w-full resize-none border-none bg-transparent text-black85 outline-none placeholder:text-black50 focus:text-black dark:text-black25 focus:dark:text-white"
         {...rest}
       ></textarea>
       {maxLength && (
