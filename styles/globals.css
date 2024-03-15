@@ -59,7 +59,7 @@
   }
 
   .text-primary-gradient {
-    @apply bg-gradient-light bg-clip-text dark:bg-gradient-dark text-transparent;
+    @apply bg-gradient-light dark:bg-gradient-dark bg-clip-text text-transparent;
   }
 
   .text-accent-gradient {
@@ -101,8 +101,23 @@
   small {
     @apply text-sm;
   }
+
+  .shadow {
+    box-shadow: inset 2px 2px 2px 2px black;
+  }
 }
 
 @layer utilities {
 }
 
+@layer components {
+  .btn-primary {
+    @apply active:bg-primary-harsh rounded-lg border bg-primary px-3 py-1 text-white hover:border-black85;
+    @apply shadow;
+  }
+
+  .btn-secondary {
+    @apply rounded-lg border bg-black25 px-3 py-1 text-black hover:border-black85 active:bg-black50;
+    @apply shadow;
+  }
+}
