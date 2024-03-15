@@ -10,6 +10,7 @@ interface RowWrapperProps
   align?: string; //tailwind classes for aligning content/items
   justify?: string; //tailwind classes for justifying content/items
   className?: string;
+  refObject?: React.RefObject<HTMLDivElement>;
 }
 
 export default function RowWrapper({
@@ -18,6 +19,7 @@ export default function RowWrapper({
   justify,
   className,
   children,
+  refObject,
   ...rest
 }: RowWrapperProps) {
   //return correct tailwind classes based on set breakpoint
@@ -51,6 +53,7 @@ export default function RowWrapper({
         justify && justify,
         className && className,
       )}
+      ref={refObject}
       {...rest}
     >
       {children}
