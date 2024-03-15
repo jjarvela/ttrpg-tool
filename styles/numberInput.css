@@ -1,0 +1,13 @@
+/*turn off spinners on webkit browsers like Chrome*/
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/*turn off spinners on Firefox*/
+input[type="number"],
+input[type="number"]:focus,
+input[type="number"]:hover {
+  appearance: textfield;
+}
