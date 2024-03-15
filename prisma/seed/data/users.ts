@@ -1,4 +1,4 @@
-module.exports = [
+export const Users = [
   // User 1
   {
     uid: "024a6844-ec00-4b0c-9e8d-1604f227d048",
