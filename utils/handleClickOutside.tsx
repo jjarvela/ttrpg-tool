@@ -24,9 +24,9 @@ export default function handleClickOutside(
 
     //check if click falls outside of object bounds
     if (event.clientX < left || event.clientX > right) {
-      callback;
+      callback();
     } else if (event.clientY < top || event.clientY > bottom) {
-      callback;
+      callback();
     } else {
       return;
     }
