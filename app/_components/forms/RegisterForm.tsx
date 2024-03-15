@@ -20,7 +20,7 @@ export default function RegisterForm({
     <section id="register" className={twMerge("text-center", className)}>
       <form>
         {title && <h2 className="my-1 mb-2">Sign up</h2>}
-        <ColumnWrapper className="mx-auto w-[80%]">
+        <ColumnWrapper className="mx-auto w-[80%] gap-1 pb-1">
           <TextInput type="email" placeholder="email" className="w-full" />
           <TextInput placeholder="username" className="w-full" />
           <PasswordInput placeholder="password" className="w-full" />

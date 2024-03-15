@@ -21,7 +21,7 @@ export default function LoginForm({
     <section id="login" className={twMerge("text-center", className)}>
       <form>
         {title && <h2 className="my-1 mb-2">Log in</h2>}
-        <ColumnWrapper className="mx-auto w-[80%]">
+        <ColumnWrapper className="mx-auto w-[80%] gap-1 pb-1">
           <TextInput placeholder="username" className="w-full" required />
           <PasswordInput placeholder="password" className="w-full" required />
           <button>Login</button>
