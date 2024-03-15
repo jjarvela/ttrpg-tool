@@ -59,7 +59,10 @@
   }
 
   .text-primary-gradient {
-    @apply bg-gradient-light bg-clip-text dark:bg-gradient-dark text-transparent;
+    @apply bg-gradient-dark dark:bg-gradient-light;
+    background-color: #65ae45;
+    color: transparent;
+    background-clip: text;
   }
 
   .text-accent-gradient {
@@ -105,4 +108,3 @@
 
 @layer utilities {
 }
-
