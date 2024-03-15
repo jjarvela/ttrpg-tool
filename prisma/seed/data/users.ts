@@ -64,4 +64,31 @@ export const Users = [
     person_description: "Hi, I'm Sarah! Excited to be here.",
     profile_image: "https://randomuser.me/api/portraits/women/2.jpg",
   },
+  // User 6 (Dickerson)
+  {
+    uid: "db1d85fc-2e7a-41cb-877d-18fd7a4e0fa7",
+    username: "Dickerson",
+    password_hash:
+      "$argon2id$v=19$m=65536,t=3,p=4$2psNAWGGHw0ge5ULWVgImA$ovrJmep6qRrDz5Z7RRxUTl1gN4UvHb4ey0CW8/E1Xfc",
+    email: "dickerson@example.com",
+    created_at: new Date("2024-06-30T09:30:00Z"),
+    screen_name: "Dick",
+    timezone: "UTC+01:00",
+    person_description: "I'm Dick, but you can call me Big Dick 😄",
+    profile_image: "https://randomuser.me/api/portraits/men/9.jpg",
+  },
+  // User 7
+  {
+    uid: "03a1c512-7b4f-464b-8d15-5c443db69597",
+    username: "GrimReaper",
+    password_hash:
+      "$argon2id$v=19$m=65536,t=3,p=4$nK6KpP2WErQz8GwZMIwbMw$Sd5kGid+yBhLm+qRvtZwTWyZDqgt9gGrXkFz8Yb4d50",
+    email: "grim@example.com",
+    created_at: new Date("2025-03-15T12:00:00Z"),
+    screen_name: "Grim Reaper 💀",
+    timezone: "UTC-08:00",
+    person_description:
+      "Hello mortals, I'm Grim Reaper. Don't mind me, just here to collect some souls! 💀 Remember, life is short, but mine's eternal!",
+    profile_image: "https://randomuser.me/api/portraits/men/13.jpg",
+  },
 ];
