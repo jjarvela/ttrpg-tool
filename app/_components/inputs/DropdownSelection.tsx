@@ -1,4 +1,9 @@
-import { DetailedHTMLProps, OptionHTMLAttributes, useRef, useState } from "react";
+import {
+  DetailedHTMLProps,
+  OptionHTMLAttributes,
+  useRef,
+  useState,
+} from "react";
 import { twMerge } from "tailwind-merge";
 import RowWrapper from "../wrappers/RowWrapper";
 import MaterialSymbolsLightChevronLeftRounded from "../../../icons/MaterialSymbolsLightChevronLeftRounded";
@@ -6,63 +11,181 @@ import MaterialSymbolsLightCloseRounded from "../../../icons/MaterialSymbolsLigh
 import ColumnWrapper from "../wrappers/ColumnWrapper";
 import clsx from "clsx";
 import MaterialSymbolsLightCheckSmallRounded from "../../../icons/MaterialSymbolsLightCheckSmallRounded";
+import { abort } from "process";
+import handleClickOutside from "../../../utils/handleClickOutside";
 
-type Option = {label: string, value: string | number | boolean}
+type Option = { label: string; value: string | number | boolean };
 
-interface DropdownSelectionProps extends DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
-{
-  options: Array<Option>,
-  defaultSelected?: Array<Option>,
-  placeholder?: string,
-  multiple?: boolean
+interface DropdownSelectionProps {
+  options: Array<Option>;
+  onSelect: (selected: Array<Option>) => void;
+  required?: boolean;
+  defaultSelected?: Array<Option>;
+  placeholder?: string;
+  multiple?: boolean;
 }
 
-export default function DropdownSelection ({options, defaultSelected, placeholder, multiple, ...rest} : DropdownSelectionProps) {
-  const [selected, setSelected] = useState<Array<Option>>(defaultSelected || []);
+export default function DropdownSelection({
+  options,
+  onSelect,
+  required,
+  defaultSelected,
+  placeholder,
+  multiple,
+}: DropdownSelectionProps) {
+  const [selected, setSelected] = useState<Array<Option>>(
+    defaultSelected || [],
+  );
   const [isOpen, setIsOpen] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSelection = (option: Option, isSelected: boolean) => {
-      if(!isSelected) {
-        multiple && setSelected(prev => [...prev, {label: option.label, value: option.value}])
-        !multiple && setSelected([{label: option.label, value: option.value}])
+    if (!isSelected) {
+      if (multiple) {
+        const newSelected = [option, ...selected];
+        setSelected(newSelected);
+        onSelect && onSelect(newSelected);
       } else {
-        setSelected(prev => prev.filter(item => item.value !== option.value))
+        const newSelected = [{ label: option.label, value: option.value }];
+        setSelected(newSelected);
+        onSelect && onSelect(newSelected);
       }
-  }
+    } else {
+      const newSelected = selected.filter(
+        (item) => item.value !== option.value,
+      );
+      setSelected(newSelected);
+      onSelect && onSelect(newSelected);
+    }
+  };
 
   return (
     <div className="relative">
-      <RowWrapper justify="justify-between" className="overflow-hidden w-full rounded-xl border-[1px] border-black50 p-0">
-        <div className="grid grid-cols-3 gap-1 px-1 grid-flow-row-dense">
-        {selected.length > 0 ? selected.map(item => <SelectedOption key={"selected-" + item.value} option={item} multi={multiple} handleSelection={handleSelection}/>)  : <span className="text-black50 px-2">{placeholder ? placeholder :  ""}</span>}
+      {/**Phantom input to track required condition*/}
+      <input
+        className="h-0 w-0"
+        required={required}
+        defaultValue={selected.length > 0 ? "1" : ""}
+        onInvalid={() => setIsInvalid(true)}
+      />
+
+      <RowWrapper
+        justify="justify-between"
+        className="w-full overflow-hidden rounded-xl border-[1px] border-black50 p-0"
+      >
+        <div className="grid grid-flow-row-dense grid-cols-3 gap-1 px-1">
+          {selected.length > 0 ? (
+            selected.map((item) => (
+              <SelectedOption
+                key={"selected-" + item.value}
+                option={item}
+                multi={multiple}
+                handleSelection={handleSelection}
+              />
+            ))
+          ) : (
+            <span className="px-2 text-black50">
+              {placeholder ? placeholder : ""}
+            </span>
+          )}
         </div>
-        <div className="text-xl bg-black50 cursor-pointer transition-transform duration-100" onClick={() => setIsOpen(prev => !prev)}>
-          <MaterialSymbolsLightChevronLeftRounded className={clsx("self-center", isOpen ? "rotate-90" : "-rotate-90")}/>
+        <div
+          className="cursor-pointer bg-black50 text-xl transition-transform duration-100"
+          onClick={() => {
+            const newIsOpen = !isOpen;
+            setIsOpen(newIsOpen);
+            newIsOpen &&
+              document.addEventListener("mousedown", (event) =>
+                handleClickOutside(dropdownRef, event, () => setIsOpen(false)),
+              );
+          }}
+        >
+          <MaterialSymbolsLightChevronLeftRounded
+            className={clsx("self-center", isOpen ? "rotate-90" : "-rotate-90")}
+          />
         </div>
       </RowWrapper>
-      <ColumnWrapper align="items-start" className={twMerge("p-0 w-[95%] absolute mt-[0.25rem] ml-[0.25rem] z-[99] bg-color-default overflow-hidden border-[1px] border-black50", isOpen ? "h-max" : "h-0 collapse")}>
-          {options.map(option => <SelectionOption key={option.label + option.value} option={option} isSelected={selected.length > 0 ? (selected.map(item => item.value).indexOf(option.value) > - 1) : false} handleSelection={handleSelection}/>)}
+
+      <ColumnWrapper
+        refObject={dropdownRef}
+        align="items-start"
+        className={twMerge(
+          "bg-color-default absolute z-[99] ml-[0.25rem] mt-[0.25rem] w-[95%] overflow-hidden border-[1px] border-black50 p-0",
+          isOpen ? "h-max" : "collapse h-0",
+        )}
+      >
+        {options.map((option) => (
+          <SelectionOption
+            key={option.label + option.value}
+            option={option}
+            isSelected={
+              selected.length > 0
+                ? selected.map((item) => item.value).indexOf(option.value) > -1
+                : false
+            }
+            handleSelection={handleSelection}
+          />
+        ))}
       </ColumnWrapper>
+      {isInvalid && (
+        <span className="text-warning">This field is required</span>
+      )}
     </div>
-  )
+  );
 }
 
 interface SelectionOptionProps {
-option: Option,
-isSelected: boolean;
-multi?: boolean;  
-handleSelection: (option: Option, isSelected: boolean) => void
+  option: Option;
+  isSelected: boolean;
+  multi?: boolean;
+  handleSelection: (option: Option, isSelected: boolean) => void;
 }
 
-function SelectionOption ({option, isSelected, handleSelection}: SelectionOptionProps) {
+function SelectionOption({
+  option,
+  isSelected,
+  handleSelection,
+}: SelectionOptionProps) {
   return (
-    <RowWrapper justify="justify-between justify-items-between" className="px-2 py-1 cursor-pointer w-full border-b-[1px] border-black50" onClick={() => {
-      handleSelection(option, isSelected);
-    }}>{option.label}{isSelected && <MaterialSymbolsLightCheckSmallRounded className="text-lg"/>}</RowWrapper>
-  )
+    <RowWrapper
+      justify="justify-between justify-items-between"
+      className="w-full cursor-pointer border-b-[1px] border-black50 px-2 py-1"
+      onClick={() => {
+        handleSelection(option, isSelected);
+      }}
+    >
+      {option.label}
+      {isSelected && (
+        <MaterialSymbolsLightCheckSmallRounded className="text-lg" />
+      )}
+    </RowWrapper>
+  );
 }
 
-function SelectedOption ({option, multi, handleSelection} : {option: Option, multi?: boolean, handleSelection: (option: Option, isSelected: boolean, multi?: boolean) => void}) {
-  if(!multi) return <div className="px-2">{option.label}</div>
-  else return <RowWrapper className="bg-black25 dark:bg-black75 px-[0.5rem]">{option.label} <MaterialSymbolsLightCloseRounded className="cursor-pointer" onClick={() => handleSelection(option, true, true)}/></RowWrapper>
+function SelectedOption({
+  option,
+  multi,
+  handleSelection,
+}: {
+  option: Option;
+  multi?: boolean;
+  handleSelection: (
+    option: Option,
+    isSelected: boolean,
+    multi?: boolean,
+  ) => void;
+}) {
+  if (!multi) return <div className="px-2">{option.label}</div>;
+  else
+    return (
+      <RowWrapper className="bg-black25 px-[0.5rem] dark:bg-black75">
+        {option.label}{" "}
+        <MaterialSymbolsLightCloseRounded
+          className="cursor-pointer"
+          onClick={() => handleSelection(option, true, true)}
+        />
+      </RowWrapper>
+    );
 }
