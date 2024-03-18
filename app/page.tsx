@@ -2,6 +2,7 @@ import FormDemo from "./_components/FormDemo";
 import ColumnWrapper from "./_components/wrappers/ColumnWrapper";
 import Main from "./_components/wrappers/PageMain";
 import RowWrapper from "./_components/wrappers/RowWrapper";
+import Button from "./_components/Button";
 
 export default function Home() {
   return (
@@ -24,6 +25,9 @@ export default function Home() {
         <h1>test</h1>
         <h2>test2</h2>
       </ColumnWrapper>
+
+      <Button className="btn-primary">Primary</Button>
+      <Button className="btn-secondary">Secondary</Button>
 
       <h1 className="text-accent-gradient">Index page</h1>
       <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
