@@ -1,3 +1,5 @@
+"use client";
+
 import ColumnWrapper from "../../_components/wrappers/ColumnWrapper";
 import Main from "../../_components/wrappers/PageMain";
 import LoginForm from "../../_components/forms/LoginForm";
