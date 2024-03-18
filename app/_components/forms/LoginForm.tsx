@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import PasswordInput from "../inputs/PasswordInput";
 import TextInput from "../inputs/TextInput";
 import ColumnWrapper from "../wrappers/ColumnWrapper";
+import Button from "../Button";
 
 type LoginFormProps = {
   goToRegister: () => void;
@@ -24,7 +25,15 @@ export default function LoginForm({
         <ColumnWrapper className="mx-auto w-[80%] gap-1 pb-1">
           <TextInput placeholder="username" className="w-full" required />
           <PasswordInput placeholder="password" className="w-full" required />
-          <button>Login</button>
+          <Button
+            className="btn-primary"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("Login button");
+            }}
+          >
+            Login
+          </Button>
           <a>Forgot password?</a>
           <p>
             {"Don't have an account yet?"}{" "}

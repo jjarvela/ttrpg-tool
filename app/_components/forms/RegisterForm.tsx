@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "../Button";
 import PasswordInput from "../inputs/PasswordInput";
 import TextInput from "../inputs/TextInput";
 import ColumnWrapper from "../wrappers/ColumnWrapper";
@@ -25,7 +26,15 @@ export default function RegisterForm({
           <TextInput placeholder="username" className="w-full" />
           <PasswordInput placeholder="password" className="w-full" />
           <PasswordInput placeholder="confirm password" className="w-full" />
-          <button>Join Now</button>
+          <Button
+            className="btn-primary"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("Register button");
+            }}
+          >
+            Join Now
+          </Button>
           Already have an account?{" "}
           <a
             className="border-spacing-1 cursor-pointer border-b-[0.5px]"
