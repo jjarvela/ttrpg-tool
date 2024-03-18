@@ -39,7 +39,7 @@ export default function LoginForm({
             {"Don't have an account yet?"}{" "}
             <a
               className="border-spacing-1 cursor-pointer border-b-[0.5px]"
-              onClick={() => goToRegister()}
+              onClick={goToRegister}
             >
               Register
             </a>
