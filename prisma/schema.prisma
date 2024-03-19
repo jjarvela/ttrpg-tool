@@ -19,7 +19,7 @@ model User {
   username                String
   password_hash           String
   email                   String
-  created_at              DateTime
+  created_at              DateTime                  @default(now())
   screen_name             String?
   timezone                String?
   person_description      String?
@@ -36,7 +36,7 @@ model Server {
   server_name    String
   jamboard       String?
   gameboard      String?
-  created_at     DateTime
+  created_at     DateTime       @default(now())
   description    String?
   server_members ServerMember[]
   channels       Channel[]
@@ -68,7 +68,7 @@ model Conversation {
   id           Int                       @id @default(autoincrement())
   uid          String                    @unique
   channel_id   String
-  created_at   DateTime
+  created_at   DateTime                  @default(now())
   messages     Message[]
   participants ConversationParticipant[]
   channel      Channel                   @relation(fields: [channel_id], references: [uid])
@@ -88,7 +88,7 @@ model Message {
   conversation_uid String
   sender_uid       String
   message          String
-  created_at       DateTime
+  created_at       DateTime     @default(now())
   conversation     Conversation @relation(fields: [conversation_uid], references: [uid])
   sender           User         @relation(fields: [sender_uid], references: [uid])
 }
