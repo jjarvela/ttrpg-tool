@@ -2,6 +2,7 @@ import FormDemo from "./_components/FormDemo";
 import ColumnWrapper from "./_components/wrappers/ColumnWrapper";
 import RowWrapper from "./_components/wrappers/RowWrapper";
 import Button from "./_components/Button";
+import ProfilePicture from "./_components/ProfilePicture";
 
 export default function Home() {
   return (
@@ -27,6 +28,8 @@ export default function Home() {
 
       <Button className="btn-primary">Primary</Button>
       <Button className="btn-secondary">Secondary</Button>
+
+      <ProfilePicture width={40} />
 
       <h1 className="text-accent-gradient">Index page</h1>
       <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
