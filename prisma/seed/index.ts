@@ -8,7 +8,7 @@ async function runSeeders() {
   await Promise.all(
     Users.map(async (user) =>
       prisma.user.upsert({
-        where: { uid: user.uid },
+        where: { username: user.username },
         update: {},
         create: user,
       }),
