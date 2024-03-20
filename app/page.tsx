@@ -4,10 +4,22 @@ import RowWrapper from "./_components/wrappers/RowWrapper";
 import Button from "./_components/Button";
 import SideMenu from "./_components/SideMenu";
 
+interface Server {
+  id: number;
+  name: string;
+  icon: string;
+}
+
+const servers: Server[] = [
+  { id: 1, name: "Server 1", icon: "/icons/server1.png" },
+  { id: 2, name: "Server 2", icon: "/icons/server2.png" },
+  // Add more servers as needed
+];
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <SideMenu />
+      <SideMenu servers={servers} />
 
       <RowWrapper breakPoint="lg">
         <h1>Test</h1>
