@@ -124,3 +124,27 @@
     @apply shadow;
   }
 }
+
+input:-internal-autofill-selected,
+input:-internal-autofill-previewed,
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  appearance: none;
+  background-color: transparent !important;
+  -webkit-text-fill-color: #1f1c20 !important;
+  color: inherit !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+@media (prefers-color-scheme: dark) {
+  input:-internal-autofill-selected,
+  input:-internal-autofill-previewed,
+  input:-webkit-autofill,
+  textarea:-webkit-autofill {
+    appearance: none;
+    background-color: transparent !important;
+    -webkit-text-fill-color: #fff !important;
+    color: inherit !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
