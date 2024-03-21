@@ -18,9 +18,15 @@ export const RegisterSchema = z
     email: z.string().email({
       message: "Email is required.",
     }),
-    username: z.string().min(1, {
-      message: "Username is required.",
-    }),
+    username: z
+      .string()
+      .min(1, {
+        message: "Username is required.",
+      })
+      .regex(
+        /^[a-zA-Z0-9-_]+$/,
+        "Username can only contain alphanumerical characters, - and _.",
+      ),
     password: z
       .string()
       .min(6, {
