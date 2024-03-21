@@ -1,4 +1,4 @@
-import MaterialSymbolsProfile from "../../icons/MaterialSymbolsProfile";
+import MaterialSymbolsProfile from "../../public/icons/MaterialSymbolsProfile";
 
 type ProfilePictureProps = {
   width: number;
