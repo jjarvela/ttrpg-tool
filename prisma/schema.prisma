@@ -32,14 +32,6 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model User {
   id                      String                    @id @default(cuid())
   username                String                    @unique
@@ -55,7 +47,6 @@ model User {
   ConversationParticipant ConversationParticipant[]
   Message                 Message[]
   accounts                Account[]
-  sessions                Session[]
 }
 
 model Server {
