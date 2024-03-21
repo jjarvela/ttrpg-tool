@@ -23,8 +23,6 @@ export default {
             return null;
           }
 
-          console.log(user);
-
           const passwordsMatch = await bcrypt.compare(
             password,
             user.password_hash,
