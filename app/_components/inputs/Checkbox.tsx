@@ -2,7 +2,7 @@ import { DetailedHTMLProps, Fragment, ReactNode, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import RowWrapper from "../wrappers/RowWrapper";
 import clsx from "clsx";
-import MaterialSymbolsLightCheckSmallRounded from "../../../icons/MaterialSymbolsLightCheckSmallRounded";
+import MaterialSymbolsLightCheckSmallRounded from "../../../public/icons/MaterialSymbolsLightCheckSmallRounded";
 
 interface CheckboxProps
   extends DetailedHTMLProps<

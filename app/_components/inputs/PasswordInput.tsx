@@ -2,8 +2,8 @@
 import { DetailedHTMLProps, ReactNode, useState } from "react";
 import RowWrapper from "../wrappers/RowWrapper";
 import { twMerge } from "tailwind-merge";
-import MaterialSymbolsLightVisibilityOffRounded from "../../../icons/MaterialSymbolsLightVisibilityOffRounded";
-import MaterialSymbolsLightVisibilityRounded from "../../../icons/MaterialSymbolsLightVisibilityRounded";
+import MaterialSymbolsLightVisibilityOffRounded from "../../../public/icons/MaterialSymbolsLightVisibilityOffRounded";
+import MaterialSymbolsLightVisibilityRounded from "../../../public/icons/MaterialSymbolsLightVisibilityRounded";
 
 interface PasswordInputProps
   extends DetailedHTMLProps<
