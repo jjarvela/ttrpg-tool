@@ -1,3 +1,4 @@
+"use client";
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
 interface ButtonProps
@@ -7,11 +8,16 @@ interface ButtonProps
   > {
   className: string;
   children?: React.ReactNode;
+  handleClick?: (e?: React.MouseEvent) => void;
 }
 
-function Button({ children, className, ...rest }: ButtonProps) {
+function Button({ children, className, handleClick, ...rest }: ButtonProps) {
   return (
-    <button className={className} {...rest}>
+    <button
+      className={className}
+      onClick={() => handleClick && handleClick()}
+      {...rest}
+    >
       {children}
     </button>
   );
