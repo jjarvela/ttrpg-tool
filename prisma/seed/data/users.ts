@@ -1,10 +1,9 @@
 export const Users = [
   // User 1
   {
-    uid: "024a6844-ec00-4b0c-9e8d-1604f227d048",
     username: "Jane",
     password_hash:
-      "$argon2id$v=19$m=65536,t=3,p=4$DnnPcb9QqOiSjwthZ1+5jg$xla6n2awJ945pGKCTIwJbefX08hMxb4KUkvekO/jkCc",
+      "$2a$10$GrHwlJUVQHnJO3WsOAl9buEwvLDifB.6ffbjag9oWaib8MELkJh7K", //plain text: testpassword
     email: "jane@mail.com",
     created_at: new Date("2024-01-01T10:00:00Z"),
     screen_name: "Test User ✨",
@@ -14,10 +13,9 @@ export const Users = [
   },
   // User 2
   {
-    uid: "1e347524-16d9-4a26-b355-25b41e7a9643",
     username: "JohnDoe",
     password_hash:
-      "$argon2id$v=19$m=65536,t=3,p=4$9qUFDc8t/6FYQxbYQ+Gvjg$AWxChj3rY6S1yVlAZyKdLPUfDQbbk9vRXHZKk5pZg8w",
+      "$2a$10$l.kUHe/Nx1tdmuK.U4vGBOJC6VHxUiVpU2oYq1bCf4UZHY3SwVcse", //plain text: unknownpass
     email: "john@mail.com",
     created_at: new Date("2024-02-10T08:15:00Z"),
     screen_name: "JD",
@@ -27,10 +25,9 @@ export const Users = [
   },
   // User 3
   {
-    uid: "3acba32d-840f-4643-9f48-8b1f6946a96c",
     username: "EmilySmith",
     password_hash:
-      "$argon2id$v=19$m=65536,t=3,p=4$MRyxQJh3TnNYNTM6P/rG3g$enb2NW6WyQ5FA5b5w3eJtZvImGirxBh1oHjAnEMwosE",
+      "$2a$10$qOYcYIyppIBS3frTznxAq.OF8ochd24eR30LTh6tYXDqqYZ/kwHMi", //plain text: thisisatest
     email: "emily@mail.com",
     created_at: new Date("2024-03-05T14:30:00Z"),
     screen_name: "Em",
@@ -40,10 +37,9 @@ export const Users = [
   },
   // User 4
   {
-    uid: "b255c6b2-13a6-4a80-8916-95ad9c1d4f68",
     username: "DavidBrown",
     password_hash:
-      "$argon2id$v=19$m=65536,t=3,p=4$7oiPQuAfcU0Lx4v7P4mvUQ$Krl/j7jBKDqynZoi1fMzqYt2ZI3dGlt47LzB7I8nrY8",
+      "$2a$10$AY59RIZfwCMGHZHBCmIVDuFBueGwaLu0XgaY7R/9RxdVnpts3131e", //plain text: bowieboy
     email: "david@mail.com",
     created_at: new Date("2024-04-20T12:45:00Z"),
     screen_name: "Dave",
@@ -53,10 +49,9 @@ export const Users = [
   },
   // User 5
   {
-    uid: "d8c6c1fe-28de-4923-b17f-1b593394a423",
     username: "SarahJohnson",
     password_hash:
-      "$argon2id$v=19$m=65536,t=3,p=4$YGn2APNOATyTOi1ps7/m1g$3/XShio2aLV/GF5Sbo2zQuLnFxZ49TzW0NTLbRIWrxU",
+      "$2a$10$bPD.6HJuDYQDLjaHWYNMJ.HvMhajR8ZuCqvunPqYQSQ0A.N/b4DNu", //plain text: mycoolpassword
     email: "sarah@mail.com",
     created_at: new Date("2024-05-15T17:20:00Z"),
     screen_name: "SJ",
@@ -66,10 +61,9 @@ export const Users = [
   },
   // User 6 (Dickerson)
   {
-    uid: "db1d85fc-2e7a-41cb-877d-18fd7a4e0fa7",
     username: "Dickerson",
     password_hash:
-      "$argon2id$v=19$m=65536,t=3,p=4$2psNAWGGHw0ge5ULWVgImA$ovrJmep6qRrDz5Z7RRxUTl1gN4UvHb4ey0CW8/E1Xfc",
+      "$2a$10$6SjMFIHu4J1JPX.bunzQ9eTymyPB4TrLF5m0e9zvNVHK4R6grXBu2", //plain text: teamyellow
     email: "dickerson@example.com",
     created_at: new Date("2024-06-30T09:30:00Z"),
     screen_name: "Dick",
@@ -79,10 +73,9 @@ export const Users = [
   },
   // User 7
   {
-    uid: "03a1c512-7b4f-464b-8d15-5c443db69597",
     username: "GrimReaper",
     password_hash:
-      "$argon2id$v=19$m=65536,t=3,p=4$nK6KpP2WErQz8GwZMIwbMw$Sd5kGid+yBhLm+qRvtZwTWyZDqgt9gGrXkFz8Yb4d50",
+      "$2a$10$..Jhw9WkvCqF4rtRMdMPmuJAEvn7Jf8OTZcF6Lr0dP/86isk0HykS", //plain text: rigormortis
     email: "grim@example.com",
     created_at: new Date("2025-03-15T12:00:00Z"),
     screen_name: "Grim Reaper 💀",
