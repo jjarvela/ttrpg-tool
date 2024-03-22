@@ -8,10 +8,18 @@ type ProfilePictureProps = {
 function ProfilePicture({ width, image }: ProfilePictureProps) {
   return (
     <div
-      className={"flex-shrink-0 rounded-full bg-white bg-cover"}
-      style={{ width: width, height: width, backgroundImage: `url(${image})` }}
+      className={"flex-shrink-0 overflow-hidden rounded-full bg-black50"}
+      style={{ width: width, height: width }}
     >
-      {!image && <MaterialSymbolsProfile width={width} height={width} />}
+      {image ? (
+        <Image
+          src={`${image}`}
+          alt="User profile image"
+          style={{ objectFit: "cover" }}
+        />
+      ) : (
+        <MaterialSymbolsProfile width={width} height={width} />
+      )}
     </div>
   );
 }

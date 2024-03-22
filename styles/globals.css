@@ -59,7 +59,10 @@
   }
 
   .text-primary-gradient {
-    @apply bg-gradient-light dark:bg-gradient-dark bg-clip-text text-transparent;
+    @apply bg-gradient-dark dark:bg-gradient-light;
+    background-color: #65ae45;
+    color: transparent;
+    background-clip: text;
   }
 
   .text-accent-gradient {
@@ -119,5 +122,29 @@
   .btn-secondary {
     @apply rounded-lg border bg-black25 px-3 py-1 text-black hover:border-black75 active:bg-black50;
     @apply shadow;
+  }
+}
+
+input:-internal-autofill-selected,
+input:-internal-autofill-previewed,
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  appearance: none;
+  background-color: transparent !important;
+  -webkit-text-fill-color: #1f1c20 !important;
+  color: inherit !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+@media (prefers-color-scheme: dark) {
+  input:-internal-autofill-selected,
+  input:-internal-autofill-previewed,
+  input:-webkit-autofill,
+  textarea:-webkit-autofill {
+    appearance: none;
+    background-color: transparent !important;
+    -webkit-text-fill-color: #fff !important;
+    color: inherit !important;
+    transition: background-color 5000s ease-in-out 0s;
   }
 }
