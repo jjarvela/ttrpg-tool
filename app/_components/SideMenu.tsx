@@ -7,6 +7,8 @@ import pipeTop from "../../public/icons/pipe-top.svg";
 import pizzaSlice from "../../public/icons/pizza-slice.svg";
 import MaterialSymbolsLight3p from "../../public/icons/MaterialSymbolsLight3p";
 import MaterialSymbolsLightAdd from "../../public/icons/MaterialSymbolsLightAdd";
+import Button from "./Button";
+import logOut from "../../actions/logout";
 interface Server {
   id: number;
   name: string;
@@ -24,7 +26,7 @@ const SideMenu = () => {
     <nav>
       <ColumnWrapper
         align="items-center"
-        className="fixed left-0 top-0 mb-2 border-r-2 border-gray-600"
+        className="fixed bottom-0 left-0 top-0 mb-2 border-r-2 border-gray-600"
       >
         <MaterialSymbolsLight3p width={40} height={40} />
         <ul>
@@ -56,6 +58,9 @@ const SideMenu = () => {
             />
           </Link>
         </div>
+        <Button className="btn-secondary" handleClick={logOut}>
+          Log out
+        </Button>
       </ColumnWrapper>
     </nav>
   );

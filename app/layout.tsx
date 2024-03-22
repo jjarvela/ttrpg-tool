@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
+import SideMenu from "./_components/SideMenu";
+
+interface LayoutProps {
+  includeSideMenu?: boolean;
+}
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,13 +16,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+  includeSideMenu = true,
+}: {
   children: React.ReactNode;
-}>) {
+  includeSideMenu?: boolean;
+}) {
   return (
     <html lang="en">
-      <body className="bg-color-default text-color-default">{children}</body>
+      <body className="bg-color-default text-color-default">
+        {children}
+        {includeSideMenu && <SideMenu />}
+      </body>
     </html>
   );
 }
-
