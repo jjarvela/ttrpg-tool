@@ -10,6 +10,7 @@ import ProfilePicture from "./_components/ProfilePicture";
 export default function Home() {
   return (
     <Main className="items-center justify-between p-24">
+      <SideMenu />
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         <Button className="btn-secondary" handleClick={logOut}>
           Log out

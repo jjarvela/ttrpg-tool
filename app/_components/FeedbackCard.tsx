@@ -7,10 +7,10 @@
 
 import { twMerge } from "tailwind-merge";
 import RowWrapper from "./wrappers/RowWrapper";
-import MaterialSymbolsLightWarningOutlineRounded from "../../icons/MaterialSymbolsLightWarningOutlineRounded";
-import MaterialSymbolsLightExclamationRounded from "../../icons/MaterialSymbolsLightExclamationRounded";
-import MaterialSymbolsLightCheckCircleOutlineRounded from "../../icons/MaterialSymbolsLightCheckCircleOutlineRounded";
-import MaterialSymbolsLightInfoOutlineRounded from "../../icons/MaterialSymbolsLightInfoOutlineRounded";
+import MaterialSymbolsLightWarningOutlineRounded from "../../public/icons/MaterialSymbolsLightWarningOutlineRounded";
+import MaterialSymbolsLightExclamationRounded from "../..//public/icons/MaterialSymbolsLightExclamationRounded";
+import MaterialSymbolsLightCheckCircleOutlineRounded from "../..//public/icons/MaterialSymbolsLightCheckCircleOutlineRounded";
+import MaterialSymbolsLightInfoOutlineRounded from "../../public/icons/MaterialSymbolsLightInfoOutlineRounded";
 
 type FeedbackCardProps = {
   type: "error" | "warning" | "success" | "info";
