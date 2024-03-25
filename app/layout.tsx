@@ -26,10 +26,10 @@ export default function RootLayout({
   includeSideMenu?: boolean;
 }) {
   return (
-    <html lang="en">
+    <html>
       <body className="bg-color-default text-color-default">
-        {children}
         {includeSideMenu && <SideMenu />}
+        {children}
       </body>
     </html>
   );
