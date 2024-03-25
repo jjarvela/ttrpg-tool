@@ -5,6 +5,7 @@ import RowWrapper from "./_components/wrappers/RowWrapper";
 import Button from "./_components/Button";
 import logOut from "../actions/logout";
 import ProfilePicture from "./_components/ProfilePicture";
+import UploadForm from "./_components/forms/uploadForm";
 
 export default function Home() {
   return (
@@ -24,6 +25,13 @@ export default function Home() {
         <h2>Test</h2>
       </RowWrapper>
 
+      <UploadForm
+        button={<Button className="btn-secondary">Upload</Button>}
+        handleSuccess={async (r) => {
+          "use server";
+          console.log(r);
+        }}
+      />
       <FormDemo />
 
       <ColumnWrapper align="items-end" className="w-[60%]">
