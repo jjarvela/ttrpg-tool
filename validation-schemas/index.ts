@@ -41,3 +41,31 @@ export const RegisterSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+export const UserInfoSchema = z.object({
+  username: z
+    .union([
+      z.string().length(0),
+      z
+        .string()
+        .min(4)
+        .regex(
+          /^[a-zA-Z0-9-_]+$/,
+          "Username can only contain alphanumerical characters, - and _.",
+        ),
+    ])
+    .optional()
+    .transform((value) => (value === "" ? undefined : value)),
+  screenName: z
+    .union([z.string().length(0), z.string()])
+    .optional()
+    .transform((value) => (value === "" ? undefined : value)),
+  email: z
+    .union([z.string().length(0), z.string().email()])
+    .optional()
+    .transform((value) => (value === "" ? undefined : value)),
+  timezone: z
+    .union([z.string().length(0), z.string()])
+    .optional()
+    .transform((value) => (value === "" ? undefined : value)),
+});
