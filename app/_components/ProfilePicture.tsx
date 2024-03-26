@@ -1,3 +1,4 @@
+import Image from "next/image";
 import MaterialSymbolsProfile from "../../public/icons/MaterialSymbolsProfile";
 
 type ProfilePictureProps = {
