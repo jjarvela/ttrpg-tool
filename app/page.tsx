@@ -5,6 +5,7 @@ import RowWrapper from "./_components/wrappers/RowWrapper";
 import Button from "./_components/Button";
 import logOut from "../actions/logout";
 import ProfilePicture from "./_components/ProfilePicture";
+import UserInfo from "./_components/UserInfo";
 
 export default function Home() {
   return (
@@ -34,7 +35,8 @@ export default function Home() {
       <Button className="btn-primary">Primary</Button>
       <Button className="btn-secondary">Secondary</Button>
 
-      <ProfilePicture width={40} />
+      <ProfilePicture width={40} isActive={false} />
+      <UserInfo username={"Jane"} width={40} isActive={true} screen_name={""} />
 
       <h1 className="text-accent-gradient">Index page</h1>
       <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
