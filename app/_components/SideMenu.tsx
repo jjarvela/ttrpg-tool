@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import ColumnWrapper from "./wrappers/ColumnWrapper";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import MaterialSymbolsLight3p from "../../public/icons/MaterialSymbolsLight3p";
 import MaterialSymbolsLightAdd from "../../public/icons/MaterialSymbolsLightAdd";
 import Button from "./Button";
 import logOut from "../../actions/logout";
+import MaterialSymbolsLightLoginOutlineRounded from "../../public/icons/MaterialSymbolsLightLoginOutlineRounded";
 interface Server {
   id: number;
   name: string;
@@ -22,6 +24,12 @@ const SideMenu = () => {
     { id: 3, name: "Pizza", icon: pizzaSlice },
     // Add more servers as needed
   ];
+
+  const handleLogout = () => {
+    // Call your logout action
+    logOut();
+    // Redirect or perform any other necessary actions after logout
+  };
   return (
     <nav>
       <ColumnWrapper
@@ -63,9 +71,12 @@ const SideMenu = () => {
             </span>
           </Link>
         </div>
-        <Button className="btn-secondary mt-auto p-1" handleClick={logOut}>
-          <small>Log out</small>
-        </Button>
+        <button onClick={handleLogout} className="group relative mt-auto">
+          <MaterialSymbolsLightLoginOutlineRounded className="h-12 w-12 cursor-pointer rounded-full p-1 hover:scale-110" />
+          <span className="absolute bottom-1 left-20 -translate-x-1/2 transform rounded-md bg-black px-2 py-1 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
+            Logout
+          </span>
+        </button>
       </ColumnWrapper>
     </nav>
   );
