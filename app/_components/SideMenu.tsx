@@ -58,8 +58,8 @@ const SideMenu = () => {
             />
           </Link>
         </div>
-        <Button className="btn-secondary" handleClick={logOut}>
-          Log out
+        <Button className="btn-secondary mt-auto p-1" handleClick={logOut}>
+          <small>Log out</small>
         </Button>
       </ColumnWrapper>
     </nav>
