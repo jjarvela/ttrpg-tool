@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import RowWrapper from "../wrappers/RowWrapper";
-import MaterialSymbolsLightChevronLeftRounded from "../../../icons/MaterialSymbolsLightChevronLeftRounded";
-import MaterialSymbolsLightCloseRounded from "../../../icons/MaterialSymbolsLightCloseRounded";
+import MaterialSymbolsLightChevronLeftRounded from "../../../public/icons/MaterialSymbolsLightChevronLeftRounded";
+import MaterialSymbolsLightCloseRounded from "../../../public/icons/MaterialSymbolsLightCloseRounded";
 import ColumnWrapper from "../wrappers/ColumnWrapper";
 import clsx from "clsx";
-import MaterialSymbolsLightCheckSmallRounded from "../../../icons/MaterialSymbolsLightCheckSmallRounded";
+import MaterialSymbolsLightCheckSmallRounded from "../../../public/icons/MaterialSymbolsLightCheckSmallRounded";
 import handleClickOutside from "../../../utils/handleClickOutside";
 
 type Option = { label: string; value: string | number | boolean };
