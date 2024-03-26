@@ -41,7 +41,7 @@ const SideMenu = () => {
                       className="h-12 w-12 cursor-pointer rounded-full transition-all group-hover:rounded-md"
                     />
                   </span>
-                  <span className="absolute bottom-0 left-20 -translate-x-1/2 transform rounded-md bg-black px-2 py-1 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="absolute bottom-1 left-20 -translate-x-1/2 transform rounded-md bg-black px-2 py-1 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
                     {server.name}
                   </span>
                 </div>
@@ -49,13 +49,18 @@ const SideMenu = () => {
             </li>
           ))}
         </ul>
-        <div className="">
+        <div className="group relative">
           <Link href="/create">
-            <MaterialSymbolsLightAdd
-              width={40}
-              height={40}
-              className="h-12 w-12 cursor-pointer rounded-full transition-transform hover:rotate-180"
-            />
+            <span className="relative my-2 inline-block overflow-hidden rounded-full bg-gray-500 shadow-md transition-all group-hover:rounded-md">
+              <MaterialSymbolsLightAdd
+                width={40}
+                height={40}
+                className="h-12 w-12 cursor-pointer rounded-full transition-transform hover:rotate-180"
+              />
+            </span>
+            <span className="absolute bottom-1 left-20 -translate-x-1/2 transform rounded-md bg-black px-2 py-1 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
+              Add server
+            </span>
           </Link>
         </div>
         <Button className="btn-secondary mt-auto p-1" handleClick={logOut}>
