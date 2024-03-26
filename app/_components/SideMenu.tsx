@@ -8,7 +8,6 @@ import pipeTop from "../../public/icons/pipe-top.svg";
 import pizzaSlice from "../../public/icons/pizza-slice.svg";
 import MaterialSymbolsLight3p from "../../public/icons/MaterialSymbolsLight3p";
 import MaterialSymbolsLightAdd from "../../public/icons/MaterialSymbolsLightAdd";
-import Button from "./Button";
 import logOut from "../../actions/logout";
 import MaterialSymbolsLightLoginOutlineRounded from "../../public/icons/MaterialSymbolsLightLoginOutlineRounded";
 interface Server {
@@ -26,9 +25,7 @@ const SideMenu = () => {
   ];
 
   const handleLogout = () => {
-    // Call your logout action
     logOut();
-    // Redirect or perform any other necessary actions after logout
   };
   return (
     <nav>
