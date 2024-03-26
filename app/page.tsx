@@ -1,11 +1,18 @@
 import FormDemo from "./_components/FormDemo";
 import ColumnWrapper from "./_components/wrappers/ColumnWrapper";
+import Main from "./_components/wrappers/PageMain";
 import RowWrapper from "./_components/wrappers/RowWrapper";
+import Button from "./_components/Button";
+import logOut from "../actions/logout";
+import ProfilePicture from "./_components/ProfilePicture";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <Main className="items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+        <Button className="btn-secondary" handleClick={logOut}>
+          Log out
+        </Button>
         <p className="bg-primary-soft fixed left-0 top-0 flex w-full justify-center border-b-[1px] border-black50 lg:static lg:w-auto lg:rounded-xl lg:border-none lg:p-4 dark:from-inherit">
           Get started by editing&nbsp;
           <code className="font-mono font-bold">app/page.tsx</code>
@@ -23,6 +30,11 @@ export default function Home() {
         <h1>test</h1>
         <h2>test2</h2>
       </ColumnWrapper>
+
+      <Button className="btn-primary">Primary</Button>
+      <Button className="btn-secondary">Secondary</Button>
+
+      <ProfilePicture width={40} />
 
       <h1 className="text-accent-gradient">Index page</h1>
       <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
@@ -94,6 +106,6 @@ export default function Home() {
           </p>
         </a>
       </div>
-    </main>
+    </Main>
   );
 }

@@ -21,6 +21,7 @@ node_modules
 
 # misc
 .DS_Store
+.vscode
 *.pem
 
 # debug
@@ -38,6 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Prisma
-/prisma/migrations/
