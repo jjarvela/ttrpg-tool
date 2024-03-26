@@ -1,4 +1,4 @@
-import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
+import ColumnWrapper from "../../_components/wrappers/ColumnWrapper";
 
 export default function Introduction() {
   return (

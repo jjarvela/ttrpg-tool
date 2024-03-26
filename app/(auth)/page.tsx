@@ -1,9 +1,9 @@
-import FormDemo from "./_components/FormDemo";
-import ColumnWrapper from "./_components/wrappers/ColumnWrapper";
-import Main from "./_components/wrappers/PageMain";
-import RowWrapper from "./_components/wrappers/RowWrapper";
-import Button from "./_components/Button";
-import ProfilePicture from "./_components/ProfilePicture";
+import FormDemo from "../_components/FormDemo";
+import ColumnWrapper from "../_components/wrappers/ColumnWrapper";
+import Main from "../_components/wrappers/PageMain";
+import RowWrapper from "../_components/wrappers/RowWrapper";
+import Button from "../_components/Button";
+import ProfilePicture from "../_components/ProfilePicture";
 
 export default function Home() {
   return (
