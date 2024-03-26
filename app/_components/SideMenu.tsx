@@ -26,7 +26,7 @@ const SideMenu = () => {
     <nav>
       <ColumnWrapper
         align="items-center"
-        className="fixed bottom-0 left-0 top-0 mb-2 border-r-2 border-gray-600"
+        className="bg-color-dark fixed bottom-0 left-0 top-0 mb-2 border-r-2 border-gray-600"
       >
         <MaterialSymbolsLight3p width={40} height={40} />
         <ul>
@@ -49,12 +49,12 @@ const SideMenu = () => {
             </li>
           ))}
         </ul>
-        <div className="group relative my-2 inline-block overflow-hidden rounded-full bg-gray-500 shadow-md transition-all group-hover:rounded-md">
+        <div className="">
           <Link href="/create">
             <MaterialSymbolsLightAdd
               width={40}
               height={40}
-              className="h-12 w-12 cursor-pointer rounded-full transition-all group-hover:rounded-md"
+              className="h-12 w-12 cursor-pointer rounded-full transition-transform hover:rotate-180"
             />
           </Link>
         </div>
