@@ -3,13 +3,18 @@ import MaterialSymbolsProfile from "../../icons/MaterialSymbolsProfile";
 
 type ProfilePictureProps = {
   width: number;
+  isActive: boolean;
   image?: string;
 };
 
-function ProfilePicture({ width, image }: ProfilePictureProps) {
+function ProfilePicture({ width, isActive, image }: ProfilePictureProps) {
   return (
     <div
-      className={"flex-shrink-0 overflow-hidden rounded-full bg-black50"}
+      className={
+        isActive
+          ? "flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-black50 outline outline-2 outline-accent"
+          : "flex-shrink-0 overflow-hidden rounded-full bg-black50"
+      }
       style={{ width: width, height: width }}
     >
       {image ? (
