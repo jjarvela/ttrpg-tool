@@ -4,7 +4,7 @@ import "../../../styles/numberInput.css";
 import RowWrapper from "../wrappers/RowWrapper";
 import { twMerge } from "tailwind-merge";
 import ColumnWrapper from "../wrappers/ColumnWrapper";
-import MaterialSymbolsLightChevronLeftRounded from "../../../icons/MaterialSymbolsLightChevronLeftRounded";
+import MaterialSymbolsLightChevronLeftRounded from "../../../public/icons/MaterialSymbolsLightChevronLeftRounded";
 
 interface NumberInputProps
   extends DetailedHTMLProps<
@@ -89,7 +89,8 @@ export default function NumberInput({
           }}
           onBlur={(e) => {
             //if input number does not fall within accepted step, set to closest smaller accepted number
-            if(step && Number(number) % Number(step) !== 1) setNumber(Number(number) - (Number(number) % Number(step)));
+            if (step && Number(number) % Number(step) !== 1)
+              setNumber(Number(number) - (Number(number) % Number(step)));
 
             //if input number is not within allowed range, set to min or max respectively
             if (min) {
@@ -106,7 +107,8 @@ export default function NumberInput({
                 setReachedMax(true);
               else if (Number(e.target.value) < max && reachedMax)
                 setReachedMax(false);
-            }}}
+            }
+          }}
           className="border-none bg-transparent text-end text-black85 outline-none placeholder:text-black50 focus:appearance-none focus:text-black dark:text-black25 focus:dark:text-white"
           type="number"
           {...rest}

@@ -11,13 +11,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className="bg-color-default text-color-default">{children}</body>
+      <body className="bg-color-default text-color-default">
+        {/* Layout UI */}
+        <main>{children}</main>
+      </body>
     </html>
   );
 }
-
