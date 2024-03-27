@@ -45,7 +45,6 @@ export const RegisterSchema = z
 export const UserInfoSchema = z.object({
   username: z
     .union([
-      z.string().length(0),
       z
         .string()
         .min(4)
@@ -53,15 +52,16 @@ export const UserInfoSchema = z.object({
           /^[a-zA-Z0-9-_]+$/,
           "Username can only contain alphanumerical characters, - and _.",
         ),
+      z.string().length(0),
     ])
     .optional()
     .transform((value) => (value === "" ? undefined : value)),
   screenName: z
-    .union([z.string().length(0), z.string()])
+    .union([z.string(), z.string().length(0)])
     .optional()
     .transform((value) => (value === "" ? undefined : value)),
   email: z
-    .union([z.string().length(0), z.string().email()])
+    .union([z.string().email(), z.string().length(0)])
     .optional()
     .transform((value) => (value === "" ? undefined : value)),
   timezone: z

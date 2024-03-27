@@ -17,7 +17,9 @@ export default async function changeUserInfo(
   const validatedFields = UserInfoSchema.safeParse(data);
 
   if (!validatedFields.success) {
-    return { error: validatedFields.error.message };
+    return {
+      error: validatedFields.error.message.split(`": "`)[3].split(`"`)[0],
+    };
   }
 
   if (data.username) {
