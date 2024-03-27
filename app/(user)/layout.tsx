@@ -6,9 +6,12 @@ export default function LoggedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
-      <SideMenu />
-      {children}
-    </section>
+    <div className="flex flex-col">
+      {/*prep for top menu*/}
+      <div className="flex">
+        <SideMenu />
+        {children}
+      </div>
+    </div>
   );
 }
