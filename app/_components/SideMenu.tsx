@@ -28,10 +28,10 @@ const SideMenu = () => {
     logOut();
   };
   return (
-    <nav>
+    <nav className="relative">
       <ColumnWrapper
         align="items-center"
-        className="bg-color-dark fixed bottom-0 left-0 top-16 mb-2 border-r-2 border-gray-600"
+        className="bg-color-dark sticky left-0 top-0 mr-2 h-screen border-r-2 border-gray-600"
       >
         <MaterialSymbolsLight3p width={40} height={40} />
         <ul>
@@ -68,7 +68,10 @@ const SideMenu = () => {
             </span>
           </Link>
         </div>
-        <button onClick={handleLogout} className="group relative mt-auto">
+        <button
+          onClick={() => handleLogout()}
+          className="group relative mt-auto"
+        >
           <MaterialSymbolsLightLoginOutlineRounded className="h-12 w-12 cursor-pointer rounded-full p-1 hover:scale-110" />
           <span className="absolute bottom-1 left-20 -translate-x-1/2 transform rounded-md bg-black px-2 py-1 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
             Logout

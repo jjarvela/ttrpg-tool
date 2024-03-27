@@ -1,4 +1,6 @@
-import { useRef, useState } from "react";
+"use client";
+
+import { ReactNode, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import RowWrapper from "../wrappers/RowWrapper";
 import MaterialSymbolsLightChevronLeftRounded from "../../../public/icons/MaterialSymbolsLightChevronLeftRounded";
@@ -8,24 +10,40 @@ import clsx from "clsx";
 import MaterialSymbolsLightCheckSmallRounded from "../../../public/icons/MaterialSymbolsLightCheckSmallRounded";
 import handleClickOutside from "../../../utils/handleClickOutside";
 
+/***
+ * Custom dropdown selection component
+ *
+ * Includes dummy input tag to handle required and invalid cases. Use onSelect prop to get access to selection.
+ * @param options Array<{label: string, value: string}>
+ * @param onSelect (selected: Array<Option>) => void
+ */
+
 type Option = { label: string; value: string | number | boolean };
 
 interface DropdownSelectionProps {
   options: Array<Option>;
+  id?: string;
   onSelect: (selected: Array<Option>) => void;
   required?: boolean;
   defaultSelected?: Array<Option>;
   placeholder?: string;
   multiple?: boolean;
+  className?: string;
+  arrowClass?: string;
+  startElement?: ReactNode;
 }
 
 export default function DropdownSelection({
   options,
   onSelect,
+  id,
   required,
   defaultSelected,
   placeholder,
   multiple,
+  className,
+  arrowClass,
+  startElement,
 }: DropdownSelectionProps) {
   const [selected, setSelected] = useState<Array<Option>>(
     defaultSelected || [],
@@ -56,19 +74,32 @@ export default function DropdownSelection({
   };
 
   return (
-    <div className="relative">
+    <ColumnWrapper className="relative w-full gap-0" refObject={dropdownRef}>
       {/**Phantom input to track required condition*/}
       <input
-        className="h-0 w-0"
+        className="collapse h-0 w-0"
         required={required}
+        id={id}
         defaultValue={selected.length > 0 ? "1" : ""}
         onInvalid={() => setIsInvalid(true)}
       />
 
       <RowWrapper
         justify="justify-between"
-        className="w-full overflow-hidden rounded-xl border-[1px] border-black50 p-0"
+        className={twMerge(
+          "cursor-pointer overflow-hidden rounded-xl border-[1px] border-black50 p-0",
+          className,
+        )}
+        onClick={() => {
+          const newIsOpen = !isOpen;
+          newIsOpen &&
+            document.addEventListener("mousedown", (event) =>
+              handleClickOutside(dropdownRef, event, () => setIsOpen(false)),
+            );
+          setIsOpen((prev) => !prev);
+        }}
       >
+        {startElement}
         <div className="grid grid-flow-row-dense grid-cols-3 gap-1 px-1">
           {selected.length > 0 ? (
             selected.map((item) => (
@@ -86,27 +117,21 @@ export default function DropdownSelection({
           )}
         </div>
         <div
-          className="cursor-pointer bg-black50 text-xl transition-transform duration-100"
-          onClick={() => {
-            const newIsOpen = !isOpen;
-            setIsOpen(newIsOpen);
-            newIsOpen &&
-              document.addEventListener("mousedown", (event) =>
-                handleClickOutside(dropdownRef, event, () => setIsOpen(false)),
-              );
-          }}
+          className={twMerge(
+            "bg-black50 transition-transform duration-100",
+            arrowClass,
+          )}
         >
           <MaterialSymbolsLightChevronLeftRounded
-            className={clsx("self-center", isOpen ? "rotate-90" : "-rotate-90")}
+            className={clsx(isOpen ? "rotate-90" : "-rotate-90")}
           />
         </div>
       </RowWrapper>
 
       <ColumnWrapper
-        refObject={dropdownRef}
         align="items-start"
         className={twMerge(
-          "bg-color-default absolute z-[99] ml-[0.25rem] mt-[0.25rem] w-[95%] overflow-hidden border-[1px] border-black50 p-0",
+          "bg-color-default z-[99] ml-[0.25rem] mt-[0.25rem] max-h-[20em] w-[95%] overflow-hidden overflow-y-auto border-[1px] border-black50 p-0",
           isOpen ? "h-max" : "collapse h-0",
         )}
       >
@@ -126,7 +151,7 @@ export default function DropdownSelection({
       {isInvalid && (
         <span className="text-warning">This field is required</span>
       )}
-    </div>
+    </ColumnWrapper>
   );
 }
 

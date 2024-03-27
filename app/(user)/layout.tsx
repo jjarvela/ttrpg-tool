@@ -1,6 +1,6 @@
 import SideMenu from "../_components/SideMenu";
 
-export default function ServerLayout({
+export default function LoggedLayout({
   children,
 }: {
   children: React.ReactNode;

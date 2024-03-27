@@ -7,11 +7,11 @@ export default function Main({
   ...rest
 }: DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
   return (
-    <main
-      className={twMerge("flex min-h-screen flex-col", className)}
+    <div
+      className={twMerge("flex min-h-screen flex-grow flex-col", className)}
       {...rest}
     >
       {children}
-    </main>
+    </div>
   );
 }
