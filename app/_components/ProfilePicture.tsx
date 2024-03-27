@@ -1,5 +1,5 @@
 import Image from "next/image";
-import MaterialSymbolsProfile from "../../icons/MaterialSymbolsProfile";
+import MaterialSymbolsProfile from "../../public/icons/MaterialSymbolsProfile";
 
 type ProfilePictureProps = {
   width: number;

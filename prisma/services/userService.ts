@@ -53,3 +53,30 @@ export const createUser = async (data: {
     return (e as Error).message;
   }
 };
+
+export const updateUser = async (
+  id: string,
+  data: {
+    username?: string;
+    screenName?: string;
+    email?: string;
+    timezone?: string;
+  },
+) => {
+  try {
+    const user = await db.user.findUnique({ where: { id: id } });
+    if (!user) return "User not found.";
+
+    const updatedUser = await db.user.update({
+      where: { id: id },
+      data: {
+        ...data,
+        screen_name: data.screenName,
+      },
+    });
+
+    return updatedUser;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
