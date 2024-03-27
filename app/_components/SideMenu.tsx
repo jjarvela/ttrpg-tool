@@ -55,7 +55,7 @@ const SideMenu = () => {
           ))}
         </ul>
         <div className="group relative">
-          <Link href="/create">
+          <Link href="/server/create">
             <span className="relative my-2 inline-block overflow-hidden rounded-full bg-gray-500 shadow-md transition-all group-hover:rounded-md">
               <MaterialSymbolsLightAdd
                 width={40}
