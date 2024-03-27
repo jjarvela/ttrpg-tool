@@ -31,7 +31,7 @@ const SideMenu = () => {
     <nav>
       <ColumnWrapper
         align="items-center"
-        className="bg-color-dark fixed bottom-0 left-0 top-0 mb-2 border-r-2 border-gray-600"
+        className="bg-color-dark fixed bottom-0 left-0 top-16 mb-2 border-r-2 border-gray-600"
       >
         <MaterialSymbolsLight3p width={40} height={40} />
         <ul>

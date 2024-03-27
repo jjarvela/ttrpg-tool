@@ -1,4 +1,5 @@
 import SideMenu from "../_components/SideMenu";
+import TopMenu from "../_components/TopMenu";
 
 export default function LoggedLayout({
   children,
@@ -6,9 +7,12 @@ export default function LoggedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+    <section className="flex">
       <SideMenu />
-      {children}
+      <div className="flex flex-col">
+        <TopMenu />
+        <main className="p-4">{children}</main>
+      </div>
     </section>
   );
 }
