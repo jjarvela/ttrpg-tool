@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import LoginForm from "../../_components/forms/LoginForm";
-import RegisterForm from "../../_components/forms/RegisterForm";
+import LoginForm from "../../../_components/forms/LoginForm";
+import RegisterForm from "../../../_components/forms/RegisterForm";
 
 export default function LandingForm({ className }: { className?: string }) {
   const [isLogin, setIsLogin] = useState(false);

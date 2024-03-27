@@ -1,9 +1,9 @@
 "use client";
 import { Fragment, useRef, useState, useTransition } from "react";
-import TextInput from "../../_components/inputs/TextInput";
-import MaterialSymbolsLightCheckCircleOutlineRounded from "../../../public/icons/MaterialSymbolsLightCheckCircleOutlineRounded";
-import MaterialSymbolsLightCloseRounded from "../../../public/icons/MaterialSymbolsLightCloseRounded";
-import MaterialSymbolsLightHistoryEduRounded from "../../../public/icons/MaterialSymbolsLightHistoryEduRounded";
+import MaterialSymbolsLightCheckCircleOutlineRounded from "../../../../public/icons/MaterialSymbolsLightCheckCircleOutlineRounded";
+import MaterialSymbolsLightCloseRounded from "../../../../public/icons/MaterialSymbolsLightCloseRounded";
+import MaterialSymbolsLightHistoryEduRounded from "../../../../public/icons/MaterialSymbolsLightHistoryEduRounded";
+import TextInput from "../../../_components/inputs/TextInput";
 
 type SettingsTextInputProps = {
   label: string;

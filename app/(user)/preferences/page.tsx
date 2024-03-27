@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
-import { auth } from "../../auth";
-import Main from "../_components/wrappers/PageMain";
-import { getUserByEmail } from "../../prisma/services/userService";
-import FeedbackCard from "../_components/FeedbackCard";
 import AccountInfo from "./_components/AccountInfo";
+import { auth } from "../../../auth";
+import { getUserByEmail } from "../../../prisma/services/userService";
+import FeedbackCard from "../../_components/FeedbackCard";
+import Main from "../../_components/wrappers/PageMain";
+
 export default async function UserPreferences() {
   const session = await auth();
 

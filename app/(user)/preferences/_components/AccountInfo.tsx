@@ -1,9 +1,9 @@
-import { validMomentTimezones } from "../../../utils/timezones";
-import Button from "../../_components/Button";
-import DropdownSelection from "../../_components/inputs/DropdownSelection";
-import ColumnWrapper from "../../_components/wrappers/ColumnWrapper";
+import changeUserInfo from "../../../../actions/changeUserInfo";
+import { validMomentTimezones } from "../../../../utils/timezones";
+import Button from "../../../_components/Button";
+import DropdownSelection from "../../../_components/inputs/DropdownSelection";
+import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
 import SettingsTextInput from "./SettingsTextInput";
-import changeUserInfo from "../../../actions/changeUserInfo";
 
 type user = {
   id: string;
