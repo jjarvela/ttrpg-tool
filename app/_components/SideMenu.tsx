@@ -6,10 +6,10 @@ import Image from "next/image";
 import diamond from "../../public/icons/diamond.svg";
 import pipeTop from "../../public/icons/pipe-top.svg";
 import pizzaSlice from "../../public/icons/pizza-slice.svg";
-import MaterialSymbolsLight3p from "../../public/icons/MaterialSymbolsLight3p";
 import MaterialSymbolsLightAdd from "../../public/icons/MaterialSymbolsLightAdd";
 import logOut from "../../actions/logout";
 import MaterialSymbolsLightLoginOutlineRounded from "../../public/icons/MaterialSymbolsLightLoginOutlineRounded";
+import MaterialSymbols3pOutline from "../../public/icons/MaterialSymbols3pOutline";
 interface Server {
   id: number;
   name: string;
@@ -33,7 +33,7 @@ const SideMenu = () => {
         align="items-center"
         className="bg-color-dark sticky left-0 top-0 mr-2 h-screen border-r-2 border-gray-600"
       >
-        <MaterialSymbolsLight3p width={40} height={40} />
+        <MaterialSymbols3pOutline width={40} height={40} />
         <ul>
           {servers.map((server) => (
             <li key={server.id}>
