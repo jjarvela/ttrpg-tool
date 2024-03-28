@@ -1,6 +1,5 @@
 import React from "react";
 import ColumnWrapper from "./wrappers/ColumnWrapper";
-import MaterialSymbolsLight3p from "../../public/icons/MaterialSymbolsLight3p";
 import { twMerge } from "tailwind-merge";
 import MenuIconServer from "./menu_items/MenuIconServer";
 import MenuButtonLogout from "./menu_items/MenuButtonLogout";
@@ -9,6 +8,7 @@ import { auth } from "../../auth";
 import { getUserServers } from "../../prisma/services/userService";
 import FeedbackCard from "./FeedbackCard";
 import { Session } from "next-auth";
+import MaterialSymbols3pOutline from "@/public/icons/MaterialSymbols3pOutline";
 
 //global types file doesn't like imports so we're declaring this here for now
 declare global {
