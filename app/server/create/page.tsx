@@ -13,6 +13,8 @@ import RowWrapper from "../../_components/wrappers/RowWrapper";
 import { useRef, useState, useTransition } from "react";
 import FeedbackCard from "../../_components/FeedbackCard";
 import createServer from "../../../actions/createServer";
+import { getSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function CreateServer() {
   const [serverName, setServerName] = useState("");
@@ -41,16 +43,25 @@ export default function CreateServer() {
       if (!isValid) {
         formRef.current.reportValidity();
       } else {
-        startTransition(() => {
-          createServer({
-            serverName,
-            description,
-            isProtected,
-            password,
-            explorePermission,
-            searchPermission,
-            settingsRightsHolders,
-          });
+        startTransition(async () => {
+          const session = await getSession();
+          const server = await createServer(
+            (session as ExtendedSession).userId,
+            {
+              serverName,
+              description,
+              isProtected,
+              password,
+              explorePermission,
+              searchPermission,
+              settingsRightsHolders,
+            },
+          );
+          if (!server || typeof server === "string") {
+            setError(server || "Something went wrong!");
+            return;
+          }
+          redirect(`/server/${server.id}`);
         });
       }
     }
