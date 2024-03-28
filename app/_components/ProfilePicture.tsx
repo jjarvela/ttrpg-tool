@@ -18,7 +18,7 @@ function ProfilePicture({ width, isActive, image }: ProfilePictureProps) {
       style={{ width: width, height: width }}
     >
       {image ? (
-        <Image
+        <img
           src={`${image}`}
           alt="User profile image"
           style={{ objectFit: "cover" }}

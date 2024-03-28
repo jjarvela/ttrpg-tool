@@ -35,4 +35,18 @@ export default {
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user?.id) {
+        token.user_id = user.id;
+      }
+
+      return token;
+    },
+    session: async ({ session, token }) => {
+      session.userId = String(token.user_id);
+
+      return session;
+    },
+  },
 } satisfies NextAuthConfig;

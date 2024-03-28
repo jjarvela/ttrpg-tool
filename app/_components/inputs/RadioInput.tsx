@@ -8,7 +8,7 @@ interface RadioInputProps
     HTMLInputElement
   > {
   labelStyle?: string; //css classes
-  selectedColour?: string; //css class
+  radioStyle?: { radioBg: string; selectedColour?: string; radioSize?: string };
   selected: string | number | readonly string[] | undefined;
   setSelected: React.Dispatch<
     React.SetStateAction<string | number | readonly string[] | undefined>
@@ -20,21 +20,26 @@ export default function RadioInput({
   name,
   value,
   labelStyle,
-  selectedColour,
+  radioStyle,
   selected,
   setSelected,
   setIsInvalid,
   ...rest
 }: RadioInputProps) {
   return (
-    <label htmlFor={name + "-" + value}>
+    <label htmlFor={name + "-" + value} className="rounded-lg">
       <RowWrapper>
         <span className={twMerge("flex-grow-1", labelStyle && labelStyle)}>
           {value}
         </span>
         <div
+          style={{
+            width: radioStyle?.radioSize || "1rem",
+            height: radioStyle?.radioSize || "1rem",
+          }}
           className={twMerge(
-            "mx-2 h-4 w-4 flex-shrink-0 rounded-full border border-black50 bg-opacity-0",
+            "mx-2 flex-shrink-0 rounded-full border border-black50 bg-transparent",
+            radioStyle?.radioBg ? radioStyle.radioBg : "",
           )}
         >
           <svg
@@ -43,9 +48,10 @@ export default function RadioInput({
             viewBox="0 0 16 16"
             className={twMerge(
               "fill-transparent transition-all duration-100 ease-in-out",
-
               selected === value &&
-                (selectedColour ? selectedColour : "fill-primary"),
+                (radioStyle?.selectedColour
+                  ? radioStyle?.selectedColour
+                  : "fill-primary"),
             )}
           >
             <circle r={6} cx={8} cy={8} />
