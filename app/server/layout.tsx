@@ -1,4 +1,5 @@
 import SideMenu from "../_components/SideMenu";
+import TopMenu from "../_components/TopMenu";
 
 export default function ServerLayout({
   children,
@@ -7,7 +8,7 @@ export default function ServerLayout({
 }) {
   return (
     <div className="flex flex-col">
-      {/*prep for top menu*/}
+      <TopMenu />
       <div className="flex">
         <SideMenu />
         {children}
