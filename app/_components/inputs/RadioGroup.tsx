@@ -11,7 +11,7 @@ type RadioGroupProps = {
   >;
   className?: string;
   labelStyle?: string;
-  selectedColour?: string; //css class
+  radioStyle?: { radioBg: string; selectedColour?: string; radioSize?: string };
   required?: boolean;
 };
 
@@ -22,13 +22,13 @@ export default function RadioGroup({
   setSelected,
   className,
   labelStyle,
-  selectedColour,
+  radioStyle,
 }: RadioGroupProps) {
   const [isInvalid, setIsInvalid] = useState(false);
 
   return (
     <div className={twMerge("flex", className)}>
-      {values.map((value, index) => (
+      {values.map((value) => (
         <RadioInput
           key={groupName + value}
           name={groupName}
@@ -38,7 +38,7 @@ export default function RadioGroup({
           setIsInvalid={setIsInvalid}
           className={className}
           labelStyle={labelStyle}
-          selectedColour={selectedColour}
+          radioStyle={radioStyle}
         />
       ))}
       {isInvalid && (

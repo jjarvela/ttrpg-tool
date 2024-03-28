@@ -10,7 +10,7 @@ export default function ServerLayout({
     <div className="flex flex-col">
       <TopMenu />
       <div className="flex">
-        <SideMenu />
+        <SideMenu className="m-0" />
         {children}
       </div>
     </div>
