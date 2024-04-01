@@ -1,11 +1,32 @@
 import { db } from "../db";
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (
+  id: string,
+  select?: { [key: string]: boolean },
+) => {
   try {
     const user = await db.user.findUnique({
       where: {
         id: id,
       },
+      select: select,
+    });
+    return user;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getUsersById = async (
+  ids: string[],
+  select?: { [key: string]: boolean },
+) => {
+  try {
+    const user = await db.user.findMany({
+      where: {
+        id: { in: ids },
+      },
+      select: select,
     });
     return user;
   } catch (e) {
@@ -32,6 +53,23 @@ export const getUserByUsername = async (username: string) => {
       where: {
         username: username,
       },
+    });
+    return user;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getUsersByUsername = async (
+  usernames: string[],
+  select?: { [key: string]: boolean },
+) => {
+  try {
+    const user = await db.user.findMany({
+      where: {
+        username: { in: usernames },
+      },
+      select: select,
     });
     return user;
   } catch (e) {
@@ -91,6 +129,31 @@ export const getUsersExcept = async (id: string) => {
       },
     });
     return users;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getUserServers = async (
+  userId: string,
+  select?: { [key: string]: boolean },
+) => {
+  try {
+    const memberIn = await db.serverMember.findMany({
+      where: { member_id: userId },
+    });
+    const serverIds = memberIn.map((item) => {
+      return item.server_id;
+    });
+
+    const servers = await db.server.findMany({
+      where: {
+        id: { in: serverIds },
+      },
+      select: select,
+    });
+
+    return servers;
   } catch (e) {
     return (e as Error).message;
   }
