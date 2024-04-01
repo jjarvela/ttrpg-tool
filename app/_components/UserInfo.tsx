@@ -17,7 +17,7 @@ function UserInfo({
   image,
 }: UserInfoProps) {
   return (
-    <RowWrapper breakPoint="xs">
+    <RowWrapper className="m-2" breakPoint="xs">
       <ProfilePicture width={width} isActive={isActive} image={image} />
       <div>{screen_name ? <p>{screen_name}</p> : <p>{username}</p>}</div>
     </RowWrapper>
