@@ -1,21 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import addMessage from "../../../../actions/addMessage";
 import { useFormState } from "react-dom";
 import TextAreaInput from "../../../_components/inputs/TextAreaInput";
 import Button from "../../../_components/Button";
 
-const initialState = {
-  message: "",
-};
-
 export default function MessageForm() {
+  const ref = useRef<HTMLFormElement>(null);
   const [textArea, setTextArea] = useState("");
-  // const [state, formAction] = useFormState(addMessage, initialState);
 
   return (
-    <form action={addMessage} className="flex flex-col">
+    <form
+      ref={ref}
+      action={async (formData) => {
+        ref.current?.reset();
+        await addMessage(formData);
+      }}
+      className="flex flex-col"
+    >
       <TextAreaInput
         placeholder="Send message"
         value={textArea}
