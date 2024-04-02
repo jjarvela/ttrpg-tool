@@ -44,7 +44,7 @@ export default async function ServerLayout({
       <ColumnWrapper
         mode="section"
         id="server-inner-nav"
-        className="sticky mr-2 h-full border-r border-r-black50 bg-black85 p-0 md:w-40"
+        className="sticky mr-2 h-full border-r border-r-black50 bg-black85 p-0 md:min-w-[15%]"
       >
         <RowWrapper className="border-b border-black50 px-2 pt-1">
           <h5 className="text-wrap">{server.server_name}</h5>
