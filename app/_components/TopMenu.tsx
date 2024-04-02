@@ -31,9 +31,9 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
 };
 const TopMenu = () => {
   return (
-    <nav className="relative">
+    <nav className="relative hidden md:block">
       <div className="bg-color-dark fixed flex w-full items-center justify-between px-6 py-4">
-        <div className="ms-14 flex items-center space-x-4">
+        <div className="ms-40 flex items-center space-x-4">
           {/* Left icons */}
           <IconLink href="/server" icon={MaterialSymbolsCastleOutline} />
           <IconLink href="/chat" icon={MaterialSymbolsAndroidMessagesOutline} />
@@ -46,7 +46,7 @@ const TopMenu = () => {
           <IconLink href="/dice" icon={IconoirHexagonDice} />
           <IconLink href="/worldclock" icon={MaterialSymbolsScheduleOutline} />
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="me-24 flex items-center space-x-4">
           {/* Right icons */}
           <IconLink href="/pinned" icon={RiPushpinLine} />
           <IconLink href="/friends" icon={MaterialSymbolsGroupOutline} />
