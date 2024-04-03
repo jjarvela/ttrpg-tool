@@ -13,7 +13,7 @@ export default async function ServerHome({ params }: { params: Params }) {
   }
 
   return (
-    <Main className="ms-4 mt-20">
+    <Main className="ms-56 mt-20">
       <h1>Hewwo</h1>
     </Main>
   );
