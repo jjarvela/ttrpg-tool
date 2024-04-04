@@ -46,7 +46,7 @@ const TopMenu = () => {
           <IconLink href="/dice" icon={IconoirHexagonDice} />
           <IconLink href="/worldclock" icon={MaterialSymbolsScheduleOutline} />
         </div>
-        <div className="absolute right-44 flex items-center space-x-4">
+        <div className="absolute right-32 flex items-center space-x-4">
           {/* Right icons */}
           <IconLink href="/pinned" icon={RiPushpinLine} />
           <IconLink href="/friends" icon={MaterialSymbolsGroupOutline} />
