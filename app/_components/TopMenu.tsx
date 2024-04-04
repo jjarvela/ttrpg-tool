@@ -19,10 +19,12 @@ interface IconLinkProps {
 const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
   const pathname = usePathname();
 
+  const isActive = pathname.startsWith(href);
+
   return (
     <Link href={href}>
       <div
-        className={`group cursor-pointer ${pathname === href ? "text-green-500" : ""}`}
+        className={`group cursor-pointer ${isActive ? "text-accent dark:text-green-500" : ""}`}
       >
         <Icon className="h-7 w-7 opacity-60 hover:opacity-100 active:stroke-primary" />
       </div>
@@ -32,10 +34,10 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
 const TopMenu = () => {
   return (
     <nav className="relative hidden lg:block">
-      <div className="bg-color-dark absolute left-0 right-0 top-0 flex justify-center px-6 py-4">
+      <div className="dark:bg-color-dark absolute left-16 right-32 top-0 ms-20 flex justify-center bg-primary px-6 py-4">
         <div className="flex items-center justify-center space-x-4">
           {/* Left icons */}
-          <IconLink href="/server" icon={MaterialSymbolsCastleOutline} />
+          <IconLink href="/server/" icon={MaterialSymbolsCastleOutline} />
           <IconLink href="/chat" icon={MaterialSymbolsAndroidMessagesOutline} />
           <IconLink
             href="/characters"
@@ -46,7 +48,7 @@ const TopMenu = () => {
           <IconLink href="/dice" icon={IconoirHexagonDice} />
           <IconLink href="/worldclock" icon={MaterialSymbolsScheduleOutline} />
         </div>
-        <div className="absolute right-32 flex items-center space-x-4">
+        <div className="absolute right-4 flex items-center space-x-4">
           {/* Right icons */}
           <IconLink href="/pinned" icon={RiPushpinLine} />
           <IconLink href="/friends" icon={MaterialSymbolsGroupOutline} />
