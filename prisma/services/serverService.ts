@@ -41,19 +41,29 @@ export const createServerMember = async (data: {
   }
 };
 
-export const getServerData = async (id: string) => {
+export const getServerData = async (
+  id: string,
+  select?: { [key: string]: boolean },
+) => {
   try {
-    const server = await db.server.findUnique({ where: { id: id } });
+    const server = await db.server.findUnique({
+      where: { id: id },
+      select: select,
+    });
     return server;
   } catch (e) {
     return (e as Error).message;
   }
 };
 
-export const getServerConfig = async (id: string) => {
+export const getServerConfig = async (
+  id: string,
+  select?: { [key: string]: boolean },
+) => {
   try {
     const config = await db.serverConfig.findUnique({
       where: { server_id: id },
+      select: select,
     });
     return config;
   } catch (e) {
@@ -77,6 +87,17 @@ export const getServerMembers = async (id: string) => {
       },
     });
     return members;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getServerMember = async (server_id: string, member_id: string) => {
+  try {
+    const member = await db.serverMember.findFirst({
+      where: { server_id, member_id },
+    });
+    return member;
   } catch (e) {
     return (e as Error).message;
   }
