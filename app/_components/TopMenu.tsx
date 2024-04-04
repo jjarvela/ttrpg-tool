@@ -26,7 +26,7 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
       <div
         className={`group cursor-pointer ${isActive ? "text-accent dark:text-green-500" : ""}`}
       >
-        <Icon className="h-7 w-7 opacity-60 hover:opacity-100 active:stroke-primary" />
+        <Icon className="h-7 w-7 opacity-60 hover:opacity-100" />
       </div>
     </Link>
   );
