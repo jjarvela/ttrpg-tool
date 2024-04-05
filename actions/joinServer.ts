@@ -1,7 +1,10 @@
 "use server";
 
 import { auth } from "@/auth";
-import { getInvitationById } from "@/prisma/services/invitationService";
+import {
+  getInvitationById,
+  updateInvitation,
+} from "@/prisma/services/invitationService";
 import {
   createServerMember,
   getServerConfig,
@@ -55,7 +58,12 @@ export default async function joinServer(
     });
 
     if (typeof member === "string") return "Error when trying to join.";
-    else return member;
+    else {
+      await updateInvitation(invitation.id, {
+        used_count: invitation.used_count + 1,
+      });
+      return member;
+    }
   } catch (e) {
     return (e as Error).message;
   }
