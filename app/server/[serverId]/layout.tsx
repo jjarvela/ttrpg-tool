@@ -8,6 +8,7 @@ import RowWrapper from "../../_components/wrappers/RowWrapper";
 import FeedbackCard from "../../_components/FeedbackCard";
 import UserInfo from "../../_components/UserInfo";
 import ServerSettingsMenu from "./_components/SettingsMenu";
+import TopMenu from "@/app/_components/TopMenu";
 
 export default async function ServerLayout({
   params,
@@ -48,6 +49,7 @@ export default async function ServerLayout({
           <ServerSettingsMenu server_id={id} />
         </RowWrapper>
       </ColumnWrapper>
+      <TopMenu />
       {children}
       <ColumnWrapper
         mode="section"
