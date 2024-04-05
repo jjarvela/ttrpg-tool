@@ -13,6 +13,7 @@ interface NumberInputProps
   > {
   min?: number;
   max?: number;
+  disabled?: boolean;
   borderless?: boolean;
   className?: string;
   handleChange?: (e?: React.ChangeEvent<HTMLInputElement>) => void;
@@ -25,6 +26,7 @@ export default function NumberInput({
   step,
   min,
   max,
+  disabled,
   borderless,
   className,
   handleChange,
@@ -69,6 +71,7 @@ export default function NumberInput({
           step={step || 1}
           min={min}
           max={max}
+          disabled={disabled}
           onChange={(e) => {
             setNumber(e.target.value);
 
@@ -109,7 +112,7 @@ export default function NumberInput({
                 setReachedMax(false);
             }
           }}
-          className="border-none bg-transparent text-end text-black85 outline-none placeholder:text-black50 focus:appearance-none focus:text-black dark:text-black25 focus:dark:text-white"
+          className="border-none bg-transparent text-end text-black85 outline-none placeholder:text-black50 focus:appearance-none focus:text-black disabled:text-black50 dark:text-black25 focus:dark:text-white"
           type="number"
           {...rest}
         ></input>
@@ -117,14 +120,14 @@ export default function NumberInput({
           <NumberInputSpinner
             input={inputRef}
             step={step ? parseFloat(step?.toString()) : 1}
-            disabled={reachedMax}
+            disabled={reachedMax || disabled}
             dispatchChange={dispatchChange}
             method="add"
           />
           <NumberInputSpinner
             input={inputRef}
             step={step ? parseFloat(step?.toString()) : 1}
-            disabled={reachedMin}
+            disabled={reachedMin || disabled}
             dispatchChange={dispatchChange}
             method="subtract"
           />
