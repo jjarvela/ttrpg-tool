@@ -7,6 +7,7 @@ import {
 import RowWrapper from "../../_components/wrappers/RowWrapper";
 import FeedbackCard from "../../_components/FeedbackCard";
 import UserInfo from "../../_components/UserInfo";
+import ServerSettingsMenu from "./_components/SettingsMenu";
 
 export default async function ServerLayout({
   params,
@@ -33,6 +34,7 @@ export default async function ServerLayout({
     );
 
   const admin = members.filter((item) => item.role === "admin")[0];
+  const regulars = members.filter((item) => item.role === "member");
 
   return (
     <div className="flex flex-grow">
@@ -42,7 +44,8 @@ export default async function ServerLayout({
         className="sticky mr-2 h-full border-r border-r-black50 p-0 md:max-w-[15%]"
       >
         <RowWrapper className="border-b border-black50 px-2 pt-1">
-          <h5 className="text-wrap">{server.server_name}</h5>
+          <h5 className="text-wrap">{server.server_name}</h5>{" "}
+          <ServerSettingsMenu server_id={id} />
         </RowWrapper>
       </ColumnWrapper>
       {children}
@@ -64,6 +67,21 @@ export default async function ServerLayout({
             isActive={false}
             width={40}
           />
+          <h5>Members</h5>
+          {regulars.map((item) => (
+            <UserInfo
+              key={item.id}
+              username={item.user.username || ""}
+              screen_name={
+                item.nickname
+                  ? item.nickname
+                  : item.user.screen_name || item.user.username
+              }
+              image={item.icon ? item.icon : item.user.profile_image || ""}
+              isActive={false}
+              width={40}
+            />
+          ))}
         </ColumnWrapper>
       </ColumnWrapper>
     </div>
