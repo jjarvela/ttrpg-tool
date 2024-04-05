@@ -4,7 +4,7 @@ import { getServerData } from "../../../prisma/services/serverService";
 import FeedbackCard from "../../_components/FeedbackCard";
 
 export default async function ServerHome({ params }: { params: Params }) {
-  const id = params.serverId[0];
+  const id = params.serverId;
 
   const server = await getServerData(id);
 
@@ -13,7 +13,7 @@ export default async function ServerHome({ params }: { params: Params }) {
   }
 
   return (
-    <Main className="ps-48 pt-4 md:ps-60 lg:pt-20">
+    <Main className="mx-4">
       <h1>Hewwo</h1>
     </Main>
   );

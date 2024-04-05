@@ -11,7 +11,7 @@ export default function MenuIconServer({ server }: { server: Server }) {
   return (
     <Link href={`/server/${server.id}`}>
       <div className="group relative">
-        <span className="relative my-2 inline-block h-12 w-12 cursor-pointer overflow-hidden rounded-full bg-gray-300 shadow-md transition-all group-hover:rounded-md dark:bg-gray-500">
+        <span className="relative my-2 inline-block h-12 w-12 cursor-pointer overflow-hidden rounded-full bg-black50 shadow-md transition-all group-hover:rounded-md">
           {server.icon && (
             <img
               src={server.icon}

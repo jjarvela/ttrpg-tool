@@ -6,7 +6,7 @@ export default function ServerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex">
+    <div className="fixed flex h-screen w-screen">
       <SideMenu className="m-0" />
       {children}
     </div>

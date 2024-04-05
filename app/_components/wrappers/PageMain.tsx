@@ -8,7 +8,10 @@ export default function Main({
 }: DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
   return (
     <div
-      className={twMerge("flex min-h-screen flex-grow flex-col", className)}
+      className={twMerge(
+        "flex min-h-screen flex-grow flex-col overflow-auto",
+        className,
+      )}
       {...rest}
     >
       {children}
