@@ -31,23 +31,41 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
     </Link>
   );
 };
-const TopMenu = () => {
+const TopMenu = ({ serverId }: { serverId: string }) => {
   return (
     <nav className="bg-color-dark relative flex w-full justify-center px-6 py-4">
       <div className="flex items-center justify-center space-x-4">
         {/* Left icons */}
-        <IconLink href="/server/" icon={MaterialSymbolsCastleOutline} />
-        <IconLink href="/chat" icon={MaterialSymbolsAndroidMessagesOutline} />
-        <IconLink href="/characters" icon={MaterialSymbolsPersonPlayOutline} />
-        <IconLink href="/boards" icon={MaterialSymbolsChessOutline} />
-        <IconLink href="/notes" icon={MaterialSymbolsNoteStackOutline} />
-        <IconLink href="/dice" icon={IconoirHexagonDice} />
-        <IconLink href="/worldclock" icon={MaterialSymbolsScheduleOutline} />
+        <IconLink
+          href={`/server/${serverId}`}
+          icon={MaterialSymbolsCastleOutline}
+        />
+        <IconLink
+          href={`/server/${serverId}/chat`}
+          icon={MaterialSymbolsAndroidMessagesOutline}
+        />
+        <IconLink
+          href={`/server/${serverId}/characters`}
+          icon={MaterialSymbolsPersonPlayOutline}
+        />
+        <IconLink
+          href={`/server/${serverId}/boards`}
+          icon={MaterialSymbolsChessOutline}
+        />
+        <IconLink
+          href={`/server/${serverId}/notes`}
+          icon={MaterialSymbolsNoteStackOutline}
+        />
+        <IconLink href={`/server/${serverId}/dice`} icon={IconoirHexagonDice} />
+        <IconLink
+          href={`/server/${serverId}/worldclock`}
+          icon={MaterialSymbolsScheduleOutline}
+        />
       </div>
       <div className="absolute right-4 flex items-center space-x-4">
         {/* Right icons */}
         <RiPushpinLine className="h-7 w-7 opacity-60 hover:opacity-100" />
-        <MaterialSymbolsGroupOutline className="h-7 w-7 opacity-60 hover:opacity-100" />
+        <MaterialSymbolsGroupOutline className="h-7 w-7 cursor-pointer opacity-60 hover:opacity-100" />
       </div>
     </nav>
   );
