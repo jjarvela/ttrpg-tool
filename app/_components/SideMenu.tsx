@@ -38,7 +38,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
       <ColumnWrapper
         align="items-center"
         className={twMerge(
-          "dark:bg-color-dark sticky left-0 top-0 z-[99] mr-2 h-screen bg-primary",
+          "dark:bg-color-dark fixed left-0 top-0 z-[99] mr-2 h-screen bg-primary",
           className ? className : "",
         )}
       >

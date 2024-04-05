@@ -1,8 +1,13 @@
-import React, { SVGProps } from 'react'
+import React, { SVGProps } from "react";
 
 export function IconoirHexagonDice(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"><path stroke-linecap="round" d="M11.7 1.173a.6.6 0 0 1 .6 0l8.926 5.154a.6.6 0 0 1 .3.52v10.307a.6.6 0 0 1-.3.52L12.3 22.826a.6.6 0 0 1-.6 0l-8.926-5.154a.6.6 0 0 1-.3-.52V6.847a.6.6 0 0 1 .3-.52z"></path><path stroke-linecap="round" d="M17 15H7l5-8z"></path><path d="M2.5 6.5L12 7m-9.5-.5L7 15m14.5-8.5L17 15m4.5-8.5L12 7V1m9.5 16.5L17 15M2.5 17.5L7 15m0 0l5 8l5-8"></path></g></svg>
-  )
+    <svg width="100%" height="100%" viewBox="0 0 134 134" {...props}>
+      <path
+        fill="currentColor"
+        d="M121.923,98.062L66.667,129.459L11.41,98.062L11.41,35.271L66.667,3.874L121.923,35.271L121.923,98.062ZM103.606,39.303L66.667,18.315L29.727,39.303L103.606,39.303ZM74.466,110.587L109.216,90.843L109.216,53.47L74.466,110.587ZM24.117,53.47L24.117,90.843L58.867,110.587L24.117,53.47ZM66.667,99.063L95.415,51.809L37.918,51.809L66.667,99.063Z"
+      />
+    </svg>
+  );
 }
-export default IconoirHexagonDice
+export default IconoirHexagonDice;

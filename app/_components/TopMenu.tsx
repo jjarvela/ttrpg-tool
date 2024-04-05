@@ -34,7 +34,7 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
 const TopMenu = () => {
   return (
     <nav className="relative hidden lg:block">
-      <div className="dark:bg-color-dark absolute left-16 right-32 top-0 ms-20 flex justify-center bg-primary px-6 py-4">
+      <div className="dark:bg-color-dark absolute left-16 right-32 top-0 ms-20 flex justify-center bg-black25 px-6 py-4">
         <div className="flex items-center justify-center space-x-4">
           {/* Left icons */}
           <IconLink href="/server/" icon={MaterialSymbolsCastleOutline} />
