@@ -16,7 +16,7 @@ export default async function ServerLayout({
   params: Params;
   children: React.ReactNode;
 }) {
-  const id = params.serverId[0];
+  const id = params.serverId;
 
   const server = await getServerData(id);
   const members = await getServerMembers(id);
