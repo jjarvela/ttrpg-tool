@@ -33,26 +33,21 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
 };
 const TopMenu = () => {
   return (
-    <nav className="relative hidden lg:block">
-      <div className="dark:bg-color-dark absolute left-16 right-32 top-0 ms-20 flex justify-center bg-black25 px-6 py-4">
-        <div className="flex items-center justify-center space-x-4">
-          {/* Left icons */}
-          <IconLink href="/server/" icon={MaterialSymbolsCastleOutline} />
-          <IconLink href="/chat" icon={MaterialSymbolsAndroidMessagesOutline} />
-          <IconLink
-            href="/characters"
-            icon={MaterialSymbolsPersonPlayOutline}
-          />
-          <IconLink href="/boards" icon={MaterialSymbolsChessOutline} />
-          <IconLink href="/notes" icon={MaterialSymbolsNoteStackOutline} />
-          <IconLink href="/dice" icon={IconoirHexagonDice} />
-          <IconLink href="/worldclock" icon={MaterialSymbolsScheduleOutline} />
-        </div>
-        <div className="absolute right-4 flex items-center space-x-4">
-          {/* Right icons */}
-          <IconLink href="/pinned" icon={RiPushpinLine} />
-          <IconLink href="/friends" icon={MaterialSymbolsGroupOutline} />
-        </div>
+    <nav className="bg-color-dark relative flex w-full justify-center px-6 py-4">
+      <div className="flex items-center justify-center space-x-4">
+        {/* Left icons */}
+        <IconLink href="/server/" icon={MaterialSymbolsCastleOutline} />
+        <IconLink href="/chat" icon={MaterialSymbolsAndroidMessagesOutline} />
+        <IconLink href="/characters" icon={MaterialSymbolsPersonPlayOutline} />
+        <IconLink href="/boards" icon={MaterialSymbolsChessOutline} />
+        <IconLink href="/notes" icon={MaterialSymbolsNoteStackOutline} />
+        <IconLink href="/dice" icon={IconoirHexagonDice} />
+        <IconLink href="/worldclock" icon={MaterialSymbolsScheduleOutline} />
+      </div>
+      <div className="absolute right-4 flex items-center space-x-4">
+        {/* Right icons */}
+        <RiPushpinLine className="h-7 w-7 opacity-60 hover:opacity-100" />
+        <MaterialSymbolsGroupOutline className="h-7 w-7 opacity-60 hover:opacity-100" />
       </div>
     </nav>
   );

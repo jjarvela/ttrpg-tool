@@ -20,7 +20,7 @@ export default async function ServerPreferences({
   }
 
   return (
-    <Main>
+    <Main className="mx-4">
       <h1>Preferences</h1>
       <h5>Invitations</h5>
       <ServerInvitationsList serverId={id} />

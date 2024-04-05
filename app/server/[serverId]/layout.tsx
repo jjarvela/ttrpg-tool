@@ -39,24 +39,31 @@ export default async function ServerLayout({
 
   return (
     <div className="flex flex-grow">
+      {/*server inner nav*/}
       <ColumnWrapper
         mode="section"
         id="server-inner-nav"
-        className="sticky mr-2 h-full border-r border-r-black50 p-0 md:max-w-[15%]"
+        className="h-full border-r border-r-black50 p-0 md:max-w-[15%]"
       >
-        <RowWrapper className="border-b border-black50 px-2 pt-1">
+        <RowWrapper className="z-30 border-b border-black50 px-2 pt-1">
           <h5 className="text-wrap">{server.server_name}</h5>{" "}
           <ServerSettingsMenu server_id={id} />
         </RowWrapper>
       </ColumnWrapper>
-      <TopMenu />
-      {children}
+
+      {/*top menu and content*/}
+      <ColumnWrapper align="items-start" className="m-0 flex-grow p-0">
+        <TopMenu />
+        {children}
+      </ColumnWrapper>
+
+      {/*server members bar*/}
       <ColumnWrapper
         mode="section"
         id="server-members-nav"
         className="bg-black"
       >
-        <ColumnWrapper className="sticky h-full">
+        <ColumnWrapper className="h-full">
           <h5>Admin</h5>
           <UserInfo
             username={admin.user.username || ""}
