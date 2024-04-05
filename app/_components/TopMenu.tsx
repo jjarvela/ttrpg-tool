@@ -33,7 +33,7 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
 };
 const TopMenu = ({ serverId }: { serverId: string }) => {
   return (
-    <nav className="bg-color-dark relative flex w-full justify-center px-6 py-4">
+    <nav className="bg-color-dark collapse relative flex h-0 w-full justify-center overflow-hidden px-6 py-4 lg:visible lg:h-40 lg:overflow-visible">
       <div className="flex items-center justify-center space-x-4">
         {/* Left icons */}
         <IconLink

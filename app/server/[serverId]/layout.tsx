@@ -52,7 +52,10 @@ export default async function ServerLayout({
       </ColumnWrapper>
 
       {/*top menu and content*/}
-      <ColumnWrapper align="items-start" className="m-0 flex-grow p-0">
+      <ColumnWrapper
+        align="items-start"
+        className="m-0 flex-grow gap-0 p-0 lg:gap-2"
+      >
         <TopMenu serverId={id} />
         {children}
       </ColumnWrapper>
