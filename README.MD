@@ -7,7 +7,8 @@ We've chosen to develop a Discord-like platform tailored for Tabletop Role-Playi
 ## Stack
 
 - **TypeScript**: Utilized throughout the project for type safety and enhanced developer experience.
-- **tRPC**: Utilized for type-safe communication between the client and server.
+- **Next.js**: Framework built on top of React.
+- **server-actions**: Server actions can be used in Server and Client Components to handle form submissions and data mutations in Next.js applications.
 - **Zod**: Used for data validation to ensure data integrity and security.
 
 ### External APIs:
