@@ -68,7 +68,7 @@ export default function CreateServer() {
   };
 
   return (
-    <Main className="ml-8">
+    <Main className="ml-8 ps-12 pt-2">
       <form ref={formRef} onSubmit={handleSubmit}>
         <h1>Server Information</h1>
         <ColumnWrapper

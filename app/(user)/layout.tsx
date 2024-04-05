@@ -7,7 +7,6 @@ export default function LoggedLayout({
 }) {
   return (
     <div className="flex flex-col">
-      {/*prep for top menu*/}
       <div className="flex">
         <SideMenu />
         {children}

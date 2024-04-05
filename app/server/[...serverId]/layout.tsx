@@ -7,6 +7,7 @@ import {
 import RowWrapper from "../../_components/wrappers/RowWrapper";
 import FeedbackCard from "../../_components/FeedbackCard";
 import UserInfo from "../../_components/UserInfo";
+import TopMenu from "@/app/_components/TopMenu";
 
 export default async function ServerLayout({
   params,
@@ -35,23 +36,31 @@ export default async function ServerLayout({
   const admin = members.filter((item) => item.role === "admin")[0];
 
   return (
-    <div className="flex flex-grow">
+    <div className="relative flex flex-grow">
+      {/* TopMenu component */}
+      <div className="fixed left-0 right-0 top-0">
+        <TopMenu />
+      </div>
+
       <ColumnWrapper
         mode="section"
         id="server-inner-nav"
-        className="sticky mr-2 h-full border-r border-r-black50 p-0 md:max-w-[15%]"
+        className="fixed bottom-0 left-16 top-0 flex min-w-28 overflow-y-hidden border-r border-r-black50 bg-black25 p-0 md:w-40 md:p-0 dark:bg-black85"
       >
         <RowWrapper className="border-b border-black50 px-2 pt-1">
           <h5 className="text-wrap">{server.server_name}</h5>
         </RowWrapper>
       </ColumnWrapper>
-      {children}
+
+      {/* Main content */}
+      <div className="flex">{children}</div>
+
       <ColumnWrapper
         mode="section"
         id="server-members-nav"
-        className="bg-black"
+        className="dark:bg-color-dark fixed right-0 top-0 h-screen w-32 bg-primary"
       >
-        <ColumnWrapper className="sticky h-full">
+        <ColumnWrapper className="h-full">
           <h5>Admin</h5>
           <UserInfo
             username={admin.user.username || ""}

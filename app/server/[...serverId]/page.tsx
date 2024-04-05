@@ -13,7 +13,7 @@ export default async function ServerHome({ params }: { params: Params }) {
   }
 
   return (
-    <Main>
+    <Main className="ps-48 pt-4 md:ps-60 lg:pt-20">
       <h1>Hewwo</h1>
     </Main>
   );
