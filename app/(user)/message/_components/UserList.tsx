@@ -1,6 +1,7 @@
 import { getUsersExcept } from "../../../../prisma/services/userService";
 import UserInfo from "../../../_components/UserInfo";
 import RowWrapper from "../../../_components/wrappers/RowWrapper";
+import Link from "next/link";
 
 type User = {
   id: string;
@@ -21,19 +22,23 @@ export default async function UserList({ user }: { user?: User }) {
     if (typeof users !== "string") {
       const listUsers = users.map((user) => {
         return (
-          <UserInfo
-            key={user.id}
-            username={user.username}
-            width={40}
-            isActive={false}
-            screen_name={user.screen_name || undefined}
-          />
+          <li className="hover:bg-black25" key={user.id}>
+            <Link href={`/message/${user.id}`}>
+              <UserInfo
+                key={user.id}
+                username={user.username}
+                width={40}
+                isActive={false}
+                screen_name={user.screen_name || undefined}
+              />
+            </Link>
+          </li>
         );
       });
 
       return (
         <RowWrapper>
-          <div>{listUsers}</div>
+          <ul>{listUsers}</ul>
         </RowWrapper>
       );
     }

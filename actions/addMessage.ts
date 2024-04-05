@@ -1,11 +1,23 @@
 "use server";
-import { getConversationByParticipants } from "../prisma/services/conversationService";
+import {
+  getConversationByParticipants,
+  createConversationWithMessage,
+  createMessage,
+} from "../prisma/services/conversationService";
 
-export default async function addMessage(formData: FormData) {
-  const message = formData.get("message");
-  const conversation = getConversationByParticipants(
-    "clu2dnxk00000bge1km91yrw7",
-    "clu2dnxkt0001bge1b07xcqoc",
+export default async function addMessage(userIds: any, formData: FormData) {
+  const message = formData.get("message") as string;
+  const senderId = userIds[0];
+  const receiverId = userIds[1];
+  const conversation = await getConversationByParticipants(
+    senderId,
+    receiverId,
   );
-  console.log(message);
+
+  if (conversation && typeof conversation !== "string") {
+    console.log(conversation.uid);
+    return createMessage(senderId, conversation.uid, message);
+  } else if (!conversation) {
+    return createConversationWithMessage(senderId, receiverId, message);
+  } else return { error: "Something went wrong. Please try again." };
 }
