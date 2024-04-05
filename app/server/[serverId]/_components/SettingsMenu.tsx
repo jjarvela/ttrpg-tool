@@ -5,6 +5,7 @@ import MaterialSymbolsManufacturing from "@/public/icons/MaterialSymbolsManufact
 import { Fragment, useRef, useState } from "react";
 import NewInvitationModal from "./NewInvitationModal";
 import handleClickOutside from "@/utils/handleClickOutside";
+import { useRouter } from "next/navigation";
 
 export default function ServerSettingsMenu({
   server_id,
@@ -14,6 +15,7 @@ export default function ServerSettingsMenu({
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const newInvitationRef = useRef<HTMLDialogElement>(null);
+  const router = useRouter();
   return (
     <Fragment>
       <div className="relative">
@@ -46,7 +48,14 @@ export default function ServerSettingsMenu({
               >
                 Create invitation
               </p>
-              <p>Manage Invitations</p>
+              <p
+                onClick={() => {
+                  router.push(`/server/${server_id}/preferences`);
+                  setIsOpen(false);
+                }}
+              >
+                Manage Invitations
+              </p>
             </ColumnWrapper>
           </div>
         )}
