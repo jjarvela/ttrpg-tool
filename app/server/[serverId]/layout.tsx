@@ -64,7 +64,7 @@ export default async function ServerLayout({
       <ColumnWrapper
         mode="section"
         id="server-members-nav"
-        className="bg-black"
+        className="bg-color-dark"
       >
         <ColumnWrapper className="h-full">
           <h5>Admin</h5>
