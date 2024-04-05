@@ -10,7 +10,7 @@
 
 export default function handleClickOutside(
   refObject: React.RefObject<
-    HTMLDivElement | HTMLInputElement | HTMLFormElement
+    HTMLDivElement | HTMLInputElement | HTMLFormElement | HTMLDialogElement
   >,
   event: MouseEvent,
   callback: () => void,
