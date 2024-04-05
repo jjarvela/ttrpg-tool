@@ -6,7 +6,7 @@ import MaterialSymbolsLightAdd from "../../../public/icons/MaterialSymbolsLightA
 export default function MenuButtonNewServer() {
   return (
     <Link href="/server/create">
-      <span className="relative my-2 inline-block overflow-hidden rounded-full bg-gray-500 shadow-md transition-all group-hover:rounded-md">
+      <span className="relative my-2 inline-block overflow-hidden rounded-full bg-black50 shadow-md transition-all group-hover:rounded-md">
         <MaterialSymbolsLightAdd
           width={40}
           height={40}
