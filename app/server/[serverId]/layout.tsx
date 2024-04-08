@@ -4,11 +4,10 @@ import {
   getServerData,
   getServerMembers,
 } from "../../../prisma/services/serverService";
-import RowWrapper from "../../_components/wrappers/RowWrapper";
 import FeedbackCard from "../../_components/FeedbackCard";
 import UserInfo from "../../_components/UserInfo";
-import ServerSettingsMenu from "./_components/SettingsMenu";
 import TopMenu from "@/app/_components/TopMenu";
+import ServerInnerNav from "./_components/ServerInnerNav";
 
 export default async function ServerLayout({
   params,
@@ -40,16 +39,7 @@ export default async function ServerLayout({
   return (
     <div className="flex flex-grow">
       {/*server inner nav*/}
-      <ColumnWrapper
-        mode="section"
-        id="server-inner-nav"
-        className="h-full border-r border-r-black50 p-0 md:max-w-[15%]"
-      >
-        <RowWrapper className="z-30 border-b border-black50 px-2 pt-1">
-          <h5 className="text-wrap">{server.server_name}</h5>{" "}
-          <ServerSettingsMenu server_id={id} />
-        </RowWrapper>
-      </ColumnWrapper>
+      <ServerInnerNav id={id} />
 
       {/*top menu and content*/}
       <ColumnWrapper
