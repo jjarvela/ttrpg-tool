@@ -13,7 +13,7 @@ export default function ServerInnerNavLink({
   return (
     <Link
       href={to}
-      className="flex w-full justify-between border-b-[1px] border-t-[1px] px-2 py-1"
+      className="flex w-full justify-between border-b-[1px] border-t-[1px] border-black50 px-2 py-1"
     >
       {title}
       <MaterialSymbolsLightChevronLeftRounded className="-rotate-180 text-xl" />

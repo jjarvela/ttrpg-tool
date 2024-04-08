@@ -14,11 +14,14 @@ export default function ServerSubMenu({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="w-full cursor-pointer border-b-[1px] border-t-[1px]">
+    <div className="w-full cursor-pointer border-b-[1px] border-t-[1px] border-black50">
       <RowWrapper
         justify="justify-between"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={twMerge("w-full px-2 py-1", isOpen && "border-b-[1px]")}
+        className={twMerge(
+          "w-full px-2 py-1",
+          isOpen && "border-b-[1px] border-black50",
+        )}
       >
         {title}{" "}
         <MaterialSymbolsLightChevronLeftRounded

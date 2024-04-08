@@ -16,7 +16,7 @@ export default async function ServerUserDisplay() {
 
   if (!user || typeof user === "string") return <p>No user data</p>;
   return (
-    <ColumnWrapper className="bg-color-dark w-full border-t-[1px] px-1 py-2">
+    <ColumnWrapper className="bg-color-dark w-full border-t-[1px] border-black50 px-1 py-2">
       <RowWrapper justify="justify-between justify-items-between">
         <RowWrapper>
           <ProfilePicture
