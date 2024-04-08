@@ -1,13 +1,8 @@
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import ColumnWrapper from "../../_components/wrappers/ColumnWrapper";
-import {
-  getServerData,
-  getServerMembers,
-} from "../../../prisma/services/serverService";
-import FeedbackCard from "../../_components/FeedbackCard";
-import UserInfo from "../../_components/UserInfo";
 import TopMenu from "@/app/_components/TopMenu";
 import ServerInnerNav from "./_components/ServerInnerNav";
+import ServerMembersMenu from "./_components/ServerMembersMenu";
 
 export default async function ServerLayout({
   params,
@@ -18,23 +13,7 @@ export default async function ServerLayout({
 }) {
   const id = params.serverId;
 
-  const server = await getServerData(id);
-  const members = await getServerMembers(id);
-
-  if (
-    !server ||
-    typeof server === "string" ||
-    !members ||
-    typeof members === "string"
-  )
-    return (
-      <div className="flex-grow">
-        <FeedbackCard type="error" message="Something went wrong!" />
-      </div>
-    );
-
-  const admin = members.filter((item) => item.role === "admin")[0];
-  const regulars = members.filter((item) => item.role === "member");
+  let isOpen = true;
 
   return (
     <div className="flex flex-grow">
@@ -51,41 +30,7 @@ export default async function ServerLayout({
       </ColumnWrapper>
 
       {/*server members bar*/}
-      <ColumnWrapper
-        mode="section"
-        id="server-members-nav"
-        className="bg-color-dark"
-      >
-        <ColumnWrapper className="h-full">
-          <h5>Admin</h5>
-          <UserInfo
-            username={admin.user.username || ""}
-            screen_name={
-              admin.nickname
-                ? admin.nickname
-                : admin.user.screen_name || admin.user.username
-            }
-            image={admin.icon ? admin.icon : admin.user.profile_image || ""}
-            isActive={false}
-            width={40}
-          />
-          <h5>Members</h5>
-          {regulars.map((item) => (
-            <UserInfo
-              key={item.id}
-              username={item.user.username || ""}
-              screen_name={
-                item.nickname
-                  ? item.nickname
-                  : item.user.screen_name || item.user.username
-              }
-              image={item.icon ? item.icon : item.user.profile_image || ""}
-              isActive={false}
-              width={40}
-            />
-          ))}
-        </ColumnWrapper>
-      </ColumnWrapper>
+      <ServerMembersMenu id={id} isOpen={isOpen} />
     </div>
   );
 }
