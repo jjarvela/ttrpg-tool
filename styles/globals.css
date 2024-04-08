@@ -125,6 +125,20 @@
   }
 }
 
+.scrollbar-thin::-webkit-scrollbar {
+  width: 0.2rem;
+  height: 0.2rem;
+  background-color: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 0.5rem;
+}
+.scrollbar-thin::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
 input:-internal-autofill-selected,
 input:-internal-autofill-previewed,
 input:-webkit-autofill,
