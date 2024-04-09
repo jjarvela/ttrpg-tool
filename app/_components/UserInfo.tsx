@@ -17,9 +17,9 @@ function UserInfo({
   image,
 }: UserInfoProps) {
   return (
-    <RowWrapper breakPoint="xs">
+    <RowWrapper breakPoint="xs" className="w-full">
       <ProfilePicture width={width} isActive={isActive} image={image} />
-      <div>{screen_name ? <p>{screen_name}</p> : <p>{username}</p>}</div>
+      <div className="overflow-hidden overflow-ellipsis">{screen_name ? screen_name : username} </div>
     </RowWrapper>
   );
 }

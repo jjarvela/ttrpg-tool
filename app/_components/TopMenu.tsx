@@ -31,7 +31,7 @@ const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
     </Link>
   );
 };
-const TopMenu = ({ serverId }: { serverId: string }) => {
+const TopMenu = ({ serverId, setShowMembers}: { serverId: string, setShowMembers: React.Dispatch<React.SetStateAction<boolean>>}) => {
   return (
     <nav className="bg-color-dark collapse relative flex h-0 w-full justify-center overflow-hidden px-6 py-4 lg:visible lg:h-40 lg:overflow-visible">
       <div className="flex items-center justify-center space-x-4">
@@ -65,7 +65,7 @@ const TopMenu = ({ serverId }: { serverId: string }) => {
       <div className="absolute right-4 flex items-center space-x-4">
         {/* Right icons */}
         <RiPushpinLine className="h-7 w-7 opacity-60 hover:opacity-100" />
-        <MaterialSymbolsGroupOutline className="h-7 w-7 cursor-pointer opacity-60 hover:opacity-100" />
+        <MaterialSymbolsGroupOutline className="h-7 w-7 cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowMembers(prev => !prev)}/>
       </div>
     </nav>
   );

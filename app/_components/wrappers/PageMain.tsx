@@ -9,7 +9,7 @@ export default function Main({
   return (
     <div
       className={twMerge(
-        "flex min-h-screen flex-grow flex-col overflow-auto",
+        "flex min-h-screen flex-grow flex-col overflow-auto scrollbar-thin",
         className,
       )}
       {...rest}
