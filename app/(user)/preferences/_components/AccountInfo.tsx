@@ -28,7 +28,7 @@ export default function AccountInfo({ user }: { user?: user }) {
         editInfo={async (value) => {
           "use server";
           if (!user) return;
-          const result = await changeUserInfo(user.id, { screenName: value });
+          const result = await changeUserInfo(user.id, { screen_name: value });
           if (result?.error) return result.error;
           return;
         }}

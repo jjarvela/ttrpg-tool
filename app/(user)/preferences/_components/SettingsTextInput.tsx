@@ -4,6 +4,7 @@ import MaterialSymbolsLightCheckCircleOutlineRounded from "../../../../public/ic
 import MaterialSymbolsLightCloseRounded from "../../../../public/icons/MaterialSymbolsLightCloseRounded";
 import MaterialSymbolsLightHistoryEduRounded from "../../../../public/icons/MaterialSymbolsLightHistoryEduRounded";
 import TextInput from "../../../_components/inputs/TextInput";
+import { useRouter } from "next/navigation";
 
 type SettingsTextInputProps = {
   label: string;
@@ -20,6 +21,8 @@ export default function SettingsTextInput({
   const [editMode, setEditMode] = useState(false);
   const refObject = useRef<HTMLInputElement>(null);
   const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
 
   return (
     <TextInput
@@ -49,6 +52,7 @@ export default function SettingsTextInput({
                   }
                 });
                 setEditMode(false);
+                router.refresh();
               }}
             />
             <MaterialSymbolsLightCloseRounded
