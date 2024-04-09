@@ -14,7 +14,7 @@ export default function LayoutClientWrapper({id, innerNav, membersMenu, children
   return (<div className="flex flex-grow">
       {/*server inner nav*/}
       <RowWrapper className={twMerge("gap-0 md:max-w-[15%]", showInnerNav ? "w-40" : "")}>
-      <div className={twMerge("h-full md:block", showInnerNav ? "block" : "hidden")}>{innerNav}</div>
+      <div className={twMerge("h-full w-full md:block", showInnerNav ? "block" : "hidden")}>{innerNav}</div>
       <div className="flex flex-col rounded-r-lg bg-black50 md:hidden cursor-pointer text-lg h-[5%]">
         <MaterialSymbolsLightChevronLeftRounded className={twMerge("my-auto justify-self-center ease-linear duration-300", showInnerNav ? "" : "rotate-180")} onClick={() => setShowInnerNav(prev => !prev)}/>
       </div>
