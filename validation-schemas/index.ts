@@ -56,7 +56,7 @@ export const UserInfoSchema = z.object({
     ])
     .optional()
     .transform((value) => (value === "" ? undefined : value)),
-  screenName: z
+  screen_name: z
     .union([z.string(), z.string().length(0)])
     .optional()
     .transform((value) => (value === "" ? undefined : value)),
