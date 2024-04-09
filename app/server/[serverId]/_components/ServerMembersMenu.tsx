@@ -5,7 +5,6 @@ import {
   getServerData,
   getServerMembers,
 } from "@/prisma/services/serverService";
-import { twMerge } from "tailwind-merge";
 
 export default async function ServerMembersMenu({
   id
@@ -33,9 +32,7 @@ export default async function ServerMembersMenu({
     <ColumnWrapper
       mode="section"
       id="server-members-nav"
-      className={twMerge(
-        "bg-color-dark border-l-[1px] border-black50"
-      )}
+      className="h-full"
     >
       <ColumnWrapper className="h-full">
         <h5>Admin</h5>

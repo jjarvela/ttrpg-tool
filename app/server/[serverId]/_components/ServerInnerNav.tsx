@@ -15,7 +15,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
     <ColumnWrapper
       mode="section"
       id="server-inner-nav"
-      className="h-full w-40 gap-0 border-r border-r-black50 p-0 md:max-w-[15%]"
+      className="h-full w-full gap-0 border-r border-r-black50 p-0"
     >
       <RowWrapper
         justify="justify-between"
