@@ -11,8 +11,6 @@ export default async function ServerPreferences({
 }) {
   const id = params.serverId;
 
-  console.log(id);
-
   const server = await getServerData(id);
 
   if (!server || typeof server === "string") {
