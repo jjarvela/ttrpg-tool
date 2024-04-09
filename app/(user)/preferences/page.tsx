@@ -1,17 +1,17 @@
 import { redirect } from "next/navigation";
 import AccountInfo from "./_components/AccountInfo";
 import { auth } from "../../../auth";
-import { getUserByEmail } from "../../../prisma/services/userService";
+import { getUserById } from "../../../prisma/services/userService";
 import FeedbackCard from "../../_components/FeedbackCard";
 import Main from "../../_components/wrappers/PageMain";
 
 export default async function UserPreferences() {
   const session = await auth();
 
-  if (!session || !session.user || !session.user.email)
+  if (!session || (session as ExtendedSession).userId)
     return redirect("/welcome");
 
-  const user = await getUserByEmail(session.user.email);
+  const user = await getUserById((session as ExtendedSession).userId);
 
   if (typeof user === "string")
     return <FeedbackCard type="error" message="Something went wrong!" />;
