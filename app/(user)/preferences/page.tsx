@@ -8,7 +8,7 @@ import Main from "../../_components/wrappers/PageMain";
 export default async function UserPreferences() {
   const session = await auth();
 
-  if (!session || (session as ExtendedSession).userId)
+  if (!session)
     return redirect("/welcome");
 
   const user = await getUserById((session as ExtendedSession).userId);
