@@ -1,10 +1,12 @@
+
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import ColumnWrapper from "../../_components/wrappers/ColumnWrapper";
 import TopMenu from "@/app/_components/TopMenu";
 import ServerInnerNav from "./_components/ServerInnerNav";
 import ServerMembersMenu from "./_components/ServerMembersMenu";
+import LayoutClientWrapper from "./_components/LayoutClientWrapper";
 
-export default async function ServerLayout({
+export default function ServerLayout({
   params,
   children,
 }: {
@@ -13,24 +15,11 @@ export default async function ServerLayout({
 }) {
   const id = params.serverId;
 
-  let isOpen = true;
-
   return (
-    <div className="flex flex-grow">
-      {/*server inner nav*/}
-      <ServerInnerNav id={id} />
-
-      {/*top menu and content*/}
-      <ColumnWrapper
-        align="items-start"
-        className="m-0 flex-grow gap-0 p-0 lg:gap-2"
-      >
-        <TopMenu serverId={id} />
-        {children}
-      </ColumnWrapper>
-
-      {/*server members bar*/}
-      <ServerMembersMenu id={id} isOpen={isOpen} />
-    </div>
+    <LayoutClientWrapper id={id} innerNav={<ServerInnerNav id={id} />} membersMenu={<ServerMembersMenu id={id}/>}>
+      {children}
+    </LayoutClientWrapper>
+    
+    
   );
 }

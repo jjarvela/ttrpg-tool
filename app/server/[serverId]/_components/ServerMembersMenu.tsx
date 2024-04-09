@@ -8,11 +8,9 @@ import {
 import { twMerge } from "tailwind-merge";
 
 export default async function ServerMembersMenu({
-  id,
-  isOpen,
+  id
 }: {
   id: string;
-  isOpen: boolean;
 }) {
   const server = await getServerData(id);
   const members = await getServerMembers(id);
@@ -36,8 +34,7 @@ export default async function ServerMembersMenu({
       mode="section"
       id="server-members-nav"
       className={twMerge(
-        "bg-color-dark border-l-[1px] border-black50",
-        isOpen ? "flex" : "hidden",
+        "bg-color-dark border-l-[1px] border-black50"
       )}
     >
       <ColumnWrapper className="h-full">
