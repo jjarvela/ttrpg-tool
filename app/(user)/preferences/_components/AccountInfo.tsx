@@ -20,7 +20,7 @@ type user = {
 
 export default function AccountInfo({ user }: { user?: user }) {
   return (
-    <section id="account-info" className="w-[80%]">
+    <section id="account-info" className="w-[30em] lg:w-[80%]">
       <h1>Account Information</h1>
       <SettingsTextInput
         label="Screen name"
@@ -28,7 +28,7 @@ export default function AccountInfo({ user }: { user?: user }) {
         editInfo={async (value) => {
           "use server";
           if (!user) return;
-          const result = await changeUserInfo(user.id, { screenName: value });
+          const result = await changeUserInfo(user.id, { screen_name: value });
           if (result?.error) return result.error;
           return;
         }}

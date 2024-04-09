@@ -62,6 +62,7 @@ model Server {
   server_members ServerMember[]
   channels       Channel[]
   characters     Character[]
+  invitations    Invitation[]
 }
 
 model ServerConfig {
@@ -139,4 +140,14 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Invitation {
+  id          String         @id @default(cuid())
+  server_id   String
+  expires     String
+  used_count  Int
+  max_uses    Int?
+  protected   Boolean
+  server      Server  @relation(fields: [server_id], references: [id])
 }

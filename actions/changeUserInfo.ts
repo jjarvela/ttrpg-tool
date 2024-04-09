@@ -36,7 +36,7 @@ export default async function changeUserInfo(
   }
 
   if (data.username === "") delete data.username;
-  if (data.username === "") delete data.username;
+  if (data.screen_name === "") delete data.screen_name;
   if (data.email === "") delete data.email;
 
   const updatedUser = await updateUser(id, data);

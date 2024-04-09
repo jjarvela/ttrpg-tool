@@ -96,7 +96,7 @@ export const updateUser = async (
   id: string,
   data: {
     username?: string;
-    screenName?: string;
+    screen_name?: string;
     email?: string;
     timezone?: string;
   },
@@ -107,10 +107,7 @@ export const updateUser = async (
 
     const updatedUser = await db.user.update({
       where: { id: id },
-      data: {
-        ...data,
-        screen_name: data.screenName,
-      },
+      data: data,
     });
 
     return updatedUser;

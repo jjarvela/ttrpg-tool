@@ -4,6 +4,7 @@ import MaterialSymbolsLightCheckCircleOutlineRounded from "../../../../public/ic
 import MaterialSymbolsLightCloseRounded from "../../../../public/icons/MaterialSymbolsLightCloseRounded";
 import MaterialSymbolsLightHistoryEduRounded from "../../../../public/icons/MaterialSymbolsLightHistoryEduRounded";
 import TextInput from "../../../_components/inputs/TextInput";
+import { useRouter } from "next/navigation";
 
 type SettingsTextInputProps = {
   label: string;
@@ -21,13 +22,15 @@ export default function SettingsTextInput({
   const refObject = useRef<HTMLInputElement>(null);
   const [isPending, startTransition] = useTransition();
 
+  const router = useRouter();
+
   return (
     <TextInput
       ref={refObject}
-      className="w-full overflow-hidden p-0 text-lg"
+      className="w-full p-0 text-lg"
       startElement={
         <label>
-          <h5 className="me-4 bg-black25 px-4 py-2 dark:bg-black75">{label}</h5>
+          <h5 className="me-4 bg-black25 px-4 py-2 dark:bg-black75 rounded-l-xl">{label}</h5>
         </label>
       }
       defaultValue={defaultValue || ""}
@@ -47,8 +50,9 @@ export default function SettingsTextInput({
                     //if the change did not go through, return to original input value
                     refObject.current!.value = defaultValue || "";
                   }
+                  setEditMode(false);
+                  router.refresh();
                 });
-                setEditMode(false);
               }}
             />
             <MaterialSymbolsLightCloseRounded
@@ -58,7 +62,7 @@ export default function SettingsTextInput({
           </Fragment>
         ) : (
           <MaterialSymbolsLightHistoryEduRounded
-            className="mx-4 cursor-pointer text-2xl"
+            className="mx-4 cursor-pointer text-2xl w-8"
             onClick={() => {
               if (isPending) return;
               setEditMode(true);

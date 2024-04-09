@@ -14,7 +14,7 @@ import { useRef, useState, useTransition } from "react";
 import FeedbackCard from "../../_components/FeedbackCard";
 import createServer from "../../../actions/createServer";
 import { getSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function CreateServer() {
   const [serverName, setServerName] = useState("");
@@ -32,6 +32,8 @@ export default function CreateServer() {
   const formRef = useRef<HTMLFormElement>(null);
 
   const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,7 +63,8 @@ export default function CreateServer() {
             setError(server || "Something went wrong!");
             return;
           }
-          redirect(`/server/${server.id}`);
+          router.push(`/server/${server.id}`);
+          router.refresh();
         });
       }
     }
