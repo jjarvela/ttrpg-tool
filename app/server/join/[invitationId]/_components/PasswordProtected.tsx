@@ -5,7 +5,7 @@ import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import PasswordInput from "@/app/_components/inputs/PasswordInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 export default function PasswordProtected({
@@ -19,10 +19,15 @@ export default function PasswordProtected({
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
+  const router = useRouter();
+
   async function handleJoin() {
     const result = await joinServer(invitationId, password);
     if (typeof result === "string") setError(result);
-    else redirect(`/server/${result.server_id}`);
+    else {
+      router.push(`/server/${result.server_id}`);
+      router.refresh();
+    }
   }
 
   return (
