@@ -17,14 +17,14 @@ export default async function ServerUserDisplay() {
   if (!user || typeof user === "string") return <p>No user data</p>;
   return (
     <ColumnWrapper className="bg-color-dark w-full border-t-[1px] border-black50 px-1 py-2">
-      <RowWrapper justify="justify-between justify-items-between">
-        <RowWrapper>
+      <RowWrapper justify="w-full justify-between justify-items-between">
+        <RowWrapper className="flex-grow w-[80%]">
           <ProfilePicture
             image={user.profile_image || undefined}
             width={30}
             isActive={false}
           />
-          <Link href={`/`}>{user.screen_name || user.username}</Link>
+          <Link href={`/`} className="overflow-hidden overflow-ellipsis flex-grow">{user.screen_name || user.username}</Link>
         </RowWrapper>
         <Link href={"/preferences"}>
           <MaterialSymbolsManufacturing />

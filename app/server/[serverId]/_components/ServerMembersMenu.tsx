@@ -34,7 +34,7 @@ export default async function ServerMembersMenu({
       id="server-members-nav"
       className="h-full"
     >
-      <ColumnWrapper className="h-full">
+      <ColumnWrapper className="h-full w-40">
         <h5>Admin</h5>
         <UserInfo
           username={admin.user.username || ""}
