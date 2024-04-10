@@ -22,16 +22,12 @@ export async function POST(req: NextRequest) {
 
       const filename = `${Date.now()}.png`;
       const imageBuffer = Buffer.from(file, "base64");
-
-      console.log(imageBuffer);
       const blockBlobClient = containerClient.getBlockBlobClient(filename);
-      const result = await blockBlobClient.uploadData(imageBuffer, {
+      await blockBlobClient.uploadData(imageBuffer, {
         blobHTTPHeaders: { blobContentType: "image/png" },
       });
 
-      console.log(result);
-
-      return Response.json({ status: 200, message: "success" });
+      return Response.json({ status: 200, filename });
     } catch (error) {
       return Response.json({ status: 500, message: "an error occurred" });
     }
