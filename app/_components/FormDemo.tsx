@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DropdownSelection from "./inputs/DropdownSelection";
 import NumberInput from "./inputs/NumberInput";
 import PasswordInput from "./inputs/PasswordInput";
@@ -9,12 +9,18 @@ import TextAreaInput from "./inputs/TextAreaInput";
 import TextInput from "./inputs/TextInput";
 import ToggleInput from "./inputs/ToggleInput";
 import Checkbox from "./inputs/Checkbox";
+import FileInput from "./inputs/FileInput";
+import axios from "axios";
+import postUpload from "@/utils/postUpload";
+import FeedbackCard from "./FeedbackCard";
 
 export default function FormDemo() {
   const [radioSelected, setRadioSelected] = useState<
     string | number | readonly string[] | undefined
   >("1");
   const [textarea, setTextArea] = useState("");
+
+  const fileRef = useRef<HTMLInputElement>(null);
 
   return (
     <form className="flex flex-col gap-2">
@@ -77,6 +83,23 @@ export default function FormDemo() {
       />
 
       <Checkbox id="demo-check" label="This is a demo checkbox" />
+
+      <FileInput id="test" labelElement={<p>Upload a file</p>} ref={fileRef} />
+      <button
+        type="button"
+        onClick={async (e) => {
+          e.preventDefault();
+          if (fileRef.current?.files) {
+            try {
+              postUpload(fileRef.current.files[0]);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        }}
+      >
+        Upload
+      </button>
 
       <button>Submit</button>
     </form>
