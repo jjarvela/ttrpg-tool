@@ -3,6 +3,7 @@ import { db } from "../db";
 export const createServerEntry = async (data: {
   server_name: string;
   description?: string;
+  image?: string;
 }) => {
   try {
     const server = await db.server.create({ data });

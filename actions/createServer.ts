@@ -30,6 +30,7 @@ export default async function createServer(
     const server = await createServerEntry({
       server_name: data.serverName,
       description: data.description,
+      image: data.image || undefined,
     });
     if (typeof server === "string")
       return "Something went wrong. Please try again.";
