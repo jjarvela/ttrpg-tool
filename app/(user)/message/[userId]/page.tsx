@@ -20,5 +20,3 @@ export default async function PrivateMessages({ params }: { params: Params }) {
     </Main>
   );
 }
-
-// scrollIntoViewOptions: {block: "end", inline: "nearest"}
