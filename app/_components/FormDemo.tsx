@@ -13,6 +13,7 @@ import FileInput from "./inputs/FileInput";
 import axios from "axios";
 import postUpload from "@/utils/postUpload";
 import FeedbackCard from "./FeedbackCard";
+import FormMediaPreview from "./inputs/FormMediaPreview";
 
 export default function FormDemo() {
   const [radioSelected, setRadioSelected] = useState<
@@ -85,6 +86,9 @@ export default function FormDemo() {
       <Checkbox id="demo-check" label="This is a demo checkbox" />
 
       <FileInput id="test" labelElement={<p>Upload a file</p>} ref={fileRef} />
+      {fileRef.current && fileRef.current.files && (
+        <FormMediaPreview file={fileRef.current.files[0]} />
+      )}
       <button
         type="button"
         onClick={async (e) => {
