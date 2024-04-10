@@ -95,7 +95,10 @@ export default function FormDemo() {
           e.preventDefault();
           if (fileRef.current?.files) {
             try {
-              postUpload(fileRef.current.files[0]);
+              const result = await postUpload(fileRef.current.files[0], (r) =>
+                console.log(r.data.filename),
+              );
+              console.log(result);
             } catch (error) {
               console.log(error);
             }
