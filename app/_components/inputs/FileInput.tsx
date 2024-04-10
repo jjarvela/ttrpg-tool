@@ -9,9 +9,15 @@ export interface FileInputProps
 const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
   ({ id, labelElement, ...props }, ref) => {
     return (
-      <label htmlFor={id} className="cursor-pointer">
+      <label htmlFor={id} className="relative cursor-pointer">
         {labelElement}
-        <input id={id} type="file" ref={ref} {...props} className="h-0 w-0" />
+        <input
+          id={id}
+          type="file"
+          ref={ref}
+          {...props}
+          className="absolute left-0 top-0 h-0 w-0"
+        />
       </label>
     );
   },
