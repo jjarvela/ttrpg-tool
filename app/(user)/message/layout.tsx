@@ -1,7 +1,7 @@
 import UserList from "./_components/UserList";
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
-import { getUserByEmail } from "../../../prisma/services/userService";
+import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 
 export default async function UsersLayout({
   children,
@@ -10,20 +10,15 @@ export default async function UsersLayout({
 }) {
   const session = await auth();
 
-  if (!session || !session.user || !session.user.email)
-    return redirect("/welcome");
+  if (!session) return redirect("/welcome");
 
-  const user = await getUserByEmail(session.user.email);
-
-  if (typeof user !== "string") {
-    return (
-      <div className="flex flex-col">
+  return (
+    <div className="flex w-full">
+      <ColumnWrapper>
         <p>Private messages</p>
-        <div className="flex">
-          <UserList user={user || undefined} />
-          {children}
-        </div>
-      </div>
-    );
-  }
+        <UserList user={(session as ExtendedSession).userId} />
+      </ColumnWrapper>
+      {children}
+    </div>
+  );
 }

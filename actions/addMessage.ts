@@ -4,6 +4,7 @@ import {
   createConversationWithMessage,
   createMessage,
 } from "../prisma/services/conversationService";
+import { revalidatePath } from "next/cache";
 
 export default async function addMessage(userIds: any, formData: FormData) {
   const message = formData.get("message") as string;
@@ -15,7 +16,6 @@ export default async function addMessage(userIds: any, formData: FormData) {
   );
 
   if (conversation && typeof conversation !== "string") {
-    console.log(conversation.uid);
     return createMessage(senderId, conversation.uid, message);
   } else if (!conversation) {
     return createConversationWithMessage(senderId, receiverId, message);

@@ -77,3 +77,25 @@ export const createMessage = async (
     return (e as Error).message;
   }
 };
+
+export const getMessages = async (conversation_uid: string) => {
+  try {
+    const result = await db.message.findMany({
+      where: {
+        conversation_uid: conversation_uid,
+      },
+      select: {
+        uid: true,
+        sender_id: true,
+        message: true,
+        created_at: true,
+      },
+      orderBy: {
+        created_at: "asc",
+      },
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};

@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import ProfilePicture from "./ProfilePicture";
 import RowWrapper from "./wrappers/RowWrapper";
 
@@ -7,6 +8,7 @@ type UserInfoProps = {
   isActive: boolean;
   screen_name?: string;
   image?: string;
+  className?: string;
 };
 
 function UserInfo({
@@ -15,9 +17,10 @@ function UserInfo({
   isActive,
   screen_name,
   image,
+  className,
 }: UserInfoProps) {
   return (
-    <RowWrapper breakPoint="xs" className="w-full">
+    <RowWrapper breakPoint="xs" className={twMerge("w-full", className)}>
       <ProfilePicture width={width} isActive={isActive} image={image} />
       <div className="overflow-hidden overflow-ellipsis">
         {screen_name ? screen_name : username}{" "}

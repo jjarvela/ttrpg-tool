@@ -2,27 +2,23 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import Main from "../../../_components/wrappers/PageMain";
 import { auth } from "../../../../auth";
 import { redirect } from "next/navigation";
-import { getUserByEmail } from "../../../../prisma/services/userService";
 import MessageForm from "../_components/MessageForm";
+import MessageBody from "../_components/MessageBody";
 
 export default async function PrivateMessages({ params }: { params: Params }) {
   const session = await auth();
 
-  if (!session || !session.user || !session.user.email)
-    return redirect("/welcome");
+  if (!session) return redirect("/welcome");
 
-  const user = await getUserByEmail(session.user.email);
-
+  const userId = (session as ExtendedSession).userId;
   const receiverId = params.userId;
 
-  if (user && typeof user !== "string") {
-    console.log("userId: " + user.id);
-
-    return (
-      <Main>
-        <p>messages</p>
-        <MessageForm userId={user.id} receiverId={receiverId} />
-      </Main>
-    );
-  }
+  return (
+    <Main>
+      <MessageBody senderId={userId} receiverId={receiverId} />
+      <MessageForm userId={userId} receiverId={receiverId} />
+    </Main>
+  );
 }
+
+// scrollIntoViewOptions: {block: "end", inline: "nearest"}
