@@ -119,6 +119,21 @@ export const updateUser = async (
   }
 };
 
+export const getUsersExcept = async (id: string) => {
+  try {
+    const users = await db.user.findMany({
+      where: {
+        id: {
+          not: id,
+        },
+      },
+    });
+    return users;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getUserServers = async (
   userId: string,
   select?: { [key: string]: boolean },
