@@ -1,7 +1,6 @@
 import Main from "../../_components/wrappers/PageMain";
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
-import { getUserByEmail } from "../../../prisma/services/userService";
 
 export default async function PrivateMessages() {
   const session = await auth();

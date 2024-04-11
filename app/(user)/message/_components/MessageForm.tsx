@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import addMessage from "../../../../actions/addMessage";
 import TextAreaInput from "../../../_components/inputs/TextAreaInput";
+import { useRouter } from "next/navigation";
 
 type FormProp = {
   userId: string;
@@ -23,12 +24,14 @@ export default function MessageForm({ userId, receiverId }: FormProp) {
     }
   };
 
+  const router = useRouter();
   return (
     <form
       action={async (formData) => {
         await addMessageWithUserIds(formData);
         ref.current?.focus();
         setTextArea("");
+        router.refresh();
       }}
       className=""
     >
