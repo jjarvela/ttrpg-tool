@@ -43,6 +43,7 @@ export default function CreateServer() {
     e.preventDefault();
     if (!passwordsMatch) {
       setError("Password-protected is selected but passwords don't match.");
+      return;
     }
     if (formRef.current) {
       const isValid = formRef.current.checkValidity();
@@ -51,10 +52,16 @@ export default function CreateServer() {
       } else {
         startTransition(async () => {
           if (icon) {
+            if (icon.size / 1024 / 1024 > 3) {
+              setError("Image file is too large. The limit is 3MB.");
+              return;
+            }
             postUpload(icon, async (res) => {
-              console.log(res);
+              if (res.data.message) {
+                setError("Something went wrong!");
+                return;
+              }
               const filename = res.data.filename;
-              console.log(res.data.filename);
               const session = await getSession();
               const server = await createServer(
                 (session as ExtendedSession).userId,
@@ -133,6 +140,7 @@ export default function CreateServer() {
             )}
             <FileInput
               id="server-icon"
+              accept=".jpg, .png, .svg, .gif"
               labelElement={
                 <MaterialSymbolsLightImageOutlineRounded className="text-2xl" />
               }
