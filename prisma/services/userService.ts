@@ -99,6 +99,9 @@ export const updateUser = async (
     screen_name?: string;
     email?: string;
     timezone?: string;
+    profile_image?: string;
+    person_description?: string;
+    person_status?: string;
   },
 ) => {
   try {
