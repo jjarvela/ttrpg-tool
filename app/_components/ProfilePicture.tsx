@@ -1,5 +1,5 @@
-import Image from "next/image";
 import MaterialSymbolsProfile from "../../public/icons/MaterialSymbolsProfile";
+import Icon from "./Icon";
 
 type ProfilePictureProps = {
   width: number;
@@ -7,7 +7,7 @@ type ProfilePictureProps = {
   image?: string;
 };
 
-function ProfilePicture({ width, isActive, image }: ProfilePictureProps) {
+async function ProfilePicture({ width, isActive, image }: ProfilePictureProps) {
   return (
     <div
       className={
@@ -18,11 +18,7 @@ function ProfilePicture({ width, isActive, image }: ProfilePictureProps) {
       style={{ width: width, height: width }}
     >
       {image ? (
-        <img
-          src={`${image}`}
-          alt="User profile image"
-          style={{ objectFit: "cover" }}
-        />
+        <Icon filename={image} alt="profile image" />
       ) : (
         <MaterialSymbolsProfile width={width} height={width} />
       )}
