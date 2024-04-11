@@ -19,9 +19,9 @@ export default async function FormLayout({
   const receiverId = params.userId;
 
   return (
-    <div className="flex w-full flex-col overflow-y-hidden">
-      <MessageForm userId={userId} receiverId={receiverId} />
+    <div className="flex w-full flex-col">
       {children}
+      <MessageForm userId={userId} receiverId={receiverId} />
     </div>
   );
 }

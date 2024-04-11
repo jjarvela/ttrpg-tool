@@ -20,7 +20,10 @@ export default function ConversationClientWrapper({
   });
 
   return (
-    <ColumnWrapper refObject={scrollTop}>
+    <ColumnWrapper
+      refObject={scrollTop}
+      className="scrollbar-thin w-full flex-grow overflow-y-auto"
+    >
       {children}
       <span ref={scrollref} className="h-0 w-full"></span>
     </ColumnWrapper>

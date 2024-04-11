@@ -14,7 +14,7 @@ export default async function PrivateMessages({ params }: { params: Params }) {
   const receiverId = params.userId;
 
   return (
-    <Main>
+    <Main className="min-h-0 overflow-hidden">
       <ConversationClientWrapper>
         <MessageBody senderId={userId} receiverId={receiverId} />
       </ConversationClientWrapper>
