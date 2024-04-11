@@ -44,6 +44,7 @@ model User {
   share_timezone          Boolean?
   person_description      String?
   profile_image           String?
+  person_status           String?
   server_members          ServerMember[]
   ConversationParticipant ConversationParticipant[]
   Message                 Message[]
