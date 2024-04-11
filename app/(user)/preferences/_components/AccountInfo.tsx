@@ -18,7 +18,7 @@ type user = {
   profile_image: string | null;
 };
 
-export default function AccountInfo({ user }: { user?: user }) {
+export default function AccountInfo({ user }: { user: user }) {
   return (
     <section id="account-info" className="w-[30em] lg:w-[80%]">
       <h1>Account Information</h1>
