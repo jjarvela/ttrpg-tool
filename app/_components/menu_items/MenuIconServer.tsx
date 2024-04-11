@@ -7,6 +7,12 @@ type Server = {
   image: string | null;
 };
 
+/**
+ * CLIENT component for server icon in side menu
+ * @param server - server information (id, server_name, image)
+ * @param icon - ReactNode, Icon component. Passed as prop to retain its server-side functionality
+ * @returns JSX element with hover functionality
+ */
 export default function MenuIconServer({
   server,
   icon,
