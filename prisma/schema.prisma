@@ -100,11 +100,11 @@ model Channel {
 model Conversation {
   id           Int                       @id @default(autoincrement())
   uid          String                    @unique
-  channel_id   String
+  channel_id   String?
   created_at   DateTime                  @default(now())
   messages     Message[]
   participants ConversationParticipant[]
-  channel      Channel                   @relation(fields: [channel_id], references: [uid])
+  channel      Channel?                   @relation(fields: [channel_id], references: [uid])
 }
 
 model ConversationParticipant {
