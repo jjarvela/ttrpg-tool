@@ -7,13 +7,15 @@ import NumberInput from "@/app/_components/inputs/NumberInput";
 import TextInput from "@/app/_components/inputs/TextInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import MaterialSymbolsLightCloseRounded from "@/public/icons/MaterialSymbolsLightCloseRounded";
-import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import MaterialSymbolsLightContentCopyOutlineRounded from "@/public/icons/MaterialSymbolsLightContentCopyOutlineRounded";
 import { useState } from "react";
 
 type NewInvitationModalProps = {
   refObject: React.RefObject<HTMLDialogElement>;
   serverId: string;
 };
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function NewInvitationModal({
   refObject,
@@ -24,6 +26,7 @@ export default function NewInvitationModal({
 
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
+  const [copySuccess, setCopySuccess] = useState(false);
 
   return (
     <dialog
@@ -65,13 +68,34 @@ export default function NewInvitationModal({
                   setError("Something went wrong!");
                   return;
                 }
-                setLink(`/server/join/${invitation.id}`);
+                setLink(`${baseUrl}/server/join/${invitation.id}`);
               }
             }}
           >
             Create
           </Button>
-          {link !== "" && <TextInput readOnly value={link} />}
+          {link !== "" && (
+            <TextInput
+              readOnly
+              value={link}
+              endElement={
+                <MaterialSymbolsLightContentCopyOutlineRounded
+                  className="cursor-pointer"
+                  onClick={() => {
+                    try {
+                      navigator.clipboard.writeText(link);
+                      setCopySuccess(true);
+                    } catch (e) {
+                      setError("Copying failed. Please try again.");
+                    }
+                  }}
+                />
+              }
+            />
+          )}
+          {copySuccess && (
+            <FeedbackCard type="success" message="Copied to clipboard." />
+          )}
           {error !== "" && <FeedbackCard type="error" message={error} />}
         </ColumnWrapper>
       </ColumnWrapper>
