@@ -6,8 +6,8 @@ export default function LoggedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col">
-      <div className="flex">
+    <div>
+      <div className="fixed flex h-screen w-screen">
         <SideMenu />
         {children}
       </div>

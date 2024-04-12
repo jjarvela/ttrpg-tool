@@ -99,6 +99,9 @@ export const updateUser = async (
     screen_name?: string;
     email?: string;
     timezone?: string;
+    profile_image?: string;
+    person_description?: string;
+    person_status?: string;
   },
 ) => {
   try {
@@ -111,6 +114,21 @@ export const updateUser = async (
     });
 
     return updatedUser;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getUsersExcept = async (id: string) => {
+  try {
+    const users = await db.user.findMany({
+      where: {
+        id: {
+          not: id,
+        },
+      },
+    });
+    return users;
   } catch (e) {
     return (e as Error).message;
   }
