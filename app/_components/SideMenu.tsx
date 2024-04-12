@@ -9,6 +9,8 @@ import { getUserServers } from "../../prisma/services/userService";
 import FeedbackCard from "./FeedbackCard";
 import { Session } from "next-auth";
 import MaterialSymbols3pOutline from "@/public/icons/MaterialSymbols3pOutline";
+import Icon from "./Icon";
+import Link from "next/link";
 
 //global types file doesn't like imports so we're declaring this here for now
 declare global {
@@ -26,6 +28,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
   const servers = await getUserServers((session as ExtendedSession).userId, {
     id: true,
     server_name: true,
+    image: true,
   });
 
   console.log(servers);
@@ -42,15 +45,25 @@ const SideMenu = async ({ className }: { className?: string }) => {
           className ? className : "",
         )}
       >
-        <MaterialSymbols3pOutline
-          className="opacity-60"
-          width={40}
-          height={40}
-        />
+        <Link href={"/"}>
+          <MaterialSymbols3pOutline
+            className="opacity-60"
+            width={40}
+            height={40}
+          />
+        </Link>
         <ul>
           {servers.map((server) => (
             <li key={server.id}>
-              <MenuIconServer server={server} />
+              <MenuIconServer
+                server={server}
+                icon={
+                  <Icon
+                    filename={server.image || ""}
+                    alt={server.server_name}
+                  />
+                }
+              />
             </li>
           ))}
         </ul>

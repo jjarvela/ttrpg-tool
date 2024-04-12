@@ -133,9 +133,10 @@
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: white;
+  background-color: #c7c6c7;
   border-radius: 0.5rem;
 }
+
 .scrollbar-thin::-webkit-scrollbar-corner {
   background-color: transparent;
 }
@@ -161,5 +162,9 @@ textarea:-webkit-autofill {
     -webkit-text-fill-color: #fff !important;
     color: inherit !important;
     transition: background-color 5000s ease-in-out 0s;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 0.5rem;
   }
 }

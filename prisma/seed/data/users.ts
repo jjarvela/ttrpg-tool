@@ -9,7 +9,7 @@ export const Users = [
     screen_name: "Test User ✨",
     timezone: "UTC+02:00",
     person_description: "Hi, I'm Jane. I'm a test user.",
-    profile_image: "https://randomuser.me/api/portraits/women/9.jpg",
+    profile_image: "1712753350248.png",
   },
   // User 2
   {
@@ -21,7 +21,7 @@ export const Users = [
     screen_name: "JD",
     timezone: "UTC-05:00",
     person_description: "Hello, I'm John. Nice to meet you!",
-    profile_image: "https://randomuser.me/api/portraits/men/11.jpg",
+    profile_image: "1712753350248.png",
   },
   // User 3
   {
@@ -33,7 +33,7 @@ export const Users = [
     screen_name: "Em",
     timezone: "UTC+08:00",
     person_description: "Hi there, I'm Emily!",
-    profile_image: "https://randomuser.me/api/portraits/women/4.jpg",
+    profile_image: "1712753350248.png",
   },
   // User 4
   {
@@ -45,7 +45,7 @@ export const Users = [
     screen_name: "Dave",
     timezone: "UTC-07:00",
     person_description: "Hey, I'm David. Nice to meet you all!",
-    profile_image: "https://randomuser.me/api/portraits/men/5.jpg",
+    profile_image: "1712753350248.png",
   },
   // User 5
   {
@@ -57,7 +57,7 @@ export const Users = [
     screen_name: "SJ",
     timezone: "UTC-03:00",
     person_description: "Hi, I'm Sarah! Excited to be here.",
-    profile_image: "https://randomuser.me/api/portraits/women/2.jpg",
+    profile_image: "1712753350248.png",
   },
   // User 6 (Dickerson)
   {
@@ -69,7 +69,7 @@ export const Users = [
     screen_name: "Dick",
     timezone: "UTC+01:00",
     person_description: "I'm Dick, but you can call me Big Dick 😄",
-    profile_image: "https://randomuser.me/api/portraits/men/9.jpg",
+    profile_image: "1712753350248.png",
   },
   // User 7
   {
@@ -82,6 +82,6 @@ export const Users = [
     timezone: "UTC-08:00",
     person_description:
       "Hello mortals, I'm Grim Reaper. Don't mind me, just here to collect some souls! 💀 Remember, life is short, but mine's eternal!",
-    profile_image: "https://randomuser.me/api/portraits/men/13.jpg",
+    profile_image: "1712753350248.png",
   },
 ];

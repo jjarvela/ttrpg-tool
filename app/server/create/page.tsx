@@ -15,11 +15,15 @@ import FeedbackCard from "../../_components/FeedbackCard";
 import createServer from "../../../actions/createServer";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import postUpload from "@/utils/postUpload";
+import FileInput from "@/app/_components/inputs/FileInput";
+import MaterialSymbolsLightImageOutlineRounded from "@/public/icons/MaterialSymbolsLightImageOutlineRounded";
 
 export default function CreateServer() {
   const [serverName, setServerName] = useState("");
   const [description, setDescription] = useState("");
 
+  const [icon, setIcon] = useState<File | undefined>(undefined);
   const [isProtected, setIsProtected] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -39,6 +43,7 @@ export default function CreateServer() {
     e.preventDefault();
     if (!passwordsMatch) {
       setError("Password-protected is selected but passwords don't match.");
+      return;
     }
     if (formRef.current) {
       const isValid = formRef.current.checkValidity();
@@ -46,25 +51,59 @@ export default function CreateServer() {
         formRef.current.reportValidity();
       } else {
         startTransition(async () => {
-          const session = await getSession();
-          const server = await createServer(
-            (session as ExtendedSession).userId,
-            {
-              serverName,
-              description,
-              isProtected,
-              password,
-              explorePermission,
-              searchPermission,
-              settingsRightsHolders,
-            },
-          );
-          if (!server || typeof server === "string") {
-            setError(server || "Something went wrong!");
-            return;
+          if (icon) {
+            if (icon.size / 1024 / 1024 > 3) {
+              setError("Image file is too large. The limit is 3MB.");
+              return;
+            }
+            postUpload(icon, async (res) => {
+              if (res.data.message) {
+                setError("Something went wrong!");
+                return;
+              }
+              const filename = res.data.filename;
+              const session = await getSession();
+              const server = await createServer(
+                (session as ExtendedSession).userId,
+                {
+                  serverName,
+                  image: filename,
+                  description,
+                  isProtected,
+                  password,
+                  explorePermission,
+                  searchPermission,
+                  settingsRightsHolders,
+                },
+              );
+              if (!server || typeof server === "string") {
+                setError(server || "Something went wrong!");
+                return;
+              }
+              router.push(`/server/${server.id}`);
+              router.refresh();
+            });
+          } else {
+            const session = await getSession();
+            const server = await createServer(
+              (session as ExtendedSession).userId,
+              {
+                serverName,
+                description,
+                isProtected,
+                password,
+                explorePermission,
+                searchPermission,
+                settingsRightsHolders,
+              },
+            );
+            if (!server || typeof server === "string") {
+              setError(server || "Something went wrong!");
+              return;
+            }
+            router.push(`/server/${server.id}`);
+            router.refresh();
           }
-          router.push(`/server/${server.id}`);
-          router.refresh();
         });
       }
     }
@@ -91,7 +130,25 @@ export default function CreateServer() {
           />
 
           <h4 className="mt-5">Server icon</h4>
-          <div className="flex h-24 w-24 rounded-full border-[3px] border-dashed border-black50"></div>
+          <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-[3px] border-dashed border-black50">
+            {icon && (
+              <img
+                src={URL.createObjectURL(icon)}
+                className="absolute left-0 top-0 z-0 min-h-[100%] min-w-[100%] object-cover"
+                alt="icon preview"
+              />
+            )}
+            <FileInput
+              id="server-icon"
+              accept=".jpg, .png, .svg, .gif"
+              labelElement={
+                <MaterialSymbolsLightImageOutlineRounded className="text-2xl" />
+              }
+              onChange={(e) =>
+                setIcon(e.target.files ? e.target.files[0] : undefined)
+              }
+            />
+          </div>
 
           <h4 className="mt-5">Server description</h4>
           <TextAreaInput
