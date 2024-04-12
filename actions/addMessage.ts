@@ -4,7 +4,6 @@ import {
   createConversationWithMessage,
   createMessage,
 } from "../prisma/services/conversationService";
-import { revalidatePath } from "next/cache";
 
 export default async function addMessage(userIds: any, formData: FormData) {
   const message = formData.get("message") as string;

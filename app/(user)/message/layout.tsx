@@ -13,8 +13,8 @@ export default async function UsersLayout({
   if (!session) return redirect("/welcome");
 
   return (
-    <div className="flex w-full">
-      <ColumnWrapper>
+    <div className="flex h-full w-full">
+      <ColumnWrapper className="h-full overflow-y-auto">
         <p>Private messages</p>
         <UserList user={(session as ExtendedSession).userId} />
       </ColumnWrapper>

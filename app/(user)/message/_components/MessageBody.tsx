@@ -32,7 +32,7 @@ export default async function MessageBody({
         );
       });
 
-      return <ColumnWrapper>{listMessages}</ColumnWrapper>;
+      return <ColumnWrapper className="w-full">{listMessages}</ColumnWrapper>;
     }
   }
 }
