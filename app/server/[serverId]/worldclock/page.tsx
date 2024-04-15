@@ -16,6 +16,7 @@ type member = {
     username: string;
     screen_name: string | null;
     timezone: string | null;
+    share_timezone: boolean | null;
     profile_image: string | null;
   };
 } & {
@@ -43,6 +44,7 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
   function memberSort(members: member[]) {
     const timezones: { timezone: string; members: member[] }[] = [];
     members.forEach((member) => {
+      if (!member.user.share_timezone) return;
       const timezone = new Intl.DateTimeFormat("fi", {
         dateStyle: "short",
         timeStyle: "long",
