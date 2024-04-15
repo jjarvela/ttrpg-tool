@@ -44,29 +44,31 @@ export default function InvitationObject({
             else router.refresh();
           }}
         />
-        {new Date() < new Date(invitation.expires) && (
-          <a
-            className="flex cursor-pointer flex-row gap-2"
-            onClick={() => {
-              setError("");
-              setCopySuccess(false);
-              try {
-                navigator.clipboard.writeText(
-                  `${baseUrl}/server/join/${invitation.id}`,
-                );
-                setCopySuccess(true);
-              } catch (e) {
-                setError("Could not copy link. Please try again.");
-              }
-            }}
-          >
-            <span>Copy link</span>{" "}
-            <MaterialSymbolsLightContentCopyOutlineRounded className="self-center" />
-            {copySuccess && (
-              <MaterialSymbolsLightCheckCircleOutlineRounded className="self-center text-primary opacity-80" />
-            )}
-          </a>
-        )}
+        {new Date() < new Date(invitation.expires) &&
+          (!invitation.max_uses ||
+            invitation.used_count < invitation.max_uses) && (
+            <a
+              className="flex cursor-pointer flex-row gap-2"
+              onClick={() => {
+                setError("");
+                setCopySuccess(false);
+                try {
+                  navigator.clipboard.writeText(
+                    `${baseUrl}/server/join/${invitation.id}`,
+                  );
+                  setCopySuccess(true);
+                } catch (e) {
+                  setError("Could not copy link. Please try again.");
+                }
+              }}
+            >
+              <span>Copy link</span>{" "}
+              <MaterialSymbolsLightContentCopyOutlineRounded className="self-center" />
+              {copySuccess && (
+                <MaterialSymbolsLightCheckCircleOutlineRounded className="self-center text-primary opacity-80" />
+              )}
+            </a>
+          )}
       </RowWrapper>
       {error !== "" && (
         <small className="text-warning">Something went wrong!</small>
