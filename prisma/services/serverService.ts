@@ -83,6 +83,7 @@ export const getServerMembers = async (id: string) => {
             profile_image: true,
             screen_name: true,
             timezone: true,
+            share_timezone: true,
           },
         },
       },

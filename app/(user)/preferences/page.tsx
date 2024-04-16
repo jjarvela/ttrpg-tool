@@ -6,6 +6,7 @@ import FeedbackCard from "../../_components/FeedbackCard";
 import Main from "../../_components/wrappers/PageMain";
 import ProfileInfo from "./_components/ProfileInfo";
 import Icon from "@/app/_components/Icon";
+import PrivacyAndSafety from "./_components/PrivacyAndSafety";
 
 export default async function UserPreferences() {
   const session = await auth();
@@ -20,7 +21,7 @@ export default async function UserPreferences() {
   return (
     <Main className="p-4">
       <AccountInfo user={user} />
-      <div className="mx-auto h-[1px] w-full bg-black50"></div>
+      <div className="h-[1px] w-full bg-black50"></div>
       <ProfileInfo
         user={user}
         profile_image={
@@ -32,6 +33,7 @@ export default async function UserPreferences() {
         }
       />
       <div className="mx-auto h-[1px] w-full bg-black50"></div>
+      <PrivacyAndSafety user={user} />
     </Main>
   );
 }
