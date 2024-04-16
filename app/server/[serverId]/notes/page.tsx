@@ -1,32 +1,66 @@
 "use client";
-import FeedbackCard from "@/app/_components/FeedbackCard";
+import React, { useState } from "react";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { Note } from "./note";
 import Main from "@/app/_components/wrappers/PageMain";
-import { getServerData } from "@/prisma/services/serverService";
-import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
-import Note from "./note";
-import { DndContext } from "@dnd-kit/core";
 
-export default function ServerNotes({ params }: { params: Params }) {
-  const id = params.serverId;
-  const server = getServerData(id);
+interface NoteData {
+  id: string;
+  content: string;
+  position: {
+    x: number;
+    y: number;
+  };
+}
 
-  if (!server || typeof server === "string") {
-    return <FeedbackCard type="error" message="Something went wrong." />;
+const notesData: NoteData[] = [
+  {
+    id: "1",
+    content: "The left path still need to be explored",
+    position: {
+      x: 0,
+      y: 0,
+    },
+  },
+  {
+    id: "2",
+    content: "The left path still need to be explored",
+    position: {
+      x: 0,
+      y: 0,
+    },
+  },
+];
+
+export default function ServerNotes() {
+  const [notes, setNotes] = useState<NoteData[]>(notesData);
+
+  function handleDragEnd(event: DragEndEvent) {
+    const note = notes.find((x) => x.id === event.active.id);
+    if (note) {
+      note.position.x += event.delta.x;
+      note.position.y += event.delta.y;
+      const updatedNotes = notes.map((x) => (x.id === note.id ? note : x));
+      setNotes(updatedNotes);
+    }
   }
 
   return (
-    <DndContext>
-      <Main className="mx-4">
-        <h1>Hewwo</h1>
-        <Note
-          id="1"
-          initialPosition={{ x: 300, y: 200 }}
-          text={"JammaJuu"}
-          onTextChange={function (id: string, text: string): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-      </Main>
-    </DndContext>
+    <Main className="mx-4">
+      <DndContext onDragEnd={handleDragEnd}>
+        {notes.map((note) => (
+          <Note
+            styles={{
+              position: "absolute",
+              left: `${note.position.x}px`,
+              top: `${note.position.y}px`,
+            }}
+            key={note.id}
+            id={note.id}
+            content={note.content}
+          />
+        ))}
+      </DndContext>
+    </Main>
   );
 }
