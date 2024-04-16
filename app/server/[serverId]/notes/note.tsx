@@ -25,22 +25,24 @@ const Note: React.FC<NoteProps> = ({
   const handleDragEnd = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       // Update the position state with the new coordinates
-      setPosition({
-        x: position.x + event.movementX,
-        y: position.y + event.movementY,
-      });
+      setPosition((prevPosition) => ({
+        x: prevPosition.x + event.movementX,
+        y: prevPosition.y + event.movementY,
+      }));
+      console.log("New Position:", position);
     },
-    [setPosition, position],
+    [position],
   );
 
   const handleTouchEnd = useCallback(
     (event: React.TouchEvent<HTMLDivElement>) => {
-      setPosition({
-        x: position.x + event.changedTouches[0].clientX,
-        y: position.y + event.changedTouches[0].clientY,
-      });
+      setPosition((prevPosition) => ({
+        x: prevPosition.x + event.changedTouches[0].clientX,
+        y: prevPosition.y + event.changedTouches[0].clientY,
+      }));
+      console.log("New Position:", position);
     },
-    [setPosition, position],
+    [position],
   );
 
   const editor = useEditor({
