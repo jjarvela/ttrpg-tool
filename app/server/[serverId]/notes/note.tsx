@@ -10,10 +10,12 @@ const CustomStyle = {
 
 export function Note({
   id,
+  author,
   content,
   styles,
 }: {
   id: string;
+  author: string;
   content: ReactNode;
   styles?: React.CSSProperties;
 }) {
@@ -29,12 +31,14 @@ export function Note({
 
   return (
     <div
+      className="flex flex-col rounded border-2 border-black50 p-1 shadow-xl"
       ref={setNodeRef}
       style={{ ...style, ...CustomStyle, ...styles }}
       {...listeners}
       {...attributes}
     >
-      {content}
+      <div className="mb-2 flex justify-center text-center">{author}</div>
+      <div className="flex">{content}</div>
     </div>
   );
 }

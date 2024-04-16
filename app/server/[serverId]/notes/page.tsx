@@ -6,6 +6,7 @@ import Main from "@/app/_components/wrappers/PageMain";
 
 interface NoteData {
   id: string;
+  author: string;
   content: string;
   position: {
     x: number;
@@ -16,18 +17,20 @@ interface NoteData {
 const notesData: NoteData[] = [
   {
     id: "1",
-    content: "The left path still need to be explored",
+    author: "John Doe",
+    content: "The left path still needs to be explored",
     position: {
-      x: 0,
-      y: 0,
+      x: 300,
+      y: 100,
     },
   },
   {
     id: "2",
-    content: "The left path still need to be explored",
+    author: "Dickerson",
+    content: "The left path still needs to be explored",
     position: {
-      x: 0,
-      y: 0,
+      x: 500,
+      y: 200,
     },
   },
 ];
@@ -57,6 +60,7 @@ export default function ServerNotes() {
             }}
             key={note.id}
             id={note.id}
+            author={note.author}
             content={note.content}
           />
         ))}
