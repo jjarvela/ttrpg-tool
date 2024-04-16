@@ -1,6 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { Note } from "./note";
 import Main from "@/app/_components/wrappers/PageMain";
 
@@ -38,6 +46,12 @@ const notesData: NoteData[] = [
 export default function ServerNotes() {
   const [notes, setNotes] = useState<NoteData[]>(notesData);
 
+  const mouseSensor = useSensor(MouseSensor);
+  const touchSensor = useSensor(TouchSensor);
+  const keyboardSensor = useSensor(KeyboardSensor);
+
+  const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
+
   function handleDragEnd(event: DragEndEvent) {
     const note = notes.find((x) => x.id === event.active.id);
     if (note) {
@@ -50,7 +64,7 @@ export default function ServerNotes() {
 
   return (
     <Main className="mx-4">
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
         {notes.map((note) => (
           <Note
             styles={{
