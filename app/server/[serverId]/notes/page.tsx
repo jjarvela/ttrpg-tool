@@ -26,7 +26,8 @@ const notesData: NoteData[] = [
   {
     id: "1",
     author: "John Doe",
-    content: "The left path still needs to be explored",
+    content:
+      "The left path still needs to The left path still needs to The left path still needs to The left path still needs to ",
     position: {
       x: 300,
       y: 100,

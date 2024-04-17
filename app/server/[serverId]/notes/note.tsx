@@ -2,10 +2,8 @@ import React, { ReactNode } from "react";
 import { useDraggable } from "@dnd-kit/core";
 
 const CustomStyle = {
-  display: "flex",
   width: "140px",
-  height: "140px",
-  backgroundColor: "#65AE45",
+  minHeight: "140px",
 };
 
 export function Note({
@@ -31,14 +29,14 @@ export function Note({
 
   return (
     <div
-      className="flex flex-col rounded border-2 border-black50 p-1 shadow-xl"
+      className="flex flex-col border border-black50 bg-primary p-1 shadow-xl"
       ref={setNodeRef}
       style={{ ...style, ...CustomStyle, ...styles }}
       {...listeners}
       {...attributes}
     >
       <div className="mb-2 flex justify-center text-center">{author}</div>
-      <div className="flex">{content}</div>
+      <div className="flex-grow">{content}</div>
     </div>
   );
 }
