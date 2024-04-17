@@ -163,7 +163,7 @@ export const getUserServers = async (
 
 export const findUserBySocket = async (socket_id: string) => {
   try {
-    const user = db.user.findFirstOrThrow({ where: { socket_id } });
+    const user = db.user.findFirst({ where: { socket_id } });
     return user;
   } catch (e) {
     return (e as Error).message;
