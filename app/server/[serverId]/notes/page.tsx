@@ -8,8 +8,10 @@ import {
   TouchSensor,
   useSensor,
   useSensors,
+  useDroppable,
 } from "@dnd-kit/core";
-import { Note } from "./note";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
+import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
 
 interface NoteData {
@@ -44,7 +46,14 @@ const notesData: NoteData[] = [
   },
 ];
 
+const style = {
+  width: "600px",
+  height: "600px",
+  backgroundColor: "blue",
+};
+
 export default function ServerNotes() {
+  const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>(notesData);
 
   const mouseSensor = useSensor(MouseSensor);
@@ -64,22 +73,28 @@ export default function ServerNotes() {
   }
 
   return (
-    <Main className="mx-4">
-      <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
-        {notes.map((note) => (
-          <Note
-            styles={{
-              position: "absolute",
-              left: `${note.position.x}px`,
-              top: `${note.position.y}px`,
-            }}
-            key={note.id}
-            id={note.id}
-            author={note.author}
-            content={note.content}
-          />
-        ))}
-      </DndContext>
-    </Main>
+    <DndContext
+      onDragEnd={handleDragEnd}
+      sensors={sensors}
+      modifiers={[restrictToParentElement]}
+    >
+      <Main className="mx-4">
+        <div ref={setNodeRef} style={style}>
+          {notes.map((note) => (
+            <Note
+              styles={{
+                position: "absolute",
+                left: `${note.position.x}px`,
+                top: `${note.position.y}px`,
+              }}
+              key={note.id}
+              id={note.id}
+              author={note.author}
+              content={note.content}
+            />
+          ))}
+        </div>
+      </Main>
+    </DndContext>
   );
 }
