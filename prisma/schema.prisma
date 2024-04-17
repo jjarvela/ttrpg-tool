@@ -40,6 +40,7 @@ model User {
   emailVerified           DateTime?
   created_at              DateTime                  @default(now())
   screen_name             String?
+  socket_id               String?
   timezone                String?
   share_timezone          Boolean?
   person_description      String?
