@@ -31,8 +31,6 @@ const SideMenu = async ({ className }: { className?: string }) => {
     image: true,
   });
 
-  console.log(servers);
-
   if (typeof servers === "string")
     return <FeedbackCard type="error" message="Something went wrong!" />;
 
