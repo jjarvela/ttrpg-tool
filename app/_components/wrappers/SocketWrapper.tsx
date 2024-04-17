@@ -1,8 +1,7 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Socket, io } from "socket.io-client";
+import { socket } from "@/socket";
 
 export default function SocketWrapper({
   userId,
@@ -11,26 +10,54 @@ export default function SocketWrapper({
   userId: string;
   children: React.ReactNode;
 }) {
-  const [socket, setSocket] = useState<Socket | undefined>(undefined);
+  const [isConnected, setIsConnected] = useState(false);
+  const [transport, setTransport] = useState("N/A");
+  const [latestEvent, setLatestEvent] = useState("");
 
   useEffect(() => {
-    //if no socket, form new connection
-    if (!socket) {
-      const connection = io();
-      setSocket(connection);
-      connection.emit("add-user", userId);
+    if (socket.connected) {
+      onConnect();
+    }
 
-      //disconnect from socket when SocketWrapper dismounts
-      return () => {
-        connection.disconnect();
-      };
+    socket.on("connect", onConnect);
+
+    socket.on("add-user", () => {
+      socket.emit("send-user", userId);
+    });
+
+    socket.on("received-user", () => {
+      setLatestEvent("Received user");
+    });
+
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      //clear event listeners when component dismounts
+      socket.off("connect", onConnect);
+      socket.off("add-user", () => {
+        socket.emit("send-user", userId);
+      });
+
+      socket.off("received-user", () => {
+        setLatestEvent("Received user");
+      });
+      socket.off("disconnect", onDisconnect);
+    };
+
+    function onConnect() {
+      setIsConnected(true);
+      setTransport(socket.io.engine.transport.name);
+
+      socket.io.engine.on("upgrade", (transport) => {
+        setTransport(transport.name);
+      });
     }
-    //if socket exists but isn't connected, connect
-    if (socket && !socket.connected) {
-      socket.connect();
-      socket.emit("add-user", userId);
+
+    function onDisconnect() {
+      setIsConnected(false);
+      setTransport("N/A");
     }
-  });
+  }, []);
 
   return <div className="fixed flex h-screen w-screen">{children}</div>;
 }
