@@ -19,10 +19,11 @@ app.prepare().then(() => {
 
   const io = new Server(httpServer);
 
-  io.on("connect", (socket) => {
-    socket.emit("add-user");
+  io.on("connection", (socket) => {
+    console.log("connected");
 
     socket.on("send-user", (user_id: string) => {
+      console.log("updating user");
       //when user has connected, add user's socket id to db (can be used to send events and check active status)
       updateUser(user_id, { socket_id: socket.id }).then((user) => {
         return;
@@ -44,6 +45,7 @@ app.prepare().then(() => {
     });
 
     socket.on("disconnect", () => {
+      console.log("disconnected");
       //when user disconnects, return user's socket id to null
       findUserBySocket(socket.id).then((user) => {
         if (user && typeof user !== "string") {
