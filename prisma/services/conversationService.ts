@@ -99,3 +99,26 @@ export const getMessages = async (conversation_uid: string) => {
     return (e as Error).message;
   }
 };
+
+export const createChannelConversation = async (
+  channel_id: string,
+  members: string[],
+) => {
+  const participant_ids = members.map((member) => {
+    return { participant_id: member };
+  });
+  try {
+    const result = await db.conversation.create({
+      data: {
+        uid: createId(),
+        channel_id: channel_id,
+        participants: {
+          create: participant_ids,
+        },
+      },
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
