@@ -1,9 +1,8 @@
 import changeUserInfo from "../../../../actions/changeUserInfo";
-import { validMomentTimezones } from "../../../../utils/timezones";
 import Button from "../../../_components/Button";
-import DropdownSelection from "../../../_components/inputs/DropdownSelection";
 import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
 import SettingsTextInput from "./SettingsTextInput";
+import SettingsTimezoneInput from "./SettingsTimezoneInput";
 
 type user = {
   id: string;
@@ -55,38 +54,19 @@ export default function AccountInfo({ user }: { user: user }) {
           return;
         }}
       />
-
-      <DropdownSelection
-        id="timezone"
-        defaultSelected={
-          user?.timezone ? [{ label: user.timezone, value: user.timezone }] : []
-        }
-        className="w-full text-lg"
-        arrowClass="text-2xl py-[0.54rem] px-2"
-        startElement={
-          <label
-            htmlFor="timezone"
-            className="me-4 bg-black25 px-4 py-2 text-lg dark:bg-black75"
-          >
-            Timezone
-          </label>
-        }
-        options={validMomentTimezones.map((item) => {
-          return {
-            value: item,
-            label: item,
-          };
-        })}
-        onSelect={async (s) => {
+      <SettingsTimezoneInput
+        timezone={user.timezone || undefined}
+        editInfo={async (selected) => {
           "use server";
           if (!user) return;
           const result = await changeUserInfo(user.id, {
-            timezone: s[0].value.toString(),
+            timezone: selected[0].value.toString(),
           });
           if (result?.error) return result.error;
           return;
         }}
       />
+
       <ColumnWrapper align="items-start" className="mb-2">
         <h5>Forgot password?</h5>
         <Button className="btn-secondary">Reset password</Button>

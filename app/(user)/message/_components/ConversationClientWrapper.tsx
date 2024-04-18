@@ -1,7 +1,8 @@
 "use client";
 
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
-import { useEffect, useRef } from "react";
+import { socket } from "@/socket";
+import { useEffect, useRef, useState } from "react";
 
 export default function ConversationClientWrapper({
   children,
@@ -10,6 +11,11 @@ export default function ConversationClientWrapper({
 }) {
   const scrollTop = useRef<HTMLDivElement>(null);
   const scrollref = useRef<HTMLSpanElement>(null);
+  const [error, setError] = useState("");
+
+  socket.on("message-error", (error: string) => {
+    setError(error);
+  });
 
   useEffect(() => {
     scrollref.current &&
@@ -26,6 +32,7 @@ export default function ConversationClientWrapper({
     >
       {children}
       <span ref={scrollref} className="h-0 w-full"></span>
+      {error !== "" && <p className="text-warning">{error}</p>}
     </ColumnWrapper>
   );
 }

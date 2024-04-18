@@ -39,11 +39,14 @@ export default function ProfileInfo({
   const [removeIcon, setRemoveIcon] = useState(false);
 
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const handleUpdateInfo = () => {
+    setSuccess(false);
+    setError("");
     startTransition(async () => {
       if (icon) {
         if (icon.size / 1024 / 1024 > 3) {
@@ -62,7 +65,10 @@ export default function ProfileInfo({
             person_status: status,
           });
           if (result) setError(result.error);
-          else router.refresh();
+          else {
+            setSuccess(true);
+            router.refresh();
+          }
         });
       } else {
         const result = await changeUserProfile(user.id, {
@@ -70,7 +76,10 @@ export default function ProfileInfo({
           person_status: status,
         });
         if (result) setError(result.error);
-        else router.refresh();
+        else {
+          setSuccess(true);
+          router.refresh();
+        }
       }
     });
   };
@@ -151,6 +160,7 @@ export default function ProfileInfo({
         Update profile
       </Button>
       {error !== "" && <FeedbackCard type="error" message={error} />}
+      {success && <FeedbackCard type="success" message="Profile saved" />}
     </ColumnWrapper>
   );
 }
