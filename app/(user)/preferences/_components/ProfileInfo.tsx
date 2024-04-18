@@ -1,6 +1,6 @@
 "use client";
 
-import changeUserProfile from "@/actions/changeUserProfile";
+import changeUserProfile from "@/actions/userManagement/changeUserProfile";
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import FileInput from "@/app/_components/inputs/FileInput";

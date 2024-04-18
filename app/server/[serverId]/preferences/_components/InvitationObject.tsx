@@ -1,5 +1,5 @@
 "use client";
-import deleteServerInvitation from "@/actions/deleteServerInvitation";
+import deleteServerInvitation from "@/actions/serverManagement/deleteServerInvitation";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightCheckCircleOutlineRounded from "@/public/icons/MaterialSymbolsLightCheckCircleOutlineRounded";
