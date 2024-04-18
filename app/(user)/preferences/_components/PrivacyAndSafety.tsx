@@ -1,6 +1,5 @@
 "use client";
-import changeUserInfo from "@/actions/changeUserInfo";
-import changeUserPrivacyPrefs from "@/actions/changeUserPrivacyPrefs";
+import changeUserPrivacyPrefs from "@/actions/userManagement/changeUserPrivacyPrefs";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Checkbox from "@/app/_components/inputs/Checkbox";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";

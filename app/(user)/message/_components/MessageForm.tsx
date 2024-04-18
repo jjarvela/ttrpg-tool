@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import addMessage from "../../../../actions/addMessage";
+import addMessage from "../../../../actions/directMessageActions/addMessage";
 import TextAreaInput from "../../../_components/inputs/TextAreaInput";
 import { useRouter } from "next/navigation";
 

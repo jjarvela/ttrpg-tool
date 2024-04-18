@@ -12,7 +12,7 @@ import Main from "../../_components/wrappers/PageMain";
 import RowWrapper from "../../_components/wrappers/RowWrapper";
 import { useRef, useState, useTransition } from "react";
 import FeedbackCard from "../../_components/FeedbackCard";
-import createServer from "../../../actions/createServer";
+import createServer from "../../../actions/serverManagement/createServer";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import postUpload from "@/utils/postUpload";

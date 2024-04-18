@@ -1,6 +1,6 @@
 "use client";
 
-import joinServer from "@/actions/joinServer";
+import joinServer from "@/actions/serverMemberManagement/joinServer";
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import PasswordInput from "@/app/_components/inputs/PasswordInput";

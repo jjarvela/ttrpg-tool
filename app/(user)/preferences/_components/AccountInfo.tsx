@@ -1,4 +1,4 @@
-import changeUserInfo from "../../../../actions/changeUserInfo";
+import changeUserInfo from "../../../../actions/userManagement/changeUserInfo";
 import Button from "../../../_components/Button";
 import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
 import SettingsTextInput from "./SettingsTextInput";
