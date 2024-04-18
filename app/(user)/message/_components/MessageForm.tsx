@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import addMessage from "../../../../actions/addMessage";
 import TextAreaInput from "../../../_components/inputs/TextAreaInput";
 import { useRouter } from "next/navigation";
+import { sendMessage } from "@/socket";
 
 type FormProp = {
   userId: string;
@@ -13,6 +14,7 @@ type FormProp = {
 export default function MessageForm({ userId, receiverId }: FormProp) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
   const [textArea, setTextArea] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const userIds = [userId, receiverId];
   const addMessageWithUserIds = addMessage.bind(null, userIds);
@@ -28,16 +30,20 @@ export default function MessageForm({ userId, receiverId }: FormProp) {
   return (
     <form
       action={async (formData) => {
-        await addMessageWithUserIds(formData);
-        ref.current?.focus();
-        setTextArea("");
-        router.refresh();
+        startTransition(async () => {
+          await addMessageWithUserIds(formData);
+          sendMessage(receiverId);
+          ref.current?.focus();
+          setTextArea("");
+          router.refresh();
+        });
       }}
       className=""
     >
       <TextAreaInput
         ref={ref}
         placeholder="Send message"
+        disabled={isPending}
         value={textArea}
         onChange={(e) => setTextArea(e.target.value)}
         rows={3}
