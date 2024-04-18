@@ -21,14 +21,12 @@ export default function SocketWrapper({
   useEffect(() => {
     if (socket.connected) {
       onConnect();
+    } else {
+      console.log("socket not connected, connecting");
+      socket.connect();
     }
 
     socket.on("connect", onConnect);
-
-    socket.on("add-user", () => {
-      socket.emit("send-user", userId);
-      setLatestEvent("sent user");
-    });
 
     socket.on("received-user", () => {
       setLatestEvent("Received user");
@@ -49,6 +47,8 @@ export default function SocketWrapper({
     };
 
     function onConnect() {
+      console.log("adding user");
+      socket.emit("send-user", userId);
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
 
