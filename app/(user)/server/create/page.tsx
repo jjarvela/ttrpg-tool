@@ -1,23 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import Button from "../../_components/Button";
-import PasswordInput from "../../_components/inputs/PasswordInput";
-import RadioGroup from "../../_components/inputs/RadioGroup";
-import TextAreaInput from "../../_components/inputs/TextAreaInput";
-import TextInput from "../../_components/inputs/TextInput";
-import ToggleInput from "../../_components/inputs/ToggleInput";
-import ColumnWrapper from "../../_components/wrappers/ColumnWrapper";
-import Main from "../../_components/wrappers/PageMain";
-import RowWrapper from "../../_components/wrappers/RowWrapper";
-import { useRef, useState, useTransition } from "react";
-import FeedbackCard from "../../_components/FeedbackCard";
-import createServer from "../../../actions/serverManagement/createServer";
+
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import postUpload from "@/utils/postUpload";
 import FileInput from "@/app/_components/inputs/FileInput";
 import MaterialSymbolsLightImageOutlineRounded from "@/public/icons/MaterialSymbolsLightImageOutlineRounded";
+import Button from "@/app/_components/Button";
+import FeedbackCard from "@/app/_components/FeedbackCard";
+import PasswordInput from "@/app/_components/inputs/PasswordInput";
+import RadioGroup from "@/app/_components/inputs/RadioGroup";
+import TextAreaInput from "@/app/_components/inputs/TextAreaInput";
+import TextInput from "@/app/_components/inputs/TextInput";
+import ToggleInput from "@/app/_components/inputs/ToggleInput";
+import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
+import RowWrapper from "@/app/_components/wrappers/RowWrapper";
+
+import { useState, useRef, useTransition } from "react";
+import Main from "@/app/_components/wrappers/PageMain";
+import createServer from "@/actions/serverManagement/createServer";
 
 export default function CreateServer() {
   const [serverName, setServerName] = useState("");

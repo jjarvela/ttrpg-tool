@@ -97,6 +97,7 @@ export const updateUser = async (
   data: {
     username?: string;
     screen_name?: string;
+    socket_id?: string | null;
     email?: string;
     timezone?: string;
     share_timezone?: boolean;
@@ -155,6 +156,15 @@ export const getUserServers = async (
     });
 
     return servers;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const findUserBySocket = async (socket_id: string) => {
+  try {
+    const user = db.user.findFirst({ where: { socket_id } });
+    return user;
   } catch (e) {
     return (e as Error).message;
   }
