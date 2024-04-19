@@ -2,6 +2,7 @@
 import React, { ReactNode } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import TipTapEditor from "./TipTapEditor";
+import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
 
 const CustomStyle = {
   width: "140px",
@@ -33,14 +34,15 @@ export function Note({
       className="flex flex-col border border-black50 bg-primary p-1 shadow-xl"
       ref={setNodeRef}
       style={{ ...style, ...CustomStyle, ...styles }}
-      {...listeners}
-      {...attributes}
     >
       <div className="mb-2 flex justify-center text-center">{author}</div>
 
       <div className="flex-grow">
         <TipTapEditor />
       </div>
+      <button className="mb-1 h-4 w-full" {...listeners} {...attributes}>
+        <RadixIconsDragHandleDots2 className="mx-auto h-5 w-5" />
+      </button>
     </div>
   );
 }
