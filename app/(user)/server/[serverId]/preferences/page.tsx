@@ -7,8 +7,8 @@ import getServerAuth from "@/actions/getServerAuth";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import ServerSecurity from "./_components/Security";
-import config from "../../../../../tailwind.config";
 import { Fragment } from "react";
+import checkAuthMatch from "@/utils/checkServerAuthMatch";
 
 export default async function ServerPreferences({
   params,
@@ -35,32 +35,6 @@ export default async function ServerPreferences({
   }
 
   const authMatch = checkAuthMatch(serverAuth, config);
-
-  function checkAuthMatch(
-    serverAuth: {
-      id: number;
-      server_id: string;
-      member_id: string;
-      role: string;
-      nickname: string | null;
-      icon: string | null;
-    },
-    config: {
-      id: number;
-      server_id: string;
-      config_permission: string;
-      protected: boolean | null;
-      password_hash: string | null;
-      explorable: boolean | null;
-      searchable: boolean | null;
-    },
-  ) {
-    const permissions = config.config_permission;
-    if (permissions === "All members") return true;
-    const role = serverAuth.role;
-    if (permissions.toUpperCase().includes(role.toUpperCase())) return true;
-    return false;
-  }
 
   return (
     <Main className="mx-4 min-h-[90vh] w-[98%]">
