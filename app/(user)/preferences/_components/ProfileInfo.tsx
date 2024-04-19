@@ -87,18 +87,14 @@ export default function ProfileInfo({
   if (!user) return <div></div>;
 
   return (
-    <ColumnWrapper
-      mode="section"
-      id="profile"
-      align="items-start content-start w-full"
-    >
+    <ColumnWrapper mode="section" align="items-start content-start w-full">
       <h1>User Profile</h1>
       <RowWrapper
         breakPoint="md"
         justify="justify-between"
         className="w-full gap-2 md:gap-48"
       >
-        <RowWrapper>
+        <RowWrapper id="profile">
           <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-[3px] border-dashed border-black50">
             {
               /*Icon display priority: icon remove selected => icon uploaded => user original icon */
