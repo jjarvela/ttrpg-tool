@@ -10,6 +10,7 @@ import { Fragment, useState } from "react";
 
 export default function InvitationObject({
   invitation,
+  deletable,
 }: {
   invitation: {
     id: string;
@@ -19,6 +20,7 @@ export default function InvitationObject({
     max_uses: number | null;
     protected: boolean;
   };
+  deletable: boolean;
 }) {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -35,15 +37,17 @@ export default function InvitationObject({
             </small>
           )}
         </ColumnWrapper>
-        <MaterialSymbolsLightDeleteOutlineRounded
-          className="cursor-pointer"
-          onClick={async () => {
-            setError("");
-            const result = await deleteServerInvitation(invitation.id);
-            if (typeof result === "string") setError(result);
-            else router.refresh();
-          }}
-        />
+        {deletable && (
+          <MaterialSymbolsLightDeleteOutlineRounded
+            className="cursor-pointer"
+            onClick={async () => {
+              setError("");
+              const result = await deleteServerInvitation(invitation.id);
+              if (typeof result === "string") setError(result);
+              else router.refresh();
+            }}
+          />
+        )}
         {new Date() < new Date(invitation.expires) &&
           (!invitation.max_uses ||
             invitation.used_count < invitation.max_uses) && (
