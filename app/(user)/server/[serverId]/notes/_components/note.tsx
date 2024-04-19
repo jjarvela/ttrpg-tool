@@ -1,5 +1,7 @@
+"use client";
 import React, { ReactNode } from "react";
 import { useDraggable } from "@dnd-kit/core";
+import TipTapEditor from "./TipTapEditor";
 
 const CustomStyle = {
   width: "140px",
@@ -9,7 +11,6 @@ const CustomStyle = {
 export function Note({
   id,
   author,
-  content,
   styles,
 }: {
   id: string;
@@ -36,7 +37,10 @@ export function Note({
       {...attributes}
     >
       <div className="mb-2 flex justify-center text-center">{author}</div>
-      <div className="flex-grow">{content}</div>
+
+      <div className="flex-grow">
+        <TipTapEditor />
+      </div>
     </div>
   );
 }

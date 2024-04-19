@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -62,6 +62,8 @@ export default function ServerNotes() {
 
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
+  const dndId = useId();
+
   function handleDragEnd(event: DragEndEvent) {
     const note = notes.find((x) => x.id === event.active.id);
     if (note) {
@@ -73,26 +75,29 @@ export default function ServerNotes() {
   }
 
   return (
-    <Main className="mx-4">
+    <Main className="m-0">
       <DndContext
+        id={dndId}
         onDragEnd={handleDragEnd}
         sensors={sensors}
         modifiers={[restrictToParentElement]}
       >
-        <div ref={setNodeRef} style={style}>
-          {notes.map((note) => (
-            <Note
-              styles={{
-                position: "absolute",
-                left: `${note.position.x}px`,
-                top: `${note.position.y}px`,
-              }}
-              key={note.id}
-              id={note.id}
-              author={note.author}
-              content={note.content}
-            />
-          ))}
+        <div className="scrollbar-thin h-[95vh] w-[74vw] overflow-auto md:h-[90vh] lg:w-[88vw]">
+          <div ref={setNodeRef} style={style}>
+            {notes.map((note) => (
+              <Note
+                styles={{
+                  position: "relative",
+                  left: `${note.position.x}px`,
+                  top: `${note.position.y}px`,
+                }}
+                key={note.id}
+                id={note.id}
+                author={note.author}
+                content={note.content}
+              />
+            ))}
+          </div>
         </div>
       </DndContext>
     </Main>
