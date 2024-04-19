@@ -13,7 +13,7 @@ export default async function ServerInvitationsList({
     return <FeedbackCard type="error" message="Something went wrong!" />;
   if (invitations.length === 0) return <p>There are no active invitations.</p>;
   return (
-    <ColumnWrapper>
+    <ColumnWrapper mode="section" id="invitations">
       {invitations.map((item) => (
         <InvitationObject key={item.id} invitation={item} />
       ))}
