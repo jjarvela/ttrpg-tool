@@ -96,9 +96,8 @@ export const getServerConfig = async (
 export const updateServerConfig = async (
   server_id: string,
   data: {
-    server_id: string;
-    config_permission: string;
-    protected?: boolean;
+    config_permission?: string;
+    protected?: boolean | null;
     password_hash?: string;
     explorable?: boolean;
     searchable?: boolean;
