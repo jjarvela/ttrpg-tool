@@ -87,7 +87,11 @@ export default function ProfileInfo({
   if (!user) return <div></div>;
 
   return (
-    <ColumnWrapper mode="section" align="items-start content-start w-full">
+    <ColumnWrapper
+      mode="section"
+      id="profile"
+      align="items-start content-start w-full"
+    >
       <h1>User Profile</h1>
       <RowWrapper
         breakPoint="md"

@@ -29,7 +29,11 @@ export default function PrivacyAndSafety({ user }: { user: user }) {
   const router = useRouter();
 
   return (
-    <ColumnWrapper align="content-start items-start">
+    <ColumnWrapper
+      mode="section"
+      id="privacy"
+      align="content-start items-start"
+    >
       <h1>Privacy and Safety</h1>
       <h3>Server defaults</h3>
       <Checkbox
