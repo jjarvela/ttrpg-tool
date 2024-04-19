@@ -47,8 +47,8 @@ const notesData: NoteData[] = [
 ];
 
 const style = {
-  width: "600px",
-  height: "600px",
+  width: "1000px",
+  height: "1000px",
   backgroundColor: "blue",
 };
 
@@ -73,12 +73,12 @@ export default function ServerNotes() {
   }
 
   return (
-    <DndContext
-      onDragEnd={handleDragEnd}
-      sensors={sensors}
-      modifiers={[restrictToParentElement]}
-    >
-      <Main className="mx-4">
+    <Main className="mx-4">
+      <DndContext
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+        modifiers={[restrictToParentElement]}
+      >
         <div ref={setNodeRef} style={style}>
           {notes.map((note) => (
             <Note
@@ -94,7 +94,7 @@ export default function ServerNotes() {
             />
           ))}
         </div>
-      </Main>
-    </DndContext>
+      </DndContext>
+    </Main>
   );
 }
