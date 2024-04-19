@@ -40,7 +40,7 @@ export function Note({
       <div className="flex-grow">
         <TipTapEditor />
       </div>
-      <button className="mb-1 h-4 w-full" {...listeners} {...attributes}>
+      <button className="my-1 h-4 w-full" {...listeners} {...attributes}>
         <RadixIconsDragHandleDots2 className="mx-auto h-5 w-5" />
       </button>
     </div>
