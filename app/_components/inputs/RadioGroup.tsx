@@ -13,6 +13,8 @@ type RadioGroupProps = {
   labelStyle?: string;
   radioStyle?: { radioBg: string; selectedColour?: string; radioSize?: string };
   required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
 };
 
 export default function RadioGroup({
@@ -23,6 +25,8 @@ export default function RadioGroup({
   className,
   labelStyle,
   radioStyle,
+  readonly,
+  disabled,
 }: RadioGroupProps) {
   const [isInvalid, setIsInvalid] = useState(false);
 
@@ -39,6 +43,8 @@ export default function RadioGroup({
           className={className}
           labelStyle={labelStyle}
           radioStyle={radioStyle}
+          readOnly={readonly}
+          disabled={disabled}
         />
       ))}
       {isInvalid && (

@@ -14,6 +14,8 @@ interface RadioInputProps
     React.SetStateAction<string | number | readonly string[] | undefined>
   >;
   setIsInvalid: React.Dispatch<React.SetStateAction<boolean>>;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export default function RadioInput({
@@ -24,8 +26,11 @@ export default function RadioInput({
   selected,
   setSelected,
   setIsInvalid,
+  disabled,
+  readOnly,
   ...rest
 }: RadioInputProps) {
+  const disabledClass = "fill-black50";
   return (
     <label htmlFor={name + "-" + value} className="rounded-lg">
       <RowWrapper>
@@ -50,8 +55,12 @@ export default function RadioInput({
               "fill-transparent transition-all duration-100 ease-in-out",
               selected === value &&
                 (radioStyle?.selectedColour
-                  ? radioStyle?.selectedColour
-                  : "fill-primary"),
+                  ? disabled || readOnly
+                    ? disabledClass
+                    : radioStyle?.selectedColour
+                  : disabled || readOnly
+                    ? disabledClass
+                    : "fill-primary"),
             )}
           >
             <circle r={6} cx={8} cy={8} />
@@ -63,6 +72,7 @@ export default function RadioInput({
           style={{ height: "0px", width: "0px" }}
           checked={selected === value ? true : false}
           onChange={() => {
+            if (disabled || readOnly) return;
             selected === value ? setSelected(undefined) : setSelected(value);
           }}
           onInvalid={() => setIsInvalid(true)}
