@@ -31,7 +31,7 @@ export function Note({
 
   return (
     <div
-      className="flex flex-col border border-black50 bg-primary p-1 shadow-xl"
+      className="flex flex-col border border-black50 bg-green-800 p-1 shadow-xl"
       ref={setNodeRef}
       style={{ ...style, ...CustomStyle, ...styles }}
     >

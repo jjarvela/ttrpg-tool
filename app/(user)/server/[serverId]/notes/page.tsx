@@ -3,7 +3,6 @@ import React, { useId, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
-  KeyboardSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
@@ -49,7 +48,6 @@ const notesData: NoteData[] = [
 const style = {
   width: "1000px",
   height: "1000px",
-  backgroundColor: "blue",
 };
 
 export default function ServerNotes() {
@@ -82,7 +80,10 @@ export default function ServerNotes() {
         sensors={sensors}
         modifiers={[restrictToParentElement]}
       >
-        <div className="scrollbar-thin h-[95vh] w-[74vw] overflow-auto md:h-[90vh] lg:w-[88vw]">
+        <div
+          className="scrollbar-thin h-[95vh] w-[74vw] overflow-auto md:h-[90vh] lg:w-[88vw]"
+          style={{ backgroundColor: "transparent" }}
+        >
           <div ref={setNodeRef} style={style}>
             {notes.map((note) => (
               <Note
