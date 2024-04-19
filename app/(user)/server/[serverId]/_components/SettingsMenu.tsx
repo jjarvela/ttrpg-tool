@@ -6,15 +6,26 @@ import { Fragment, useRef, useState } from "react";
 import NewInvitationModal from "./NewInvitationModal";
 import handleClickOutside from "@/utils/handleClickOutside";
 import { useRouter } from "next/navigation";
+import MaterialSymbolsLightLoginOutlineRounded from "@/public/icons/MaterialSymbolsLightLoginOutlineRounded";
+import leaveServer from "@/actions/serverMemberManagement/leaveServer";
+import ConfirmModal from "@/app/_components/ConfirmModal";
 
 export default function ServerSettingsMenu({
-  server_id,
+  serverAuth,
 }: {
-  server_id: string;
+  serverAuth: {
+    id: number;
+    server_id: string;
+    member_id: string;
+    role: string;
+    nickname: string | null;
+    icon: string | null;
+  };
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const newInvitationRef = useRef<HTMLDialogElement>(null);
+  const confirmRef = useRef<HTMLDialogElement>(null);
   const router = useRouter();
   return (
     <Fragment>
@@ -50,17 +61,47 @@ export default function ServerSettingsMenu({
               </p>
               <p
                 onClick={() => {
-                  router.push(`/server/${server_id}/preferences`);
+                  router.push(`/server/${serverAuth.server_id}/preferences`);
                   setIsOpen(false);
                 }}
               >
                 Manage Invitations
               </p>
+              <p
+                className="flex content-center items-center text-warning"
+                onClick={() => confirmRef.current?.showModal()}
+              >
+                <span>Leave server</span>{" "}
+                <MaterialSymbolsLightLoginOutlineRounded className="text-xl" />
+              </p>
             </ColumnWrapper>
           </div>
         )}
       </div>
-      <NewInvitationModal refObject={newInvitationRef} serverId={server_id} />
+      <NewInvitationModal
+        refObject={newInvitationRef}
+        serverId={serverAuth.server_id}
+      />
+      <ConfirmModal
+        refObject={confirmRef}
+        onConfirm={async () => {
+          await leaveServer(serverAuth.member_id, serverAuth.server_id);
+          router.refresh();
+        }}
+        confirmText="Leave"
+        confirmButtonClass="bg-warning"
+      >
+        <h5 className="mb-4">Are you sure you wish to leave this server?</h5>
+        <p className="text-center">
+          Servers with no remaining members will be automatically deleted.
+        </p>
+        {serverAuth.role === "admin" && (
+          <p className="mb-4 max-w-[80%] text-center">
+            Upon your leaving, another user will be automatically promoted to
+            admin.
+          </p>
+        )}
+      </ConfirmModal>
     </Fragment>
   );
 }
