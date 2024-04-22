@@ -2,13 +2,17 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import ServerSubMenu from "./ServerSubMenu";
 import ServerSettingsMenu from "./SettingsMenu";
-import { getServerData } from "@/prisma/services/serverService";
+import {
+  getServerConfig,
+  getServerData,
+} from "@/prisma/services/serverService";
 import ServerInnerNavLink from "./ServerInnerNavLink";
 import Link from "next/link";
 import ServerUserDisplay from "./ServerUserDisplay";
 import getServerAuth from "@/actions/getServerAuth";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import checkAuthMatch from "@/utils/checkServerAuthMatch";
 
 export default async function ServerInnerNav({ id }: { id: string }) {
   const server = await getServerData(id);
@@ -19,8 +23,16 @@ export default async function ServerInnerNav({ id }: { id: string }) {
     (session as ExtendedSession).userId,
   );
   if (!serverAuth) redirect("/server");
+  const config = await getServerConfig(id);
+  if (
+    !server ||
+    typeof server === "string" ||
+    !config ||
+    typeof config === "string"
+  )
+    return <p>No server data</p>;
 
-  if (!server || typeof server === "string") return <p>No server data</p>;
+  const authMatch = checkAuthMatch(serverAuth, config);
   return (
     <ColumnWrapper
       mode="section"
@@ -34,7 +46,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
         <Link href={`/server/${id}`}>
           <h5 className="text-wrap">{server.server_name}</h5>
         </Link>
-        <ServerSettingsMenu serverAuth={serverAuth} />
+        <ServerSettingsMenu serverAuth={serverAuth} authMatch={authMatch} />
       </RowWrapper>
       <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
         <ServerSubMenu title="Channels">
