@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import ServerSecurity from "./_components/Security";
 import { Fragment } from "react";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
+import Discoverability from "./_components/Discoverability";
 
 export default async function ServerPreferences({
   params,
@@ -39,14 +40,23 @@ export default async function ServerPreferences({
   return (
     <Main className="mx-4 min-h-[90vh] w-[98%]">
       <h1>Preferences</h1>
-      <h2>Invitations</h2>
-      <ServerInvitationsList serverId={id} authMatch={authMatch} />
+
       {authMatch && (
         <Fragment>
           <h2>Security</h2>
           <ServerSecurity serverAuth={serverAuth} config={config} />{" "}
         </Fragment>
       )}
+
+      {authMatch && (
+        <Fragment>
+          <h2>Discoverability</h2>
+          <Discoverability serverAuth={serverAuth} config={config} />{" "}
+        </Fragment>
+      )}
+
+      <h2>Invitations</h2>
+      <ServerInvitationsList serverId={id} authMatch={authMatch} />
     </Main>
   );
 }
