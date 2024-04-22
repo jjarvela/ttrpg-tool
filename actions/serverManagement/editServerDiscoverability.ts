@@ -27,6 +27,7 @@ export default async function editServerDiscoverability(
     const updatedConfig = await updateServerConfig(serverConfig.server_id, {
       searchable: data.searchable,
       explorable: data.explorable,
+      join_permission: data.join_permission,
     });
     console.log(updatedConfig);
     return updatedConfig;

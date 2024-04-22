@@ -101,6 +101,7 @@ export const updateServerConfig = async (
     password_hash?: string;
     explorable?: boolean;
     searchable?: boolean;
+    join_permission?: string;
   },
 ) => {
   try {

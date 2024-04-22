@@ -15,4 +15,9 @@ type ServerConfig = {
   password_hash: string | null;
   explorable: boolean | null;
   searchable: boolean | null;
+  join_permission:
+    | "invitation link"
+    | "unlimited invitation"
+    | "any invitation"
+    | null;
 };
