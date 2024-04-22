@@ -4,6 +4,7 @@ import { useState } from "react";
 
 type RadioGroupProps = {
   groupName: string;
+  labels?: Array<string>;
   values: Array<string | number | readonly string[] | undefined>;
   selected: string | number | readonly string[] | undefined;
   setSelected: React.Dispatch<
@@ -19,6 +20,7 @@ type RadioGroupProps = {
 
 export default function RadioGroup({
   groupName,
+  labels,
   values,
   selected,
   setSelected,
@@ -32,10 +34,11 @@ export default function RadioGroup({
 
   return (
     <div className={twMerge("flex", className)}>
-      {values.map((value) => (
+      {values.map((value, index) => (
         <RadioInput
           key={groupName + value}
           name={groupName}
+          label={labels ? labels[index] : undefined}
           value={value}
           selected={selected}
           setSelected={setSelected}

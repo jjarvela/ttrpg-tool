@@ -7,6 +7,7 @@ interface RadioInputProps
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
+  label?: string;
   labelStyle?: string; //css classes
   radioStyle?: { radioBg: string; selectedColour?: string; radioSize?: string };
   selected: string | number | readonly string[] | undefined;
@@ -21,6 +22,7 @@ interface RadioInputProps
 export default function RadioInput({
   name,
   value,
+  label,
   labelStyle,
   radioStyle,
   selected,
@@ -35,7 +37,7 @@ export default function RadioInput({
     <label htmlFor={name + "-" + value} className="rounded-lg">
       <RowWrapper>
         <span className={twMerge("flex-grow-1", labelStyle && labelStyle)}>
-          {value}
+          {label ? label : value}
         </span>
         <div
           style={{
