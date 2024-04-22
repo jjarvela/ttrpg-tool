@@ -76,6 +76,7 @@ model ServerConfig {
   password_hash       String?
   explorable          Boolean?
   searchable          Boolean?
+  join_permission     String?
   server              Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
