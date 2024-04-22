@@ -25,7 +25,7 @@ export default function Discoverability({
   );
   const [joinPermission, setJoinPermission] = useState<
     string | number | readonly string[] | undefined
-  >("invitation link");
+  >(config.join_permission || "invitation link");
 
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState("");
@@ -60,8 +60,8 @@ export default function Discoverability({
               setError(result);
               return;
             }
-            router.refresh();
             setSuccess("success");
+            router.refresh();
           } catch (e) {
             setError("An unexpected error occurred.");
             return;
@@ -78,6 +78,7 @@ export default function Discoverability({
         <ToggleInput
           id="server-explore"
           label="Include server in explore"
+          onByDefault={explorePermission}
           checked={explorePermission}
           onToggle={(checked) => setExplorePermission(checked)}
           disabled={isPending}
@@ -85,6 +86,7 @@ export default function Discoverability({
         <ToggleInput
           id="server-search"
           label="Include server in search results"
+          onByDefault={searchPermission}
           checked={searchPermission}
           onToggle={(checked) => setSearchPermission(checked)}
           disabled={isPending}
