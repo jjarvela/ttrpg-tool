@@ -10,23 +10,8 @@ import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
 type ServerSecurityProps = {
-  serverAuth: {
-    id: number;
-    server_id: string;
-    member_id: string;
-    role: string;
-    nickname: string | null;
-    icon: string | null;
-  };
-  config: {
-    id: number;
-    server_id: string;
-    config_permission: string;
-    protected: boolean | null;
-    password_hash: string | null;
-    explorable: boolean | null;
-    searchable: boolean | null;
-  };
+  serverAuth: ServerAuth;
+  config: ServerConfig;
 };
 
 export default function ServerSecurity({
@@ -93,7 +78,7 @@ export default function ServerSecurity({
       <ColumnWrapper
         mode="section"
         id="security"
-        align="content-start items-start"
+        align="content-start items-start mb-8"
       >
         <h4>Password protection</h4>
         <ToggleInput
