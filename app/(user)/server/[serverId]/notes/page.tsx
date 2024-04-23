@@ -17,7 +17,6 @@ import { v4 as uuidV4 } from "uuid";
 interface NoteData {
   id: string;
   author: string;
-  content: string;
   documentName: string;
   appId: string;
   token: string;
@@ -27,14 +26,42 @@ interface NoteData {
   };
 }
 
+const token = process.env.NEXT_PUBLIC_TIPTAP_TOKEN || "default_token";
+const appId = process.env.NEXT_PUBLIC_TIPTAP_APPID || "default_app_id";
+
 const style = {
   width: "1000px",
   height: "1000px",
 };
 
+const mockNotes: NoteData[] = [
+  {
+    id: "1",
+    author: "John Doe",
+    position: {
+      x: 300,
+      y: 100,
+    },
+    documentName: "John",
+    appId: appId,
+    token: token,
+  },
+  {
+    id: "2",
+    author: "Dickerson",
+    position: {
+      x: 500,
+      y: 200,
+    },
+    documentName: "Dick",
+    appId: appId,
+    token: token,
+  },
+];
+
 export default function ServerNotes() {
   const { setNodeRef } = useDroppable({ id: "notes" });
-  const [notes, setNotes] = useState<any[]>([]);
+  const [notes, setNotes] = useState<NoteData[]>(mockNotes);
 
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
@@ -60,10 +87,8 @@ export default function ServerNotes() {
       id: uuidV4(), // generate a unique id for the new note
       author: "Anonymous",
       documentName: newDocumentName, // Unique document name for each note
-      content: "New note content",
-      appId: "7MELDG9Y",
-      token:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTM3NzY3NjgsIm5iZiI6MTcxMzc3Njc2OCwiZXhwIjoxNzEzODYzMTY4LCJpc3MiOiJodHRwczovL2Nsb3VkLnRpcHRhcC5kZXYiLCJhdWQiOiI3bWVsZGc5eSJ9.Z4KEsp2e8CHOFe9hBUsJcJku-c-cp1Tapqmhq7uROAE",
+      appId: appId,
+      token: token,
       position: {
         x: 200,
         y: 200,
@@ -100,7 +125,6 @@ export default function ServerNotes() {
                 key={note.id}
                 id={note.id}
                 author={note.author}
-                content={note.content}
                 documentName={note.documentName} // Pass the documentName from note
                 appId={note.appId} // Pass the appId from note
                 token={note.token} // Pass the token from note

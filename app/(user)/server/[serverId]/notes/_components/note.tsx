@@ -1,9 +1,9 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useMemo } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import Collaboration from "@tiptap/extension-collaboration";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
-import Heading from "@tiptap/extension-heading";
+import Paragraph from "@tiptap/extension-paragraph";
 import * as Y from "yjs";
 import { TiptapCollabProvider } from "@hocuspocus/provider";
 import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
@@ -23,7 +23,7 @@ const TipTapEditorWithCollaboration = ({
   appId: string;
   token: string;
 }) => {
-  const doc = new Y.Doc();
+  const doc = useMemo(() => new Y.Doc(), []);
 
   useEffect(() => {
     const provider = new TiptapCollabProvider({
@@ -38,9 +38,7 @@ const TipTapEditorWithCollaboration = ({
     extensions: [
       Document,
       Text,
-      Heading.configure({
-        levels: [6],
-      }),
+      Paragraph,
       Collaboration.configure({
         document: doc,
       }),
@@ -60,13 +58,12 @@ export function Note({
 }: {
   id: string;
   author: string;
-  content: ReactNode;
   styles?: React.CSSProperties;
   documentName: string;
   appId: string;
   token: string;
 }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, transform } = useDraggable({
     id,
   });
 
