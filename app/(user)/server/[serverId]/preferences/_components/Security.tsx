@@ -110,6 +110,7 @@ export default function ServerSecurity({
         />
 
         <h4 className="mt-5">Who can customise server settings</h4>
+        <small>* this setting is exclusive for server admin</small>
         <RadioGroup
           groupName="settings-rights-holders"
           values={["Admin", "Admin and Moderators", "All members"]}
@@ -125,6 +126,7 @@ export default function ServerSecurity({
             setSettingsRightsHolders(s!.toString());
           }}
           disabled={isPending}
+          readonly={serverAuth.role !== "admin"}
         />
         <Button className="btn-primary" type="submit">
           Save
