@@ -18,7 +18,9 @@ import handleClickOutside from "../../../utils/handleClickOutside";
  * @param onSelect (selected: Array<Option>) => void
  */
 
-type Option = { label: string; value: string | number | boolean };
+declare global {
+  type Option = { label: string; value: string | number | boolean };
+}
 
 interface DropdownSelectionProps {
   options: Array<Option>;
