@@ -1,23 +1,24 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import addMessage from "../../../../actions/addMessage";
-import TextAreaInput from "../../../_components/inputs/TextAreaInput";
+import addChatMessage from "../../../../../../../actions/addChatMessage";
+import TextAreaInput from "../../../../../../_components/inputs/TextAreaInput";
 import { useRouter } from "next/navigation";
+import { getParticipantsOfChannel } from "@/prisma/services/channelService";
 import { sendMessage } from "@/socket";
 
 type FormProp = {
   userId: string;
-  receiverId: string;
+  channelId: string;
 };
 
-export default function MessageForm({ userId, receiverId }: FormProp) {
+export default function ChatForm({ userId, channelId }: FormProp) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
   const [textArea, setTextArea] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  const userIds = [userId, receiverId];
-  const addMessageWithUserIds = addMessage.bind(null, userIds);
+  const ids = [userId, channelId];
+  const addMessageWithChannelId = addChatMessage.bind(null, ids);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -25,14 +26,24 @@ export default function MessageForm({ userId, receiverId }: FormProp) {
       e.currentTarget.form?.requestSubmit();
     }
   };
+  console.log("here");
 
   const router = useRouter();
   return (
     <form
       action={async (formData) => {
         startTransition(async () => {
-          await addMessageWithUserIds(formData);
-          sendMessage(receiverId);
+          await addMessageWithChannelId(formData);
+          const receivers = await getParticipantsOfChannel(channelId);
+          console.log("all" + receivers);
+          if (receivers && typeof receivers !== "string") {
+            receivers.participants.forEach((element) => {
+              if (userId !== element.participant_id) {
+                console.log("receiver" + element.participant_id);
+                sendMessage(element.participant_id);
+              }
+            });
+          }
           ref.current?.focus();
           setTextArea("");
           router.refresh();

@@ -32,12 +32,19 @@ export const getChannels = async (server_id: string) => {
   }
 };
 
-export const getChannelData = async (channel_id: string) => {
+export const getParticipantsOfChannel = async (channel_id: string) => {
   try {
-    const channel = await db.channel.findUnique({
-      where: { uid: channel_id },
+    const participants = await db.conversation.findFirst({
+      where: { channel_id: channel_id },
+      select: {
+        participants: {
+          select: {
+            participant_id: true,
+          },
+        },
+      },
     });
-    return channel;
+    return participants;
   } catch (e) {
     return (e as Error).message;
   }

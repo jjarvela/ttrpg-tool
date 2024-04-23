@@ -31,8 +31,6 @@ const SideMenu = async ({ className }: { className?: string }) => {
     image: true,
   });
 
-  console.log(servers);
-
   if (typeof servers === "string")
     return <FeedbackCard type="error" message="Something went wrong!" />;
 
@@ -41,7 +39,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
       <ColumnWrapper
         align="items-center"
         className={twMerge(
-          "sticky left-0 top-0 z-[99] mr-2 h-screen border-r-[1px] border-black50 bg-primary dark:bg-black",
+          "sticky left-0 top-0 z-[99] h-screen border-r-[1px] border-black50 bg-primary dark:bg-black",
           className ? className : "",
         )}
       >

@@ -122,3 +122,45 @@ export const createChannelConversation = async (
     return (e as Error).message;
   }
 };
+
+export const getMessagesByChannelId = async (channel_id: string) => {
+  try {
+    const result = await db.conversation.findFirst({
+      where: {
+        channel_id: channel_id,
+      },
+      select: {
+        messages: {
+          select: {
+            uid: true,
+            sender_id: true,
+            message: true,
+            created_at: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: "asc",
+      },
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getConversationByChannelId = async (channel_id: string) => {
+  try {
+    const result = await db.conversation.findFirst({
+      where: {
+        channel_id: channel_id,
+      },
+      select: {
+        uid: true,
+      },
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};

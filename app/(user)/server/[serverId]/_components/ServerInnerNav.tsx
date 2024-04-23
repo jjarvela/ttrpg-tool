@@ -6,11 +6,23 @@ import { getServerData } from "@/prisma/services/serverService";
 import ServerInnerNavLink from "./ServerInnerNavLink";
 import Link from "next/link";
 import ServerUserDisplay from "./ServerUserDisplay";
+import { getChannels } from "@/prisma/services/channelService";
 
 export default async function ServerInnerNav({ id }: { id: string }) {
   const server = await getServerData(id);
 
   if (!server || typeof server === "string") return <p>No server data</p>;
+  const channels = await getChannels(id);
+  if (!channels || typeof channels === "string") return <p>No channels</p>;
+  const listChannels = channels.map((channel) => {
+    return (
+      <li key={channel.uid}>
+        <Link href={`/server/${id}/chat/${channel.uid}`}>
+          {channel.channel_name}
+        </Link>
+      </li>
+    );
+  });
   return (
     <ColumnWrapper
       mode="section"
@@ -28,18 +40,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
       </RowWrapper>
       <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
         <ServerSubMenu title="Channels">
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
+          <ul className="flex-grow">{listChannels}</ul>
         </ServerSubMenu>
         <ServerInnerNavLink
           title="Characters"
