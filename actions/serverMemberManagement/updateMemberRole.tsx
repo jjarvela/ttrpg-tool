@@ -21,7 +21,7 @@ export default async function updateMemberRole(
   server_id: string,
   target_member_id: string,
   updater_user_id: string,
-  role: "admin" | "moderator" | "member",
+  role: string,
 ) {
   //get updater information to check their privileges before allowing updates
   const updater = await getServerMember(server_id, updater_user_id);
