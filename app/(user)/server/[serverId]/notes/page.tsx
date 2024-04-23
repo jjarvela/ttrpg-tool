@@ -12,38 +12,20 @@ import {
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
+import { v4 as uuidV4 } from "uuid";
 
 interface NoteData {
   id: string;
   author: string;
   content: string;
+  documentName: string;
+  appId: string;
+  token: string;
   position: {
     x: number;
     y: number;
   };
 }
-
-const notesData: NoteData[] = [
-  {
-    id: "1",
-    author: "John Doe",
-    content:
-      "The left path still needs to The left path still needs to The left path still needs to The left path still needs to ",
-    position: {
-      x: 300,
-      y: 100,
-    },
-  },
-  {
-    id: "2",
-    author: "Dickerson",
-    content: "The left path still needs to be explored",
-    position: {
-      x: 500,
-      y: 200,
-    },
-  },
-];
 
 const style = {
   width: "1000px",
@@ -52,7 +34,7 @@ const style = {
 
 export default function ServerNotes() {
   const { setNodeRef } = useDroppable({ id: "notes" });
-  const [notes, setNotes] = useState<NoteData[]>(notesData);
+  const [notes, setNotes] = useState<any[]>([]);
 
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
@@ -72,8 +54,31 @@ export default function ServerNotes() {
     }
   }
 
+  function handleNewNote() {
+    const newDocumentName = uuidV4();
+    const newNote: NoteData = {
+      id: uuidV4(), // generate a unique id for the new note
+      author: "Anonymous",
+      documentName: newDocumentName, // Unique document name for each note
+      content: "New note content",
+      appId: "7MELDG9Y",
+      token:
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTM3NzY3NjgsIm5iZiI6MTcxMzc3Njc2OCwiZXhwIjoxNzEzODYzMTY4LCJpc3MiOiJodHRwczovL2Nsb3VkLnRpcHRhcC5kZXYiLCJhdWQiOiI3bWVsZGc5eSJ9.Z4KEsp2e8CHOFe9hBUsJcJku-c-cp1Tapqmhq7uROAE",
+      position: {
+        x: 200,
+        y: 200,
+      },
+    };
+    setNotes([...notes, newNote]);
+  }
+
   return (
     <Main className="m-0">
+      <div className="mb-4 flex justify-center">
+        <button onClick={handleNewNote} className="btn btn-primary">
+          New Note
+        </button>
+      </div>
       <DndContext
         id={dndId}
         onDragEnd={handleDragEnd}
@@ -96,6 +101,9 @@ export default function ServerNotes() {
                 id={note.id}
                 author={note.author}
                 content={note.content}
+                documentName={note.documentName} // Pass the documentName from note
+                appId={note.appId} // Pass the appId from note
+                token={note.token} // Pass the token from note
               />
             ))}
           </div>
