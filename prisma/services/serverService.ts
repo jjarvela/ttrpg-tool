@@ -128,6 +128,7 @@ export const getServerMembers = async (id: string) => {
             timezone: true,
             share_timezone: true,
             socket_id: true,
+            person_status: true,
           },
         },
       },
