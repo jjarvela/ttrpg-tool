@@ -45,6 +45,12 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
     const timezones: { timezone: string; members: member[] }[] = [];
     members.forEach((member) => {
       if (!member.user.share_timezone) return;
+      const time = new Intl.DateTimeFormat("fi", {
+        dateStyle: "short",
+        timeStyle: "long",
+        timeZone: member.user.timezone || "Australia/Sydney",
+      }).format(new Date());
+      console.log(time);
       const timezone = new Intl.DateTimeFormat("fi", {
         dateStyle: "short",
         timeStyle: "long",
