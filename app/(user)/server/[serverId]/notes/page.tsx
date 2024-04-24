@@ -1,5 +1,5 @@
 "use client";
-import React, { useId, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -13,6 +13,7 @@ import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
 import { v4 as uuidV4 } from "uuid";
+import { getData } from "./_components/GetNotes";
 
 interface NoteData {
   id: string;
@@ -60,6 +61,20 @@ const mockNotes: NoteData[] = [
 ];
 
 export default function ServerNotes() {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getData();
+        console.log(data);
+        // setNotes(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Run only once on mount
+
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>(mockNotes);
 
