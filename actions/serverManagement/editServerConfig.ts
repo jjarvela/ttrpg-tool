@@ -7,6 +7,13 @@ import {
 import * as bcrypt from "bcryptjs";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
 
+/**
+ * This function can be called to change the security preferences of a server
+ * @param userId ID of the user calling the operation (to check authorisation)
+ * @param serverConfig configuration options of the target server
+ * @param data {protected?: boolean | null, config_permission?: string, password?: string}
+ * @returns
+ */
 export default async function editServerConfig(
   userId: string,
   serverConfig: ServerConfig,
@@ -25,6 +32,10 @@ export default async function editServerConfig(
   if (!updater || typeof updater === "string")
     return "An unexpected error occurred.";
   const auth = await checkAuthMatch(updater, serverConfig);
+
+  //don't allow users who aren't admins to touch config_permission
+  if (updater.role !== "admin" && data.config_permission)
+    delete data.config_permission;
 
   if (!auth)
     return "You don't have the required permissions to alter these settings.";

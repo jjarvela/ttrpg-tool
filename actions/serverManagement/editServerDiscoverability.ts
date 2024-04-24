@@ -6,6 +6,14 @@ import {
 } from "@/prisma/services/serverService";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
 
+/**
+ * This server action is for updating the discoverability preferences of a server
+ * @param userId the ID of the user calling the operation (used to check authorisation)
+ * @param serverConfig the configuration options of the target server (to get server ID and check authorisation)
+ * @param data {searchable?: boolean, explorable?: boolean, join_permission?: string}
+ * @returns string on error, updated server config on success
+ */
+
 export default async function editServerDiscoverability(
   userId: string,
   serverConfig: ServerConfig,
