@@ -1,6 +1,9 @@
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Main from "@/app/_components/wrappers/PageMain";
-import { getServerConfig } from "@/prisma/services/serverService";
+import {
+  getServerConfig,
+  getServerData,
+} from "@/prisma/services/serverService";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import ServerInvitationsList from "./_components/InvitationList";
 import getServerAuth from "@/actions/getServerAuth";
@@ -10,6 +13,8 @@ import ServerSecurity from "./_components/Security";
 import { Fragment } from "react";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
 import Discoverability from "./_components/Discoverability";
+import ServerInfo from "./_components/ServerInfo";
+import Icon from "@/app/_components/Icon";
 
 export default async function ServerPreferences({
   params,
@@ -31,7 +36,18 @@ export default async function ServerPreferences({
 
   if (!serverAuth) redirect("/server");
 
-  if (!config || typeof config === "string") {
+  const info = await getServerData(id, {
+    server_name: true,
+    description: true,
+    image: true,
+  });
+
+  if (
+    !config ||
+    typeof config === "string" ||
+    !info ||
+    typeof info === "string"
+  ) {
     return <FeedbackCard type="error" message="Something went wrong." />;
   }
 
@@ -40,6 +56,21 @@ export default async function ServerPreferences({
   return (
     <Main className="mx-4 min-h-[90vh] w-[98%]">
       <h1>Preferences</h1>
+      <h2>Server information</h2>
+
+      <ServerInfo
+        info={info}
+        serverAuth={serverAuth}
+        config={config}
+        editable={authMatch}
+        server_icon={
+          <Icon
+            filename={info.image || ""}
+            alt="server icon"
+            className="absolute left-0 top-0"
+          />
+        }
+      />
 
       {authMatch && (
         <Fragment>
