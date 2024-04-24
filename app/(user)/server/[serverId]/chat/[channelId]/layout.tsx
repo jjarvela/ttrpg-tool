@@ -19,7 +19,7 @@ export default async function FormLayout({
   const channelId = params.channelId;
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-grow flex-col">
       {children}
       <ChatForm userId={userId} channelId={channelId} />
     </div>

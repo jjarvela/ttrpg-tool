@@ -33,8 +33,9 @@ export default function ChatForm({ userId, channelId }: FormProp) {
     <form
       action={async (formData) => {
         startTransition(async () => {
+          console.log("sending");
           await addMessageWithChannelId(formData);
-          const receivers = await getParticipantsOfChannel(channelId);
+          /* const receivers = await getParticipantsOfChannel(channelId);
           console.log("all" + receivers);
           if (receivers && typeof receivers !== "string") {
             receivers.participants.forEach((element) => {
@@ -43,7 +44,7 @@ export default function ChatForm({ userId, channelId }: FormProp) {
                 sendMessage(element.participant_id);
               }
             });
-          }
+          } */
           ref.current?.focus();
           setTextArea("");
           router.refresh();
