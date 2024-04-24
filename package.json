@@ -10,7 +10,7 @@
     "dbSetup": "prisma generate && prisma db push && prisma db seed"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"commonjs\"} prisma/seed/index.ts",
+    "seed": "ts-node prisma/seed/index.ts",
     "schema": "prisma/schema.prisma"
   },
   "dependencies": {
