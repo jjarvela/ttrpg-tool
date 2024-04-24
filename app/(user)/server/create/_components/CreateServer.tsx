@@ -139,6 +139,7 @@ export default function CreateServer({ userId }: { userId: string }) {
             onChange={(e) =>
               setIcon(e.target.files ? e.target.files[0] : undefined)
             }
+            disabled={isPending}
           />
         </div>
 
@@ -221,9 +222,13 @@ export default function CreateServer({ userId }: { userId: string }) {
         />
       </ColumnWrapper>
       <RowWrapper justify="justify-between" className="my-8 w-[69%] pr-8">
-        <Button className="btn-primary">Create</Button>
+        <Button className="btn-primary" disabled={isPending}>
+          Create
+        </Button>
         <Link href={"/"}>
-          <Button className="btn-secondary">Cancel</Button>
+          <Button className="btn-secondary" disabled={isPending}>
+            Cancel
+          </Button>
         </Link>
       </RowWrapper>
       {error !== "" && <FeedbackCard type="error" message={error} />}
