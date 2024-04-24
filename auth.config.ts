@@ -35,6 +35,7 @@ export default {
       },
     }),
   ],
+  trustHost: true,
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user?.id) {
