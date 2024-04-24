@@ -170,7 +170,7 @@ export default function ServerInfo({
           </Button>
         )}
         {error !== "" && <FeedbackCard type="error" message={error} />}
-        {success && <FeedbackCard type="success" message="Profile saved" />}
+        {success && <FeedbackCard type="success" message="Changes saved" />}
       </ColumnWrapper>
     </form>
   );
