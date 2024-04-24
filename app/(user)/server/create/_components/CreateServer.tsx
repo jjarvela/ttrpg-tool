@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import postUpload from "@/utils/postUpload";
 import FileInput from "@/app/_components/inputs/FileInput";
@@ -18,7 +17,7 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 
 import { useState, useRef, useTransition } from "react";
-import createServer from "@/actions/createServer";
+import createServer from "@/actions/serverManagement/createServer";
 
 export default function CreateServer({ userId }: { userId: string }) {
   const [serverName, setServerName] = useState("");
