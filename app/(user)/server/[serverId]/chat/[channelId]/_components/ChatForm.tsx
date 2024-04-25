@@ -2,9 +2,10 @@
 
 import { useRef, useState, useTransition } from "react";
 import addChatMessage from "../../../../../../../actions/addChatMessage";
+import getParticipants from "../../../../../../../actions/getParticipants";
 import TextAreaInput from "../../../../../../_components/inputs/TextAreaInput";
 import { useRouter } from "next/navigation";
-import { getParticipantsOfChannel } from "@/prisma/services/channelService";
+
 import { sendMessage } from "@/socket";
 
 type FormProp = {
@@ -34,7 +35,7 @@ export default function ChatForm({ userId, channelId }: FormProp) {
       action={async (formData) => {
         startTransition(async () => {
           await addMessageWithChannelId(formData);
-          const receivers = await getParticipantsOfChannel(channelId);
+          const receivers = await getParticipants(channelId);
           console.log("all" + receivers);
           if (receivers && typeof receivers !== "string") {
             receivers.participants.forEach((element) => {

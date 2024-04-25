@@ -41,6 +41,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
       <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
         <ServerSubMenu title="Channels">
           <ul className="flex-grow">{listChannels}</ul>
+          <Link href={`/server/${id}/chat/createChannel`}>{"add channel"}</Link>
         </ServerSubMenu>
         <ServerInnerNavLink
           title="Characters"
