@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useId, useState } from "react";
+import React, { Key, useEffect, useId, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -16,7 +16,7 @@ import { v4 as uuidV4 } from "uuid";
 import { getData } from "./_components/GetNotes";
 
 interface NoteData {
-  id: string;
+  name: Key | null | undefined;
   author: string;
   documentName: string;
   appId: string;
@@ -35,7 +35,7 @@ const style = {
   height: "1000px",
 };
 
-const mockNotes: NoteData[] = [
+/* const mockNotes: NoteData[] = [
   {
     id: "1",
     author: "John Doe",
@@ -58,7 +58,7 @@ const mockNotes: NoteData[] = [
     appId: appId,
     token: token,
   },
-];
+]; */
 
 export default function ServerNotes() {
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function ServerNotes() {
       try {
         const data = await getData();
         console.log(data);
-        // setNotes(data);
+        setNotes(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -76,7 +76,7 @@ export default function ServerNotes() {
   }, []); // Run only once on mount
 
   const { setNodeRef } = useDroppable({ id: "notes" });
-  const [notes, setNotes] = useState<NoteData[]>(mockNotes);
+  const [notes, setNotes] = useState<NoteData[]>([]);
 
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
@@ -87,26 +87,36 @@ export default function ServerNotes() {
   const dndId = useId();
 
   function handleDragEnd(event: DragEndEvent) {
-    const note = notes.find((x) => x.id === event.active.id);
-    if (note) {
-      note.position.x += event.delta.x;
-      note.position.y += event.delta.y;
-      const updatedNotes = notes.map((x) => (x.id === note.id ? note : x));
-      setNotes(updatedNotes);
-    }
+    const noteId = event.active.id;
+    const delta = event.delta;
+
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => {
+        if (note.name === noteId) {
+          return {
+            ...note,
+            position: {
+              x: note.position.x + delta.x,
+              y: note.position.y + delta.y,
+            },
+          };
+        }
+        return note;
+      }),
+    );
   }
 
   function handleNewNote() {
     const newDocumentName = uuidV4();
     const newNote: NoteData = {
-      id: uuidV4(), // generate a unique id for the new note
+      name: newDocumentName,
       author: "Anonymous",
       documentName: newDocumentName, // Unique document name for each note
       appId: appId,
       token: token,
       position: {
-        x: 200,
-        y: 200,
+        x: 400,
+        y: 0,
       },
     };
     setNotes([...notes, newNote]);
@@ -134,15 +144,15 @@ export default function ServerNotes() {
               <Note
                 styles={{
                   position: "relative",
-                  left: `${note.position.x}px`,
-                  top: `${note.position.y}px`,
+                  left: `${note.position?.x || 200}px`, // Use 0 as default if position is undefined
+                  top: `${note.position?.y || 100}px`, // Use 0 as default if position is undefined
                 }}
-                key={note.id}
-                id={note.id}
+                key={note.name}
                 author={note.author}
-                documentName={note.documentName} // Pass the documentName from note
-                appId={note.appId} // Pass the appId from note
-                token={note.token} // Pass the token from note
+                documentName={note.name?.toString() ?? ""} // Pass the documentName from note
+                appId={appId} // Pass the appId from note
+                token={token} // Pass the token from note
+                id={note.name?.toString() ?? ""}
               />
             ))}
           </div>
