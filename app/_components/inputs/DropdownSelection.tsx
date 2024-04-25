@@ -15,13 +15,17 @@ import handleClickOutside from "../../../utils/handleClickOutside";
  *
  * Includes dummy input tag to handle required and invalid cases. Use onSelect prop to get access to selection.
  * @param options Array<{label: string, value: string}>
+ * @param disabledOptions Array<{label: string, value: string}>, optional
  * @param onSelect (selected: Array<Option>) => void
  */
 
-type Option = { label: string; value: string | number | boolean };
+declare global {
+  type Option = { label: string; value: string | number | boolean };
+}
 
 interface DropdownSelectionProps {
   options: Array<Option>;
+  disabledOptions?: Array<Option>;
   id?: string;
   onSelect: (selected: Array<Option>) => void;
   required?: boolean;
@@ -35,6 +39,7 @@ interface DropdownSelectionProps {
 
 export default function DropdownSelection({
   options,
+  disabledOptions,
   onSelect,
   id,
   required,
@@ -135,18 +140,39 @@ export default function DropdownSelection({
           isOpen ? "h-max" : "collapse h-0",
         )}
       >
-        {options.map((option) => (
-          <SelectionOption
-            key={option.label + option.value}
-            option={option}
-            isSelected={
-              selected.length > 0
-                ? selected.map((item) => item.value).indexOf(option.value) > -1
-                : false
-            }
-            handleSelection={handleSelection}
-          />
-        ))}
+        {options.map((option) => {
+          if (
+            disabledOptions &&
+            disabledOptions.filter((item) => item.value === option.value)
+          ) {
+            return (
+              <SelectionOption
+                key={option.label + option.value}
+                option={option}
+                isSelected={
+                  selected.length > 0
+                    ? selected.map((item) => item.value).indexOf(option.value) >
+                      -1
+                    : false
+                }
+                disabled
+              />
+            );
+          }
+          return (
+            <SelectionOption
+              key={option.label + option.value}
+              option={option}
+              isSelected={
+                selected.length > 0
+                  ? selected.map((item) => item.value).indexOf(option.value) >
+                    -1
+                  : false
+              }
+              handleSelection={handleSelection}
+            />
+          );
+        })}
       </ColumnWrapper>
       {isInvalid && (
         <span className="text-warning">This field is required</span>
@@ -159,20 +185,25 @@ interface SelectionOptionProps {
   option: Option;
   isSelected: boolean;
   multi?: boolean;
-  handleSelection: (option: Option, isSelected: boolean) => void;
+  disabled?: boolean;
+  handleSelection?: (option: Option, isSelected: boolean) => void;
 }
 
 function SelectionOption({
   option,
+  disabled,
   isSelected,
   handleSelection,
 }: SelectionOptionProps) {
   return (
     <RowWrapper
       justify="justify-between justify-items-between"
-      className="w-full cursor-pointer border-b-[1px] border-black50 px-2 py-1"
+      className={twMerge(
+        "w-full cursor-pointer border-b-[1px] border-black50 px-2 py-1",
+        disabled && "text-black50",
+      )}
       onClick={() => {
-        handleSelection(option, isSelected);
+        handleSelection && handleSelection(option, isSelected);
       }}
     >
       {option.label}

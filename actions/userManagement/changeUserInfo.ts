@@ -1,7 +1,10 @@
 "use server";
 import * as z from "zod";
-import { UserInfoSchema } from "../validation-schemas";
-import { getUserByUsername, updateUser } from "../prisma/services/userService";
+import { UserInfoSchema } from "../../validation-schemas";
+import {
+  getUserByUsername,
+  updateUser,
+} from "../../prisma/services/userService";
 
 /**
  * This function validates the input values and edits the selected user's information accordingly.

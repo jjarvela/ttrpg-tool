@@ -3,7 +3,7 @@ import {
   getConversationByParticipants,
   createConversationWithMessage,
   createMessage,
-} from "../prisma/services/conversationService";
+} from "../../prisma/services/conversationService";
 
 export default async function addMessage(userIds: any, formData: FormData) {
   const message = formData.get("message") as string;

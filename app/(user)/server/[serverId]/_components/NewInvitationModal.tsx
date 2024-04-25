@@ -1,5 +1,5 @@
 "use client";
-import createServerInvitation from "@/actions/createServerInvitation";
+import createServerInvitation from "@/actions/serverManagement/createServerInvitation";
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Checkbox from "@/app/_components/inputs/Checkbox";
