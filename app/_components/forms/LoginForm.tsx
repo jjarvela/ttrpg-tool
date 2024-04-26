@@ -15,29 +15,34 @@ import FeedbackCard from "../FeedbackCard";
 
 type LoginFormProps = {
   goToRegister: () => void;
+  usernameAutofill?: string;
   className?: string;
   title?: boolean;
+  redirectPath?: string;
 };
 /**
  * Reusable login form component.
  * Value validation via zodResolver.
  *
  * @param goToRegister - return type void function that can be used to either alter the state of the page or redirect to a different page
+ * @param usernameAutofill - optional autofill that can be carried over from successful registering
  * @param className - optional additional css classes for section-tag (twMerge - will overwrite component's default tailwind classes as needed)
  * @param title - optional title to be displayed in h2-tags on top of form
  */
 
 export default function LoginForm({
   goToRegister,
+  usernameAutofill,
   className,
   title,
+  redirectPath,
 }: LoginFormProps) {
   const { register, handleSubmit, formState } = useForm<
     z.infer<typeof LoginSchema>
   >({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: "",
+      username: usernameAutofill || "",
       password: "",
     },
   });
@@ -51,7 +56,7 @@ export default function LoginForm({
         onSubmit={handleSubmit((values: z.infer<typeof LoginSchema>) => {
           setError("");
           startTransition(() => {
-            login(values).then(
+            login(values, redirectPath).then(
               (data) => data && data.error && setError(data.error),
             );
           });
