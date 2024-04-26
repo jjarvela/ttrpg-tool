@@ -6,7 +6,10 @@ import { signIn } from "../auth";
 import { DEFAULT_LOGIN_REDIRECT } from "../routes";
 import { AuthError } from "next-auth";
 
-export default async function login(values: z.infer<typeof LoginSchema>) {
+export default async function login(
+  values: z.infer<typeof LoginSchema>,
+  redirectPath?: string,
+) {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -19,7 +22,7 @@ export default async function login(values: z.infer<typeof LoginSchema>) {
     await signIn("credentials", {
       username,
       password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: redirectPath || DEFAULT_LOGIN_REDIRECT,
     });
   } catch (e) {
     if (e instanceof AuthError) {
