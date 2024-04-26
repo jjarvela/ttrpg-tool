@@ -15,6 +15,7 @@ import FeedbackCard from "../FeedbackCard";
 
 type RegisterFormProps = {
   goToLogin: () => void;
+  setUsernameAutofill?: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
   title?: boolean;
 };
@@ -29,6 +30,7 @@ type RegisterFormProps = {
 
 export default function RegisterForm({
   goToLogin,
+  setUsernameAutofill,
   className,
   title,
 }: RegisterFormProps) {
@@ -56,8 +58,16 @@ export default function RegisterForm({
           setSuccess("");
           startTransition(() => {
             registerAccount(values).then((data) => {
-              data.error && setError(data.error);
-              data.success && setSuccess(data.success);
+              if (data.error) {
+                setError(data.error);
+                return;
+              }
+              if (setUsernameAutofill) {
+                setUsernameAutofill(data.username!);
+                goToLogin();
+              } else {
+                setSuccess("Verification email sent.");
+              }
             });
           });
         })}
