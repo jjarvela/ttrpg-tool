@@ -57,6 +57,27 @@ export const getServerData = async (
   }
 };
 
+export const updateServerData = async (
+  id: string,
+  data: { server_name?: string; description?: string; image?: string },
+) => {
+  try {
+    const server = await db.server.update({ where: { id: id }, data });
+    return server;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const deleteServerData = async (id: string) => {
+  try {
+    const server = await db.server.delete({ where: { id: id } });
+    return;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getServerConfig = async (
   id: string,
   select?: { [key: string]: boolean },
@@ -65,6 +86,28 @@ export const getServerConfig = async (
     const config = await db.serverConfig.findUnique({
       where: { server_id: id },
       select: select,
+    });
+    return config;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const updateServerConfig = async (
+  server_id: string,
+  data: {
+    config_permission?: string;
+    protected?: boolean | null;
+    password_hash?: string;
+    explorable?: boolean;
+    searchable?: boolean;
+    join_permission?: string;
+  },
+) => {
+  try {
+    const config = db.serverConfig.update({
+      where: { server_id: server_id },
+      data,
     });
     return config;
   } catch (e) {
@@ -84,6 +127,8 @@ export const getServerMembers = async (id: string) => {
             screen_name: true,
             timezone: true,
             share_timezone: true,
+            socket_id: true,
+            person_status: true,
           },
         },
       },
@@ -100,6 +145,44 @@ export const getServerMember = async (server_id: string, member_id: string) => {
       where: { server_id, member_id },
     });
     return member;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const updateServerMember = async (
+  server_id: string,
+  member_id: string,
+  data: { role?: string; nickname?: string; icon?: string },
+) => {
+  try {
+    const member = await db.serverMember.findFirst({
+      where: { server_id, member_id },
+    });
+    if (!member) return "No instance found for server member";
+    const updatedMember = await db.serverMember.update({
+      where: { id: member.id },
+      data,
+    });
+    return updatedMember;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const deleteServerMember = async (
+  server_id: string,
+  member_id: string,
+) => {
+  try {
+    const member = await db.serverMember.findFirst({
+      where: { server_id, member_id },
+    });
+    if (!member) return "No instance found for server member";
+    const deletedMember = await db.serverMember.delete({
+      where: { id: member.id },
+    });
+    return deletedMember;
   } catch (e) {
     return (e as Error).message;
   }

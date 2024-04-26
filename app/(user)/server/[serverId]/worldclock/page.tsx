@@ -45,13 +45,23 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
     const timezones: { timezone: string; members: member[] }[] = [];
     members.forEach((member) => {
       if (!member.user.share_timezone) return;
+      const time = new Intl.DateTimeFormat("fi", {
+        dateStyle: "short",
+        timeStyle: "long",
+        timeZone: member.user.timezone || "Australia/Sydney",
+      })
+        .format(new Date())
+        .split(" ")
+        .filter((item) => item.includes("UTC"))[0];
+      console.log(time);
       const timezone = new Intl.DateTimeFormat("fi", {
         dateStyle: "short",
         timeStyle: "long",
         timeZone: member.user.timezone || "Australia/Sydney",
       })
         .format(new Date())
-        .split(" ")[2];
+        .split(" ")
+        .filter((item) => item.includes("UTC"))[0];
       if (timezones.map((i) => i.timezone).indexOf(timezone) > -1) {
         const index = timezones.map((i) => i.timezone).indexOf(timezone);
         timezones[index].members.push(member);

@@ -1,6 +1,6 @@
 "use client";
 
-import changeUserProfile from "@/actions/changeUserProfile";
+import changeUserProfile from "@/actions/userManagement/changeUserProfile";
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import FileInput from "@/app/_components/inputs/FileInput";
@@ -94,7 +94,7 @@ export default function ProfileInfo({
         justify="justify-between"
         className="w-full gap-2 md:gap-48"
       >
-        <RowWrapper>
+        <RowWrapper id="profile">
           <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-[3px] border-dashed border-black50">
             {
               /*Icon display priority: icon remove selected => icon uploaded => user original icon */

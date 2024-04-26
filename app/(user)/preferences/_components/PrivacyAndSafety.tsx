@@ -1,6 +1,5 @@
 "use client";
-import changeUserInfo from "@/actions/changeUserInfo";
-import changeUserPrivacyPrefs from "@/actions/changeUserPrivacyPrefs";
+import changeUserPrivacyPrefs from "@/actions/userManagement/changeUserPrivacyPrefs";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Checkbox from "@/app/_components/inputs/Checkbox";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
@@ -30,7 +29,11 @@ export default function PrivacyAndSafety({ user }: { user: user }) {
   const router = useRouter();
 
   return (
-    <ColumnWrapper align="content-start items-start">
+    <ColumnWrapper
+      mode="section"
+      id="privacy"
+      align="content-start items-start"
+    >
       <h1>Privacy and Safety</h1>
       <h3>Server defaults</h3>
       <Checkbox
