@@ -12,7 +12,7 @@ interface NoteData {
 
 export async function getData() {
   try {
-    const res = await fetch("/api/tiptap");
+    const res = await fetch("/api/tiptap", { cache: "no-store" });
     if (!res.ok) {
       throw new Error("Failed to fetch data");
     }
