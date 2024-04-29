@@ -3,7 +3,7 @@
 import ColumnWrapper from "../../_components/wrappers/ColumnWrapper";
 import Main from "../../_components/wrappers/PageMain";
 import LoginForm from "../../_components/forms/LoginForm";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import RegisterForm from "@/app/_components/forms/RegisterForm";
 import Loading from "./loading";
@@ -12,8 +12,6 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 export default function Login() {
   const srv = useSearchParams().get("srv");
   const inv = useSearchParams().get("inv");
-
-  const router = useRouter();
 
   const [login, setLogin] = useState(true);
   const [usernameAutofill, setUsernameAutofill] = useState("");
