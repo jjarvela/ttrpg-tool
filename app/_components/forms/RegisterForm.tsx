@@ -53,7 +53,8 @@ export default function RegisterForm({
   return (
     <section id="register" className={twMerge("text-center", className)}>
       <form
-        onSubmit={handleSubmit((values: z.infer<typeof RegisterSchema>) => {
+        onSubmit={handleSubmit((values: z.infer<typeof RegisterSchema>, e) => {
+          e?.preventDefault();
           setError("");
           setSuccess("");
           startTransition(() => {

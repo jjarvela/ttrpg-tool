@@ -53,7 +53,8 @@ export default function LoginForm({
   return (
     <section id="login" className={twMerge("text-center", className)}>
       <form
-        onSubmit={handleSubmit((values: z.infer<typeof LoginSchema>) => {
+        onSubmit={handleSubmit((values: z.infer<typeof LoginSchema>, e) => {
+          e?.preventDefault();
           setError("");
           startTransition(() => {
             login(values, redirectPath).then(
