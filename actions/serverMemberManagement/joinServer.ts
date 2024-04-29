@@ -40,12 +40,14 @@ export default async function joinServer(
 
   const config = await getServerConfig(invitation.server_id);
 
+  console.log(config);
+
   if (!config || typeof config === "string") return "Something went wrong.";
 
   if (!password && config.protected)
     return "Please provide the password to join this server.";
 
-  if (password && config.password_hash) {
+  if (password && config.protected && config.password_hash) {
     const passwordsMatch = await bcrypt.compare(password, config.password_hash);
     if (!passwordsMatch) return "Wrong password.";
   }
@@ -56,6 +58,7 @@ export default async function joinServer(
       member_id: id,
       role: "member",
     });
+    console.log(member);
 
     if (typeof member === "string") return "Error when trying to join.";
     else {
@@ -65,6 +68,7 @@ export default async function joinServer(
       return member;
     }
   } catch (e) {
+    console.log(e);
     return (e as Error).message;
   }
 }
