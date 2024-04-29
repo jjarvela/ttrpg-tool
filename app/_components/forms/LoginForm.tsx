@@ -56,10 +56,12 @@ export default function LoginForm({
         onSubmit={handleSubmit((values: z.infer<typeof LoginSchema>, e) => {
           e?.preventDefault();
           setError("");
-          startTransition(() => {
-            login(values, redirectPath).then(
-              (data) => data && data.error && setError(data.error),
-            );
+          startTransition(async () => {
+            const result = await login(values, redirectPath);
+            if (result) {
+              setError(result.error);
+              return;
+            }
           });
         })}
       >
