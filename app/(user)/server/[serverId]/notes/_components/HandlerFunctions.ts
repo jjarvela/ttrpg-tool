@@ -10,7 +10,28 @@ interface NoteData {
   };
 }
 
-export async function getData() {
+export async function getNotes() {
+  try {
+    const res = await fetch("/api/tiptap", { cache: "no-store" });
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await res.json();
+
+    // Set default position for notes without position data
+    const notesWithPosition = data.map((note: NoteData) => ({
+      ...note,
+      position: note.position || { x: 0, y: 0 },
+    }));
+
+    return notesWithPosition;
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+    throw new Error("Failed to fetch data");
+  }
+}
+
+export async function newNote() {
   try {
     const res = await fetch("/api/tiptap", { cache: "no-store" });
     if (!res.ok) {

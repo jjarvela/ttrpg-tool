@@ -13,6 +13,7 @@ const CustomStyle = {
 const TipTapEditor = ({ documentName }: { documentName: string }) => {
   const editor = useEditor({
     extensions: [Document, Text, Paragraph],
+    content: `<p>Hello World! 🌎️</p>`,
   });
 
   return <EditorContent editor={editor} />;

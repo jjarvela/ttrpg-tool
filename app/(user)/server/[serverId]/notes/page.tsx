@@ -14,16 +14,16 @@ import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
 import { v4 as uuidV4 } from "uuid";
-import { getData } from "./_components/GetNotes";
+import { getNotes } from "./_components/HandlerFunctions";
+import { createNote } from "@/prisma/services/notesService";
 
-interface NoteData {
-  name: string;
+export interface NoteData {
+  id: string;
   author: string;
   documentName: string;
-  position: {
-    x: number;
-    y: number;
-  };
+  positionX: number;
+  positionY: number;
+  content: string;
 }
 
 // const token = process.env.NEXT_PUBLIC_TIPTAP_TOKEN || "default_token";
@@ -48,7 +48,7 @@ export default function ServerNotes() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getData();
+        const data = await getNotes();
         setNotes(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +62,7 @@ export default function ServerNotes() {
     socket.on("update-note", (updatedNote) => {
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
-          note.name === updatedNote.name ? updatedNote : note,
+          note.documentName === updatedNote.name ? updatedNote : note,
         ),
       );
     });
@@ -76,10 +76,10 @@ export default function ServerNotes() {
     const noteId = event.active.id;
     const delta = event.delta;
 
-    const updatedNote = notes.find((note) => note.name === noteId);
+    const updatedNote = notes.find((note) => note.id === noteId);
     if (updatedNote) {
-      updatedNote.position.x += delta.x;
-      updatedNote.position.y += delta.y;
+      updatedNote.positionX += delta.x;
+      updatedNote.positionX += delta.y;
 
       setNotes([...notes]);
 
@@ -89,16 +89,29 @@ export default function ServerNotes() {
 
   function handleNewNote() {
     const newDocumentName = uuidV4();
-    const newNote = {
-      name: newDocumentName,
+    const newPositionX = 400;
+    const newPositionY = 0;
+    const newContent = ""; // You may initialize content as needed
+
+    const newNoteData = {
       author: "Anonymous",
       documentName: newDocumentName,
-      position: {
-        x: 400,
-        y: 0,
-      },
+      positionX: newPositionX,
+      positionY: newPositionY,
+      content: newContent,
     };
-    setNotes([...notes, newNote]);
+
+    createNote(newNoteData)
+      .then((result) => {
+        if (typeof result !== "string") {
+          setNotes([...notes, result]);
+        } else {
+          console.error("Error creating note:", result);
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating note:", error);
+      });
   }
 
   return (
@@ -123,13 +136,13 @@ export default function ServerNotes() {
               <Note
                 styles={{
                   position: "relative",
-                  left: `${note.position.x || 200}px`,
-                  top: `${note.position.y || 100}px`,
+                  left: `${note.positionX || 200}px`,
+                  top: `${note.positionY || 100}px`,
                 }}
-                key={note.name}
+                key={note.documentName}
                 author={note.author}
-                documentName={note.name || ""}
-                id={note.name || ""}
+                documentName={note.documentName || ""}
+                id={note.documentName || ""}
               />
             ))}
           </div>
