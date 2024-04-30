@@ -1,11 +1,7 @@
-import React, { ReactNode, useEffect, useMemo } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
-import Collaboration from "@tiptap/extension-collaboration";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
 import Paragraph from "@tiptap/extension-paragraph";
-import * as Y from "yjs";
-import { TiptapCollabProvider } from "@hocuspocus/provider";
 import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
 import { useDraggable } from "@dnd-kit/core";
 
@@ -14,35 +10,9 @@ const CustomStyle = {
   minHeight: "140px",
 };
 
-const TipTapEditorWithCollaboration = ({
-  documentName,
-  appId,
-  token,
-}: {
-  documentName: string;
-  appId: string;
-  token: string;
-}) => {
-  const doc = useMemo(() => new Y.Doc(), []);
-
-  useEffect(() => {
-    const provider = new TiptapCollabProvider({
-      name: documentName,
-      appId: appId,
-      token: token,
-      document: doc,
-    });
-  }, []);
-
+const TipTapEditor = ({ documentName }: { documentName: string }) => {
   const editor = useEditor({
-    extensions: [
-      Document,
-      Text,
-      Paragraph,
-      Collaboration.configure({
-        document: doc,
-      }),
-    ],
+    extensions: [Document, Text, Paragraph],
   });
 
   return <EditorContent editor={editor} />;
@@ -53,15 +23,11 @@ export function Note({
   author,
   styles,
   documentName,
-  appId,
-  token,
 }: {
   id: string;
   author: string;
   styles?: React.CSSProperties;
   documentName: string;
-  appId: string;
-  token: string;
 }) {
   const { attributes, listeners, transform } = useDraggable({
     id,
@@ -81,11 +47,7 @@ export function Note({
       <div className="mb-2 flex justify-center text-center">{author}</div>
 
       <div className="flex-grow">
-        <TipTapEditorWithCollaboration
-          documentName={documentName}
-          appId={appId}
-          token={token}
-        />
+        <TipTapEditor documentName={documentName} />
       </div>
       <button className="my-1 h-4 w-full" {...listeners} {...attributes}>
         <RadixIconsDragHandleDots2 className="mx-auto h-5 w-5" />

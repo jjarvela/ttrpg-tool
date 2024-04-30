@@ -1,5 +1,6 @@
 "use client";
 import React, { Key, useEffect, useId, useState } from "react";
+import { io } from "socket.io-client";
 import {
   DndContext,
   DragEndEvent,
@@ -35,37 +36,21 @@ const style = {
   height: "1000px",
 };
 
-/* const mockNotes: NoteData[] = [
-  {
-    id: "1",
-    author: "John Doe",
-    position: {
-      x: 300,
-      y: 100,
-    },
-    documentName: "John",
-    appId: appId,
-    token: token,
-  },
-  {
-    id: "2",
-    author: "Dickerson",
-    position: {
-      x: 500,
-      y: 200,
-    },
-    documentName: "Dick",
-    appId: appId,
-    token: token,
-  },
-]; */
+const socket = io();
 
 export default function ServerNotes() {
+  const { setNodeRef } = useDroppable({ id: "notes" });
+  const [notes, setNotes] = useState<NoteData[]>([]);
+
+  const mouseSensor = useSensor(MouseSensor);
+  const touchSensor = useSensor(TouchSensor);
+  const sensors = useSensors(mouseSensor, touchSensor);
+  const dndId = useId();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getData();
-        console.log(data);
         setNotes(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -73,45 +58,43 @@ export default function ServerNotes() {
     };
 
     fetchData();
-  }, []); // Run only once on mount
+  }, []);
 
-  const { setNodeRef } = useDroppable({ id: "notes" });
-  const [notes, setNotes] = useState<NoteData[]>([]);
+  useEffect(() => {
+    socket.on("update-note", (updatedNote) => {
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.name === updatedNote.name ? updatedNote : note,
+        ),
+      );
+    });
 
-  const mouseSensor = useSensor(MouseSensor);
-  const touchSensor = useSensor(TouchSensor);
-  // const keyboardSensor = useSensor(KeyboardSensor);
-
-  const sensors = useSensors(mouseSensor, touchSensor);
-
-  const dndId = useId();
+    return () => {
+      socket.off("update-note");
+    };
+  }, []);
 
   function handleDragEnd(event: DragEndEvent) {
     const noteId = event.active.id;
     const delta = event.delta;
 
-    setNotes((prevNotes) =>
-      prevNotes.map((note) => {
-        if (note.name === noteId) {
-          return {
-            ...note,
-            position: {
-              x: note.position.x + delta.x,
-              y: note.position.y + delta.y,
-            },
-          };
-        }
-        return note;
-      }),
-    );
+    const updatedNote = notes.find((note) => note.name === noteId);
+    if (updatedNote) {
+      updatedNote.position.x += delta.x;
+      updatedNote.position.y += delta.y;
+
+      setNotes([...notes]);
+
+      socket.emit("update-note", updatedNote);
+    }
   }
 
   function handleNewNote() {
     const newDocumentName = uuidV4();
-    const newNote: NoteData = {
+    const newNote = {
       name: newDocumentName,
       author: "Anonymous",
-      documentName: newDocumentName, // Unique document name for each note
+      documentName: newDocumentName,
       appId: appId,
       token: token,
       position: {
@@ -144,15 +127,15 @@ export default function ServerNotes() {
               <Note
                 styles={{
                   position: "relative",
-                  left: `${note.position?.x || 200}px`, // Use 0 as default if position is undefined
-                  top: `${note.position?.y || 100}px`, // Use 0 as default if position is undefined
+                  left: `${note.position.x || 200}px`,
+                  top: `${note.position.y || 100}px`,
                 }}
                 key={note.name}
                 author={note.author}
-                documentName={note.name?.toString() ?? ""} // Pass the documentName from note
-                appId={appId} // Pass the appId from note
-                token={token} // Pass the token from note
-                id={note.name?.toString() ?? ""}
+                documentName={note.name || ""}
+                appId={appId}
+                token={token}
+                id={note.name || ""}
               />
             ))}
           </div>
