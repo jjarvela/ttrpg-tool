@@ -4,7 +4,7 @@ import ServerInnerNav from "./_components/ServerInnerNav";
 import ServerMembersMenu from "./_components/ServerMembersMenu";
 import { auth } from "@/auth";
 import getServerAuth from "@/actions/getServerAuth";
-import { redirect } from "next/navigation";
+import ServerJoinPage from "./_components/serverJoinComponents/ServerJoinPage";
 
 export default async function ServerLayout({
   params,
@@ -16,15 +16,12 @@ export default async function ServerLayout({
   const id = params.serverId;
 
   const session = await auth();
-
-  if (!session) redirect("/welcome");
-
   const serverAuth = await getServerAuth(
     id,
     (session as ExtendedSession).userId,
   );
 
-  if (!serverAuth) redirect("/server");
+  if (!serverAuth) return <ServerJoinPage server_id={id} />;
 
   return (
     <LayoutClientWrapper
