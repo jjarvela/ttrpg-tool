@@ -17,21 +17,19 @@ import { v4 as uuidV4 } from "uuid";
 import { getData } from "./_components/GetNotes";
 
 interface NoteData {
-  name: Key | null | undefined;
+  name: string;
   author: string;
   documentName: string;
-  appId: string;
-  token: string;
   position: {
     x: number;
     y: number;
   };
 }
 
-const token = process.env.NEXT_PUBLIC_TIPTAP_TOKEN || "default_token";
-const appId = process.env.NEXT_PUBLIC_TIPTAP_APPID || "default_app_id";
+// const token = process.env.NEXT_PUBLIC_TIPTAP_TOKEN || "default_token";
+// const appId = process.env.NEXT_PUBLIC_TIPTAP_APPID || "default_app_id";
 
-const style = {
+const dropAreaSize = {
   width: "1000px",
   height: "1000px",
 };
@@ -95,8 +93,6 @@ export default function ServerNotes() {
       name: newDocumentName,
       author: "Anonymous",
       documentName: newDocumentName,
-      appId: appId,
-      token: token,
       position: {
         x: 400,
         y: 0,
@@ -122,7 +118,7 @@ export default function ServerNotes() {
           className="scrollbar-thin h-[95vh] w-[74vw] overflow-auto md:h-[90vh] lg:w-[88vw]"
           style={{ backgroundColor: "transparent" }}
         >
-          <div ref={setNodeRef} style={style}>
+          <div ref={setNodeRef} style={dropAreaSize}>
             {notes.map((note) => (
               <Note
                 styles={{
@@ -133,8 +129,6 @@ export default function ServerNotes() {
                 key={note.name}
                 author={note.author}
                 documentName={note.name || ""}
-                appId={appId}
-                token={token}
                 id={note.name || ""}
               />
             ))}
