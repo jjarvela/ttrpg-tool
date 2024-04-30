@@ -8,6 +8,8 @@ import RadioGroup from "@/app/_components/inputs/RadioGroup";
 import Link from "next/link";
 import Button from "@/app/_components/Button";
 import DropdownSelection from "@/app/_components/inputs/DropdownSelection";
+import { useRouter } from "next/navigation";
+import FeedbackCard from "@/app/_components/FeedbackCard";
 
 type CreateChannelProp = {
   serverId: string;
@@ -19,19 +21,30 @@ export default function CreateChannelForm({
 }: CreateChannelProp) {
   const [channelName, setChannelName] = useState("");
   const [typeSelected, setTypeSelected] = useState("text");
+  const [users, setUsers] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState("");
   const createChannelWithParams = createChannel.bind(null, serverId);
 
   //   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   //     e.preventDefault();
   //     e.currentTarget.form?.requestSubmit();
   //   };
+  const router = useRouter();
 
   return (
     <form
       action={async (formData) => {
+        formData.append("channeltypes", typeSelected);
         startTransition(async () => {
-          await createChannelWithParams(formData);
+          console.log(formData);
+          const result = await createChannelWithParams(formData, users);
+          if (typeof result === "string") {
+            setError(result);
+            return;
+          }
+          router.push(`/server/${serverId}/chat/${result?.channel_id}`);
+          router.refresh();
         });
       }}
     >
@@ -57,7 +70,7 @@ export default function CreateChannelForm({
       {listMembers.length > 0 ? (
         <DropdownSelection
           options={listMembers}
-          onSelect={(s) => console.log(s)}
+          onSelect={(s) => setUsers(s.map((item) => item.value.toString()))}
           multiple
         />
       ) : (
@@ -74,6 +87,7 @@ export default function CreateChannelForm({
           Create Channel
         </Button>
       </div>
+      {error !== "" && <FeedbackCard type="error" message={error} />}
     </form>
   );
 }
