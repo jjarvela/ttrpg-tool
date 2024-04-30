@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import addChatMessage from "../../../../../../../actions/addChatMessage";
-import getParticipants from "../../../../../../../actions/getParticipants";
-import TextAreaInput from "../../../../../../_components/inputs/TextAreaInput";
+import addChatMessage from "@/actions/addChatMessage";
+import getParticipants from "@/actions/getParticipants";
+import TextAreaInput from "@/app/_components/inputs/TextAreaInput";
 import { useRouter } from "next/navigation";
 
 import { sendMessage } from "@/socket";
@@ -27,7 +27,6 @@ export default function ChatForm({ userId, channelId }: FormProp) {
       e.currentTarget.form?.requestSubmit();
     }
   };
-  console.log("here");
 
   const router = useRouter();
   return (
@@ -36,7 +35,6 @@ export default function ChatForm({ userId, channelId }: FormProp) {
         startTransition(async () => {
           await addMessageWithChannelId(formData);
           const receivers = await getParticipants(channelId);
-          console.log("all" + receivers);
           if (receivers && typeof receivers !== "string") {
             receivers.participants.forEach((element) => {
               if (userId !== element.participant_id) {

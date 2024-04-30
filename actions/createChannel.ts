@@ -16,21 +16,21 @@ export default async function createChannel(
 ) {
   const session = await auth();
   const data = {
-    users: formData.get("users"),
-    channelName: formData.get("name"),
-    channelType: formData.get("type"),
+    users: formData.get("users") as unknown as string[],
+    channelName: formData.get("name") as string,
+    channelType: formData.get("channeltypes") as string,
   };
 
   const userId = (session as ExtendedSession).userId;
   try {
-    // const newChannel = await createServerChannel(
-    //   server_id,
-    //   data.channelName,
-    //   data.channelType,
-    // );
-    // if (typeof newChannel !== "string") {
-    //   return createChannelConversation(newChannel.uid, data.users);
-    // }
+    const newChannel = await createServerChannel(
+      server_id,
+      data.channelName,
+      data.channelType,
+    );
+    if (typeof newChannel !== "string") {
+      return createChannelConversation(newChannel.uid, data.users);
+    }
   } catch (e) {
     return (e as Error).message;
   }
