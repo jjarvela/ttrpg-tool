@@ -1,3 +1,5 @@
+export const serverPublicRoutes = ["/server/explore", "/server/search"];
+
 /**
  * Routes that can be accessed without logging in
  * @type {string[]}

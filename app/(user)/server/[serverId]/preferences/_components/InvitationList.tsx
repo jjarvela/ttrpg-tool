@@ -5,17 +5,27 @@ import InvitationObject from "./InvitationObject";
 
 export default async function ServerInvitationsList({
   serverId,
+  authMatch,
 }: {
   serverId: string;
+  authMatch: boolean;
 }) {
   const invitations = await getInvitationsByServer(serverId);
   if (!invitations || typeof invitations === "string")
     return <FeedbackCard type="error" message="Something went wrong!" />;
   if (invitations.length === 0) return <p>There are no active invitations.</p>;
   return (
-    <ColumnWrapper>
+    <ColumnWrapper
+      mode="section"
+      id="invitations"
+      align="content-start items-start"
+    >
       {invitations.map((item) => (
-        <InvitationObject key={item.id} invitation={item} />
+        <InvitationObject
+          key={item.id}
+          invitation={item}
+          deletable={authMatch}
+        />
       ))}
     </ColumnWrapper>
   );

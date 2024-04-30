@@ -1,10 +1,10 @@
 "use client";
 
-import joinServer from "@/actions/joinServer";
+import joinServer from "@/actions/serverMemberManagement/joinServer";
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import PasswordInput from "@/app/_components/inputs/PasswordInput";
-import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
+import Main from "@/app/_components/wrappers/PageMain";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -31,7 +31,7 @@ export default function PasswordProtected({
   }
 
   return (
-    <ColumnWrapper>
+    <Main className="items-center justify-center">
       <h1>You have been invited to join {serverName}.</h1>
       <h5>This server requires a password.</h5>
       <PasswordInput
@@ -39,6 +39,11 @@ export default function PasswordProtected({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         disabled={isPending}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            startTransition(async () => await handleJoin());
+          }
+        }}
       />
       <Button
         className="btn-primary"
@@ -48,6 +53,6 @@ export default function PasswordProtected({
         Join
       </Button>
       {error !== "" && <FeedbackCard type="error" message={error} />}
-    </ColumnWrapper>
+    </Main>
   );
 }

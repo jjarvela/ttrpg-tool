@@ -1,4 +1,4 @@
-import changeUserInfo from "../../../../actions/changeUserInfo";
+import changeUserInfo from "../../../../actions/userManagement/changeUserInfo";
 import Button from "../../../_components/Button";
 import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
 import SettingsTextInput from "./SettingsTextInput";
@@ -19,7 +19,7 @@ type user = {
 
 export default function AccountInfo({ user }: { user: user }) {
   return (
-    <section id="account-info" className="w-[30em] lg:w-[80%]">
+    <section id="account" className="w-[30em] lg:w-[80%]">
       <h1>Account Information</h1>
       <SettingsTextInput
         label="Screen name"

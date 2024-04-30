@@ -4,7 +4,7 @@ import {
   createServerConfig,
   createServerEntry,
   createServerMember,
-} from "../prisma/services/serverService";
+} from "../../prisma/services/serverService";
 import * as bcrypt from "bcryptjs";
 
 type newServerData = {

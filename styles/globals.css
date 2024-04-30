@@ -6,6 +6,8 @@
   --primary-to-accent: linear-gradient(70deg, #65ae45 0%, #ffd700 100%);
   --primary-to-light: linear-gradient(70deg, #65ae45 0%, #d9ebd1 100%);
   --primary-to-dark: linear-gradient(70deg, #65ae45 0%, #314029 100%);
+  --dark-mode-gradient: linear-gradient(179deg, #575558 0%, #403e42 70%);
+  --light-mode-gradient: linear-gradient(180deg, #c7c6c7 0%, #fff 1%);
 }
 
 @layer base {
@@ -133,12 +135,16 @@
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: #c7c6c7;
+  background-color: #8f8d8f;
   border-radius: 0.5rem;
 }
 
 .scrollbar-thin::-webkit-scrollbar-corner {
   background-color: transparent;
+}
+
+.scroll-thumb-faint::-webkit-scrollbar-thumb {
+  background-color: #c7c6c7;
 }
 
 input:-internal-autofill-selected,
@@ -150,6 +156,14 @@ textarea:-webkit-autofill {
   -webkit-text-fill-color: #1f1c20 !important;
   color: inherit !important;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+.card-back {
+  background: var(--light-mode-gradient);
+  background-color: #c7c6c7;
+  box-shadow:
+    #8f8d8f 0px 1px 0px,
+    #8f8d8f 0px 2px 4px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -166,5 +180,17 @@ textarea:-webkit-autofill {
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background-color: white;
     border-radius: 0.5rem;
+  }
+
+  .scroll-thumb-faint::-webkit-scrollbar-thumb {
+    background-color: #575558;
+  }
+
+  .card-back {
+    background: var(--dark-mode-gradient);
+    background-color: #575558;
+    box-shadow:
+      #1f1c20 0px 1px 0px,
+      #1f1c20 0px 2px 4px;
   }
 }

@@ -22,8 +22,6 @@ export default async function registerAccount(
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  console.log(passwordHash);
-
   const existingEmail = await getUserByEmail(email);
 
   if (existingEmail) return { error: "Email already in use." };
@@ -41,5 +39,5 @@ export default async function registerAccount(
   if (typeof newUser === "string")
     return { error: "Something went wrong. Please try again." };
 
-  return { success: "Verification email sent." };
+  return { username: newUser.username };
 }
