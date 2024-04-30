@@ -8,7 +8,7 @@ import { getServerData } from "@/prisma/services/serverService";
 
 export default async function JoinServer({ params }: { params: Params }) {
   const id = params.invitationId;
-  console.log(id);
+
   const invitation = await getInvitationById(id);
 
   if (typeof invitation === "string")

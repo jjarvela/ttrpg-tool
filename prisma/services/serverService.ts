@@ -44,12 +44,33 @@ export const createServerMember = async (data: {
 
 export const getServerData = async (
   id: string,
-  select?: { [key: string]: boolean },
+  select?: {
+    [key: string]: boolean;
+  },
 ) => {
   try {
     const server = await db.server.findUnique({
       where: { id: id },
       select: select,
+    });
+    return server;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getServerJoinData = async (id: string) => {
+  try {
+    const server = await db.server.findUnique({
+      where: { id: id },
+      select: {
+        id: true,
+        server_name: true,
+        config: { select: { join_permission: true, protected: true } },
+        invitations: {
+          select: { id: true, used_count: true, max_uses: true, expires: true },
+        },
+      },
     });
     return server;
   } catch (e) {
