@@ -21,6 +21,17 @@ export const createServerChannel = async (
   }
 };
 
+export const getChannelByServerIdAndName = async (id: string, name: string) => {
+  try {
+    const channel = await db.channel.findFirst({
+      where: { server_id: id, AND: { channel_name: name } },
+    });
+    return channel;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getChannels = async (server_id: string) => {
   try {
     const channels = await db.channel.findMany({
