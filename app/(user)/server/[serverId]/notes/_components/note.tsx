@@ -5,7 +5,7 @@ import Text from "@tiptap/extension-text";
 import Paragraph from "@tiptap/extension-paragraph";
 import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
 import { useDraggable } from "@dnd-kit/core";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import handleNoteContentChange from "@/actions/notesManagement/updateNote";
 import { NoteData } from "../page";
 import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
@@ -53,31 +53,26 @@ export function Note({
     }
   };
 
-  const handlePositionChange = async (
-    newPositionX: number,
-    newPositionY: number,
-  ) => {
-    // Call the server action to update the note position
-    try {
-      await handleNotePositionChange(id, newPositionX, newPositionY);
-    } catch (error) {
-      console.error("Error updating note position:", error);
-    }
-  };
-
-  const { attributes, listeners, transform } = useDraggable({
-    id,
-    // Handle drag end event
-    onDragEnd: (event: { active: any; over: any }) => {
-      const { active, over } = event;
-      if (active && over) {
-        handlePositionChange(
-          positionX + active.rect.left - over.rect.left,
-          positionY + active.rect.top - over.rect.top,
-        );
+  const handlePositionChange = useCallback(
+    async (newPositionX: number, newPositionY: number) => {
+      try {
+        await handleNotePositionChange(id, newPositionX, newPositionY);
+      } catch (error) {
+        console.error("Error updating note position:", error);
       }
     },
+    [id],
+  );
+
+  const { attributes, listeners, transform, setNodeRef } = useDraggable({
+    id,
   });
+
+  useEffect(() => {
+    if (!transform) return;
+
+    handlePositionChange(positionX + transform.x, positionY + transform.y);
+  }, [transform, handlePositionChange, positionX, positionY]);
 
   // Calculate the initial position based on the current transform
   const initialPosition = transform

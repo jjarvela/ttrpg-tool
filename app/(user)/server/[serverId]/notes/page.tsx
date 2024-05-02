@@ -89,7 +89,7 @@ export default function ServerNotes() {
     const updatedNote = notes.find((note) => note.id === noteId);
     if (updatedNote) {
       updatedNote.positionX += delta.x;
-      updatedNote.positionX += delta.y;
+      updatedNote.positionY += delta.y;
 
       setNotes([...notes]);
 
@@ -118,7 +118,7 @@ export default function ServerNotes() {
             {notes.map((note) => (
               <Note
                 styles={{
-                  position: "relative",
+                  position: "absolute",
                   left: `${note.positionX}px`,
                   top: `${note.positionY}px`,
                 }}
