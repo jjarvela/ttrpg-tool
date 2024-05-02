@@ -13,9 +13,8 @@ import {
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
-import { v4 as uuidV4 } from "uuid";
-import { getNotes } from "./_components/HandlerFunctions";
-import { createNote } from "@/prisma/services/notesService";
+import handleNewNote from "@/actions/notesManagement/handleNewNote";
+import handleGetAllNotes from "@/actions/notesManagement/handleGetAllNotes";
 
 export interface NoteData {
   id: string;
@@ -48,7 +47,7 @@ export default function ServerNotes() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getNotes();
+        const data = await handleGetAllNotes(); // Call handleGetAllNotes to fetch notes
         setNotes(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -58,6 +57,7 @@ export default function ServerNotes() {
     fetchData();
   }, []);
 
+  console.log(notes);
   useEffect(() => {
     socket.on("update-note", (updatedNote) => {
       setNotes((prevNotes) =>
@@ -71,6 +71,16 @@ export default function ServerNotes() {
       socket.off("update-note");
     };
   }, []);
+
+  async function handleNewNoteClient() {
+    try {
+      const newNote = await handleNewNote(); // Call server-side function directly
+      setNotes([...notes, newNote]);
+    } catch (error) {
+      console.error("Error creating note:", error);
+      setError("Error creating note");
+    }
+  }
 
   function handleDragEnd(event: DragEndEvent) {
     const noteId = event.active.id;
@@ -87,37 +97,10 @@ export default function ServerNotes() {
     }
   }
 
-  function handleNewNote() {
-    const newDocumentName = uuidV4();
-    const newPositionX = 400;
-    const newPositionY = 0;
-    const newContent = ""; // You may initialize content as needed
-
-    const newNoteData = {
-      author: "Anonymous",
-      documentName: newDocumentName,
-      positionX: newPositionX,
-      positionY: newPositionY,
-      content: newContent,
-    };
-
-    createNote(newNoteData)
-      .then((result) => {
-        if (typeof result !== "string") {
-          setNotes([...notes, result]);
-        } else {
-          console.error("Error creating note:", result);
-        }
-      })
-      .catch((error) => {
-        console.error("Error creating note:", error);
-      });
-  }
-
   return (
     <Main className="m-0">
       <div className="mb-4 flex justify-center">
-        <button onClick={handleNewNote} className="btn btn-primary">
+        <button onClick={handleNewNoteClient} className="btn btn-primary">
           New Note
         </button>
       </div>
@@ -136,13 +119,14 @@ export default function ServerNotes() {
               <Note
                 styles={{
                   position: "relative",
-                  left: `${note.positionX || 200}px`,
-                  top: `${note.positionY || 100}px`,
+                  left: `${note.positionX}px`,
+                  top: `${note.positionY}px`,
                 }}
                 key={note.documentName}
                 author={note.author}
                 documentName={note.documentName || ""}
                 id={note.documentName || ""}
+                note={note}
               />
             ))}
           </div>
@@ -150,4 +134,7 @@ export default function ServerNotes() {
       </DndContext>
     </Main>
   );
+}
+function setError(arg0: string) {
+  throw new Error("Function not implemented.");
 }

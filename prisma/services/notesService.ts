@@ -13,12 +13,12 @@ export const getNoteById = async (id: string) => {
   }
 };
 
-export const getAllNotes = async () => {
+export const getAllNotes = async (): Promise<NoteData[]> => {
   try {
     const notes = await db.note.findMany();
     return notes;
   } catch (e) {
-    return (e as Error).message;
+    throw new Error((e as Error).message);
   }
 };
 
