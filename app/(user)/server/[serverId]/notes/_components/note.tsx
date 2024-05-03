@@ -71,16 +71,15 @@ export function Note({
   useEffect(() => {
     if (!transform) return;
 
-    handlePositionChange(positionX + transform.x, positionY + transform.y);
+    const newPositionX = positionX + transform.x;
+    const newPositionY = positionY + transform.y;
+    handlePositionChange(newPositionX, newPositionY);
   }, [transform, handlePositionChange, positionX, positionY]);
 
-  // Calculate the initial position based on the current transform
-  const initialPosition = transform
-    ? { x: positionX - transform.x, y: positionY - transform.y }
-    : { x: positionX, y: positionY };
-
   const style: React.CSSProperties = {
-    transform: `translate3d(${positionX}px, ${positionY}px, 0)`,
+    transform: transform
+      ? `translate3d(${positionX}px, ${positionY}px, 0) translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : "",
     ...CustomStyle,
     ...styles,
   };
@@ -88,7 +87,8 @@ export function Note({
   return (
     <div
       className="flex flex-col border border-black50 bg-green-800 p-1 shadow-xl"
-      style={{ ...style, ...CustomStyle, ...styles }}
+      style={style}
+      ref={setNodeRef}
     >
       <div className="mb-2 flex justify-center text-center">{author}</div>
 

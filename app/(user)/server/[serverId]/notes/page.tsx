@@ -123,9 +123,6 @@ export default function ServerNotes() {
                   top: `${note.positionY}px`,
                 }}
                 key={note.documentName}
-                author={note.author}
-                documentName={note.documentName || ""}
-                id={note.documentName || ""}
                 note={note}
               />
             ))}
