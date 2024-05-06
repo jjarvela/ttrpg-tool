@@ -10,7 +10,10 @@ import {
   useSensors,
   useDroppable,
 } from "@dnd-kit/core";
-import { restrictToParentElement } from "@dnd-kit/modifiers";
+import {
+  restrictToFirstScrollableAncestor,
+  restrictToParentElement,
+} from "@dnd-kit/modifiers";
 import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
 import handleNewNote from "@/actions/notesManagement/handleNewNote";
@@ -29,8 +32,8 @@ export interface NoteData {
 // const appId = process.env.NEXT_PUBLIC_TIPTAP_APPID || "default_app_id";
 
 const dropAreaSize = {
-  width: "1000px",
-  height: "1000px",
+  width: "600px",
+  height: "600px",
 };
 
 const socket = io();
@@ -42,7 +45,6 @@ export default function ServerNotes() {
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
-  const dndId = useId();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +80,6 @@ export default function ServerNotes() {
       setNotes([...notes, newNote]);
     } catch (error) {
       console.error("Error creating note:", error);
-      setError("Error creating note");
     }
   }
 
@@ -86,15 +87,25 @@ export default function ServerNotes() {
     const noteId = event.active.id;
     const delta = event.delta;
 
-    const updatedNote = notes.find((note) => note.id === noteId);
-    if (updatedNote) {
-      updatedNote.positionX += delta.x;
-      updatedNote.positionY += delta.y;
+    setNotes((prevNotes) => {
+      const updatedNotes = prevNotes.map((note) =>
+        note.id === noteId
+          ? {
+              ...note,
+              positionX: note.positionX + delta.x,
+              positionY: note.positionY + delta.y,
+            }
+          : note,
+      );
 
-      setNotes([...notes]);
+      // Emit the updated note to the server
+      const updatedNote = updatedNotes.find((note) => note.id === noteId);
+      if (updatedNote) {
+        socket.emit("update-note", updatedNote);
+      }
 
-      socket.emit("update-note", updatedNote);
-    }
+      return updatedNotes;
+    });
   }
 
   return (
@@ -105,7 +116,7 @@ export default function ServerNotes() {
         </button>
       </div>
       <DndContext
-        id={dndId}
+        id={useId()}
         onDragEnd={handleDragEnd}
         sensors={sensors}
         modifiers={[restrictToParentElement]}
@@ -131,7 +142,4 @@ export default function ServerNotes() {
       </DndContext>
     </Main>
   );
-}
-function setError(arg0: string) {
-  throw new Error("Function not implemented.");
 }

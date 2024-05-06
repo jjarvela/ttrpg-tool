@@ -1,38 +1,17 @@
-"use client";
+import React, { useCallback, useEffect } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
 import Paragraph from "@tiptap/extension-paragraph";
 import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
 import { useDraggable } from "@dnd-kit/core";
-import { useCallback, useEffect, useState } from "react";
 import handleNoteContentChange from "@/actions/notesManagement/updateNote";
-import { NoteData } from "../page";
 import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
+import { NoteData } from "../page";
 
 const CustomStyle = {
   width: "140px",
   minHeight: "140px",
-};
-
-const TipTapEditor = ({
-  documentName,
-  initialContent,
-  onContentChange,
-}: {
-  documentName: string;
-  initialContent: string;
-  onContentChange: (content: string) => void;
-}) => {
-  const editor = useEditor({
-    extensions: [Document, Text, Paragraph],
-    content: initialContent,
-    onUpdate: ({ editor }) => {
-      onContentChange(editor.getHTML());
-    },
-  });
-
-  return <EditorContent editor={editor} />;
 };
 
 export function Note({
@@ -44,14 +23,16 @@ export function Note({
 }) {
   const { id, author, documentName, content, positionX, positionY } = note;
 
-  const handleContentChange = async (newContent: string) => {
-    // Call the server action to update the note content
-    try {
-      await handleNoteContentChange(id, newContent);
-    } catch (error) {
-      console.error("Error updating note content:", error);
-    }
-  };
+  const handleContentChange = useCallback(
+    async (newContent: string) => {
+      try {
+        await handleNoteContentChange(id, newContent);
+      } catch (error) {
+        console.error("Error updating note content:", error);
+      }
+    },
+    [id],
+  );
 
   const handlePositionChange = useCallback(
     async (newPositionX: number, newPositionY: number) => {
@@ -70,7 +51,6 @@ export function Note({
 
   useEffect(() => {
     if (!transform) return;
-
     const newPositionX = positionX + transform.x;
     const newPositionY = positionY + transform.y;
     handlePositionChange(newPositionX, newPositionY);
@@ -78,8 +58,8 @@ export function Note({
 
   const style: React.CSSProperties = {
     transform: transform
-      ? `translate3d(${positionX}px, ${positionY}px, 0) translate3d(${transform.x}px, ${transform.y}px, 0)`
-      : "",
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : undefined,
     ...CustomStyle,
     ...styles,
   };
@@ -105,3 +85,23 @@ export function Note({
     </div>
   );
 }
+
+const TipTapEditor = ({
+  documentName,
+  initialContent,
+  onContentChange,
+}: {
+  documentName: string;
+  initialContent: string;
+  onContentChange: (content: string) => void;
+}) => {
+  const editor = useEditor({
+    extensions: [Document, Text, Paragraph],
+    content: initialContent,
+    onUpdate: ({ editor }) => {
+      onContentChange(editor.getHTML());
+    },
+  });
+
+  return <EditorContent editor={editor} />;
+};
