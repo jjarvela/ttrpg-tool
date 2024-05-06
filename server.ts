@@ -6,6 +6,11 @@ import {
   getUserById,
   updateUser,
 } from "./prisma/services/userService";
+import {
+  getServerMembers,
+  getServerMembersExcept,
+} from "./prisma/services/serverService";
+import { createNotification } from "./prisma/services/notificationService";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOST_NAME || "localhost";
@@ -20,10 +25,9 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    console.log("connected");
-
     socket.on("send-user", (user_id: string) => {
       console.log("updating user");
+      socket.data.userId = user_id;
       //when user has connected, add user's socket id to db (can be used to send events and check active status)
       updateUser(user_id, { socket_id: socket.id }).then((user) => {
         return;
@@ -43,6 +47,43 @@ app.prepare().then(() => {
         socket.emit("message-error", recipient || "Recipient does not exist");
       }
     });
+
+    socket.on(
+      "send-notification",
+      async (
+        sender_id,
+        data: {
+          type: string;
+          message_id?: string;
+          channel_id?: string;
+          server_id?: string;
+        },
+      ) => {
+        if (!data.message_id && !data.channel_id) {
+          const recipients = await getServerMembersExcept(
+            data.server_id!,
+            sender_id,
+          );
+          if (typeof recipients === "string") {
+            socket.emit("no-recipients");
+            return;
+          }
+          recipients.forEach(async (recipient) => {
+            await createNotification({
+              recipient_id: recipient.member_id,
+              read_status: false,
+              type: data.type,
+              server_id: data.server_id!,
+            });
+
+            if (recipient.user.socket_id) {
+              socket.to(recipient.user.socket_id).emit("deliver-notification");
+            }
+          });
+          return;
+        }
+      },
+    );
 
     socket.on("disconnect", () => {
       console.log("disconnected");
