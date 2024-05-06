@@ -11,6 +11,7 @@ import { Session } from "next-auth";
 import MaterialSymbols3pOutline from "@/public/icons/MaterialSymbols3pOutline";
 import Icon from "./Icon";
 import Link from "next/link";
+import { getUnreadForUser } from "@/prisma/services/notificationService";
 
 //global types file doesn't like imports so we're declaring this here for now
 declare global {
@@ -34,6 +35,21 @@ const SideMenu = async ({ className }: { className?: string }) => {
   if (typeof servers === "string")
     return <FeedbackCard type="error" message="Something went wrong!" />;
 
+  const notifications = await getUnreadForUser(
+    (session as ExtendedSession).userId,
+    { id: true, type: true, server_id: true },
+  );
+
+  if (typeof notifications === "string") {
+    return <FeedbackCard type="error" message="Something went wrong!" />;
+  }
+
+  const unreadNoServer = notifications.filter(
+    (item) => item.server_id === null,
+  );
+
+  const serversWithUnread = notifications.map((item) => item.server_id);
+
   return (
     <nav className="relative">
       <ColumnWrapper
@@ -43,7 +59,12 @@ const SideMenu = async ({ className }: { className?: string }) => {
           className ? className : "",
         )}
       >
-        <Link href={"/"}>
+        <Link href={"/"} className="relative">
+          {unreadNoServer.length > 0 && (
+            <svg className="absolute left-8 top-0 z-50 fill-primary">
+              <circle r={6} cx={8} cy={8} />
+            </svg>
+          )}
           <MaterialSymbols3pOutline
             className="opacity-60"
             width={40}
@@ -61,6 +82,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
                     alt={server.server_name}
                   />
                 }
+                hasUnread={serversWithUnread.indexOf(server.id) > -1}
               />
             </li>
           ))}

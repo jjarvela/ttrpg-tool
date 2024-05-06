@@ -11,17 +11,25 @@ type Server = {
  * CLIENT component for server icon in side menu
  * @param server - server information (id, server_name, image)
  * @param icon - ReactNode, Icon component. Passed as prop to retain its server-side functionality
+ * @param hasUnread - boolean on whether the user has unread notifications on the server
  * @returns JSX element with hover functionality
  */
 export default function MenuIconServer({
   server,
   icon,
+  hasUnread,
 }: {
   server: Server;
   icon: React.ReactNode;
+  hasUnread?: boolean;
 }) {
   return (
     <div className="group relative">
+      {hasUnread && (
+        <svg className="absolute left-8 top-2 z-50 fill-primary">
+          <circle r={6} cx={8} cy={8} />
+        </svg>
+      )}
       <Link href={`/server/${server.id}`}>
         <span className="relative my-2 inline-block h-12 w-12 cursor-pointer overflow-hidden rounded-full bg-black50 shadow-md transition-all group-hover:rounded-md">
           {server.image && icon}
