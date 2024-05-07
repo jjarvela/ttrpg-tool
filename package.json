@@ -14,6 +14,7 @@
     "schema": "prisma/schema.prisma"
   },
   "dependencies": {
+    "@3d-dice/dice-box-threejs": "^0.0.12",
     "@auth/prisma-adapter": "^1.5.0",
     "@azure/storage-blob": "^12.17.0",
     "@hookform/resolvers": "^3.3.4",
