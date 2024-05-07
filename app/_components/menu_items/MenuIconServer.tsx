@@ -26,7 +26,12 @@ export default function MenuIconServer({
   return (
     <div className="group relative">
       {hasUnread && (
-        <svg className="absolute left-8 top-2 z-50 fill-primary">
+        <svg
+          width={20}
+          height={20}
+          viewBox="0 0 20 20"
+          className="absolute right-4 fill-primary"
+        >
           <circle r={6} cx={8} cy={8} />
         </svg>
       )}

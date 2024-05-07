@@ -28,10 +28,6 @@ export default function SocketWrapper({
 
     socket.on("connect", onConnect);
 
-    socket.on("received-user", () => {
-      setLatestEvent("Received user");
-    });
-
     socket.on("received-message", () => {
       console.log("received message");
       setLatestEvent("received message");
@@ -47,7 +43,6 @@ export default function SocketWrapper({
     };
 
     function onConnect() {
-      console.log("adding user");
       socket.emit("send-user", userId);
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
