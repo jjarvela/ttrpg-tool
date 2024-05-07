@@ -27,7 +27,7 @@ export const getConversationByParticipants = async (
 export const getConversationByUid = async (uid: string, messages?: boolean) => {
   try {
     const conversation = db.conversation.findUnique({
-      where: { uid },
+      where: { uid: uid },
       include: { messages: messages || false },
     });
     return conversation;
@@ -36,12 +36,47 @@ export const getConversationByUid = async (uid: string, messages?: boolean) => {
   }
 };
 
+export const getConversationParticipants = async (uid: string) => {
+  try {
+    const conversation = await db.conversation.findUnique({
+      where: { uid: uid },
+    });
+    if (!conversation) return [];
+    const participants = await db.conversationParticipant.findMany({
+      where: { conversation_id: conversation.id },
+    });
+    return participants;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getUserConversations = async (user_id: string) => {
   try {
-    const conversations = db.conversation.findMany({
+    const idArray = await db.conversationParticipant.findMany({
       where: {
-        channel_id: null,
-        participants: { every: { participant_id: user_id } },
+        participant_id: user_id,
+      },
+      select: { conversation_id: true },
+    });
+    const conversations = await db.conversation.findMany({
+      where: { id: { in: idArray.map((item) => item.conversation_id) } },
+      include: {
+        participants: {
+          select: {
+            participant: {
+              select: { id: true, username: true, screen_name: true },
+            },
+          },
+        },
+        messages: {
+          orderBy: { created_at: "desc" },
+          select: {
+            created_at: true,
+            message: true,
+          },
+          take: 1,
+        },
       },
     });
     return conversations;
@@ -56,7 +91,8 @@ export const createConversationWithMessage = async (
   message: string,
 ) => {
   try {
-    const result = await db.conversation.create({
+    const uid = createId();
+    const conversation = await db.conversation.create({
       data: {
         uid: createId(),
         participants: {
@@ -71,13 +107,14 @@ export const createConversationWithMessage = async (
         },
         messages: {
           create: {
-            uid: createId(),
+            uid: uid,
             sender_id: userid1,
             message: message,
           },
         },
       },
     });
+    const result = db.message.findUnique({ where: { uid } });
     return result;
   } catch (e) {
     return (e as Error).message;
