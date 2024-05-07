@@ -9,7 +9,7 @@ import handleNoteContentChange from "@/actions/notesManagement/updateNote";
 import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
 import { NoteData } from "../page";
 
-const CustomStyle = {
+const NoteSize = {
   width: "140px",
   minHeight: "140px",
 };
@@ -60,7 +60,7 @@ export function Note({
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
-    ...CustomStyle,
+    ...NoteSize,
     ...styles,
   };
 
@@ -87,7 +87,6 @@ export function Note({
 }
 
 const TipTapEditor = ({
-  documentName,
   initialContent,
   onContentChange,
 }: {

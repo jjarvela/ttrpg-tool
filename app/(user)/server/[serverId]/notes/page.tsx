@@ -1,5 +1,5 @@
 "use client";
-import React, { Key, useEffect, useId, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import { io } from "socket.io-client";
 import {
   DndContext,
@@ -10,10 +10,7 @@ import {
   useSensors,
   useDroppable,
 } from "@dnd-kit/core";
-import {
-  restrictToFirstScrollableAncestor,
-  restrictToParentElement,
-} from "@dnd-kit/modifiers";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
 import handleNewNote from "@/actions/notesManagement/handleNewNote";
@@ -32,8 +29,8 @@ export interface NoteData {
 // const appId = process.env.NEXT_PUBLIC_TIPTAP_APPID || "default_app_id";
 
 const dropAreaSize = {
-  width: "600px",
-  height: "600px",
+  width: "700px",
+  height: "700px",
 };
 
 const socket = io();
@@ -59,7 +56,6 @@ export default function ServerNotes() {
     fetchData();
   }, []);
 
-  console.log(notes);
   useEffect(() => {
     socket.on("update-note", (updatedNote) => {
       setNotes((prevNotes) =>
@@ -129,7 +125,7 @@ export default function ServerNotes() {
             {notes.map((note) => (
               <Note
                 styles={{
-                  position: "absolute",
+                  position: "fixed",
                   left: `${note.positionX}px`,
                   top: `${note.positionY}px`,
                 }}
