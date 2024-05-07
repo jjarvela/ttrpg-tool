@@ -24,6 +24,32 @@ export const getConversationByParticipants = async (
   }
 };
 
+export const getConversationByUid = async (uid: string, messages?: boolean) => {
+  try {
+    const conversation = db.conversation.findUnique({
+      where: { uid },
+      include: { messages: messages || false },
+    });
+    return conversation;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getUserConversations = async (user_id: string) => {
+  try {
+    const conversations = db.conversation.findMany({
+      where: {
+        channel_id: null,
+        participants: { every: { participant_id: user_id } },
+      },
+    });
+    return conversations;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const createConversationWithMessage = async (
   userid1: string,
   userid2: string,
