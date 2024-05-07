@@ -5,6 +5,7 @@ export async function createNotification(data: {
   type: string;
   read_status: boolean;
   message_id?: string;
+  conversation_id?: string;
   channel_id?: string;
   server_id?: string;
 }) {
@@ -39,6 +40,47 @@ export async function getUnreadForUserForServer(
   try {
     const notifications = await db.notification.findMany({
       where: { recipient_id: userId, read_status: false, server_id: serverId },
+      select,
+    });
+    return notifications;
+  } catch (e) {
+    return (e as Error).message;
+  }
+}
+
+export async function getUnreadForUserConversations(
+  userId: string,
+  select?: { [key: string]: boolean },
+) {
+  try {
+    const notifications = await db.notification.findMany({
+      where: {
+        recipient_id: userId,
+        read_status: false,
+        conversation_id: { not: null },
+        channel_id: null,
+      },
+      select,
+    });
+    return notifications;
+  } catch (e) {
+    return (e as Error).message;
+  }
+}
+
+export async function getUnreadForUserConversation(
+  userId: string,
+  conversationId: string,
+  select?: { [key: string]: boolean },
+) {
+  try {
+    const notifications = await db.notification.findMany({
+      where: {
+        recipient_id: userId,
+        read_status: false,
+        conversation_id: conversationId,
+        channel_id: null,
+      },
       select,
     });
     return notifications;
