@@ -11,6 +11,10 @@ import {
   getServerMembersExcept,
 } from "./prisma/services/serverService";
 import { createNotification } from "./prisma/services/notificationService";
+import {
+  getConversationByUid,
+  getConversationParticipants,
+} from "./prisma/services/conversationService";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOST_NAME || "localhost";
@@ -34,19 +38,52 @@ app.prepare().then(() => {
       });
     });
 
-    socket.on("send-message", async (recipient_id: string) => {
-      console.log("sending message to " + recipient_id);
-      const recipient = await getUserById(recipient_id, { socket_id: true });
-      console.log(recipient);
-      if (recipient && typeof recipient !== "string") {
-        //if recipient has a socket_id set, send event to their socket
-        recipient.socket_id &&
-          socket.to(recipient.socket_id).emit("received-message");
-      } else {
-        //if recipient returned error, send error event to sender's client
-        socket.emit("message-error", recipient || "Recipient does not exist");
-      }
-    });
+    socket.on(
+      "send-message",
+      async (data: {
+        user_id: string;
+        message_id: string;
+        conversation_id: string;
+      }) => {
+        console.log(data.conversation_id);
+        const conversation = await getConversationByUid(data.conversation_id);
+        const participants = await getConversationParticipants(
+          data.conversation_id,
+        );
+        if (
+          typeof participants !== "string" &&
+          conversation &&
+          typeof conversation !== "string"
+        ) {
+          participants.forEach(async (participant) => {
+            if (participant.participant_id === data.user_id) return;
+            const recipient = await getUserById(participant.participant_id, {
+              socket_id: true,
+            });
+            const notification = await createNotification({
+              recipient_id: participant.participant_id,
+              type: "chat-message",
+              read_status: false,
+              message_id: data.message_id,
+              conversation_id: data.conversation_id,
+              channel_id: conversation.channel_id || undefined,
+            });
+            console.log(notification);
+            if (recipient && typeof recipient !== "string") {
+              //if recipient has a socket_id set, send event to their socket
+              recipient.socket_id &&
+                socket.to(recipient.socket_id).emit("received-message");
+            } else {
+              //if recipient returned error, send error event to sender's client
+              socket.emit(
+                "message-error",
+                recipient || "Recipient does not exist",
+              );
+            }
+          });
+        }
+      },
+    );
 
     socket.on(
       "send-notification",
