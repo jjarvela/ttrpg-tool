@@ -18,13 +18,13 @@ const config: Config = {
       fontSize: {
         sm: "0.833rem",
         base: "1rem",
-        lg: "1.44rem",
-        xl: "1.728rem",
-        "2xl": "2.074rem",
-        "3xl": "2.488rem",
-        "4xl": "2.986rem",
+        lg: "1.125rem",
+        xl: "1.528rem",
+        "2xl": "1.974rem",
+        "3xl": "2.288rem",
+        "4xl": "2.586rem",
 
-        "md-lg": "1.266rem",
+        "md-lg": "1.125rem",
         "md-xl": "1.424rem",
         "md-2xl": "1.602rem",
         "md-3xl": "1.802rem",
@@ -67,4 +67,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-
