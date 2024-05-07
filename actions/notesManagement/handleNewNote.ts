@@ -5,9 +5,9 @@ import { v4 as uuidV4 } from "uuid";
 
 export default async function handleNewNote() {
   const newDocumentName = uuidV4();
-  const newPositionX = 200;
-  const newPositionY = 0;
-  const newContent = ""; // You may initialize content as needed
+  const newPositionX = 500;
+  const newPositionY = 150;
+  const newContent = "";
 
   const newNoteData = {
     author: "Anonymous",
