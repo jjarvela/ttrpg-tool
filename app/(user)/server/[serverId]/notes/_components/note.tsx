@@ -7,6 +7,7 @@ import handleNotePositionChange from "@/actions/notesManagement/handleNotePositi
 import { NoteData } from "../page";
 import handleNoteDelete from "@/actions/notesManagement/handleNoteDelete";
 import TipTapEditor from "./TipTapEditor";
+import { socket } from "@/socket";
 
 const NoteSize = {
   width: "140px",
@@ -28,21 +29,40 @@ export function Note({
 
   const isCurrentUserAuthor = author === currentUser;
 
-  console.log(currentUser);
+  const [currentContent, setCurrentContent] = useState(content);
 
-  console.log(isCurrentUserAuthor);
+  useEffect(() => {
+    // Update current content when the note content changes
+    setCurrentContent(content);
+  }, [content]);
+
+  useEffect(() => {
+    const handleUpdateNoteContent = (updatedNote: NoteData) => {
+      console.log("Received updated note:", updatedNote);
+      if (updatedNote.id === id) {
+        setCurrentContent(updatedNote.content);
+      }
+    };
+
+    socket.on("update-note", handleUpdateNoteContent);
+
+    return () => {
+      console.log("Removing socket listener for update-note");
+      socket.off("update-note", handleUpdateNoteContent);
+    };
+  }, [id]);
 
   const handleContentChange = useCallback(
     async (newContent: string) => {
       try {
-        if (isCurrentUserAuthor) {
-          await handleNoteContentChange(id, newContent);
-        }
+        await handleNoteContentChange(id, newContent);
+        setCurrentContent(newContent); // Update current content locally
+        socket.emit("update-note", { ...note, content: newContent });
       } catch (error) {
         console.error("Error updating note content:", error);
       }
     },
-    [id, isCurrentUserAuthor],
+    [id, note],
   );
 
   const handlePositionChange = useCallback(
@@ -113,7 +133,7 @@ export function Note({
       <div className="flex-grow">
         <TipTapEditor
           documentName={documentName}
-          initialContent={content}
+          initialContent={currentContent}
           onContentChange={handleContentChange}
           disabled={!isCurrentUserAuthor}
         />

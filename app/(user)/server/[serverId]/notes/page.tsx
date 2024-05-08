@@ -69,17 +69,17 @@ export default function ServerNotes() {
     };
 
     fetchData();
-  }, []);
 
-  useEffect(() => {
+    // Listen for "update-note" event from the server
     socket.on("update-note", (updatedNote) => {
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
-          note.documentName === updatedNote.name ? updatedNote : note,
+          note.documentName === updatedNote.documentName ? updatedNote : note,
         ),
       );
     });
 
+    // Cleanup socket listener
     return () => {
       socket.off("update-note");
     };

@@ -44,6 +44,12 @@ app.prepare().then(() => {
       }
     });
 
+    socket.on("update-note", (updatedNote) => {
+      console.log("updating note");
+      // Broadcast the updated note to all clients except the sender
+      socket.broadcast.emit("update-note", updatedNote);
+    });
+
     socket.on("disconnect", () => {
       console.log("disconnected");
       //when user disconnects, return user's socket id to null
