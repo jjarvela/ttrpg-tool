@@ -28,9 +28,7 @@ export default function SocketWrapper({
 
     socket.on("connect", onConnect);
 
-    socket.on("received-message", () => {
-      console.log("received message");
-      setLatestEvent("received message");
+    socket.on("client-refresh", () => {
       router.refresh();
     });
 

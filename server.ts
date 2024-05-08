@@ -72,7 +72,7 @@ app.prepare().then(() => {
             if (recipient && typeof recipient !== "string") {
               //if recipient has a socket_id set, send event to their socket
               recipient.socket_id &&
-                socket.to(recipient.socket_id).emit("received-message");
+                socket.to(recipient.socket_id).emit("client-refresh");
             } else {
               //if recipient returned error, send error event to sender's client
               socket.emit(
@@ -114,7 +114,7 @@ app.prepare().then(() => {
             });
 
             if (recipient.user.socket_id) {
-              socket.to(recipient.user.socket_id).emit("deliver-notification");
+              socket.to(recipient.user.socket_id).emit("client-refresh");
             }
           });
           return;
