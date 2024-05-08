@@ -1,15 +1,12 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { EditorContent, useEditor } from "@tiptap/react";
-import Document from "@tiptap/extension-document";
-import Text from "@tiptap/extension-text";
-import Paragraph from "@tiptap/extension-paragraph";
 import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
 import { useDraggable } from "@dnd-kit/core";
 import handleNoteContentChange from "@/actions/notesManagement/updateNote";
 import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
 import { NoteData } from "../page";
 import handleNoteDelete from "@/actions/notesManagement/handleNoteDelete";
+import TipTapEditor from "./TipTapEditor";
 
 const NoteSize = {
   width: "140px",
@@ -127,25 +124,3 @@ export function Note({
     </div>
   );
 }
-
-const TipTapEditor = ({
-  initialContent,
-  onContentChange,
-  disabled,
-}: {
-  documentName: string;
-  initialContent: string;
-  onContentChange: (content: string) => void;
-  disabled?: boolean;
-}) => {
-  const editor = useEditor({
-    extensions: [Document, Text, Paragraph],
-    content: initialContent,
-    onUpdate: ({ editor }) => {
-      onContentChange(editor.getHTML());
-    },
-    editable: !disabled,
-  });
-
-  return <EditorContent editor={editor} />;
-};

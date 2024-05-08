@@ -1,15 +1,27 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { EditorContent, useEditor } from "@tiptap/react";
+import Document from "@tiptap/extension-document";
+import Text from "@tiptap/extension-text";
+import Paragraph from "@tiptap/extension-paragraph";
 
-const TipTapEditor = () => {
+const TipTapEditor = ({
+  initialContent,
+  onContentChange,
+  disabled,
+}: {
+  documentName: string;
+  initialContent: string;
+  onContentChange: (content: string) => void;
+  disabled?: boolean;
+}) => {
   const editor = useEditor({
-    extensions: [StarterKit],
-    content: "<p>Hello World! 🌎️</p>",
-    parseOptions: {
-      preserveWhitespace: "full",
+    extensions: [Document, Text, Paragraph],
+    content: initialContent,
+    onUpdate: ({ editor }) => {
+      onContentChange(editor.getHTML());
     },
+    editable: !disabled,
   });
 
   return <EditorContent editor={editor} />;
