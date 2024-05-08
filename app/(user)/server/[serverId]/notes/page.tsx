@@ -57,7 +57,7 @@ export default function ServerNotes() {
 
     fetchUser();
   }, []);
-  console.log(user);
+
   useEffect(() => {
     const fetchData = async () => {
       try {

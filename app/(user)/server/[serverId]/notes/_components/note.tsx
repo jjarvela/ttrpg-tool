@@ -29,17 +29,23 @@ export function Note({
 }) {
   const { id, author, documentName, content, positionX, positionY } = note;
 
-  console.log(author);
+  const isCurrentUserAuthor = author === currentUser;
+
+  console.log(currentUser);
+
+  console.log(isCurrentUserAuthor);
 
   const handleContentChange = useCallback(
     async (newContent: string) => {
       try {
-        await handleNoteContentChange(id, newContent);
+        if (isCurrentUserAuthor) {
+          await handleNoteContentChange(id, newContent);
+        }
       } catch (error) {
         console.error("Error updating note content:", error);
       }
     },
-    [id],
+    [id, isCurrentUserAuthor],
   );
 
   const handlePositionChange = useCallback(
@@ -101,15 +107,18 @@ export function Note({
       <div className="mb-2 flex justify-center text-center">
         {author && <p>{author}</p>}
       </div>
-      <div className="pointer-events-auto absolute right-1 top-0 justify-end transition-transform hover:rotate-90">
-        <button onClick={handleNoteDeletion}>x</button>
-      </div>
+      {isCurrentUserAuthor && (
+        <div className="pointer-events-auto absolute right-1 top-0 justify-end transition-transform hover:rotate-90">
+          <button onClick={handleNoteDeletion}>x</button>
+        </div>
+      )}
 
       <div className="flex-grow">
         <TipTapEditor
           documentName={documentName}
           initialContent={content}
           onContentChange={handleContentChange}
+          disabled={!isCurrentUserAuthor}
         />
       </div>
       <button className="my-1 h-4 w-full" {...listeners} {...attributes}>
@@ -122,10 +131,12 @@ export function Note({
 const TipTapEditor = ({
   initialContent,
   onContentChange,
+  disabled,
 }: {
   documentName: string;
   initialContent: string;
   onContentChange: (content: string) => void;
+  disabled?: boolean;
 }) => {
   const editor = useEditor({
     extensions: [Document, Text, Paragraph],
@@ -133,6 +144,7 @@ const TipTapEditor = ({
     onUpdate: ({ editor }) => {
       onContentChange(editor.getHTML());
     },
+    editable: !disabled,
   });
 
   return <EditorContent editor={editor} />;
