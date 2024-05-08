@@ -1,4 +1,5 @@
 "use server";
+import { getCurrentUser } from "@/app/(user)/server/[serverId]/notes/_components/GetCurrentUser";
 import { NoteData } from "@/app/(user)/server/[serverId]/notes/page";
 import { createNote } from "@/prisma/services/notesService";
 import { v4 as uuidV4 } from "uuid";
@@ -9,8 +10,14 @@ export default async function handleNewNote() {
   const newPositionY = 150;
   const newContent = "";
 
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser || !currentUser.username) {
+    throw new Error("Current user or username is undefined");
+  }
+
   const newNoteData = {
-    author: "Anonymous",
+    author: currentUser?.username,
     documentName: newDocumentName,
     positionX: newPositionX,
     positionY: newPositionY,

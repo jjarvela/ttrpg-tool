@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect } from "react";
+"use client";
+import React, { useCallback, useEffect, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
@@ -8,6 +9,7 @@ import { useDraggable } from "@dnd-kit/core";
 import handleNoteContentChange from "@/actions/notesManagement/updateNote";
 import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
 import { NoteData } from "../page";
+import handleNoteDelete from "@/actions/notesManagement/handleNoteDelete";
 
 const NoteSize = {
   width: "140px",
@@ -17,11 +19,17 @@ const NoteSize = {
 export function Note({
   note,
   styles,
+  onNoteDelete,
+  currentUser,
 }: {
   note: NoteData;
   styles?: React.CSSProperties;
+  onNoteDelete: (noteId: string) => void;
+  currentUser: string;
 }) {
   const { id, author, documentName, content, positionX, positionY } = note;
+
+  console.log(author);
 
   const handleContentChange = useCallback(
     async (newContent: string) => {
@@ -45,9 +53,27 @@ export function Note({
     [id],
   );
 
+  const handleNoteDeletion = useCallback(async () => {
+    try {
+      await handleNoteDelete(id);
+      setIsDeleted(true);
+      setTimeout(() => onNoteDelete(id), 300);
+    } catch (error) {
+      console.error("Error deleting note:", error);
+    }
+  }, [id, onNoteDelete]);
+
   const { attributes, listeners, transform, setNodeRef } = useDraggable({
     id,
   });
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isNewNote, setIsNewNote] = useState(true);
+
+  useEffect(() => {
+    if (isNewNote) {
+      setIsNewNote(false);
+    }
+  }, [isNewNote]);
 
   useEffect(() => {
     if (!transform) return;
@@ -62,15 +88,22 @@ export function Note({
       : undefined,
     ...NoteSize,
     ...styles,
+    opacity: isDeleted || isNewNote ? 0 : 1,
+    transition: "opacity 0.3s ease-in",
   };
 
   return (
     <div
-      className="flex flex-col border border-black50 bg-green-800 p-1 shadow-xl"
+      className={`animate-bounce-in flex flex-col border border-black50 bg-green-800 p-1 shadow-xl`}
       style={style}
       ref={setNodeRef}
     >
-      <div className="mb-2 flex justify-center text-center">{author}</div>
+      <div className="mb-2 flex justify-center text-center">
+        {author && <p>{author}</p>}
+      </div>
+      <div className="pointer-events-auto absolute right-1 top-0 justify-end transition-transform hover:rotate-90">
+        <button onClick={handleNoteDeletion}>x</button>
+      </div>
 
       <div className="flex-grow">
         <TipTapEditor

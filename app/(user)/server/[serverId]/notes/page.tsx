@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useId, useState } from "react";
+import React, { useCallback, useEffect, useId, useState } from "react";
 import { io } from "socket.io-client";
 import {
   DndContext,
@@ -15,18 +15,17 @@ import { Note } from "./_components/note";
 import Main from "@/app/_components/wrappers/PageMain";
 import handleNewNote from "@/actions/notesManagement/handleNewNote";
 import handleGetAllNotes from "@/actions/notesManagement/handleGetAllNotes";
+import { getCurrentUser } from "./_components/GetCurrentUser";
 
 export interface NoteData {
   id: string;
   author: string;
+
   documentName: string;
   positionX: number;
   positionY: number;
   content: string;
 }
-
-// const token = process.env.NEXT_PUBLIC_TIPTAP_TOKEN || "default_token";
-// const appId = process.env.NEXT_PUBLIC_TIPTAP_APPID || "default_app_id";
 
 const dropAreaSize = {
   width: "700px",
@@ -36,13 +35,29 @@ const dropAreaSize = {
 const socket = io();
 
 export default function ServerNotes() {
+  const id = useId();
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>([]);
-
+  const [user, setUser] = useState<{ username: string } | null>(null);
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
 
+  const removeNoteFromState = useCallback((noteId: string) => {
+    setNotes((currentNotes) =>
+      currentNotes.filter((note) => note.id !== noteId),
+    );
+  }, []);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const userData = await getCurrentUser();
+      setUser(userData);
+    }
+
+    fetchUser();
+  }, []);
+  console.log(user);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,8 +87,8 @@ export default function ServerNotes() {
 
   async function handleNewNoteClient() {
     try {
-      const newNote = await handleNewNote(); // Call server-side function directly
-      setNotes([...notes, newNote]);
+      const newNote = await handleNewNote();
+      setNotes((prevNotes) => [...prevNotes, newNote]);
     } catch (error) {
       console.error("Error creating note:", error);
     }
@@ -104,6 +119,10 @@ export default function ServerNotes() {
     });
   }
 
+  if (!user) {
+    return null; // Render loading state or redirect to login
+  }
+
   return (
     <Main className="m-0">
       <div className="mb-4 flex justify-center">
@@ -112,7 +131,7 @@ export default function ServerNotes() {
         </button>
       </div>
       <DndContext
-        id={useId()}
+        id={id}
         onDragEnd={handleDragEnd}
         sensors={sensors}
         modifiers={[restrictToParentElement]}
@@ -131,6 +150,8 @@ export default function ServerNotes() {
                 }}
                 key={note.documentName}
                 note={note}
+                onNoteDelete={removeNoteFromState}
+                currentUser={user.username}
               />
             ))}
           </div>
