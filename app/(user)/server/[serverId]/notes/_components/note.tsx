@@ -118,9 +118,11 @@ export function Note({
           disabled={!isCurrentUserAuthor}
         />
       </div>
-      <button className="my-1 h-4 w-full" {...listeners} {...attributes}>
-        <RadixIconsDragHandleDots2 className="mx-auto h-5 w-5" />
-      </button>
+      {isCurrentUserAuthor && (
+        <button className="my-1 h-4 w-full" {...listeners} {...attributes}>
+          <RadixIconsDragHandleDots2 className="mx-auto h-5 w-5" />
+        </button>
+      )}
     </div>
   );
 }
