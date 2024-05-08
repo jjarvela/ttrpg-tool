@@ -60,16 +60,21 @@ const SideMenu = async ({ className }: { className?: string }) => {
         )}
       >
         <Link href={"/"} className="relative">
-          {unreadNoServer.length > 0 && (
-            <svg className="absolute left-8 top-0 z-50 fill-primary">
-              <circle r={6} cx={8} cy={8} />
-            </svg>
-          )}
           <MaterialSymbols3pOutline
             className="opacity-60"
             width={40}
             height={40}
           />
+          {unreadNoServer.length > 0 && (
+            <svg
+              width={20}
+              height={20}
+              viewBox="0 0 20 20"
+              className="absolute -right-3 top-0 fill-primary"
+            >
+              <circle r={6} cx={8} cy={8} />
+            </svg>
+          )}
         </Link>
         <ul>
           {servers.map((server) => (
