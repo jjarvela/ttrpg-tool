@@ -123,6 +123,23 @@ export const createChannelConversation = async (
   }
 };
 
+export const addChannelConversationMember = async (
+  conversation_id: number,
+  participants: string[],
+) => {
+  const participant_data = participants.map((member) => {
+    return { conversation_id: conversation_id, participant_id: member };
+  });
+  try {
+    const result = await db.conversationParticipant.createMany({
+      data: participant_data,
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getMessagesByChannelId = async (channel_id: string) => {
   try {
     const result = await db.conversation.findFirst({
@@ -156,6 +173,7 @@ export const getConversationByChannelId = async (channel_id: string) => {
         channel_id: channel_id,
       },
       select: {
+        id: true,
         uid: true,
       },
     });

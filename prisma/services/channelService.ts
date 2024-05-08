@@ -43,6 +43,17 @@ export const getChannels = async (server_id: string) => {
   }
 };
 
+export const getChannelByChannelId = async (channelId: string) => {
+  try {
+    const channel = await db.channel.findFirst({
+      where: { uid: channelId },
+    });
+    return channel;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getParticipantsOfChannel = async (channel_id: string) => {
   try {
     const participants = await db.conversation.findFirst({

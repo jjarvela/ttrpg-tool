@@ -14,6 +14,7 @@ import getServerAuth from "@/actions/getServerAuth";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
+import ContextMenu from "../chat/[channelId]/_components/ContextMenu";
 
 export default async function ServerInnerNav({ id }: { id: string }) {
   const server = await getServerData(id);
@@ -39,9 +40,11 @@ export default async function ServerInnerNav({ id }: { id: string }) {
   const listChannels = channels.map((channel) => {
     return (
       <li key={channel.uid}>
-        <Link href={`/server/${id}/chat/${channel.uid}`}>
-          {channel.channel_name}
-        </Link>
+        <ContextMenu
+          serverId={server.id}
+          channelId={channel.uid}
+          channelName={channel.channel_name}
+        />
       </li>
     );
   });

@@ -7,11 +7,11 @@ import {
 } from "@/prisma/services/channelService";
 import { createChannelConversation } from "@/prisma/services/conversationService";
 
-type ChannelData = {
-  users: string[];
-  channelName: string;
-  channelType: string;
-};
+// type ChannelData = {
+//   users: string[];
+//   channelName: string;
+//   channelType: string;
+// };
 
 export default async function createChannel(
   server_id: string,
@@ -42,6 +42,9 @@ export default async function createChannel(
       data.channelName,
       data.channelType,
     );
+    if (typeof newChannel === "string") {
+      return "Something went wrong. Please try again.";
+    }
     if (typeof newChannel !== "string") {
       return createChannelConversation(newChannel.uid, data.users);
     }
