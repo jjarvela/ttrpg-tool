@@ -81,8 +81,12 @@ export async function getUnreadForUserConversation(
         conversation_id: conversationId,
         channel_id: null,
       },
+      orderBy: {
+        created_at: "asc",
+      },
       select,
     });
+    console.log(notifications);
     return notifications;
   } catch (e) {
     return (e as Error).message;
@@ -90,7 +94,7 @@ export async function getUnreadForUserConversation(
 }
 
 export async function updateNotification(
-  id: number,
+  id: string,
   data: { read_status: boolean },
 ) {
   try {
@@ -101,7 +105,7 @@ export async function updateNotification(
   }
 }
 
-export async function deleteNotification(id: number) {
+export async function deleteNotification(id: string) {
   try {
     const deleted = await db.notification.delete({ where: { id } });
     return deleted;
