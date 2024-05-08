@@ -33,7 +33,6 @@ export default function CreateChannelForm({
       action={async (formData) => {
         formData.append("channeltypes", typeSelected);
         startTransition(async () => {
-          console.log(formData);
           const result = await createChannelWithParams(formData, users);
           if (typeof result === "string") {
             setError(result);

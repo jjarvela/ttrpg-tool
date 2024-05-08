@@ -38,7 +38,6 @@ export default function ChatForm({ userId, channelId }: FormProp) {
           if (receivers && typeof receivers !== "string") {
             receivers.participants.forEach((element) => {
               if (userId !== element.participant_id) {
-                console.log("receiver" + element.participant_id);
                 sendMessage(element.participant_id);
               }
             });

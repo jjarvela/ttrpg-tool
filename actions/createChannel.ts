@@ -7,12 +7,6 @@ import {
 } from "@/prisma/services/channelService";
 import { createChannelConversation } from "@/prisma/services/conversationService";
 
-// type ChannelData = {
-//   users: string[];
-//   channelName: string;
-//   channelType: string;
-// };
-
 export default async function createChannel(
   server_id: string,
   formData: FormData,
@@ -24,8 +18,6 @@ export default async function createChannel(
     channelName: formData.get("name") as string,
     channelType: formData.get("channeltypes") as string,
   };
-
-  const userId = (session as ExtendedSession).userId;
 
   const existing = await getChannelByServerIdAndName(
     server_id,

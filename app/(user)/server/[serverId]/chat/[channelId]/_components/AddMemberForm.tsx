@@ -2,8 +2,6 @@
 
 import { useState, useTransition } from "react";
 import addChannelMember from "@/actions/addChannelMember";
-import TextInput from "@/app/_components/inputs/TextInput";
-import RadioGroup from "@/app/_components/inputs/RadioGroup";
 
 import Link from "next/link";
 import Button from "@/app/_components/Button";
@@ -24,16 +22,13 @@ export default function AddMemberForm({
   const [users, setUsers] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
-  //const createChannelWithParams = createChannel.bind(null, serverId);
 
   const router = useRouter();
 
   return (
     <form
       action={async (formData) => {
-        //formData.append("channeltypes", typeSelected);
         startTransition(async () => {
-          console.log(formData);
           const result = await addChannelMember(formData, users, channelId);
           if (typeof result === "string") {
             setError(result);
