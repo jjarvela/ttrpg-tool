@@ -141,19 +141,20 @@ model Message {
 }
 
 model Notification {
-  id              Int     @id @default(autoincrement())
+  id              Int             @id @default(autoincrement())
   recipient_id    String  
   type            String
   read_status     Boolean
-  recipient       User    @relation(fields: [recipient_id], references: [id], onDelete: Cascade)
+  created_at      DateTime        @default(now())
+  recipient       User            @relation(fields: [recipient_id], references: [id], onDelete: Cascade)
   message_id      String?
-  message         Message? @relation(fields: [message_id], references: [uid], onDelete: Cascade)
+  message         Message?        @relation(fields: [message_id], references: [uid], onDelete: Cascade)
   conversation_id String?
-  conversation    Conversation? @relation(fields: [conversation_id], references: [uid], onDelete: Cascade)
+  conversation    Conversation?   @relation(fields: [conversation_id], references: [uid], onDelete: Cascade)
   channel_id      String? 
-  channel         Channel? @relation(fields: [channel_id], references: [uid], onDelete: Cascade)
+  channel         Channel?        @relation(fields: [channel_id], references: [uid], onDelete: Cascade)
   server_id       String?
-  server          Server? @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  server          Server?         @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
 model Character {
