@@ -160,6 +160,33 @@ export const getServerMembers = async (id: string) => {
   }
 };
 
+export const getServerMembersExcept = async (
+  server_id: string,
+  member_id: string,
+) => {
+  try {
+    const members = await db.serverMember.findMany({
+      where: { server_id, member_id: { not: member_id } },
+      include: {
+        user: {
+          select: {
+            username: true,
+            profile_image: true,
+            screen_name: true,
+            timezone: true,
+            share_timezone: true,
+            socket_id: true,
+            person_status: true,
+          },
+        },
+      },
+    });
+    return members;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getServerMember = async (server_id: string, member_id: string) => {
   try {
     const member = await db.serverMember.findFirst({
