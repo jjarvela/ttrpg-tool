@@ -36,22 +36,6 @@ export function Note({
     setCurrentContent(content);
   }, [content]);
 
-  useEffect(() => {
-    const handleUpdateNoteContent = (updatedNote: NoteData) => {
-      console.log("Received updated note:", updatedNote);
-      if (updatedNote.id === id) {
-        setCurrentContent(updatedNote.content);
-      }
-    };
-
-    socket.on("update-note", handleUpdateNoteContent);
-
-    return () => {
-      console.log("Removing socket listener for update-note");
-      socket.off("update-note", handleUpdateNoteContent);
-    };
-  }, [id]);
-
   const handleContentChange = useCallback(
     async (newContent: string) => {
       try {
@@ -100,12 +84,6 @@ export function Note({
       setIsNewNote(false);
     }
   }, [isNewNote]);
-
-  useEffect(() => {
-    if (isDeleted) {
-      setIsDeleted(true);
-    }
-  }, [isDeleted]);
 
   useEffect(() => {
     if (!transform) return;

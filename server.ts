@@ -49,8 +49,9 @@ app.prepare().then(() => {
       socket.broadcast.emit("create-note", newNote);
     });
 
-    socket.on("update-note", (updatedNote) => {
+    socket.on("update-note", async (updatedNote) => {
       console.log("updating note");
+
       // Broadcast the updated note to all clients except the sender
       socket.broadcast.emit("update-note", updatedNote);
     });
