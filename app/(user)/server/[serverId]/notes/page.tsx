@@ -38,7 +38,10 @@ export default function ServerNotes() {
   const id = useId();
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>([]);
-  const [user, setUser] = useState<{ username: string } | null>(null);
+  const [user, setUser] = useState<{
+    username: string;
+    profile_image: string | null; // Make profile_image nullable
+  } | null>(null);
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
@@ -166,7 +169,10 @@ export default function ServerNotes() {
                 key={note.documentName}
                 note={note}
                 onNoteDelete={removeNoteFromState}
-                currentUser={user.username}
+                currentUser={{
+                  username: user?.username,
+                  profile_image: user?.profile_image,
+                }}
               />
             ))}
           </div>

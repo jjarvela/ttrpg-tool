@@ -8,7 +8,7 @@ export default async function handleNewNote() {
   const newDocumentName = uuidV4();
   const newPositionX = 500;
   const newPositionY = 150;
-  const newContent = "Edit here!";
+  const newContent = "";
 
   const currentUser = await getCurrentUser();
 

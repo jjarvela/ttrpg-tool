@@ -11,5 +11,5 @@ export async function getCurrentUser() {
 
   if (!user || typeof user === "string") return null;
 
-  return { username: user.username };
+  return { username: user.username, profile_image: user.profile_image };
 }

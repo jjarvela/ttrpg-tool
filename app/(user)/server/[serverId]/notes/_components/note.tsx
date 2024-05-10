@@ -14,6 +14,11 @@ const NoteSize = {
   minHeight: "140px",
 };
 
+interface currentUserType {
+  username: string;
+  profile_image: string | null;
+}
+
 export function Note({
   note,
   styles,
@@ -23,11 +28,11 @@ export function Note({
   note: NoteData;
   styles?: React.CSSProperties;
   onNoteDelete: (noteId: string) => void;
-  currentUser: string;
+  currentUser: currentUserType;
 }) {
   const { id, author, documentName, content, positionX, positionY } = note;
 
-  const isCurrentUserAuthor = author === currentUser;
+  const isCurrentUserAuthor = author === currentUser.username;
 
   const [currentContent, setCurrentContent] = useState(content);
 

@@ -46,7 +46,15 @@ const TipTapEditor = ({
     };
   }, [editor, onContentChange]);
 
-  return <EditorContent editor={editor} />;
+  const borderStyle = disabled
+    ? "border-0"
+    : "border border-dashed border-gray-300/50";
+
+  return (
+    <div className={borderStyle}>
+      <EditorContent editor={editor} />
+    </div>
+  );
 };
 
 export default TipTapEditor;
