@@ -4,6 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
 import Paragraph from "@tiptap/extension-paragraph";
+import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
 
 const TipTapEditor = ({
@@ -17,9 +18,10 @@ const TipTapEditor = ({
   disabled?: boolean;
 }) => {
   const editor = useEditor({
-    extensions: [Document, Text, Paragraph],
+    extensions: [StarterKit],
     content: initialContent,
     editable: !disabled,
+    autofocus: "start",
   });
 
   // Effect to update the editor content when initialContent changes

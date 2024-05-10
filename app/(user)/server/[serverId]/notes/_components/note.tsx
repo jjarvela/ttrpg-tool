@@ -114,7 +114,7 @@ export function Note({
       ref={setNodeRef}
     >
       <div className="mb-2 flex justify-center text-center">
-        {author && <p>{author}</p>}
+        <p className="text-sm">{author}</p>
       </div>
       {isCurrentUserAuthor && (
         <div className="pointer-events-auto absolute right-1 top-0 justify-end transition-transform hover:rotate-90">
