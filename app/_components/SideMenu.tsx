@@ -43,7 +43,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
           className ? className : "",
         )}
       >
-        <Link href={"/"}>
+        <Link href={"/message"}>
           <MaterialSymbols3pOutline
             className="opacity-60"
             width={40}

@@ -99,3 +99,86 @@ export const getMessages = async (conversation_uid: string) => {
     return (e as Error).message;
   }
 };
+
+export const createChannelConversation = async (
+  channel_id: string,
+  members: string[],
+) => {
+  const participant_ids = members.map((member) => {
+    return { participant_id: member };
+  });
+  try {
+    const result = await db.conversation.create({
+      data: {
+        uid: createId(),
+        channel_id: channel_id,
+        participants: {
+          create: participant_ids,
+        },
+      },
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const addChannelConversationMember = async (
+  conversation_id: number,
+  participants: string[],
+) => {
+  const participant_data = participants.map((member) => {
+    return { conversation_id: conversation_id, participant_id: member };
+  });
+  try {
+    const result = await db.conversationParticipant.createMany({
+      data: participant_data,
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getMessagesByChannelId = async (channel_id: string) => {
+  try {
+    const result = await db.conversation.findFirst({
+      where: {
+        channel_id: channel_id,
+      },
+      select: {
+        messages: {
+          select: {
+            uid: true,
+            sender_id: true,
+            message: true,
+            created_at: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: "asc",
+      },
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const getConversationByChannelId = async (channel_id: string) => {
+  try {
+    const result = await db.conversation.findFirst({
+      where: {
+        channel_id: channel_id,
+      },
+      select: {
+        id: true,
+        uid: true,
+      },
+    });
+    return result;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
