@@ -21,7 +21,9 @@ export default function ContextMenu({
   const router = useRouter();
   const handleRightClick = (event: any) => {
     event.preventDefault();
-    handleClickOutside(menuRef, event, () => setIsOpen(false));
+    document.addEventListener("mousedown", (event) => {
+      handleClickOutside(menuRef, event, () => setIsOpen(false));
+    });
 
     setIsOpen((prev) => !prev);
   };
