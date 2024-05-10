@@ -79,8 +79,11 @@ export function Note({
   const handleNoteDeletion = useCallback(async () => {
     try {
       await handleNoteDelete(id);
-      setIsDeleted(true);
-      setTimeout(() => onNoteDelete(id), 300);
+      setIsDeleted(true); // Trigger fade-out animation
+      setTimeout(() => {
+        onNoteDelete(id); // Remove the note from UI
+        socket.emit("delete-note", id); // Emit delete event to the server
+      }, 300);
     } catch (error) {
       console.error("Error deleting note:", error);
     }
@@ -97,6 +100,12 @@ export function Note({
       setIsNewNote(false);
     }
   }, [isNewNote]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      setIsDeleted(true);
+    }
+  }, [isDeleted]);
 
   useEffect(() => {
     if (!transform) return;
@@ -117,7 +126,7 @@ export function Note({
 
   return (
     <div
-      className={`animate-bounce-in flex flex-col border border-black50 bg-green-800 p-1 shadow-xl`}
+      className={`flex flex-col border border-black50 bg-green-800 p-1 shadow-xl`}
       style={style}
       ref={setNodeRef}
     >

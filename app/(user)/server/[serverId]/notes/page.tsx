@@ -49,6 +49,14 @@ export default function ServerNotes() {
     );
   }, []);
 
+  const handleNoteDeletion = useCallback((deletedNoteId: string) => {
+    setTimeout(() => {
+      setNotes((prevNotes) =>
+        prevNotes.filter((note) => note.id !== deletedNoteId),
+      );
+    }, 300);
+  }, []);
+
   useEffect(() => {
     async function fetchUser() {
       const userData = await getCurrentUser();
@@ -61,7 +69,7 @@ export default function ServerNotes() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await handleGetAllNotes(); // Call handleGetAllNotes to fetch notes
+        const data = await handleGetAllNotes();
         setNotes(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -70,7 +78,6 @@ export default function ServerNotes() {
 
     fetchData();
 
-    // Listen for "update-note" event from the server
     socket.on("update-note", (updatedNote) => {
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
@@ -79,15 +86,23 @@ export default function ServerNotes() {
       );
     });
 
-    // Cleanup socket listener
+    socket.on("create-note", (newNote) => {
+      setNotes((prevNotes) => [...prevNotes, newNote]);
+    });
+
+    socket.on("delete-note", handleNoteDeletion);
+
     return () => {
       socket.off("update-note");
+      socket.off("create-note");
+      socket.off("delete-note");
     };
-  }, []);
+  }, [handleNoteDeletion]);
 
   async function handleNewNoteClient() {
     try {
       const newNote = await handleNewNote();
+      socket.emit("create-note", newNote);
       setNotes((prevNotes) => [...prevNotes, newNote]);
     } catch (error) {
       console.error("Error creating note:", error);
