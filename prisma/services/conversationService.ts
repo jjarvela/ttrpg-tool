@@ -60,7 +60,12 @@ export const getUserConversations = async (user_id: string) => {
       select: { conversation_id: true },
     });
     const conversations = await db.conversation.findMany({
-      where: { id: { in: idArray.map((item) => item.conversation_id) } },
+      where: {
+        AND: [
+          { id: { in: idArray.map((item) => item.conversation_id) } },
+          { channel_id: null },
+        ],
+      },
       include: {
         participants: {
           select: {
