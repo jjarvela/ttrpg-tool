@@ -50,6 +50,8 @@ model User {
   ConversationParticipant ConversationParticipant[]
   Message                 Message[]
   accounts                Account[]
+  Character               Character[]
+  notifications           Notification[]
 }
 
 model Server {
@@ -66,6 +68,7 @@ model Server {
   channels       Channel[]
   characters     Character[]
   invitations    Invitation[]
+  notifications  Notification[]
 }
 
 model ServerConfig {
@@ -89,16 +92,21 @@ model ServerMember {
   icon      String?
   server    Server  @relation(fields: [server_id], references: [id], onDelete: Cascade)
   user      User    @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  @@unique([server_id, member_id])
 }
 
 model Channel {
-  id           Int            @id @default(autoincrement())
-  uid          String         @unique
-  server_id    String
-  channel_name String
-  channel_type String
-  server       Server         @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  Conversation Conversation[]
+  id            Int            @id @default(autoincrement())
+  uid           String         @unique
+  server_id     String
+  channel_name  String
+  channel_type  String
+  server        Server         @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  Conversation  Conversation[]
+  notifications Notification[]
+
+  @@unique([server_id, channel_name])
 }
 
 model Conversation {
@@ -109,6 +117,7 @@ model Conversation {
   messages     Message[]
   participants ConversationParticipant[]
   channel      Channel?                   @relation(fields: [channel_id], references: [uid])
+  notifications Notification[]
 }
 
 model ConversationParticipant {
@@ -121,21 +130,41 @@ model ConversationParticipant {
 
 model Message {
   id               Int          @id @default(autoincrement())
-  uid              String
+  uid              String       @unique
   conversation_uid String
   sender_id        String
   message          String
   created_at       DateTime     @default(now())
   conversation     Conversation @relation(fields: [conversation_uid], references: [uid], onDelete: Cascade)
   sender           User         @relation(fields: [sender_id], references: [id], onDelete: Cascade)
+  notifications    Notification[] 
+}
+
+model Notification {
+  id              String             @id @default(cuid())
+  recipient_id    String  
+  type            String
+  read_status     Boolean
+  created_at      DateTime        @default(now())
+  recipient       User            @relation(fields: [recipient_id], references: [id], onDelete: Cascade)
+  message_id      String?
+  message         Message?        @relation(fields: [message_id], references: [uid], onDelete: Cascade)
+  conversation_id String?
+  conversation    Conversation?   @relation(fields: [conversation_id], references: [uid], onDelete: Cascade)
+  channel_id      String? 
+  channel         Channel?        @relation(fields: [channel_id], references: [uid], onDelete: Cascade)
+  server_id       String?
+  server          Server?         @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
 model Character {
   id        Int    @id @default(autoincrement())
   uid       String
   server_id String
+  owner_id  String
   name      String
   server    Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  owner     User   @relation(fields: [owner_id], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

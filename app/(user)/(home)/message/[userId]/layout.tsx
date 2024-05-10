@@ -1,6 +1,6 @@
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
-import { auth } from "../../../../auth";
+import { auth } from "../../../../../auth";
 import { redirect } from "next/navigation";
 import MessageForm from "../_components/MessageForm";
 
@@ -19,7 +19,7 @@ export default async function FormLayout({
   const receiverId = params.userId;
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-grow flex-col justify-end overflow-hidden">
       {children}
       <MessageForm userId={userId} receiverId={receiverId} />
     </div>
