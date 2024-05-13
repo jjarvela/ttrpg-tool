@@ -27,7 +27,7 @@ export default function MenuIconServer({
           {server.image && icon}
         </span>
       </Link>
-      <span className="pointer-events-none absolute bottom-5 left-20 -translate-x-1/2 transform rounded-md bg-black px-2 py-1 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none fixed translate-x-6 translate-y-2 transform rounded-md bg-black px-2 py-1 text-center text-white opacity-0 transition-opacity group-hover:opacity-100">
         {server.server_name}
       </span>
     </div>

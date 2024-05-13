@@ -22,21 +22,19 @@ export default async function ServerChat({ params }: { params: Params }) {
     const channelName = channel.channel_name;
 
     return (
-      <>
+      <Main className="min-h-0 overflow-hidden">
         {channeltype === "text" ? (
-          <Main className="min-h-0 overflow-hidden">
-            <ConversationClientWrapper>
-              <h3>{channelName}</h3>
-              <ChatBody channelId={channelId} />
-            </ConversationClientWrapper>
-          </Main>
+          <ConversationClientWrapper>
+            <h3>{channelName}</h3>
+            <ChatBody channelId={channelId} />
+          </ConversationClientWrapper>
         ) : (
-          <Main className="mx-4">
+          <>
             <h3>{channelName}</h3>
             <p>The voice channels are not implemented yet.</p>
-          </Main>
+          </>
         )}
-      </>
+      </Main>
     );
   }
 }

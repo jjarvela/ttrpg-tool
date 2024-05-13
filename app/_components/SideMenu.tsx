@@ -50,7 +50,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
             height={40}
           />
         </Link>
-        <ul>
+        <ul className="scrollbar-thin max-h-[70%] overflow-y-auto overflow-x-hidden pr-2">
           {servers.map((server) => (
             <li key={server.id}>
               <MenuIconServer

@@ -33,7 +33,7 @@ export default function ContextMenu({
         {isOpen && (
           <div
             id="hitbox"
-            className="absolute left-0 top-0 pl-4 pt-4"
+            className="fixed translate-x-6 translate-y-2 "
             ref={menuRef}
           >
             <ColumnWrapper
