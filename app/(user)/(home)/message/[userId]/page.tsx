@@ -1,6 +1,5 @@
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
-import Main from "../../../_components/wrappers/PageMain";
-import { auth } from "../../../../auth";
+import { auth } from "../../../../../auth";
 import { redirect } from "next/navigation";
 import MessageBody from "../_components/MessageBody";
 import ConversationClientWrapper from "../_components/ConversationClientWrapper";
@@ -14,10 +13,8 @@ export default async function PrivateMessages({ params }: { params: Params }) {
   const receiverId = params.userId;
 
   return (
-    <Main className="min-h-0 overflow-hidden">
-      <ConversationClientWrapper>
-        <MessageBody senderId={userId} receiverId={receiverId} />
-      </ConversationClientWrapper>
-    </Main>
+    <ConversationClientWrapper>
+      <MessageBody senderId={userId} receiverId={receiverId} />
+    </ConversationClientWrapper>
   );
 }

@@ -2,7 +2,7 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import Main from "@/app/_components/wrappers/PageMain";
 import ChatBody from "./_components/ChatBody";
 import FeedbackCard from "../../../../../_components/FeedbackCard";
-import ConversationClientWrapper from "@/app/(user)/message/_components/ConversationClientWrapper";
+import ConversationClientWrapper from "@/app/(user)/(home)/message/_components/ConversationClientWrapper";
 import { getChannelByChannelId } from "@/prisma/services/channelService";
 
 export default async function ServerChat({ params }: { params: Params }) {

@@ -1,7 +1,7 @@
-import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
-import RowWrapper from "../../../_components/wrappers/RowWrapper";
+import ColumnWrapper from "../../../../_components/wrappers/ColumnWrapper";
+import RowWrapper from "../../../../_components/wrappers/RowWrapper";
 import UserInfo from "@/app/_components/UserInfo";
-import { getUserById } from "../../../../prisma/services/userService";
+import { getUserById } from "../../../../../prisma/services/userService";
 
 type MessageCellProps = {
   sender_id: string;
