@@ -51,6 +51,28 @@ export const getConversationParticipants = async (uid: string) => {
   }
 };
 
+export const deleteConversationParticipant = async (
+  conversation_id: string,
+  user_id: string,
+) => {
+  try {
+    const conversation = await db.conversation.findUnique({
+      where: { uid: conversation_id },
+    });
+    if (!conversation) return "No conversation";
+
+    const participant = await db.conversationParticipant.findFirst({
+      where: { conversation_id: conversation.id, participant_id: user_id },
+    });
+
+    if (!participant) return "No participant";
+
+    await db.conversationParticipant.delete({ where: { id: participant.id } });
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
 export const getUserConversations = async (user_id: string) => {
   try {
     const idArray = await db.conversationParticipant.findMany({
@@ -77,6 +99,7 @@ export const getUserConversations = async (user_id: string) => {
         messages: {
           orderBy: { created_at: "desc" },
           select: {
+            uid: true,
             created_at: true,
             message: true,
           },
