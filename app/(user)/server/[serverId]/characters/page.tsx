@@ -14,7 +14,7 @@ export default async function ServerCharacters({ params }: { params: Params }) {
 
   return (
     <Main className="mx-4">
-      <h1>Hewwo</h1>
+      <h1>Characters</h1>
     </Main>
   );
 }
