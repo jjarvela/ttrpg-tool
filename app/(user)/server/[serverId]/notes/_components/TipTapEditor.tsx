@@ -1,9 +1,6 @@
 "use client";
 
 import { EditorContent, useEditor } from "@tiptap/react";
-import Document from "@tiptap/extension-document";
-import Text from "@tiptap/extension-text";
-import Paragraph from "@tiptap/extension-paragraph";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
 
