@@ -35,12 +35,17 @@ const dropAreaSize = {
 const socket = io();
 
 export default function ServerNotes() {
+  const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
+
+  function handleSetActiveNoteId(noteId: string) {
+    setActiveNoteId(noteId);
+  }
   const id = useId();
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>([]);
   const [user, setUser] = useState<{
     username: string;
-    profile_image: string | null; // Make profile_image nullable
+    profile_image: string | null;
   } | null>(null);
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
@@ -165,6 +170,7 @@ export default function ServerNotes() {
                   position: "fixed",
                   left: `${note.positionX}px`,
                   top: `${note.positionY}px`,
+                  zIndex: note.id === activeNoteId ? 1000 : 1,
                 }}
                 key={note.documentName}
                 note={note}
@@ -173,6 +179,7 @@ export default function ServerNotes() {
                   username: user?.username,
                   profile_image: user?.profile_image,
                 }}
+                setActiveNoteId={handleSetActiveNoteId}
               />
             ))}
           </div>

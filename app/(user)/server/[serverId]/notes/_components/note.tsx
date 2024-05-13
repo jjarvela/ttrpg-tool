@@ -8,6 +8,7 @@ import { NoteData } from "../page";
 import handleNoteDelete from "@/actions/notesManagement/handleNoteDelete";
 import TipTapEditor from "./TipTapEditor";
 import { socket } from "@/socket";
+import { Tooltip } from "react-tooltip";
 
 const NoteSize = {
   width: "140px",
@@ -24,11 +25,13 @@ export function Note({
   styles,
   onNoteDelete,
   currentUser,
+  setActiveNoteId,
 }: {
   note: NoteData;
   styles?: React.CSSProperties;
   onNoteDelete: (noteId: string) => void;
   currentUser: currentUserType;
+  setActiveNoteId: (noteId: string) => void;
 }) {
   const { id, author, documentName, content, positionX, positionY } = note;
 
@@ -116,9 +119,16 @@ export function Note({
       <div className="mb-2 flex justify-center text-center">
         <p className="text-sm">{author}</p>
       </div>
+      <Tooltip id="delete-note-tooltip" />
       {isCurrentUserAuthor && (
         <div className="pointer-events-auto absolute right-1 top-0 justify-end transition-transform hover:rotate-90">
-          <button onClick={handleNoteDeletion}>x</button>
+          <a
+            data-tooltip-id="delete-note-tooltip"
+            data-tooltip-content="Delete"
+            data-tooltip-place="right"
+          >
+            <button onClick={handleNoteDeletion}>x</button>
+          </a>
         </div>
       )}
 
@@ -130,10 +140,17 @@ export function Note({
           disabled={!isCurrentUserAuthor}
         />
       </div>
+      <Tooltip id="move-note-tooltip" />
       {isCurrentUserAuthor && (
-        <button className="my-1 h-4 w-full" {...listeners} {...attributes}>
-          <RadixIconsDragHandleDots2 className="mx-auto h-5 w-5" />
-        </button>
+        <a
+          data-tooltip-id="move-note-tooltip"
+          data-tooltip-content="Drag"
+          data-tooltip-place="bottom"
+        >
+          <button className="my-1 h-4 w-full" {...listeners} {...attributes}>
+            <RadixIconsDragHandleDots2 className="mx-auto h-5 w-5" />
+          </button>
+        </a>
       )}
     </div>
   );
