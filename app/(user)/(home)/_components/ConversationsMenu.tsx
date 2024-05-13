@@ -4,6 +4,7 @@ import { getUserConversations } from "@/prisma/services/conversationService";
 import { redirect } from "next/navigation";
 import ConversationThumb from "./ConversationThumb";
 import { getUnreadForUserConversations } from "@/prisma/services/notificationService";
+import ConversationContextMenu from "./ConversationContextMenu";
 
 export default async function ConversationsMenu() {
   const session = await auth();
@@ -28,6 +29,11 @@ export default async function ConversationsMenu() {
     return false;
   };
 
+  const getUnread = (id: string) => {
+    if (typeof notifications === "string") return [];
+    return notifications.filter((item) => item.conversation_id === id);
+  };
+
   return (
     <ColumnWrapper className="flex-grow">
       {typeof conversations !== "string" ? (
@@ -37,6 +43,12 @@ export default async function ConversationsMenu() {
             userId={(session as ExtendedSession).userId}
             conversation={conversation}
             hasUnread={readStatus(conversation.uid)}
+            contextMenu={
+              <ConversationContextMenu
+                conversation={conversation}
+                unread={getUnread(conversation.uid)}
+              />
+            }
           />
         ))
       ) : (

@@ -1,7 +1,9 @@
 "use client";
 
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
+import handleClickOutside from "@/utils/handleClickOutside";
 import Link from "next/link";
+import { useRef, useState } from "react";
 
 type Conversation = {
   id: number;
@@ -25,15 +27,19 @@ export default function ConversationThumb({
   conversation,
   userId,
   hasUnread,
+  contextMenu,
 }: {
   conversation: Conversation;
   userId: string;
   hasUnread: boolean;
+  contextMenu: React.ReactNode;
 }) {
+  const [showContext, setShowContext] = useState(false);
+  const contextRef = useRef<HTMLDivElement>(null);
+
   const participants = conversation.participants.filter(
     (instance) => instance.participant.id !== userId,
   );
-
   const link = () => {
     if (participants.length === 1)
       return `/message/${participants[0].participant.id}`;
@@ -41,30 +47,57 @@ export default function ConversationThumb({
   };
 
   return (
-    <Link href={link()}>
-      <ColumnWrapper className="relative w-60 rounded-lg hover:bg-black25 dark:hover:bg-black75">
-        {hasUnread && (
-          <svg
-            width={20}
-            height={20}
-            viewBox="0 0 20 20"
-            className="absolute right-0 fill-primary"
-          >
-            <circle r={6} cx={8} cy={8} />
-          </svg>
-        )}
-        <h5 className="w-full overflow-hidden text-ellipsis">
-          {participants.map((instance) => (
-            <span key={instance.participant.id}>
-              {instance.participant.screen_name ||
-                instance.participant.username}{" "}
-            </span>
-          ))}
-        </h5>
-        <small className="w-full overflow-hidden text-ellipsis text-black50">
-          {conversation.messages[0] ? conversation.messages[0].message : ""}
-        </small>
-      </ColumnWrapper>
-    </Link>
+    <>
+      <Link
+        href={link()}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContext(true);
+          if (contextRef) {
+            document.addEventListener("mousedown", (event) => {
+              handleClickOutside(contextRef, event, () => {
+                setShowContext(false);
+              });
+            });
+          }
+        }}
+      >
+        <ColumnWrapper className="relative w-60 rounded-lg hover:bg-black25 dark:hover:bg-black75">
+          {showContext && (
+            <div
+              ref={contextRef}
+              className="fixed z-50 translate-x-40 translate-y-0"
+            >
+              {contextMenu}
+            </div>
+          )}
+          {hasUnread && (
+            <svg
+              width={20}
+              height={20}
+              viewBox="0 0 20 20"
+              className="absolute right-0 fill-primary"
+            >
+              <circle r={6} cx={8} cy={8} />
+            </svg>
+          )}
+          <h5 className="w-full overflow-hidden text-ellipsis">
+            {participants.length > 0 ? (
+              participants.map((instance) => (
+                <span key={instance.participant.id}>
+                  {instance.participant.screen_name ||
+                    instance.participant.username}{" "}
+                </span>
+              ))
+            ) : (
+              <span>No other participants</span>
+            )}
+          </h5>
+          <small className="w-full overflow-hidden text-ellipsis text-black50">
+            {conversation.messages[0] ? conversation.messages[0].message : ""}
+          </small>
+        </ColumnWrapper>
+      </Link>
+    </>
   );
 }
