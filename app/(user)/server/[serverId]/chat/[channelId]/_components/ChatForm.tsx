@@ -19,7 +19,6 @@ export default function ChatForm({ userId, channelId }: FormProp) {
   const [isPending, startTransition] = useTransition();
 
   const ids = [userId, channelId];
-  const addMessageWithChannelId = addChatMessage.bind(null, ids);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -33,12 +32,17 @@ export default function ChatForm({ userId, channelId }: FormProp) {
     <form
       action={async (formData) => {
         startTransition(async () => {
-          await addMessageWithChannelId(formData);
+          const message = await addChatMessage(ids, formData);
+          if (typeof message === "string") return;
           const receivers = await getParticipants(channelId);
           if (receivers && typeof receivers !== "string") {
             receivers.participants.forEach((element) => {
               if (userId !== element.participant_id) {
-                sendMessage(element.participant_id);
+                sendMessage(
+                  element.participant_id,
+                  message.uid,
+                  message.conversation_uid,
+                );
               }
             });
           }

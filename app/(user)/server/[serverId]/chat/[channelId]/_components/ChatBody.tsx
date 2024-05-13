@@ -1,5 +1,5 @@
 import { getMessagesByChannelId } from "../../../../../../../prisma/services/conversationService";
-import MessageCell from "@/app/(user)/message/_components/MessageCell";
+import MessageCell from "@/app/(user)/(home)/message/_components/MessageCell";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 
 type ChatProps = {
