@@ -2,7 +2,6 @@
 
 import { useRef, useState, useTransition } from "react";
 import addChatMessage from "@/actions/addChatMessage";
-import getParticipants from "@/actions/getParticipants";
 import TextAreaInput from "@/app/_components/inputs/TextAreaInput";
 import { useRouter } from "next/navigation";
 
@@ -34,22 +33,11 @@ export default function ChatForm({ userId, channelId }: FormProp) {
         startTransition(async () => {
           const message = await addChatMessage(ids, formData);
           if (typeof message === "string") return;
-          const receivers = await getParticipants(channelId);
-          if (receivers && typeof receivers !== "string") {
-            receivers.participants.forEach((element) => {
-              if (userId !== element.participant_id) {
-                sendMessage(
-                  element.participant_id,
-                  message.uid,
-                  message.conversation_uid,
-                );
-              }
-            });
-          }
-          ref.current?.focus();
-          setTextArea("");
-          router.refresh();
+          sendMessage(userId, message.uid, message.conversation_uid);
         });
+        ref.current?.focus();
+        setTextArea("");
+        router.refresh();
       }}
       className=""
     >
