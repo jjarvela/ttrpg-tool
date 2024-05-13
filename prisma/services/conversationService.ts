@@ -24,11 +24,15 @@ export const getConversationByParticipants = async (
   }
 };
 
-export const getConversationByUid = async (uid: string, messages?: boolean) => {
+export const getConversationByUid = async (
+  uid: string,
+  messages?: boolean,
+  channel?: boolean,
+) => {
   try {
     const conversation = db.conversation.findUnique({
       where: { uid: uid },
-      include: { messages: messages || false },
+      include: { messages: messages || false, channel: channel || false },
     });
     return conversation;
   } catch (e) {

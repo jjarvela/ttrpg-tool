@@ -46,7 +46,11 @@ app.prepare().then(() => {
         conversation_id: string;
       }) => {
         console.log(data.conversation_id);
-        const conversation = await getConversationByUid(data.conversation_id);
+        const conversation = await getConversationByUid(
+          data.conversation_id,
+          false,
+          true,
+        );
         const participants = await getConversationParticipants(
           data.conversation_id,
         );
@@ -67,6 +71,7 @@ app.prepare().then(() => {
               message_id: data.message_id,
               conversation_id: data.conversation_id,
               channel_id: conversation.channel_id || undefined,
+              server_id: conversation.channel?.server_id || undefined,
             });
             console.log(notification);
             if (recipient && typeof recipient !== "string") {
