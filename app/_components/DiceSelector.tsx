@@ -15,8 +15,8 @@ import { RocknRoll_One } from "next/font/google";
 
 function DiceSelector() {
   return (
-    <div>
-
+    <div id="diceBox">
+      
     </div>
   )
 }
