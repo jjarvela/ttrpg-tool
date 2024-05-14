@@ -37,20 +37,24 @@ export default async function ConversationsMenu() {
   return (
     <ColumnWrapper className="flex-grow">
       {typeof conversations !== "string" ? (
-        conversations.map((conversation) => (
-          <ConversationThumb
-            key={conversation.id}
-            userId={(session as ExtendedSession).userId}
-            conversation={conversation}
-            hasUnread={readStatus(conversation.uid)}
-            contextMenu={
-              <ConversationContextMenu
-                conversation={conversation}
-                unread={getUnread(conversation.uid)}
-              />
-            }
-          />
-        ))
+        conversations.length > 0 ? (
+          conversations.map((conversation) => (
+            <ConversationThumb
+              key={conversation.id}
+              userId={(session as ExtendedSession).userId}
+              conversation={conversation}
+              hasUnread={readStatus(conversation.uid)}
+              contextMenu={
+                <ConversationContextMenu
+                  conversation={conversation}
+                  unread={getUnread(conversation.uid)}
+                />
+              }
+            />
+          ))
+        ) : (
+          <p>No conversations</p>
+        )
       ) : (
         <p>No conversations</p>
       )}
