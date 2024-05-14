@@ -9,7 +9,6 @@ export const createServerChannel = async (
   try {
     const result = await db.channel.create({
       data: {
-        uid: createId(),
         server_id: server_id,
         channel_name: channel_name,
         channel_type: channel_type,

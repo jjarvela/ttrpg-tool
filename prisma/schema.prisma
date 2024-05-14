@@ -97,8 +97,7 @@ model ServerMember {
 }
 
 model Channel {
-  id            Int            @id @default(autoincrement())
-  uid           String         @unique
+  uid           String            @id @default(cuid())
   server_id     String
   channel_name  String
   channel_type  String
@@ -110,8 +109,7 @@ model Channel {
 }
 
 model Conversation {
-  id           Int                       @id @default(autoincrement())
-  uid          String                    @unique
+  uid          String                    @id @default(cuid())
   channel_id   String?
   created_at   DateTime                  @default(now())
   messages     Message[]
@@ -122,8 +120,8 @@ model Conversation {
 
 model ConversationParticipant {
   id              Int          @id @default(autoincrement())
-  conversation    Conversation @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
-  conversation_id Int
+  conversation    Conversation @relation(fields: [conversation_id], references: [uid], onDelete: Cascade)
+  conversation_id String
   participant     User         @relation(fields: [participant_id], references: [id], onDelete: Cascade)
   participant_id  String
 
@@ -131,8 +129,7 @@ model ConversationParticipant {
 }
 
 model Message {
-  id               Int          @id @default(autoincrement())
-  uid              String       @unique
+  uid              String      @id @default(cuid())
   conversation_uid String
   sender_id        String
   message          String
@@ -143,7 +140,7 @@ model Message {
 }
 
 model Notification {
-  id              String             @id @default(cuid())
+  id              String          @id @default(cuid())
   recipient_id    String  
   type            String
   read_status     Boolean
