@@ -183,3 +183,12 @@ model Invitation {
   protected   Boolean
   server      Server  @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
+
+model Note {
+  id           String  @id @default(cuid())
+  author       String  // User ID of the note author
+  documentName String
+  positionX    Int
+  positionY    Int
+  content      String
+}
