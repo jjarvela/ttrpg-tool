@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 type Conversation = {
-  id: number;
   uid: string;
   channel_id: string | null;
   created_at: Date;
@@ -47,7 +46,15 @@ export default function ConversationThumb({
   };
 
   return (
-    <>
+    <div className="relative">
+      {showContext && (
+        <div
+          ref={contextRef}
+          className="fixed z-50 translate-x-40 translate-y-0"
+        >
+          {contextMenu}
+        </div>
+      )}
       <Link
         href={link()}
         onContextMenu={(e) => {
@@ -62,15 +69,7 @@ export default function ConversationThumb({
           }
         }}
       >
-        <ColumnWrapper className="relative w-60 rounded-lg hover:bg-black25 dark:hover:bg-black75">
-          {showContext && (
-            <div
-              ref={contextRef}
-              className="fixed z-50 translate-x-40 translate-y-0"
-            >
-              {contextMenu}
-            </div>
-          )}
+        <ColumnWrapper className="w-60 rounded-lg hover:bg-black25 dark:hover:bg-black75">
           {hasUnread && (
             <svg
               width={20}
@@ -98,6 +97,6 @@ export default function ConversationThumb({
           </small>
         </ColumnWrapper>
       </Link>
-    </>
+    </div>
   );
 }

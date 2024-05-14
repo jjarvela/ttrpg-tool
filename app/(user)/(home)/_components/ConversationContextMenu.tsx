@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 type Conversation = {
-  id: number;
   uid: string;
   channel_id: string | null;
   created_at: Date;
@@ -71,15 +70,25 @@ export default function ConversationContextMenu({
   return (
     <ColumnWrapper
       align="items-start content-start"
-      className="bg-color-default rounded-lg border-[1px] border-black50 p-4"
+      className="bg-color-default cursor-pointer rounded-lg border-[1px] border-black50 p-4"
     >
       {unread.length > 0 ? (
-        <RowWrapper onClick={() => handleMarkRead()}>
+        <RowWrapper
+          onClick={(e) => {
+            e.stopPropagation();
+            handleMarkRead();
+          }}
+        >
           <p>Mark read</p>
           <MdiEmailOpenOutline />
         </RowWrapper>
       ) : (
-        <RowWrapper onClick={() => handleMarkUnread()}>
+        <RowWrapper
+          onClick={(e) => {
+            e.stopPropagation();
+            handleMarkUnread();
+          }}
+        >
           <p>Mark unread</p>
           <MdiEmailOutline />
         </RowWrapper>
