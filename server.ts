@@ -6,10 +6,7 @@ import {
   getUserById,
   updateUser,
 } from "./prisma/services/userService";
-import {
-  getServerMembers,
-  getServerMembersExcept,
-} from "./prisma/services/serverService";
+import { getServerMembersExcept } from "./prisma/services/serverService";
 import { createNotification } from "./prisma/services/notificationService";
 import {
   getConversationByUid,
@@ -92,19 +89,17 @@ app.prepare().then(() => {
 
     socket.on(
       "send-notification",
-      async (
-        sender_id,
-        data: {
-          type: string;
-          message_id?: string;
-          channel_id?: string;
-          server_id?: string;
-        },
-      ) => {
+      async (data: {
+        sender_id: string;
+        type: string;
+        message_id?: string;
+        channel_id?: string;
+        server_id?: string;
+      }) => {
         if (!data.message_id && !data.channel_id) {
           const recipients = await getServerMembersExcept(
             data.server_id!,
-            sender_id,
+            data.sender_id,
           );
           if (typeof recipients === "string") {
             socket.emit("no-recipients");
