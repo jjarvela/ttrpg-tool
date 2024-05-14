@@ -38,10 +38,10 @@ const TipTapEditor = ({
       onContentChange(newContent);
     };
 
-    editor.on("update", updateContent);
+    editor.on("blur", updateContent);
 
     return () => {
-      editor.off("update", updateContent);
+      editor.off("blur", updateContent);
     };
   }, [editor, onContentChange]);
 
