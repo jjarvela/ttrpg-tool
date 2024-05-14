@@ -13,7 +13,8 @@ We've chosen to develop a Discord-like platform tailored for Tabletop Role-Playi
 
 ### External APIs:
 
-- [List any external APIs here]
+- **Azure Blob-storage** Employed for hosting files, mainly profile pictures.
+- **Azure Cloud Web App**
 
 ### Database
 
@@ -31,8 +32,8 @@ We've chosen to develop a Discord-like platform tailored for Tabletop Role-Playi
 
 ### Frontend Libraries
 
-- **Vitest / Cypress**: Chosen for testing the frontend components and ensuring their functionality.
 - **Tailwind**: Employed for styling and UI components to ensure a sleek and modern user interface.
+- **TipTap**: Used for creating and editing notes.
 
 ## Roles
 
