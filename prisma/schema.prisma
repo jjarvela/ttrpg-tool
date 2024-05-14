@@ -185,9 +185,9 @@ model ServerCharacter {
   server_id         String
   class             String
   level             Int
-  vitals            Decimal[]
-  attributes        Decimal[]
-  statics           Decimal[]
+  vitals            Float[]
+  attributes        Float[]
+  statics           Float[]
   skills            String
   items             String
   base              CharacterBase @relation(fields: [base_id], references: [id], onDelete: Cascade)
