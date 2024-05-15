@@ -12,7 +12,7 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 type CreateChannelProp = {
   serverId: string;
   channelId: string;
-  notChannelMembers: any[];
+  notChannelMembers: { label: string; value: string }[];
 };
 export default function AddMemberForm({
   serverId,

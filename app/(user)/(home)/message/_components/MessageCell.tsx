@@ -17,6 +17,7 @@ export default async function MessageCell({
   const userInfo = await getUserById(sender_id, {
     username: true,
     screen_name: true,
+    profile_image: true,
   });
   if (userInfo && typeof userInfo !== "string") {
     const time = created_at.toLocaleString().slice(0, -3);
@@ -24,6 +25,7 @@ export default async function MessageCell({
       <div className="hover:bg-primary-soft w-full border-t p-2 dark:hover:bg-black50">
         <RowWrapper justify="justify-start justify-items-start">
           <UserInfo
+            key={userInfo.id}
             className="w-[max-content]"
             username={userInfo.username}
             width={40}
