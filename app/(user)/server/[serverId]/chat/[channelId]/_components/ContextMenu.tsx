@@ -21,7 +21,9 @@ export default function ContextMenu({
   const router = useRouter();
   const handleRightClick = (event: any) => {
     event.preventDefault();
-    handleClickOutside(menuRef, event, () => setIsOpen(false));
+    document.addEventListener("mousedown", (event) => {
+      handleClickOutside(menuRef, event, () => setIsOpen(false));
+    });
 
     setIsOpen((prev) => !prev);
   };
@@ -31,7 +33,7 @@ export default function ContextMenu({
         {isOpen && (
           <div
             id="hitbox"
-            className="absolute left-0 top-0 pl-4 pt-4"
+            className="fixed translate-x-6 translate-y-2 "
             ref={menuRef}
           >
             <ColumnWrapper

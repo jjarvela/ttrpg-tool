@@ -11,7 +11,7 @@ export default async function addChannelMember(
 ) {
   const conversation = await getConversationByChannelId(channelId);
   if (conversation && typeof conversation !== "string") {
-    const conversationId = conversation.id;
+    const conversationId = conversation.uid;
 
     return addChannelConversationMember(conversationId, users);
   } else return { error: "Something went wrong. Please try again." };

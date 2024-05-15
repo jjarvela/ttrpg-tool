@@ -13,5 +13,5 @@ export default async function addChatMessage(ids: any, formData: FormData) {
     const conversationId = conversation.uid;
 
     return createMessage(senderId, conversationId, message);
-  } else return { error: "Something went wrong. Please try again." };
+  } else return "Something went wrong. Please try again.";
 }

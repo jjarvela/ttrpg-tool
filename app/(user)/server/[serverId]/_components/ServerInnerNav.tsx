@@ -74,6 +74,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
           to={`/server/${id}/characters`}
         />
         <ServerSubMenu title="Boards"></ServerSubMenu>
+        <ServerInnerNavLink title="Notes" to={`/server/${id}/notes`} />
         <ServerInnerNavLink title="Dice" to={`/server/${id}/dice`} />
         <ServerInnerNavLink
           title="World Clock"

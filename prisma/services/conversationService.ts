@@ -1,5 +1,4 @@
 import { db } from "../db";
-import { createId } from "@paralleldrive/cuid2";
 
 export const getConversationByParticipants = async (
   userid1: string,
@@ -8,6 +7,7 @@ export const getConversationByParticipants = async (
   try {
     const conversation = await db.conversation.findFirst({
       where: {
+        channel_id: null,
         participants: {
           every: {
             participant_id: { in: [userid1, userid2] },
@@ -24,11 +24,15 @@ export const getConversationByParticipants = async (
   }
 };
 
-export const getConversationByUid = async (uid: string, messages?: boolean) => {
+export const getConversationByUid = async (
+  uid: string,
+  messages?: boolean,
+  channel?: boolean,
+) => {
   try {
     const conversation = db.conversation.findUnique({
       where: { uid: uid },
-      include: { messages: messages || false },
+      include: { messages: messages || false, channel: channel || false },
     });
     return conversation;
   } catch (e) {
@@ -43,9 +47,31 @@ export const getConversationParticipants = async (uid: string) => {
     });
     if (!conversation) return [];
     const participants = await db.conversationParticipant.findMany({
-      where: { conversation_id: conversation.id },
+      where: { conversation_id: conversation.uid },
     });
     return participants;
+  } catch (e) {
+    return (e as Error).message;
+  }
+};
+
+export const deleteConversationParticipant = async (
+  conversation_id: string,
+  user_id: string,
+) => {
+  try {
+    const conversation = await db.conversation.findUnique({
+      where: { uid: conversation_id },
+    });
+    if (!conversation) return "No conversation";
+
+    const participant = await db.conversationParticipant.findFirst({
+      where: { conversation_id: conversation.uid, participant_id: user_id },
+    });
+
+    if (!participant) return "No participant";
+
+    await db.conversationParticipant.delete({ where: { id: participant.id } });
   } catch (e) {
     return (e as Error).message;
   }
@@ -62,7 +88,7 @@ export const getUserConversations = async (user_id: string) => {
     const conversations = await db.conversation.findMany({
       where: {
         AND: [
-          { id: { in: idArray.map((item) => item.conversation_id) } },
+          { uid: { in: idArray.map((item) => item.conversation_id) } },
           { channel_id: null },
         ],
       },
@@ -77,6 +103,7 @@ export const getUserConversations = async (user_id: string) => {
         messages: {
           orderBy: { created_at: "desc" },
           select: {
+            uid: true,
             created_at: true,
             message: true,
           },
@@ -96,10 +123,8 @@ export const createConversationWithMessage = async (
   message: string,
 ) => {
   try {
-    const uid = createId();
     const conversation = await db.conversation.create({
       data: {
-        uid: createId(),
         participants: {
           create: [
             {
@@ -112,15 +137,17 @@ export const createConversationWithMessage = async (
         },
         messages: {
           create: {
-            uid: uid,
             sender_id: userid1,
             message: message,
           },
         },
       },
     });
-    const result = db.message.findUnique({ where: { uid } });
-    return result;
+    const messages = await db.conversation.findUnique({
+      where: { uid: conversation.uid },
+      select: { messages: true },
+    });
+    return messages?.messages[0];
   } catch (e) {
     return (e as Error).message;
   }
@@ -134,7 +161,6 @@ export const createMessage = async (
   try {
     const result = await db.message.create({
       data: {
-        uid: createId(),
         conversation_uid: conversation_uid,
         sender_id: sender_id,
         message: message,
@@ -178,7 +204,6 @@ export const createChannelConversation = async (
   try {
     const result = await db.conversation.create({
       data: {
-        uid: createId(),
         channel_id: channel_id,
         participants: {
           create: participant_ids,
@@ -192,7 +217,7 @@ export const createChannelConversation = async (
 };
 
 export const addChannelConversationMember = async (
-  conversation_id: number,
+  conversation_id: string,
   participants: string[],
 ) => {
   const participant_data = participants.map((member) => {
@@ -241,7 +266,6 @@ export const getConversationByChannelId = async (channel_id: string) => {
         channel_id: channel_id,
       },
       select: {
-        id: true,
         uid: true,
       },
     });

@@ -35,7 +35,7 @@ export default async function FormLayout({
     return (
       <>
         {channeltype === "text" ? (
-          <div className="flex w-full flex-grow flex-col">
+          <div className="flex w-full flex-grow flex-col justify-end overflow-hidden">
             {children}
             <ChatForm userId={userId} channelId={channelId} />
           </div>

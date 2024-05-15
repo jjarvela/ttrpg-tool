@@ -93,6 +93,29 @@ export async function getUnreadForUserConversation(
   }
 }
 
+export async function getUnreadForUserChannel(
+  userId: string,
+  channelId: string,
+  select?: { [key: string]: boolean },
+) {
+  try {
+    const notifications = await db.notification.findMany({
+      where: {
+        recipient_id: userId,
+        read_status: false,
+        channel_id: channelId,
+      },
+      orderBy: {
+        created_at: "asc",
+      },
+      select,
+    });
+    return notifications;
+  } catch (e) {
+    return (e as Error).message;
+  }
+}
+
 export async function updateNotification(
   id: string,
   data: { read_status: boolean },
