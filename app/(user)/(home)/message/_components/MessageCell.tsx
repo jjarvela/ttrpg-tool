@@ -27,6 +27,7 @@ export default async function MessageCell({
             className="w-[max-content]"
             username={userInfo.username}
             width={40}
+            image={userInfo.profile_image ? userInfo.profile_image : undefined}
             isActive={false}
             screen_name={userInfo.screen_name || undefined}
           />
