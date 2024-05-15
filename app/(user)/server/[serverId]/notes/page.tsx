@@ -20,7 +20,7 @@ import { getCurrentUser } from "./_components/GetCurrentUser";
 export interface NoteData {
   id: string;
   author: string;
-
+  server_id: string;
   documentName: string;
   positionX: number;
   positionY: number;
