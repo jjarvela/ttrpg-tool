@@ -1,5 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useId, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { io } from "socket.io-client";
 import {
   DndContext,
@@ -35,6 +36,13 @@ const dropAreaSize = {
 const socket = io();
 
 export default function ServerNotes() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const segments = pathname.split("/"); // This splits the pathname into an array
+
+  // Check that segments array is long enough to have a serverId
+  const serverId = segments.length > 2 ? segments[2] : null;
+  console.log("servun id: ", serverId);
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
 
   function handleSetActiveNoteId(noteId: string) {
@@ -77,8 +85,12 @@ export default function ServerNotes() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await handleGetAllNotes();
-        setNotes(data);
+        if (serverId) {
+          const data = await handleGetAllNotes(serverId);
+          setNotes(data);
+        } else {
+          // Handle the case when serverId is null
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -108,12 +120,18 @@ export default function ServerNotes() {
   }, [handleNoteDeletion]);
 
   async function handleNewNoteClient() {
-    try {
-      const newNote = await handleNewNote();
-      socket.emit("create-note", newNote);
-      setNotes((prevNotes) => [...prevNotes, newNote]);
-    } catch (error) {
-      console.error("Error creating note:", error);
+    if (serverId) {
+      // Assuming you meant to proceed only if serverId is available
+      try {
+        const newNote = await handleNewNote(serverId);
+        socket.emit("create-note", newNote);
+        setNotes((prevNotes) => [...prevNotes, newNote]);
+      } catch (error) {
+        console.error("Error creating note:", error);
+      }
+    } else {
+      console.log("No serverId provided for new note creation.");
+      // Handle the case where serverId is not available
     }
   }
 

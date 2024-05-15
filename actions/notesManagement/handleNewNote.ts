@@ -4,7 +4,7 @@ import { NoteData } from "@/app/(user)/server/[serverId]/notes/page";
 import { createNote } from "@/prisma/services/notesService";
 import { v4 as uuidV4 } from "uuid";
 
-export default async function handleNewNote() {
+export default async function handleNewNote(server_id: string) {
   const newDocumentName = uuidV4();
   const newPositionX = 500;
   const newPositionY = 150;
@@ -22,6 +22,7 @@ export default async function handleNewNote() {
     positionX: newPositionX,
     positionY: newPositionY,
     content: newContent,
+    server_id: server_id,
   };
 
   try {
