@@ -14,7 +14,7 @@ export default async function ServerDice({ params }: { params: Params }) {
 
   return (
     <Main className="mx-4">
-      <h1>Hewwo</h1>
+      <h1>Dice Box</h1>
     </Main>
   );
 }
