@@ -23,6 +23,7 @@ We've chosen to develop a Discord-like platform tailored for Tabletop Role-Playi
 ### Backend & Frontend
 
 - **Next.js**: Used for both backend and frontend development. Next.js provides server-side rendering capabilities, making it suitable for building dynamic web applications with a unified codebase.
+- **Socket.io**: Websockets are used for bidirectional low latency communication.
 
 ### Backend Libraries
 
