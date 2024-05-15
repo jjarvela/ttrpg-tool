@@ -9,10 +9,12 @@ import {
 import ServerInnerNavLink from "./ServerInnerNavLink";
 import Link from "next/link";
 import ServerUserDisplay from "./ServerUserDisplay";
+import { getChannels } from "@/prisma/services/channelService";
 import getServerAuth from "@/actions/getServerAuth";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
+import ContextMenu from "../chat/[channelId]/_components/ContextMenu";
 
 export default async function ServerInnerNav({ id }: { id: string }) {
   const server = await getServerData(id);
@@ -32,6 +34,20 @@ export default async function ServerInnerNav({ id }: { id: string }) {
   )
     return <p>No server data</p>;
 
+  if (!server || typeof server === "string") return <p>No server data</p>;
+  const channels = await getChannels(id);
+  if (!channels || typeof channels === "string") return <p>No channels</p>;
+  const listChannels = channels.map((channel) => {
+    return (
+      <li key={channel.uid}>
+        <ContextMenu
+          serverId={server.id}
+          channelId={channel.uid}
+          channelName={channel.channel_name}
+        />
+      </li>
+    );
+  });
   const authMatch = checkAuthMatch(serverAuth, config);
   return (
     <ColumnWrapper
@@ -50,24 +66,15 @@ export default async function ServerInnerNav({ id }: { id: string }) {
       </RowWrapper>
       <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
         <ServerSubMenu title="Channels">
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
-          <a>Channel</a>
+          <ul className="flex-grow">{listChannels}</ul>
+          <Link href={`/server/${id}/chat/createChannel`}>{"add channel"}</Link>
         </ServerSubMenu>
         <ServerInnerNavLink
           title="Characters"
           to={`/server/${id}/characters`}
         />
         <ServerSubMenu title="Boards"></ServerSubMenu>
+        <ServerInnerNavLink title="Notes" to={`/server/${id}/notes`} />
         <ServerInnerNavLink title="Dice" to={`/server/${id}/dice`} />
         <ServerInnerNavLink
           title="World Clock"
