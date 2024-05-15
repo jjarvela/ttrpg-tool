@@ -13,7 +13,7 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 
 type CreateChannelProp = {
   serverId: string;
-  listMembers: any[];
+  listMembers: { label: string; value: string }[];
 };
 export default function CreateChannelForm({
   serverId,
