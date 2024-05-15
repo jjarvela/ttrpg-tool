@@ -9,14 +9,14 @@ import { RocknRoll_One } from "next/font/google";
 
 /** 
  * This component presents dice selection dialog and intrepret the selection into 
- * dice notation that is sent to server for the actual roll.
+ * dice notation that is sent to the server for the actual roll.
  * 
 */
 
 function DiceSelector() {
   return (
     <div id="diceBox">
-      
+
     </div>
   )
 }
