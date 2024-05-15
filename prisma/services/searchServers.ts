@@ -4,8 +4,8 @@ export async function getAllBySearchTerm(searchTerm: string) {
   const servers = await db.server.findMany({
     where: {
       OR: [
-        { server_name: { contains: searchTerm } },
-        { description: { contains: searchTerm } },
+        { server_name: { contains: searchTerm, mode: "insensitive" } },
+        { description: { contains: searchTerm, mode: "insensitive" } },
       ],
       AND: {
         config: {
@@ -26,6 +26,6 @@ export async function getAllBySearchTerm(searchTerm: string) {
       server_members: { select: { user: { select: { socket_id: true } } } },
     },
   });
-  console.log(servers);
+
   return servers;
 }
