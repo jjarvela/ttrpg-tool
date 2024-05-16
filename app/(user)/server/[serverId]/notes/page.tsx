@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useId, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { io } from "socket.io-client";
 import {
   DndContext,
@@ -36,17 +36,12 @@ const dropAreaSize = {
 const socket = io();
 
 export default function ServerNotes() {
-  const router = useRouter();
   const pathname = usePathname();
   const segments = pathname.split("/"); // This splits the pathname into an array
 
   // Check that segments array is long enough to have a serverId
   const serverId = segments.length > 2 ? segments[2] : null;
-  const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
 
-  function handleSetActiveNoteId(noteId: string) {
-    setActiveNoteId(noteId);
-  }
   const id = useId();
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>([]);
@@ -64,18 +59,10 @@ export default function ServerNotes() {
     }
   }, [serverId]); // This effect runs whenever the serverId changes
 
-  const removeNoteFromState = useCallback((noteId: string) => {
-    setNotes((currentNotes) =>
-      currentNotes.filter((note) => note.id !== noteId),
-    );
-  }, []);
-
   const handleNoteDeletion = useCallback((deletedNoteId: string) => {
-    setTimeout(() => {
-      setNotes((prevNotes) =>
-        prevNotes.filter((note) => note.id !== deletedNoteId),
-      );
-    }, 300);
+    setNotes((prevNotes) =>
+      prevNotes.filter((note) => note.id !== deletedNoteId),
+    );
   }, []);
 
   useEffect(() => {
@@ -135,7 +122,6 @@ export default function ServerNotes() {
 
   async function handleNewNoteClient() {
     if (serverId) {
-      // Assuming you meant to proceed only if serverId is available
       try {
         const newNote = await handleNewNote(serverId);
         socket.emit("create-note", { note: newNote, serverId: serverId });
@@ -145,7 +131,6 @@ export default function ServerNotes() {
       }
     } else {
       console.log("No serverId provided for new note creation.");
-      // Handle the case where serverId is not available
     }
   }
 
@@ -154,15 +139,19 @@ export default function ServerNotes() {
     const delta = event.delta;
 
     setNotes((prevNotes) => {
-      const updatedNotes = prevNotes.map((note) =>
-        note.id === noteId
-          ? {
-              ...note,
-              positionX: note.positionX + delta.x,
-              positionY: note.positionY + delta.y,
-            }
-          : note,
-      );
+      // Create a new array by mapping through the previous notes
+      const updatedNotes = prevNotes.map((note) => {
+        if (note.id === noteId) {
+          // Return a new object for the updated note
+          return {
+            ...note,
+            positionX: note.positionX + delta.x,
+            positionY: note.positionY + delta.y,
+          };
+        }
+        // Return the note as is if it does not match the id
+        return note;
+      });
 
       // Emit the updated note to the server
       const updatedNote = updatedNotes.find((note) => note.id === noteId);
@@ -170,6 +159,7 @@ export default function ServerNotes() {
         socket.emit("update-note", { note: updatedNote, serverId: serverId });
       }
 
+      // Return the new array of notes
       return updatedNotes;
     });
   }
@@ -202,16 +192,14 @@ export default function ServerNotes() {
                   position: "fixed",
                   left: `${note.positionX}px`,
                   top: `${note.positionY}px`,
-                  zIndex: note.id === activeNoteId ? 1000 : 1,
                 }}
                 key={note.documentName}
                 note={note}
-                onNoteDelete={removeNoteFromState}
+                onNoteDelete={handleNoteDeletion}
                 currentUser={{
                   username: user?.username,
                   profile_image: user?.profile_image,
                 }}
-                setActiveNoteId={handleSetActiveNoteId}
               />
             ))}
           </div>

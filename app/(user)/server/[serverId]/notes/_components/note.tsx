@@ -25,13 +25,11 @@ export function Note({
   styles,
   onNoteDelete,
   currentUser,
-  setActiveNoteId,
 }: {
   note: NoteData;
   styles?: React.CSSProperties;
   onNoteDelete: (noteId: string) => void;
   currentUser: currentUserType;
-  setActiveNoteId: (noteId: string) => void;
 }) {
   const { id, server_id, author, documentName, content, positionX, positionY } =
     note;
@@ -76,16 +74,16 @@ export function Note({
   );
 
   const handleNoteDeletion = useCallback(async () => {
-    setIsDeleted(true); // Trigger fade-out animation
-    setTimeout(async () => {
-      try {
-        await handleNoteDelete(id);
-        onNoteDelete(id); // Remove the note from UI
-        socket.emit("delete-note", { noteId: id, serverId: note.server_id }); // Emit delete event to the server
-      } catch (error) {
-        console.error("Error deleting note:", error);
-      }
-    }, 500);
+    //setIsDeleted(true); // Trigger fade-out animation
+    //setTimeout(async () => {
+    try {
+      await handleNoteDelete(id);
+      onNoteDelete(id); // Remove the note from UI
+      socket.emit("delete-note", { noteId: id, serverId: note.server_id }); // Emit delete event to the server
+    } catch (error) {
+      console.error("Error deleting note:", error);
+    }
+    //}, 300);
   }, [id, note.server_id, onNoteDelete]);
 
   const { attributes, listeners, transform, setNodeRef } = useDraggable({
@@ -114,7 +112,7 @@ export function Note({
     ...NoteSize,
     ...styles,
     opacity: isDeleted || isNewNote ? 0 : 1,
-    transition: "opacity 0.3s ease-in-out",
+    transition: "opacity 0.2s ease-in-out",
   };
 
   return (
