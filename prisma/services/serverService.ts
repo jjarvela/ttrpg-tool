@@ -114,6 +114,8 @@ export const getServerData = async (
       },
     });
 
+    if (!server) throw new Error("No server found");
+
     return server;
   }
 
@@ -130,6 +132,8 @@ export const getServerData = async (
         : false,
     },
   });
+
+  if (!server) throw new Error("No server found");
 
   return server;
 };
