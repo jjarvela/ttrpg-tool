@@ -103,10 +103,14 @@ export const getServerData = async (
       where: { id: server_id },
       select: {
         ...select?.select,
-        server_members: { select: { ...select?.server_members } },
-        config: { select: { ...select?.config } },
-        channels: { select: { ...select?.channels } },
-        invitations: { select: { ...select?.invitations } },
+        server_members: select.server_members
+          ? { select: { ...select?.server_members } }
+          : false,
+        config: select.config ? { select: { ...select?.config } } : false,
+        channels: select.channels ? { select: { ...select?.channels } } : false,
+        invitations: select.invitations
+          ? { select: { ...select?.invitations } }
+          : false,
       },
     });
 
@@ -116,10 +120,14 @@ export const getServerData = async (
   const server = await db.server.findUnique({
     where: { id: server_id },
     include: {
-      server_members: { select: { ...select?.server_members } },
-      config: { select: { ...select?.config } },
-      channels: { select: { ...select?.channels } },
-      invitations: { select: { ...select?.invitations } },
+      server_members: select?.server_members
+        ? { select: { ...select?.server_members } }
+        : false,
+      config: select?.config ? { select: { ...select?.config } } : false,
+      channels: select?.channels ? { select: { ...select?.channels } } : false,
+      invitations: select?.invitations
+        ? { select: { ...select?.invitations } }
+        : false,
     },
   });
 
