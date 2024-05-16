@@ -42,7 +42,6 @@ export default function ServerNotes() {
 
   // Check that segments array is long enough to have a serverId
   const serverId = segments.length > 2 ? segments[2] : null;
-  console.log("servun id: ", serverId);
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
 
   function handleSetActiveNoteId(noteId: string) {
@@ -58,6 +57,12 @@ export default function ServerNotes() {
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
+
+  useEffect(() => {
+    if (serverId) {
+      socket.emit("join-server", serverId); // Join the server room
+    }
+  }, [serverId]); // This effect runs whenever the serverId changes
 
   const removeNoteFromState = useCallback((noteId: string) => {
     setNotes((currentNotes) =>
@@ -98,33 +103,42 @@ export default function ServerNotes() {
 
     fetchData();
 
-    socket.on("update-note", (updatedNote) => {
-      setNotes((prevNotes) =>
-        prevNotes.map((note) =>
-          note.documentName === updatedNote.documentName ? updatedNote : note,
-        ),
-      );
+    socket.on("update-note", (data) => {
+      console.log("Received data:", data);
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note.documentName === data.note.documentName ? data.note : note,
+          ),
+        );
+      }
     });
 
-    socket.on("create-note", (newNote) => {
-      setNotes((prevNotes) => [...prevNotes, newNote]);
+    socket.on("create-note", (data) => {
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) => [...prevNotes, data.note]);
+      }
     });
 
-    socket.on("delete-note", handleNoteDeletion);
+    socket.on("delete-note", (data) => {
+      if (data.serverId === serverId) {
+        handleNoteDeletion(data.noteId);
+      }
+    });
 
     return () => {
       socket.off("update-note");
       socket.off("create-note");
       socket.off("delete-note");
     };
-  }, [handleNoteDeletion]);
+  }, [handleNoteDeletion, serverId]);
 
   async function handleNewNoteClient() {
     if (serverId) {
       // Assuming you meant to proceed only if serverId is available
       try {
         const newNote = await handleNewNote(serverId);
-        socket.emit("create-note", newNote);
+        socket.emit("create-note", { note: newNote, serverId: serverId });
         setNotes((prevNotes) => [...prevNotes, newNote]);
       } catch (error) {
         console.error("Error creating note:", error);
@@ -153,7 +167,7 @@ export default function ServerNotes() {
       // Emit the updated note to the server
       const updatedNote = updatedNotes.find((note) => note.id === noteId);
       if (updatedNote) {
-        socket.emit("update-note", updatedNote);
+        socket.emit("update-note", { note: updatedNote, serverId: serverId });
       }
 
       return updatedNotes;

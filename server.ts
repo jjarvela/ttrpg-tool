@@ -127,21 +127,23 @@ app.prepare().then(() => {
       },
     );
 
-    socket.on("create-note", (newNote) => {
+    socket.on("join-server", (serverId) => {
+      socket.join(serverId);
+    });
+
+    socket.on("create-note", (data) => {
       console.log("creating note");
-      socket.broadcast.emit("create-note", newNote);
+      io.to(data.serverId).emit("create-note", data);
     });
 
-    socket.on("update-note", async (updatedNote) => {
+    socket.on("update-note", (data) => {
       console.log("updating note");
-
-      // Broadcast the updated note to all clients except the sender
-      socket.broadcast.emit("update-note", updatedNote);
+      io.to(data.serverId).emit("update-note", data);
     });
 
-    socket.on("delete-note", (noteId) => {
+    socket.on("delete-note", (data) => {
       console.log("deleting note");
-      socket.broadcast.emit("delete-note", noteId);
+      io.to(data.serverId).emit("delete-note", data);
     });
 
     socket.on("disconnect", () => {

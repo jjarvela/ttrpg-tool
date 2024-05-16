@@ -33,7 +33,8 @@ export function Note({
   currentUser: currentUserType;
   setActiveNoteId: (noteId: string) => void;
 }) {
-  const { id, author, documentName, content, positionX, positionY } = note;
+  const { id, server_id, author, documentName, content, positionX, positionY } =
+    note;
 
   const isCurrentUserAuthor = author === currentUser.username;
 
@@ -49,12 +50,18 @@ export function Note({
       try {
         await handleNoteContentChange(id, newContent);
         setCurrentContent(newContent); // Update current content locally
-        socket.emit("update-note", { ...note, content: newContent });
+        socket.emit("update-note", {
+          note: {
+            ...note,
+            content: newContent,
+          },
+          serverId: server_id,
+        });
       } catch (error) {
         console.error("Error updating note content:", error);
       }
     },
-    [id, note],
+    [id, note, server_id],
   );
 
   const handlePositionChange = useCallback(
@@ -69,17 +76,17 @@ export function Note({
   );
 
   const handleNoteDeletion = useCallback(async () => {
-    try {
-      await handleNoteDelete(id);
-      setIsDeleted(true); // Trigger fade-out animation
-      setTimeout(() => {
+    setIsDeleted(true); // Trigger fade-out animation
+    setTimeout(async () => {
+      try {
+        await handleNoteDelete(id);
         onNoteDelete(id); // Remove the note from UI
-        socket.emit("delete-note", id); // Emit delete event to the server
-      }, 300);
-    } catch (error) {
-      console.error("Error deleting note:", error);
-    }
-  }, [id, onNoteDelete]);
+        socket.emit("delete-note", { noteId: id, serverId: note.server_id }); // Emit delete event to the server
+      } catch (error) {
+        console.error("Error deleting note:", error);
+      }
+    }, 500);
+  }, [id, note.server_id, onNoteDelete]);
 
   const { attributes, listeners, transform, setNodeRef } = useDraggable({
     id,
@@ -107,7 +114,7 @@ export function Note({
     ...NoteSize,
     ...styles,
     opacity: isDeleted || isNewNote ? 0 : 1,
-    transition: "opacity 0.3s ease-in",
+    transition: "opacity 0.3s ease-in-out",
   };
 
   return (
