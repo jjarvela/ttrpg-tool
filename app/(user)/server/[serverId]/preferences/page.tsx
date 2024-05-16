@@ -36,10 +36,8 @@ export default async function ServerPreferences({
 
   if (!serverAuth) redirect("/server");
 
-  const info = await getServerData(id, {
-    server_name: true,
-    description: true,
-    image: true,
+  const info: unknown = await getServerData(id, {
+    select: { server_name: true, description: true, image: true },
   });
 
   if (
@@ -54,18 +52,18 @@ export default async function ServerPreferences({
   const authMatch = checkAuthMatch(serverAuth, config);
 
   return (
-    <Main className="mx-4 min-h-[90vh] w-[98%]">
+    <Main className="min-h-[90vh] w-[98%] px-4">
       <h1>Preferences</h1>
       <h2>Server information</h2>
 
       <ServerInfo
-        info={info}
+        info={info as ServerData}
         serverAuth={serverAuth}
         config={config}
         editable={authMatch}
         server_icon={
           <Icon
-            filename={info.image || ""}
+            filename={(info as ServerData).image || ""}
             alt="server icon"
             className="absolute left-0 top-0"
           />

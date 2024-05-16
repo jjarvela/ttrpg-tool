@@ -13,7 +13,7 @@ export default async function ServerChat({ params }: { params: Params }) {
   }
 
   return (
-    <Main className="mx-4">
+    <Main className="px-4">
       <h1>Hewwo</h1>
     </Main>
   );

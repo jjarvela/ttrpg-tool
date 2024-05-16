@@ -74,7 +74,7 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
   const sortedMembers = memberSort(members);
 
   return (
-    <Main className="mx-4">
+    <Main className="w-full px-4">
       <h1>World Clock</h1>
       <RowWrapper breakPoint="sm" className="flex-wrap">
         {sortedMembers.map((item) => {

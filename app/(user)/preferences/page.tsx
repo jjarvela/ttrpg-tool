@@ -13,27 +13,28 @@ export default async function UserPreferences() {
 
   if (!session) return redirect("/welcome");
 
-  const user = await getUserById((session as ExtendedSession).userId);
+  try {
+    const user = await getUserById((session as ExtendedSession).userId);
 
-  if (!user || typeof user === "string")
+    return (
+      <Main className="p-4">
+        <AccountInfo user={user} />
+        <div className="h-[1px] w-full bg-black50"></div>
+        <ProfileInfo
+          user={user}
+          profile_image={
+            <Icon
+              filename={user.profile_image || ""}
+              alt="profile image"
+              className="absolute left-0 top-0"
+            />
+          }
+        />
+        <div className="mx-auto h-[1px] w-full bg-black50"></div>
+        <PrivacyAndSafety user={user} />
+      </Main>
+    );
+  } catch (e) {
     return <FeedbackCard type="error" message="Something went wrong!" />;
-
-  return (
-    <Main className="p-4">
-      <AccountInfo user={user} />
-      <div className="h-[1px] w-full bg-black50"></div>
-      <ProfileInfo
-        user={user}
-        profile_image={
-          <Icon
-            filename={user.profile_image || ""}
-            alt="profile image"
-            className="absolute left-0 top-0"
-          />
-        }
-      />
-      <div className="mx-auto h-[1px] w-full bg-black50"></div>
-      <PrivacyAndSafety user={user} />
-    </Main>
-  );
+  }
 }
