@@ -3,6 +3,7 @@
 import MaterialSymbolsLightCloseRounded from "@/public/icons/MaterialSymbolsLightCloseRounded";
 import ColumnWrapper from "./wrappers/ColumnWrapper";
 import RowWrapper from "./wrappers/RowWrapper";
+import { useState } from 'react';
 import Button from "./Button";
 import { twMerge } from "tailwind-merge";
 import { RocknRoll_One } from "next/font/google";
@@ -13,7 +14,7 @@ import { RocknRoll_One } from "next/font/google";
  * 
 */
 
-function DiceSelector() {
+export default function DiceSelector() {
   return (
     <div id="diceBox">
 
