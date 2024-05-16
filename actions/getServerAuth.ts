@@ -6,10 +6,11 @@ export default async function getServerAuth(
 ) {
   try {
     const memberInfo = await getServerMember(server_id, user_id);
-    if (!memberInfo || typeof memberInfo === "string") return null;
+
     return memberInfo;
   } catch (e) {
     console.log((e as Error).message);
+
     return null;
   }
 }

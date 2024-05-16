@@ -22,22 +22,35 @@ export default async function registerAccount(
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const existingEmail = await getUserByEmail(email);
+  try {
+    const existingEmail = await getUserByEmail(email);
 
-  if (existingEmail) return { error: "Email already in use." };
+    return { error: "Email already in use." };
+  } catch (e) {
+    if ((e as Error).message !== "No user could be found") {
+      return { error: "Something went wrong" };
+    }
+  }
 
-  const existingUsername = await getUserByUsername(username);
+  try {
+    const existingUsername = await getUserByUsername(username);
 
-  if (existingUsername) return { error: "Username unavailable." };
+    return { error: "Username unavailable." };
+  } catch (e) {
+    if ((e as Error).message !== "No user could be found") {
+      return { error: "Something went wrong" };
+    }
+  }
 
-  const newUser = await createUser({
-    email,
-    username,
-    password_hash: passwordHash,
-  });
+  try {
+    const newUser = await createUser({
+      email,
+      username,
+      password_hash: passwordHash,
+    });
 
-  if (typeof newUser === "string")
+    return { username: newUser.username };
+  } catch (e) {
     return { error: "Something went wrong. Please try again." };
-
-  return { username: newUser.username };
+  }
 }
