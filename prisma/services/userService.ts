@@ -1,80 +1,71 @@
 import { db } from "../db";
 
 export const getUserById = async (
-  id: string,
+  user_id: string,
   select?: { [key: string]: boolean },
 ) => {
-  try {
-    const user = await db.user.findUnique({
-      where: {
-        id: id,
-      },
-      select: select,
-    });
-    return user;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const user = await db.user.findUnique({
+    where: {
+      id: user_id,
+    },
+    select: select,
+  });
+
+  if (!user) throw new Error("No user could be found");
+
+  return user;
 };
 
 export const getUsersById = async (
-  ids: string[],
+  user_ids: string[],
   select?: { [key: string]: boolean },
 ) => {
-  try {
-    const user = await db.user.findMany({
-      where: {
-        id: { in: ids },
-      },
-      select: select,
-    });
-    return user;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const users = await db.user.findMany({
+    where: {
+      id: { in: user_ids },
+    },
+    select: select,
+  });
+
+  return users;
 };
 
 export const getUserByEmail = async (email: string) => {
-  try {
-    const user = await db.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
-    return user;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const user = await db.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!user) throw new Error("No user could be found");
+
+  return user;
 };
 
 export const getUserByUsername = async (username: string) => {
-  try {
-    const user = await db.user.findUnique({
-      where: {
-        username: username,
-      },
-    });
-    return user;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const user = await db.user.findUnique({
+    where: {
+      username: username,
+    },
+  });
+
+  if (!user) throw new Error("No user could be found");
+
+  return user;
 };
 
 export const getUsersByUsername = async (
   usernames: string[],
   select?: { [key: string]: boolean },
 ) => {
-  try {
-    const user = await db.user.findMany({
-      where: {
-        username: { in: usernames },
-      },
-      select: select,
-    });
-    return user;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const user = await db.user.findMany({
+    where: {
+      username: { in: usernames },
+    },
+    select: select,
+  });
+
+  return user;
 };
 
 export const createUser = async (data: {
@@ -82,14 +73,11 @@ export const createUser = async (data: {
   username: string;
   password_hash: string;
 }) => {
-  try {
-    const newUser = await db.user.create({
-      data: data,
-    });
-    return newUser;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const newUser = await db.user.create({
+    data: data,
+  });
+
+  return newUser;
 };
 
 export const updateUser = async (
@@ -106,70 +94,59 @@ export const updateUser = async (
     person_status?: string;
   },
 ) => {
-  try {
-    const user = await db.user.findUnique({ where: { id: id } });
-    if (!user) return "User not found.";
+  const user = await db.user.findUnique({ where: { id: id } });
 
-    const updatedUser = await db.user.update({
-      where: { id: id },
-      data: data,
-    });
+  if (!user) throw new Error("No user could be found");
 
-    return updatedUser;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const updatedUser = await db.user.update({
+    where: { id: id },
+    data: data,
+  });
+
+  return updatedUser;
 };
 
 export const getUsersExcept = async (
-  id: string,
+  user_id: string,
   select?: { [key: string]: boolean },
 ) => {
-  try {
-    const users = await db.user.findMany({
-      where: {
-        id: {
-          not: id,
-        },
+  const users = await db.user.findMany({
+    where: {
+      id: {
+        not: user_id,
       },
-      select: select,
-    });
-    return users;
-  } catch (e) {
-    return (e as Error).message;
-  }
+    },
+    select: select,
+  });
+
+  return users;
 };
 
 export const getUserServers = async (
   userId: string,
   select?: { [key: string]: boolean },
 ) => {
-  try {
-    const memberIn = await db.serverMember.findMany({
-      where: { member_id: userId },
-    });
-    const serverIds = memberIn.map((item) => {
-      return item.server_id;
-    });
+  const memberIn = await db.serverMember.findMany({
+    where: { member_id: userId },
+  });
+  const serverIds = memberIn.map((item) => {
+    return item.server_id;
+  });
 
-    const servers = await db.server.findMany({
-      where: {
-        id: { in: serverIds },
-      },
-      select: select,
-    });
+  const servers = await db.server.findMany({
+    where: {
+      id: { in: serverIds },
+    },
+    select: select,
+  });
 
-    return servers;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  return servers;
 };
 
 export const findUserBySocket = async (socket_id: string) => {
-  try {
-    const user = db.user.findFirst({ where: { socket_id } });
-    return user;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const user = db.user.findFirst({ where: { socket_id } });
+
+  if (!user) throw new Error("No user could be found");
+
+  return user;
 };
