@@ -2,6 +2,7 @@
 import * as z from "zod";
 import { UserInfoSchema } from "../../validation-schemas";
 import {
+  getUserByEmail,
   getUserByUsername,
   updateUser,
 } from "../../prisma/services/userService";
@@ -26,24 +27,36 @@ export default async function changeUserInfo(
   }
 
   if (data.username) {
-    const existingUser = await getUserByUsername(data.username);
-    console.log(existingUser);
-    if (existingUser || typeof existingUser === "string")
-      return { error: "Username unavailable" };
+    try {
+      const existingUsername = await getUserByUsername(data.username);
+
+      return { error: "Username unavailable." };
+    } catch (e) {
+      if ((e as Error).message !== "No user could be found") {
+        return { error: "Something went wrong" };
+      }
+    }
   }
 
   if (data.email) {
-    const existingUser = await getUserByUsername(data.email);
-    if (existingUser || typeof existingUser === "string")
-      return { error: "Email already associated with an account" };
+    try {
+      const existingEmail = await getUserByEmail(data.email);
+
+      return { error: "Email already in use." };
+    } catch (e) {
+      if ((e as Error).message !== "No user could be found") {
+        return { error: "Something went wrong" };
+      }
+    }
   }
 
   if (data.username === "") delete data.username;
   if (data.screen_name === "") delete data.screen_name;
   if (data.email === "") delete data.email;
 
-  const updatedUser = await updateUser(id, data);
-
-  if (typeof updatedUser === "string")
+  try {
+    const updatedUser = await updateUser(id, data);
+  } catch (e) {
     return { error: "Something went wrong. Please try again." };
+  }
 }

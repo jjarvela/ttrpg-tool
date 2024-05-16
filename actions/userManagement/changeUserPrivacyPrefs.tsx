@@ -20,10 +20,9 @@ export default async function changeUserPrivacyPrefs(
 ) {
   if (!data) return { error: "No data to be updated" };
 
-  const updatedUser = await updateUser(id, data);
-
-  console.log(updatedUser);
-
-  if (typeof updatedUser === "string")
+  try {
+    const updatedUser = await updateUser(id, data);
+  } catch {
     return { error: "Something went wrong. Please try again." };
+  }
 }

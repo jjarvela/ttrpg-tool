@@ -21,13 +21,19 @@ export default async function login(
   const { username, password } = validatedFields.data;
 
   //need these checks for correct error display behaviour in production
-  const user = await getUserByUsername(username);
+  try {
+    const user = await getUserByUsername(username);
 
-  if (!user) return { error: "Invalid username or password." };
-  if (typeof user === "string") return { error: "Something went wrong." };
+    const passwordsMatch = await bcrypt.compare(password, user.password_hash);
 
-  const passwordsMatch = await bcrypt.compare(password, user.password_hash);
-  if (!passwordsMatch) return { error: "Invalid username or password." };
+    if (!passwordsMatch) return { error: "Invalid username or password." };
+  } catch (e) {
+    if ((e as Error).message === "No user could be found") {
+      return { error: "Invalid username or password." };
+    }
+
+    return { error: "Something went wrong." };
+  }
 
   try {
     await signIn("credentials", {

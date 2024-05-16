@@ -10,7 +10,7 @@ export default async function ServerCharacters({ params }: { params: Params }) {
     const server = await getServerData(id);
     return (
       <Main className="mx-4">
-        <h1>Characters</h1>
+        <h1>Hewwo</h1>
       </Main>
     );
   } catch (e) {
