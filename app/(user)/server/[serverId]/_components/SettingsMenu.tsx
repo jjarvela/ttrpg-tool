@@ -114,6 +114,7 @@ export default function ServerSettingsMenu({
         refObject={confirmRef}
         onConfirm={async () => {
           await leaveServer(serverAuth.member_id, serverAuth.server_id);
+          router.push("/server/explore");
           router.refresh();
         }}
         confirmText="Leave"
