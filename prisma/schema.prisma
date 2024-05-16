@@ -185,6 +185,7 @@ model ServerCharacter {
   server_id         String
   class             String
   level             Int
+  experience        Float
   vitals            Float[]
   attributes        Float[]
   statics           Float[]

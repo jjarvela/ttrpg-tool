@@ -58,7 +58,7 @@ export const createServerCharacterConfig = async (
  * @param base_id string - the id of the character base
  * @param server_id string - the id of the server
  * @param data {class: string, level: number, vitals: number[], attributes: number[], statics: number[], skills: string, items: string;}
- * @returns server character - {id: string, base_id: string, server_id: string, class: string, level: number, vitals: number[], attributes: number[], statics: number[], skills: string, items: string;}
+ * @returns server character - {id: string, base_id: string, server_id: string, class: string, level: number, experience: number, vitals: number[], attributes: number[], statics: number[], skills: string, items: string;}
  */
 export const createServerCharacter = async (
   base_id: string,
@@ -66,6 +66,7 @@ export const createServerCharacter = async (
   data: {
     class: string;
     level: number;
+    experience: number;
     vitals: number[];
     attributes: number[];
     statics: number[];
@@ -372,7 +373,7 @@ export const updateServerCharacterConfig = async (
  * Update server character instance
  * @param character_id - string
  * @param data {class: string, level: number, vitals: number[], attributes: number[], statics: number[], skills: string, items: string;}
- * @returns updated server character {id: string, base_id: string, server_id: string, class: string, level: number, vitals: number[], attributes: number[], statics: number[], skills: string, items: string;}
+ * @returns updated server character {id: string, base_id: string, server_id: string, class: string, level: number, experience: number, vitals: number[], attributes: number[], statics: number[], skills: string, items: string;}
  */
 export const updateServerCharacter = async (
   character_id: string,

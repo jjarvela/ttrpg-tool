@@ -94,6 +94,7 @@ type ServerCharacter = {
   server_id: string;
   class: string;
   level: number;
+  experience: number;
   vitals: number[];
   attributes: number[];
   statics: number[];
