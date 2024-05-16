@@ -1,5 +1,6 @@
 "use server";
 
+import { createServerCharacterConfig } from "@/prisma/services/characterService";
 import {
   createServerConfig,
   createServerEntry,
@@ -32,8 +33,6 @@ export default async function createServer(
       description: data.description,
       image: data.image || undefined,
     });
-    if (typeof server === "string")
-      return "Something went wrong. Please try again.";
 
     const password_hash = await bcrypt.hash(String(data.password), 10);
 
@@ -46,20 +45,23 @@ export default async function createServer(
       searchable: data.searchPermission,
     });
 
-    if (typeof serverConfig === "string")
-      return "Something went wrong while setting up the server.";
-
     const serverOwner = await createServerMember({
       server_id: server.id,
       member_id: user_id,
       role: "admin",
     });
 
-    if (typeof serverOwner === "string")
-      return "Something went wrong while setting up the server.";
+    const serverCharacterConfig = await createServerCharacterConfig(server.id, {
+      vitals_count: 1,
+      vitals_names: ["HP"],
+      attributes_count: 2,
+      attributes_names: ["Strength", "Dexterity"],
+      statics_count: 2,
+      statics_names: ["Stealth", "Persuation"],
+    });
 
     return server;
   } catch (e) {
-    return (e as Error).message;
+    throw new Error("Something went wrong. Please try again.");
   }
 }
