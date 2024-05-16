@@ -9,6 +9,13 @@ import {
 } from "@/prisma/services/channelService";
 import FeedbackCard from "../../../../../../_components/FeedbackCard";
 
+type Member = {
+  user: {
+    username: string;
+  };
+  member_id: string;
+};
+
 export default async function AddMembersToChannel({
   params,
 }: {
@@ -45,7 +52,7 @@ export default async function AddMembersToChannel({
       />
     );
   }
-  let notChannelMembers: any[] = [];
+  let notChannelMembers: { label: string; value: string }[] = [];
   if (channelConversationMembers) {
     const channelMembersIds = channelConversationMembers.participants.map(
       (user) => user.participant_id,
@@ -56,7 +63,7 @@ export default async function AddMembersToChannel({
     );
 
     if (notChannelMembersList) {
-      notChannelMembers = notChannelMembersList.map((member: any) => {
+      notChannelMembers = notChannelMembersList.map((member: Member) => {
         return { label: member.user.username, value: member.member_id };
       });
     }
