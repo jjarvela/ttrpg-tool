@@ -67,3 +67,36 @@ type Invitation = {
   max_uses: number | null;
   protected: boolean;
 };
+
+type CharacterConfig = {
+  id: number;
+  server_id: string;
+  vitals_count: number;
+  vitals_names: string[];
+  attributes_count: number;
+  attributes_names: string[];
+  statics_count: number;
+  statics_names: string[];
+};
+
+type CharacterBase = {
+  id: string;
+  owner_id: string;
+  name: string;
+  description: string | null;
+  image: string | null;
+};
+
+type ServerCharacter = {
+  base: CharacterBase;
+  id: string;
+  base_id: string;
+  server_id: string;
+  class: string;
+  level: number;
+  vitals: number[];
+  attributes: number[];
+  statics: number[];
+  skills: string;
+  items: string;
+};

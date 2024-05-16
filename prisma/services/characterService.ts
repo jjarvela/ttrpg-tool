@@ -9,13 +9,7 @@ import { db } from "../db";
 export const createCharacterBase = async (
   owner_id: string,
   data: { name: string; description?: string; image?: string },
-): Promise<{
-  id: string;
-  owner_id: string;
-  name: string;
-  description: string | null;
-  image: string | null;
-}> => {
+): Promise<CharacterBase> => {
   const character = await db.characterBase.create({
     data: {
       ...data,
@@ -46,16 +40,7 @@ export const createServerCharacterConfig = async (
     statics_count: number;
     statics_names: string[];
   },
-): Promise<{
-  id: number;
-  server_id: string;
-  vitals_count: number;
-  vitals_names: string[];
-  attributes_count: number;
-  attributes_names: string[];
-  statics_count: number;
-  statics_names: string[];
-}> => {
+): Promise<CharacterConfig> => {
   const charaConfig = await db.serverCharacterConfig.create({
     data: {
       ...data,
@@ -87,18 +72,7 @@ export const createServerCharacter = async (
     skills: string;
     items: string;
   },
-): Promise<{
-  id: string;
-  base_id: string;
-  server_id: string;
-  class: string;
-  level: number;
-  vitals: number[];
-  attributes: number[];
-  statics: number[];
-  skills: string;
-  items: string;
-}> => {
+): Promise<Omit<ServerCharacter, "base">> => {
   const config = await db.serverCharacterConfig.findUnique({
     where: { server_id: server_id },
     select: { vitals_count: true, attributes_count: true, statics_count: true },
@@ -164,8 +138,10 @@ export const getCharacterBase = async (
       where: { id: base_id },
       select: {
         ...select?.select,
-        owner: select?.owner,
-        server_stats: select?.server_stats,
+        owner: select.owner ? { select: { ...select?.owner } } : false,
+        server_stats: select.server_stats
+          ? { select: { ...select?.server_stats } }
+          : false,
       },
     });
 
@@ -177,8 +153,10 @@ export const getCharacterBase = async (
   const character = await db.characterBase.findUnique({
     where: { id: base_id },
     include: {
-      owner: { select: { ...select?.owner } },
-      server_stats: { select: { ...select?.server_stats } },
+      owner: select?.owner ? { select: { ...select?.owner } } : false,
+      server_stats: select?.server_stats
+        ? { select: { ...select?.server_stats } }
+        : false,
     },
   });
 
@@ -218,8 +196,10 @@ export const getUserCharacterBases = async (
       where: { owner_id: user_id },
       select: {
         ...select?.select,
-        owner: select?.owner,
-        server_stats: select?.server_stats,
+        owner: select.owner ? { select: { ...select?.owner } } : false,
+        server_stats: select.server_stats
+          ? { select: { ...select?.server_stats } }
+          : false,
       },
     });
 
@@ -229,8 +209,10 @@ export const getUserCharacterBases = async (
   const characters = await db.characterBase.findMany({
     where: { owner_id: user_id },
     include: {
-      owner: { select: { ...select?.owner } },
-      server_stats: { select: { ...select?.server_stats } },
+      owner: select?.owner ? { select: { ...select?.owner } } : false,
+      server_stats: select?.server_stats
+        ? { select: { ...select?.server_stats } }
+        : false,
     },
   });
 
@@ -286,7 +268,10 @@ export const getServerCharacter = async (
   if (select?.select) {
     const character = await db.serverCharacter.findUnique({
       where: { id: id },
-      select: { ...select?.select, base: select?.base },
+      select: {
+        ...select?.select,
+        base: select.base ? { select: { ...select?.base } } : false,
+      },
     });
 
     if (!character) throw new Error("Character could not be found");
@@ -296,7 +281,7 @@ export const getServerCharacter = async (
 
   const character = await db.serverCharacter.findUnique({
     where: { id: id },
-    include: { base: { select: { ...select?.base } } },
+    include: { base: select?.base ? { select: { ...select?.base } } : false },
   });
 
   if (!character) throw new Error("Character could not be found");
@@ -323,7 +308,10 @@ export const getServerCharacters = async (
   if (select?.select) {
     const characters = await db.serverCharacter.findMany({
       where: { server_id: server_id },
-      select: { ...select?.select, base: select?.base },
+      select: {
+        ...select?.select,
+        base: select.base ? { select: { ...select?.base } } : false,
+      },
     });
 
     return characters;
@@ -331,7 +319,7 @@ export const getServerCharacters = async (
 
   const characters = await db.serverCharacter.findMany({
     where: { server_id: server_id },
-    include: { base: { select: { ...select?.base } } },
+    include: { base: select?.base ? { select: { ...select?.base } } : false },
   });
 
   return characters;
@@ -346,7 +334,7 @@ export const getServerCharacters = async (
 export const updateCharacterBase = async (
   character_id: string,
   data: { name?: string; description?: string; image?: string },
-) => {
+): Promise<CharacterBase> => {
   const character = await db.characterBase.update({
     where: { id: character_id },
     data,
@@ -371,7 +359,7 @@ export const updateServerCharacterConfig = async (
     statics_count?: number;
     statics_names?: string[];
   },
-) => {
+): Promise<CharacterConfig> => {
   const config = db.serverCharacterConfig.update({
     where: { server_id: server_id },
     data,
@@ -397,7 +385,7 @@ export const updateServerCharacter = async (
     skills?: string;
     items?: string;
   },
-) => {
+): Promise<Omit<ServerCharacter, "base">> => {
   const character = db.serverCharacter.update({
     where: { id: character_id },
     data,
@@ -411,7 +399,9 @@ export const updateServerCharacter = async (
  * @param character_id - string
  * @returns deleted character base object
  */
-export const deleteCharacterBase = async (character_id: string) => {
+export const deleteCharacterBase = async (
+  character_id: string,
+): Promise<CharacterBase> => {
   const character = await db.characterBase.delete({
     where: { id: character_id },
   });
@@ -423,7 +413,9 @@ export const deleteCharacterBase = async (character_id: string) => {
  * @param server_id - string
  * @returns deleted character configuration object
  */
-export const deleteServerCharacterConfig = async (server_id: string) => {
+export const deleteServerCharacterConfig = async (
+  server_id: string,
+): Promise<CharacterConfig> => {
   const config = await db.serverCharacterConfig.delete({
     where: { server_id: server_id },
   });
@@ -435,7 +427,9 @@ export const deleteServerCharacterConfig = async (server_id: string) => {
  * @param character_id - string
  * @returns deleted server character object
  */
-export const deleteServerCharacter = async (character_id: string) => {
+export const deleteServerCharacter = async (
+  character_id: string,
+): Promise<Omit<ServerCharacter, "base">> => {
   const character = await db.serverCharacter.delete({
     where: { id: character_id },
   });
