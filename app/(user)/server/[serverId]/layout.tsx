@@ -5,6 +5,8 @@ import ServerMembersMenu from "./_components/ServerMembersMenu";
 import { auth } from "@/auth";
 import getServerAuth from "@/actions/getServerAuth";
 import ServerJoinPage from "./_components/serverJoinComponents/ServerJoinPage";
+import { getServerData } from "@/prisma/services/serverService";
+import ServerNotFound from "./_components/ServerNotFound";
 
 export default async function ServerLayout({
   params,
@@ -15,7 +17,14 @@ export default async function ServerLayout({
 }) {
   const id = params.serverId;
 
+  try {
+    const server = await getServerData(id);
+  } catch (e) {
+    return <ServerNotFound />;
+  }
+
   const session = await auth();
+
   const serverAuth = await getServerAuth(
     id,
     (session as ExtendedSession).userId,
