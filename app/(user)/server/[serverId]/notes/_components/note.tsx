@@ -74,16 +74,17 @@ export function Note({
   );
 
   const handleNoteDeletion = useCallback(async () => {
-    //setIsDeleted(true); // Trigger fade-out animation
-    //setTimeout(async () => {
-    try {
-      await handleNoteDelete(id);
-      onNoteDelete(id); // Remove the note from UI
-      socket.emit("delete-note", { noteId: id, serverId: note.server_id }); // Emit delete event to the server
-    } catch (error) {
-      console.error("Error deleting note:", error);
-    }
-    //}, 300);
+    setIsDeleted(true); // Set the flag to start the fade-out
+    setTimeout(async () => {
+      try {
+        await handleNoteDelete(id);
+        onNoteDelete(id); // This should ideally be handled after confirming deletion success
+        socket.emit("delete-note", { noteId: id, serverId: server_id });
+      } catch (error) {
+        console.error("Error deleting note:", error);
+        setIsDeleted(false); // Reset deletion flag if there was an error
+      }
+    }, 300); // Delay to allow CSS transition to complete
   }, [id, note.server_id, onNoteDelete]);
 
   const { attributes, listeners, transform, setNodeRef } = useDraggable({

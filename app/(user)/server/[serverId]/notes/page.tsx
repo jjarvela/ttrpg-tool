@@ -134,35 +134,32 @@ export default function ServerNotes() {
     }
   }
 
-  function handleDragEnd(event: DragEndEvent) {
-    const noteId = event.active.id;
-    const delta = event.delta;
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const noteId = event.active.id;
+      const delta = event.delta;
 
-    setNotes((prevNotes) => {
-      // Create a new array by mapping through the previous notes
-      const updatedNotes = prevNotes.map((note) => {
-        if (note.id === noteId) {
-          // Return a new object for the updated note
-          return {
-            ...note,
-            positionX: note.positionX + delta.x,
-            positionY: note.positionY + delta.y,
-          };
-        }
-        // Return the note as is if it does not match the id
-        return note;
+      setNotes((prevNotes) => {
+        return prevNotes.map((note) => {
+          if (note.id === noteId) {
+            const updatedNote = {
+              ...note,
+              positionX: note.positionX + delta.x,
+              positionY: note.positionY + delta.y,
+            };
+            // Emit the updated note to the server
+            socket.emit("update-note", {
+              note: updatedNote,
+              serverId: serverId,
+            });
+            return updatedNote;
+          }
+          return note;
+        });
       });
-
-      // Emit the updated note to the server
-      const updatedNote = updatedNotes.find((note) => note.id === noteId);
-      if (updatedNote) {
-        socket.emit("update-note", { note: updatedNote, serverId: serverId });
-      }
-
-      // Return the new array of notes
-      return updatedNotes;
-    });
-  }
+    },
+    [serverId],
+  );
 
   if (!user) {
     return null; // Render loading state or redirect to login
