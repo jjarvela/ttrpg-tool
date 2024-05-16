@@ -14,13 +14,10 @@ import { usePathname } from "next/navigation";
 interface IconLinkProps {
   href: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  isActive: boolean;
 }
 
-const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon }) => {
-  const pathname = usePathname();
-
-  const isActive = pathname.startsWith(href);
-
+const IconLink: React.FC<IconLinkProps> = ({ href, icon: Icon, isActive }) => {
   return (
     <Link href={href}>
       <div
@@ -38,6 +35,7 @@ const TopMenu = ({
   serverId: string;
   setShowMembers: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const pathname = usePathname();
   return (
     <nav className="bg-color-dark collapse relative flex h-0 w-full justify-center overflow-hidden px-6 py-4 lg:visible lg:h-[3.5rem] lg:overflow-visible">
       <div className="flex items-center justify-center space-x-4">
@@ -45,27 +43,37 @@ const TopMenu = ({
         <IconLink
           href={`/server/${serverId}`}
           icon={MaterialSymbolsCastleOutline}
+          isActive={pathname === `/server/${serverId}`}
         />
         <IconLink
           href={`/server/${serverId}/chat`}
           icon={MaterialSymbolsAndroidMessagesOutline}
+          isActive={pathname.includes("chat")}
         />
         <IconLink
           href={`/server/${serverId}/characters`}
           icon={MaterialSymbolsPersonPlayOutline}
+          isActive={pathname.includes("characters")}
         />
         <IconLink
           href={`/server/${serverId}/boards`}
           icon={MaterialSymbolsChessOutline}
+          isActive={pathname.includes("boards")}
         />
         <IconLink
           href={`/server/${serverId}/notes`}
           icon={MaterialSymbolsNoteStackOutline}
+          isActive={pathname.includes("notes")}
         />
-        <IconLink href={`/server/${serverId}/dice`} icon={IconoirHexagonDice} />
+        <IconLink
+          href={`/server/${serverId}/dice`}
+          icon={IconoirHexagonDice}
+          isActive={pathname.includes("dice")}
+        />
         <IconLink
           href={`/server/${serverId}/worldclock`}
           icon={MaterialSymbolsScheduleOutline}
+          isActive={pathname.includes("worldclock")}
         />
       </div>
       <div className="absolute right-4 flex items-center space-x-4">
