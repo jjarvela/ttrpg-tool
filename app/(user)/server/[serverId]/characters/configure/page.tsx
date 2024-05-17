@@ -45,7 +45,7 @@ export default async function ServerCharacterConfig({
       characters.length > 0
     ) {
       return (
-        <Main className="w-full px-4">
+        <Main className="min-h-[90vh] w-full px-4 pb-4">
           <Link href={`/server/${id}/characters`} className="mb-4 flex gap-2">
             <MaterialSymbolsLightChevronLeftRounded className="text-xl" />
             <span>Return</span>
@@ -78,7 +78,7 @@ export default async function ServerCharacterConfig({
     }
 
     return (
-      <Main className="w-full px-4">
+      <Main className="min-h-[90vh] w-full px-4 pb-4">
         <Link href={`/server/${id}/characters`} className="mb-4 flex gap-2">
           <MaterialSymbolsLightChevronLeftRounded className="text-xl" />
           <span>Return</span>

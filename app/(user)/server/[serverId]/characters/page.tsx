@@ -1,7 +1,6 @@
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Main from "@/app/_components/wrappers/PageMain";
-import { Refresher } from "@/app/_components/wrappers/Refresher";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import {
   getServerCharacterConfig,
@@ -36,7 +35,7 @@ export default async function ServerCharacters({ params }: { params: Params }) {
     const config = await getServerConfig(id);
 
     return (
-      <Main className="w-full px-4">
+      <Main className="mb-4 min-h-[90vh] w-full px-4">
         <h1>Characters</h1>
         <RowWrapper justify="justify-between">
           {characters.length < 1 && characterConfig.enable_creation ? (
