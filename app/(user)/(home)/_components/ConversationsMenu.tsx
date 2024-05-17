@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import ConversationThumb from "./ConversationThumb";
 import { getUnreadForUserConversations } from "@/prisma/services/notificationService";
 import ConversationContextMenu from "./ConversationContextMenu";
+import UserSideMenuLink from "./UserSideMenuLink";
+import MaterialSymbolsPersonPlayOutline from "@/public/icons/MaterialSymbolsPersonPlayOutline";
 
 export default async function ConversationsMenu() {
   const session = await auth();
@@ -36,6 +38,13 @@ export default async function ConversationsMenu() {
 
   return (
     <ColumnWrapper className="flex-grow">
+      <div className="mb-1 border-b-[1px] border-black50 py-1">
+        <UserSideMenuLink
+          title="Characters"
+          to="/characters"
+          icon={<MaterialSymbolsPersonPlayOutline className="text-2xl" />}
+        />
+      </div>
       {typeof conversations !== "string" ? (
         conversations.length > 0 ? (
           conversations.map((conversation) => (
