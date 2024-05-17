@@ -12,7 +12,7 @@ export default function UserSideMenuLink({
   return (
     <Link
       href={to}
-      className="flex w-60 justify-center gap-2 rounded-lg py-2 hover:bg-black25 dark:hover:bg-black75"
+      className="flex w-[13rem] justify-center gap-2 rounded-lg py-2 hover:bg-black25 dark:hover:bg-black75"
     >
       {icon}
       <h4>{title}</h4>
