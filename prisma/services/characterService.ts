@@ -3,12 +3,12 @@ import { db } from "../db";
 /**
  * Create a user-bound character bases
  * @param owner_id string - id of the user who owns the character
- * @param data {name: string, description?: string, image?: string}
- * @returns The newly created character - {id: string, owner_id: string, name: string, description: string | null, image: string | null}
+ * @param data {name: string, description?: string, image?: string, notes?: string}
+ * @returns The newly created character - {id: string, owner_id: string, name: string, description: string | null, image: string | null, notes: string | null}
  */
 export const createCharacterBase = async (
   owner_id: string,
-  data: { name: string; description?: string; image?: string },
+  data: { name: string; description?: string; image?: string; notes?: string },
 ): Promise<CharacterBase> => {
   const character = await db.characterBase.create({
     data: {
@@ -126,6 +126,7 @@ export const createServerCharacter = async (
     name: string;
     description: string | null;
     image: string | null;
+    notes: string | null;
 }
 to include owner and server_stats, please specify them and the wanted properties in select object
  */
@@ -188,6 +189,7 @@ export const getCharacterBase = async (
     name: string;
     description: string | null;
     image: string | null;
+    notes: string | null
 }[]
 to include owner and server_stats, please specify them and the wanted properties in select object
  */
@@ -359,12 +361,12 @@ export const getServerCharacters = async (
 /**
  * Update a user-bound character base
  * @param character_id string - character base id
- * @param data {name?: string, description?: string, image?: string}
- * @returns The updated character ({id: string, owner_id: string, name: string, description: string | null, image: string | null})
+ * @param data {name?: string, description?: string, image?: string, notes?: string}
+ * @returns The updated character ({id: string, owner_id: string, name: string, description: string | null, image: string | null, notes: string | null})
  */
 export const updateCharacterBase = async (
   character_id: string,
-  data: { name?: string; description?: string; image?: string },
+  data: { name?: string; description?: string; image?: string; notes?: string },
 ): Promise<CharacterBase> => {
   const character = await db.characterBase.update({
     where: { id: character_id },

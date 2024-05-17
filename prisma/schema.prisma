@@ -163,6 +163,7 @@ model CharacterBase {
   name          String
   description   String?
   image         String?
+  notes         String?
   owner         User @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   server_stats  ServerCharacter[]
 }

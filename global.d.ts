@@ -86,6 +86,7 @@ type CharacterBase = {
   name: string;
   description: string | null;
   image: string | null;
+  notes: string | null;
 };
 
 type ServerCharacter = {
