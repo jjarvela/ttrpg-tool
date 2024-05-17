@@ -179,7 +179,7 @@ export const getCharacterBase = async (
  * @param select optional, to set which properties should be included - {
     select: { [key: string]: boolean };
     owner?: { [key: string]: boolean };
-    server_stats?: { [key: string]: boolean };
+    server_stats?: { select?: {[key: string]: boolean}, server?: {[key:string]: boolean} };
   }
  * @returns character base array with either the base properties, or custom selection of properties
    {
@@ -194,9 +194,12 @@ to include owner and server_stats, please specify them and the wanted properties
 export const getUserCharacterBases = async (
   user_id: string,
   select?: {
-    select: { [key: string]: boolean };
+    select?: { [key: string]: boolean };
     owner?: { [key: string]: boolean };
-    server_stats?: { [key: string]: boolean };
+    server_stats?: {
+      select?: { [key: string]: boolean };
+      server?: { [key: string]: boolean };
+    };
   },
 ) => {
   if (select?.select) {
@@ -206,7 +209,14 @@ export const getUserCharacterBases = async (
         ...select?.select,
         owner: select.owner ? { select: { ...select?.owner } } : false,
         server_stats: select.server_stats
-          ? { select: { ...select?.server_stats } }
+          ? {
+              select: {
+                ...select?.server_stats.select,
+                server: select.server_stats.server
+                  ? { select: { ...select.server_stats.server } }
+                  : false,
+              },
+            }
           : false,
       },
     });
@@ -219,7 +229,14 @@ export const getUserCharacterBases = async (
     include: {
       owner: select?.owner ? { select: { ...select?.owner } } : false,
       server_stats: select?.server_stats
-        ? { select: { ...select?.server_stats } }
+        ? {
+            select: {
+              ...select?.server_stats.select,
+              server: select.server_stats.server
+                ? { select: { ...select.server_stats.server } }
+                : false,
+            },
+          }
         : false,
     },
   });
