@@ -112,18 +112,23 @@ export default function ServerNotes() {
       }
     });
 
+    return () => {
+      socket.off("update-note");
+      socket.off("create-note");
+    };
+  }, [handleNoteDeletion, serverId]);
+
+  useEffect(() => {
     socket.on("delete-note", (data) => {
       if (data.serverId === serverId) {
-        handleNoteDeletion(data.noteId);
+        removeNoteFromState(data.noteId);
       }
     });
 
     return () => {
-      socket.off("update-note");
-      socket.off("create-note");
       socket.off("delete-note");
     };
-  }, [handleNoteDeletion, serverId]);
+  }, [serverId, removeNoteFromState]);
 
   async function handleNewNoteClient() {
     if (serverId) {

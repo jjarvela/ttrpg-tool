@@ -65,7 +65,12 @@ export function Note({
   const handlePositionChange = useCallback(
     async (newPositionX: number, newPositionY: number) => {
       try {
-        await handleNotePositionChange(id, newPositionX, newPositionY);
+        await handleNotePositionChange(
+          id,
+          newPositionX,
+          newPositionY,
+          server_id,
+        );
       } catch (error) {
         console.error("Error updating note position:", error);
       }
@@ -74,18 +79,13 @@ export function Note({
   );
 
   const handleNoteDeletion = useCallback(async () => {
-    setIsDeleted(true); // Set the flag to start the fade-out
-    setTimeout(async () => {
-      try {
-        await handleNoteDelete(id);
-        onNoteDelete(id); // This should ideally be handled after confirming deletion success
-        socket.emit("delete-note", { noteId: id, serverId: server_id });
-      } catch (error) {
-        console.error("Error deleting note:", error);
-        setIsDeleted(false); // Reset deletion flag if there was an error
-      }
-    }, 300); // Delay to allow CSS transition to complete
-  }, [id, note.server_id, onNoteDelete]);
+    try {
+      await handleNoteDelete(id, server_id); // Assume this function handles the server-side deletion
+      socket.emit("delete-note", { noteId: id, serverId: server_id }); // Notify server and other clients
+    } catch (error) {
+      console.error("Error deleting note:", error);
+    }
+  }, [id, server_id]);
 
   const { attributes, listeners, transform, setNodeRef } = useDraggable({
     id,
