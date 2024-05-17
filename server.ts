@@ -132,17 +132,14 @@ app.prepare().then(() => {
     });
 
     socket.on("create-note", (data) => {
-      console.log("creating note");
       io.to(data.serverId).emit("create-note", data);
     });
 
     socket.on("update-note", (data) => {
-      console.log("updating note");
       io.to(data.serverId).emit("update-note", data);
     });
 
     socket.on("delete-note", (data) => {
-      console.log("deleting note");
       io.to(data.serverId).emit("delete-note", data);
     });
 

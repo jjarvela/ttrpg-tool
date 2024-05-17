@@ -53,6 +53,12 @@ export default function ServerNotes() {
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
 
+  const removeNoteFromState = useCallback((noteId: string) => {
+    setNotes((currentNotes) =>
+      currentNotes.filter((note) => note.id !== noteId),
+    );
+  }, []);
+
   useEffect(() => {
     if (serverId) {
       socket.emit("join-server", serverId); // Join the server room
@@ -91,7 +97,6 @@ export default function ServerNotes() {
     fetchData();
 
     socket.on("update-note", (data) => {
-      console.log("Received data:", data);
       if (data.serverId === serverId) {
         setNotes((prevNotes) =>
           prevNotes.map((note) =>
@@ -192,7 +197,7 @@ export default function ServerNotes() {
                 }}
                 key={note.documentName}
                 note={note}
-                onNoteDelete={handleNoteDeletion}
+                onNoteDelete={removeNoteFromState}
                 currentUser={{
                   username: user?.username,
                   profile_image: user?.profile_image,
