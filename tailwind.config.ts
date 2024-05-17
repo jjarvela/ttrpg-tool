@@ -10,9 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        heading: "Quattrocento Sans, sans-serif",
-        body: "Inter, system-ui",
-        sans: "Inter, system-ui", // This replaces the document wide default font.
+        heading: "var(--font-quattrocentosans)",
+        body: "var(--font-inter)",
+        sans: "var(--font-inter)", // This replaces the document wide default font.
       },
 
       fontSize: {
