@@ -1,5 +1,4 @@
 import { db } from "../db";
-import { createId } from "@paralleldrive/cuid2";
 
 export const createServerChannel = async (
   server_id: string,
