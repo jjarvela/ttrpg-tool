@@ -58,13 +58,13 @@ export default function NumberInput({
   return (
     <RowWrapper
       className={twMerge(
-        "m-2 w-min gap-1 overflow-hidden rounded-xl border-[1px] border-black50 pl-2",
+        "m-2 gap-1 overflow-hidden rounded-xl border-[1px] border-black50 pl-2",
         borderless && "border-none",
         className,
       )}
     >
       {startElement}
-      <RowWrapper>
+      <RowWrapper justify="justify-end" className="gap-2">
         <input
           ref={inputRef}
           value={number}
@@ -112,7 +112,7 @@ export default function NumberInput({
                 setReachedMax(false);
             }
           }}
-          className="border-none bg-transparent text-end text-black85 outline-none placeholder:text-black50 focus:appearance-none focus:text-black disabled:text-black50 dark:text-black25 focus:dark:text-white"
+          className="w-14 max-w-max border-none bg-transparent text-end text-black85 outline-none placeholder:text-black50 focus:appearance-none focus:text-black disabled:text-black50 dark:text-black25 focus:dark:text-white"
           type="number"
           {...rest}
         ></input>
