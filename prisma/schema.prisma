@@ -170,6 +170,7 @@ model CharacterBase {
 model ServerCharacterConfig {
   id                Int @id @default(autoincrement())
   server_id         String @unique
+  enable_creation   Boolean
   vitals_count      Int
   vitals_names      String[]
   attributes_count  Int
@@ -186,7 +187,9 @@ model ServerCharacter {
   class             String
   level             Int
   experience        Float
+  experience_max    Float
   vitals            Float[]
+  vitals_max        Float[]
   attributes        Float[]
   statics           Float[]
   skills            String

@@ -45,6 +45,7 @@ export const createServerCharacterConfig = async (
     data: {
       ...data,
       server_id,
+      enable_creation: false,
     },
   });
 
@@ -67,7 +68,9 @@ export const createServerCharacter = async (
     class: string;
     level: number;
     experience: number;
+    experience_max: number;
     vitals: number[];
+    vitals_max: number[];
     attributes: number[];
     statics: number[];
     skills: string;
@@ -146,7 +149,9 @@ export const getCharacterBase = async (
       },
     });
 
-    if (!character) throw new Error("Character not found.");
+    if (!character) {
+      throw new Error("Character not found.");
+    }
 
     return character;
   }
@@ -161,7 +166,9 @@ export const getCharacterBase = async (
     },
   });
 
-  if (!character) throw new Error("Character not found.");
+  if (!character) {
+    throw new Error("Character not found.");
+  }
 
   return character;
 };
@@ -245,7 +252,9 @@ export const getServerCharacterConfig = async (
     select,
   });
 
-  if (!config) throw new Error("No character configuration found for server");
+  if (!config) {
+    throw new Error("No character configuration found for server");
+  }
 
   return config;
 };
@@ -275,7 +284,9 @@ export const getServerCharacter = async (
       },
     });
 
-    if (!character) throw new Error("Character could not be found");
+    if (!character) {
+      throw new Error("Character could not be found");
+    }
 
     return character;
   }
@@ -285,7 +296,9 @@ export const getServerCharacter = async (
     include: { base: select?.base ? { select: { ...select?.base } } : false },
   });
 
-  if (!character) throw new Error("Character could not be found");
+  if (!character) {
+    throw new Error("Character could not be found");
+  }
 
   return character;
 };
@@ -353,6 +366,7 @@ export const updateCharacterBase = async (
 export const updateServerCharacterConfig = async (
   server_id: string,
   data: {
+    enable_creation?: boolean;
     vitals_count?: number;
     vitals_names?: string[];
     attributes_count?: number;
