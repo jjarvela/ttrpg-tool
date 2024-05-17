@@ -71,6 +71,7 @@ type Invitation = {
 type CharacterConfig = {
   id: number;
   server_id: string;
+  enable_creation: boolean;
   vitals_count: number;
   vitals_names: string[];
   attributes_count: number;
@@ -95,7 +96,9 @@ type ServerCharacter = {
   class: string;
   level: number;
   experience: number;
+  experience_max: number;
   vitals: number[];
+  vitals_max: number[];
   attributes: number[];
   statics: number[];
   skills: string;
