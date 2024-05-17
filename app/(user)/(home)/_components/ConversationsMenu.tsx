@@ -45,6 +45,7 @@ export default async function ConversationsMenu() {
           icon={<MaterialSymbolsPersonPlayOutline className="text-2xl" />}
         />
       </div>
+      <h4>Direct messages</h4>
       {typeof conversations !== "string" ? (
         conversations.length > 0 ? (
           conversations.map((conversation) => (
