@@ -127,7 +127,7 @@ app.prepare().then(() => {
       },
     );
 
-    socket.on("join-server", (serverId) => {
+    socket.on("join-note-server", (serverId) => {
       socket.join(serverId);
     });
 

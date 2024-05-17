@@ -61,7 +61,7 @@ export default function ServerNotes() {
 
   useEffect(() => {
     if (serverId) {
-      socket.emit("join-server", serverId); // Join the server room
+      socket.emit("join-note-server", serverId); // Join the server room
     }
   }, [serverId]); // This effect runs whenever the serverId changes
 
