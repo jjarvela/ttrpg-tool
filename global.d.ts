@@ -160,3 +160,28 @@ type ServerMemberSelect = {
   icon?: boolean;
   user?: UserSelect;
 };
+
+type CharacterBaseSelect = {
+  id?: boolean;
+  owner_id?: boolean;
+  name?: boolean;
+  description?: boolean;
+  image?: boolean;
+  notes?: boolean;
+};
+
+type ServerCharacterSelect = {
+  id?: boolean;
+  base_id?: boolean;
+  server_id?: boolean;
+  class?: boolean;
+  level?: boolean;
+  experience?: boolean;
+  experience_max?: boolean;
+  vitals?: boolean;
+  vitals_max?: boolean;
+  attributes?: boolean;
+  statics?: boolean;
+  skills?: boolean;
+  items?: boolean;
+};

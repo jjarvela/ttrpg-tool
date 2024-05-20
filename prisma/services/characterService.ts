@@ -10,6 +10,7 @@ export const createCharacterBase = async (
   owner_id: string,
   data: { name: string; description?: string; image?: string; notes?: string },
 ): Promise<CharacterBase> => {
+  console.log(data);
   const character = await db.characterBase.create({
     data: {
       ...data,
@@ -133,9 +134,10 @@ to include owner and server_stats, please specify them and the wanted properties
 export const getCharacterBase = async (
   base_id: string,
   select?: {
-    select: { [key: string]: boolean };
-    owner?: { [key: string]: boolean };
-    server_stats?: { [key: string]: boolean };
+    select?: CharacterBaseSelect;
+    owner?: UserSelect;
+    server_stats?: ServerCharacterSelect;
+    server?: ServerDataSelect;
   },
 ) => {
   if (select?.select) {
@@ -144,9 +146,17 @@ export const getCharacterBase = async (
       select: {
         ...select?.select,
         owner: select.owner ? { select: { ...select?.owner } } : false,
-        server_stats: select.server_stats
-          ? { select: { ...select?.server_stats } }
-          : false,
+        server_stats:
+          select.server_stats || select.server
+            ? {
+                select: {
+                  ...select?.server_stats,
+                  server: select.server
+                    ? { select: { ...select.server } }
+                    : false,
+                },
+              }
+            : false,
       },
     });
 
@@ -161,9 +171,17 @@ export const getCharacterBase = async (
     where: { id: base_id },
     include: {
       owner: select?.owner ? { select: { ...select?.owner } } : false,
-      server_stats: select?.server_stats
-        ? { select: { ...select?.server_stats } }
-        : false,
+      server_stats:
+        select?.server_stats || select?.server
+          ? {
+              select: {
+                ...select?.server_stats,
+                server: select.server
+                  ? { select: { ...select.server } }
+                  : false,
+              },
+            }
+          : false,
     },
   });
 
@@ -178,9 +196,10 @@ export const getCharacterBase = async (
  * Get specified user's character bases
  * @param user_id string
  * @param select optional, to set which properties should be included - {
-    select: { [key: string]: boolean };
-    owner?: { [key: string]: boolean };
-    server_stats?: { select?: {[key: string]: boolean}, server?: {[key:string]: boolean} };
+    select: base properties
+    owner?: user properties
+    server_stats?: server character properties
+    server?: server properties (will return inside server_stats object)
   }
  * @returns character base array with either the base properties, or custom selection of properties
    {
@@ -196,12 +215,10 @@ to include owner and server_stats, please specify them and the wanted properties
 export const getUserCharacterBases = async (
   user_id: string,
   select?: {
-    select?: { [key: string]: boolean };
-    owner?: { [key: string]: boolean };
-    server_stats?: {
-      select?: { [key: string]: boolean };
-      server?: { [key: string]: boolean };
-    };
+    select?: CharacterBaseSelect;
+    owner?: UserSelect;
+    server_stats?: ServerCharacterSelect;
+    server?: ServerDataSelect;
   },
 ) => {
   if (select?.select) {
@@ -210,16 +227,17 @@ export const getUserCharacterBases = async (
       select: {
         ...select?.select,
         owner: select.owner ? { select: { ...select?.owner } } : false,
-        server_stats: select.server_stats
-          ? {
-              select: {
-                ...select?.server_stats.select,
-                server: select.server_stats.server
-                  ? { select: { ...select.server_stats.server } }
-                  : false,
-              },
-            }
-          : false,
+        server_stats:
+          select.server_stats || select.server
+            ? {
+                select: {
+                  ...select?.server_stats,
+                  server: select.server
+                    ? { select: { ...select.server } }
+                    : false,
+                },
+              }
+            : false,
       },
     });
 
@@ -230,16 +248,17 @@ export const getUserCharacterBases = async (
     where: { owner_id: user_id },
     include: {
       owner: select?.owner ? { select: { ...select?.owner } } : false,
-      server_stats: select?.server_stats
-        ? {
-            select: {
-              ...select?.server_stats.select,
-              server: select.server_stats.server
-                ? { select: { ...select.server_stats.server } }
-                : false,
-            },
-          }
-        : false,
+      server_stats:
+        select?.server_stats || select?.server
+          ? {
+              select: {
+                ...select?.server_stats,
+                server: select.server
+                  ? { select: { ...select.server } }
+                  : false,
+              },
+            }
+          : false,
     },
   });
 
