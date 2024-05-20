@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 2194 2302" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-3841.16,-1272.01)">
+        <g transform="matrix(4.16667,0,0,4.16667,0,0)">
+            <path d="M1185.08,410.835L1022.8,528.735L1084.79,719.501L1285.37,719.501L1347.35,528.735L1185.08,410.835Z" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M932.93,499.533L932.93,663.389L1029.24,795.952L1185.08,846.586L1340.92,795.952L1437.23,663.389L1437.23,499.533L1340.92,366.97L1185.08,316.336L1029.24,366.97L932.93,499.533Z" style="fill:none;stroke:rgb(196,196,196);stroke-width:22.11px;"/>
+            <path d="M1340.92,795.952L1285.37,719.501" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M1029.24,795.952L1084.79,719.501" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M1185.08,316.336L1185.08,410.835" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M932.93,499.533L1022.8,528.735" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M1437.23,499.533L1347.35,528.735" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M1140.49,552.213C1152.04,552.213 1154.63,547.385 1156.94,541.85L1167,541.85L1167,624.274L1152.04,624.274L1152.04,561.397L1140.49,561.397L1140.49,552.213Z" style="fill:rgb(196,196,196);fill-rule:nonzero;stroke:rgb(196,196,196);stroke-width:0.24px;stroke-linecap:butt;"/>
+            <path d="M1206.97,552.683C1202.21,552.683 1199.22,554.921 1199.22,560.807L1199.22,569.639L1185.08,569.639L1185.08,561.633C1185.08,548.445 1192.69,540.909 1207.38,540.909C1222.06,540.909 1229.67,548.445 1229.67,561.633C1229.67,587.537 1199.9,597.192 1199.9,610.732C1199.9,611.322 1199.9,611.91 1200.03,612.5L1228.31,612.5L1228.31,624.274L1185.08,624.274L1185.08,614.148C1185.08,589.892 1214.72,585.888 1214.72,562.103C1214.72,554.685 1211.73,552.683 1206.97,552.683Z" style="fill:rgb(196,196,196);fill-rule:nonzero;stroke:rgb(196,196,196);stroke-width:0.24px;stroke-linecap:butt;"/>
+        </g>
+    </g>
+</svg>
