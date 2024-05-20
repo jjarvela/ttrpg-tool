@@ -80,8 +80,26 @@ export function Note({
 
   const handleNoteDeletion = useCallback(async () => {
     try {
-      await handleNoteDelete(id, server_id); // Assume this function handles the server-side deletion
-      socket.emit("delete-note", { noteId: id, serverId: server_id }); // Notify server and other clients
+      await handleNoteDelete(id, server_id);
+      socket.emit("delete-note", {
+        noteId: id,
+        serverId: server_id,
+        originatorId: socket.id,
+      }); // Notify server and other clients
+      const listener = (data: {
+        noteId: string;
+        originatorId: string | undefined;
+      }) => {
+        if (data.noteId === id && data.originatorId === socket.id) {
+          // Reload the page only if this client initiated the deletion
+          window.location.reload();
+        }
+      };
+      socket.once("delete-note-confirmed", listener);
+
+      return () => {
+        socket.off("delete-note-confirmed", listener);
+      };
     } catch (error) {
       console.error("Error deleting note:", error);
     }
@@ -103,7 +121,10 @@ export function Note({
     if (!transform) return;
     const newPositionX = positionX + transform.x;
     const newPositionY = positionY + transform.y;
-    handlePositionChange(newPositionX, newPositionY);
+    // Ensure that the update only happens if there's an actual change in position
+    if (transform.x !== 0 || transform.y !== 0) {
+      handlePositionChange(newPositionX, newPositionY);
+    }
   }, [transform, handlePositionChange, positionX, positionY]);
 
   const style: React.CSSProperties = {

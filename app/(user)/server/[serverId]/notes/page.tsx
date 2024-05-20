@@ -100,7 +100,9 @@ export default function ServerNotes() {
       if (data.serverId === serverId) {
         setNotes((prevNotes) =>
           prevNotes.map((note) =>
-            note.documentName === data.note.documentName ? data.note : note,
+            note.documentName === data.note.documentName
+              ? { ...data.note }
+              : note,
           ),
         );
       }
@@ -108,7 +110,7 @@ export default function ServerNotes() {
 
     socket.on("create-note", (data) => {
       if (data.serverId === serverId) {
-        setNotes((prevNotes) => [...prevNotes, data.note]);
+        setNotes((prevNotes) => [...prevNotes, { ...data.note }]);
       }
     });
 
@@ -116,26 +118,28 @@ export default function ServerNotes() {
       socket.off("update-note");
       socket.off("create-note");
     };
-  }, [handleNoteDeletion, serverId]);
+  }, [serverId]);
 
   useEffect(() => {
     socket.on("delete-note", (data) => {
       if (data.serverId === serverId) {
-        removeNoteFromState(data.noteId);
+        setNotes((prevNotes) =>
+          prevNotes.filter((note) => note.id !== data.noteId),
+        );
       }
     });
 
     return () => {
       socket.off("delete-note");
     };
-  }, [serverId, removeNoteFromState]);
+  }, [serverId]);
 
   async function handleNewNoteClient() {
     if (serverId) {
       try {
         const newNote = await handleNewNote(serverId);
         socket.emit("create-note", { note: newNote, serverId: serverId });
-        setNotes((prevNotes) => [...prevNotes, newNote]);
+        setNotes((prevNotes) => [...prevNotes, { ...newNote }]);
       } catch (error) {
         console.error("Error creating note:", error);
       }
@@ -200,7 +204,7 @@ export default function ServerNotes() {
                   left: `${note.positionX}px`,
                   top: `${note.positionY}px`,
                 }}
-                key={note.documentName}
+                key={note.id}
                 note={note}
                 onNoteDelete={removeNoteFromState}
                 currentUser={{
