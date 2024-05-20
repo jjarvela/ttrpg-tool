@@ -6,6 +6,7 @@
     "dev": "nodemon server.ts",
     "build": "next build",
     "start": "NODE_ENV=production ts-node server.ts",
+    "startwindows": "set NODE_ENV=production&&ts-node server.ts",
     "lint": "next lint",
     "dbSetup": "prisma generate && prisma db push && prisma db seed"
   },
