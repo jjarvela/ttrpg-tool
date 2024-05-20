@@ -27,9 +27,9 @@ export default function AddMemberForm({
 
   return (
     <form
-      action={async (formData) => {
+      action={async () => {
         startTransition(async () => {
-          const result = await addChannelMember(formData, users, channelId);
+          const result = await addChannelMember(users, channelId);
           if (typeof result === "string") {
             setError(result);
             return;
@@ -46,7 +46,7 @@ export default function AddMemberForm({
           multiple
         />
       ) : (
-        <p>No more members on this server</p>
+        <p>No more members to add on this server</p>
       )}
 
       <div className="mt-6 flex justify-end gap-4">
