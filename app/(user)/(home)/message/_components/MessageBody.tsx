@@ -27,7 +27,7 @@ export default async function MessageBody({
         senderId,
         receiverId,
       );
-      if (!conversation) throw new Error("No conversation");
+      if (!conversation) return <p>No conversation</p>;
 
       const unread = await getUnreadForUserConversation(
         senderId,
