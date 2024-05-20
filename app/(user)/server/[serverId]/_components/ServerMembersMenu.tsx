@@ -18,55 +18,56 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
       const mods = members.filter((item) => item.role === "moderator");
       const regulars = members.filter((item) => item.role === "member");
 
-      <ColumnWrapper className="h-full w-40">
-        <h5>Admin</h5>
-        <UserInfo
-          username={admin.user!.username || ""}
-          screen_name={
-            admin.nickname
-              ? admin.nickname
-              : admin.user!.screen_name || admin.user!.username
-          }
-          image={admin.icon ? admin.icon : admin.user!.profile_image || ""}
-          isActive={admin.user!.socket_id ? true : false}
-          width={40}
-        />
-        {mods.length > 0 && (
-          <>
-            <h5>Moderators</h5>
-            {mods.map((item) => (
-              <UserInfo
-                key={item.id}
-                username={item.user!.username || ""}
-                screen_name={
-                  item.nickname
-                    ? item.nickname
-                    : item.user!.screen_name || item.user!.username
-                }
-                image={item.icon ? item.icon : item.user!.profile_image || ""}
-                isActive={item.user!.socket_id ? true : false}
-                width={40}
-              />
-            ))}
-          </>
-        )}
-        <h5>Members</h5>
-        {regulars.map((item) => (
+      return (
+        <ColumnWrapper className="h-full w-40">
+          <h5>Admin</h5>
           <UserInfo
-            key={item.id}
-            username={item.user!.username || ""}
+            username={admin.user!.username || ""}
             screen_name={
-              item.nickname
-                ? item.nickname
-                : item.user!.screen_name || item.user!.username
+              admin.nickname
+                ? admin.nickname
+                : admin.user!.screen_name || admin.user!.username
             }
-            image={item.icon ? item.icon : item.user!.profile_image || ""}
-            isActive={item.user!.socket_id ? true : false}
+            image={admin.icon ? admin.icon : admin.user!.profile_image || ""}
+            isActive={admin.user!.socket_id ? true : false}
             width={40}
           />
-        ))}
-      </ColumnWrapper>;
-      return;
+          {mods.length > 0 && (
+            <>
+              <h5>Moderators</h5>
+              {mods.map((item) => (
+                <UserInfo
+                  key={item.id}
+                  username={item.user!.username || ""}
+                  screen_name={
+                    item.nickname
+                      ? item.nickname
+                      : item.user!.screen_name || item.user!.username
+                  }
+                  image={item.icon ? item.icon : item.user!.profile_image || ""}
+                  isActive={item.user!.socket_id ? true : false}
+                  width={40}
+                />
+              ))}
+            </>
+          )}
+          <h5>Members</h5>
+          {regulars.map((item) => (
+            <UserInfo
+              key={item.id}
+              username={item.user!.username || ""}
+              screen_name={
+                item.nickname
+                  ? item.nickname
+                  : item.user!.screen_name || item.user!.username
+              }
+              image={item.icon ? item.icon : item.user!.profile_image || ""}
+              isActive={item.user!.socket_id ? true : false}
+              width={40}
+            />
+          ))}
+        </ColumnWrapper>
+      );
     },
     () => {
       return <FeedbackCard type="error" message="Something went wrong!" />;
