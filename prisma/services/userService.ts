@@ -1,9 +1,6 @@
 import { db } from "../db";
 
-export const getUserById = async (
-  user_id: string,
-  select?: { [key: string]: boolean },
-) => {
+export const getUserById = async (user_id: string, select?: UserSelect) => {
   const user = await db.user.findUnique({
     where: {
       id: user_id,
@@ -16,10 +13,7 @@ export const getUserById = async (
   return user;
 };
 
-export const getUsersById = async (
-  user_ids: string[],
-  select?: { [key: string]: boolean },
-) => {
+export const getUsersById = async (user_ids: string[], select?: UserSelect) => {
   const users = await db.user.findMany({
     where: {
       id: { in: user_ids },
@@ -56,7 +50,7 @@ export const getUserByUsername = async (username: string) => {
 
 export const getUsersByUsername = async (
   usernames: string[],
-  select?: { [key: string]: boolean },
+  select?: UserSelect,
 ) => {
   const user = await db.user.findMany({
     where: {

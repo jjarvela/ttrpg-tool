@@ -15,6 +15,7 @@ import checkAuthMatch from "@/utils/checkServerAuthMatch";
 import Discoverability from "./_components/Discoverability";
 import ServerInfo from "./_components/ServerInfo";
 import Icon from "@/app/_components/Icon";
+import errorHandler from "@/utils/errorHandler";
 
 export default async function ServerPreferences({
   params,
@@ -22,70 +23,69 @@ export default async function ServerPreferences({
   params: Params;
 }) {
   const id = params.serverId;
-
-  const config = await getServerConfig(id);
-
   const session = await auth();
 
   if (!session) redirect("/welcome");
 
-  const serverAuth = await getServerAuth(
-    id,
-    (session as ExtendedSession).userId,
-  );
+  const element: JSX.Element = await errorHandler(
+    async () => {
+      const config = await getServerConfig(id);
 
-  if (!serverAuth) redirect("/server");
+      const serverAuth = await getServerAuth(
+        id,
+        (session as ExtendedSession).userId,
+      );
 
-  const info: unknown = await getServerData(id, {
-    select: { server_name: true, description: true, image: true },
-  });
+      if (!serverAuth) redirect("/server");
 
-  if (
-    !config ||
-    typeof config === "string" ||
-    !info ||
-    typeof info === "string"
-  ) {
-    return <FeedbackCard type="error" message="Something went wrong." />;
-  }
+      const info: unknown = await getServerData(id, {
+        select: { server_name: true, description: true, image: true },
+      });
 
-  const authMatch = checkAuthMatch(serverAuth, config);
+      const authMatch = checkAuthMatch(serverAuth, config);
 
-  return (
-    <Main className="min-h-[90vh] w-[98%] px-4">
-      <h1>Preferences</h1>
-      <h2>Server information</h2>
+      return (
+        <Fragment>
+          <h1>Preferences</h1>
+          <h2>Server information</h2>
 
-      <ServerInfo
-        info={info as ServerData}
-        serverAuth={serverAuth}
-        config={config}
-        editable={authMatch}
-        server_icon={
-          <Icon
-            filename={(info as ServerData).image || ""}
-            alt="server icon"
-            className="absolute left-0 top-0"
+          <ServerInfo
+            info={info as ServerData}
+            serverAuth={serverAuth}
+            config={config}
+            editable={authMatch}
+            server_icon={
+              <Icon
+                filename={(info as ServerData).image || ""}
+                alt="server icon"
+                className="absolute left-0 top-0"
+              />
+            }
           />
-        }
-      />
 
-      {authMatch && (
-        <Fragment>
-          <h2>Security</h2>
-          <ServerSecurity serverAuth={serverAuth} config={config} />{" "}
+          {authMatch && (
+            <Fragment>
+              <h2>Security</h2>
+              <ServerSecurity serverAuth={serverAuth} config={config} />{" "}
+            </Fragment>
+          )}
+
+          {authMatch && (
+            <Fragment>
+              <h2>Discoverability</h2>
+              <Discoverability serverAuth={serverAuth} config={config} />{" "}
+            </Fragment>
+          )}
+
+          <h2>Invitations</h2>
+          <ServerInvitationsList serverId={id} authMatch={authMatch} />
         </Fragment>
-      )}
-
-      {authMatch && (
-        <Fragment>
-          <h2>Discoverability</h2>
-          <Discoverability serverAuth={serverAuth} config={config} />{" "}
-        </Fragment>
-      )}
-
-      <h2>Invitations</h2>
-      <ServerInvitationsList serverId={id} authMatch={authMatch} />
-    </Main>
+      );
+    },
+    () => {
+      return <FeedbackCard type="error" message="Something went wrong." />;
+    },
   );
+
+  return <Main className="min-h-[90vh] w-[98%] px-4">{element}</Main>;
 }

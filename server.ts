@@ -113,8 +113,8 @@ app.prepare().then(() => {
               server_id: data.server_id!,
             });
 
-            if (recipient.user.socket_id) {
-              socket.to(recipient.user.socket_id).emit("client-refresh");
+            if (recipient.user!.socket_id) {
+              socket.to(recipient.user!.socket_id).emit("client-refresh");
             }
           });
           return;

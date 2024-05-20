@@ -91,20 +91,35 @@ export const createServerMember = async (data: {
 export const getServerData = async (
   server_id: string,
   select?: {
-    select: { [key: string]: boolean };
-    server_members?: { [key: string]: boolean };
-    config?: { [key: string]: boolean };
+    select: ServerDataSelect;
+    server_members?: Omit<ServerMemberSelect, "user">;
+    config?: ServerConfigSelect;
     channels?: { [key: string]: boolean };
     invitations?: { [key: string]: boolean };
   },
-) => {
+): Promise<ServerData> => {
   if (select?.select) {
     const server = await db.server.findUnique({
       where: { id: server_id },
       select: {
-        ...select?.select,
+        ...select.select,
         server_members: select.server_members
-          ? { select: { ...select?.server_members } }
+          ? {
+              select: {
+                ...select.server_members,
+                user: {
+                  select: {
+                    username: true,
+                    profile_image: true,
+                    screen_name: true,
+                    timezone: true,
+                    share_timezone: true,
+                    socket_id: true,
+                    person_status: true,
+                  },
+                },
+              },
+            }
           : false,
         config: select.config ? { select: { ...select?.config } } : false,
         channels: select.channels ? { select: { ...select?.channels } } : false,
@@ -123,7 +138,22 @@ export const getServerData = async (
     where: { id: server_id },
     include: {
       server_members: select?.server_members
-        ? { select: { ...select?.server_members } }
+        ? {
+            select: {
+              ...select?.server_members,
+              user: {
+                select: {
+                  username: true,
+                  profile_image: true,
+                  screen_name: true,
+                  timezone: true,
+                  share_timezone: true,
+                  socket_id: true,
+                  person_status: true,
+                },
+              },
+            },
+          }
         : false,
       config: select?.config ? { select: { ...select?.config } } : false,
       channels: select?.channels ? { select: { ...select?.channels } } : false,

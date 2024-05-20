@@ -2,14 +2,24 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import Main from "@/app/_components/wrappers/PageMain";
 import { getServerData } from "@/prisma/services/serverService";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import errorHandler from "@/utils/errorHandler";
+import ServerNotFound from "../_components/ServerNotFound";
 
 export default async function ServerBoards({ params }: { params: Params }) {
   const id = params.serverId;
 
-  const server = await getServerData(id);
+  const serverError: JSX.Element | null = await errorHandler(
+    async () => {
+      const server = await getServerData(id);
+      return null;
+    },
+    () => {
+      return <ServerNotFound />;
+    },
+  );
 
-  if (!server || typeof server === "string") {
-    return <FeedbackCard type="error" message="Something went wrong." />;
+  if (serverError) {
+    return serverError;
   }
 
   return (
