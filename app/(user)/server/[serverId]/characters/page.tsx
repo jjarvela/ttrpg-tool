@@ -15,6 +15,8 @@ import getServerAuth from "@/actions/getServerAuth";
 import { getServerConfig } from "@/prisma/services/serverService";
 import checkAuthMatch from "../../../../../utils/checkServerAuthMatch";
 import ToggleCreation from "./configure/_components/ToggleCreation";
+import errorHandler from "@/utils/errorHandler";
+import { Fragment } from "react";
 
 export default async function ServerCharacters({ params }: { params: Params }) {
   const id = params.serverId;
@@ -22,41 +24,50 @@ export default async function ServerCharacters({ params }: { params: Params }) {
 
   if (!session) redirect("/login");
 
-  try {
-    const characters = await getServerCharacters(id);
+  const element: JSX.Element = await errorHandler(
+    async () => {
+      const characters = await getServerCharacters(id);
 
-    const characterConfig = await getServerCharacterConfig(id);
+      const characterConfig = await getServerCharacterConfig(id);
 
-    const serverAuth = await getServerAuth(
-      id,
-      (session as ExtendedSession).userId,
-    );
+      const serverAuth = await getServerAuth(
+        id,
+        (session as ExtendedSession).userId,
+      );
 
-    const config = await getServerConfig(id);
+      const config = await getServerConfig(id);
 
-    return (
-      <Main className="mb-4 min-h-[90vh] w-full px-4">
-        <h1>Characters</h1>
-        <RowWrapper justify="justify-between">
-          {characters.length < 1 && characterConfig.enable_creation ? (
-            <Link href={`/server/${id}/characters/create`}>
-              <Button className="btn-primary">Create new</Button>
+      return (
+        <Fragment>
+          <RowWrapper justify="justify-between">
+            {characters.length < 1 && characterConfig.enable_creation ? (
+              <Link href={`/server/${id}/characters/create`}>
+                <Button className="btn-primary">Create new</Button>
+              </Link>
+            ) : (
+              <small>Character creation is currently disabled</small>
+            )}
+            <Link href={`/server/${id}/characters/configure`}>
+              <Button className="btn-secondary">Configuration</Button>
             </Link>
-          ) : (
-            <small>Character creation is currently disabled</small>
-          )}
-          <Link href={`/server/${id}/characters/configure`}>
-            <Button className="btn-secondary">Configuration</Button>
-          </Link>
-        </RowWrapper>
-        {checkAuthMatch(serverAuth!, config) &&
-          characters.length < 1 &&
-          renderToggle(characterConfig)}
-      </Main>
-    );
-  } catch (e) {
-    return <FeedbackCard type="error" message="Something went wrong." />;
-  }
+          </RowWrapper>
+          {checkAuthMatch(serverAuth!, config) &&
+            characters.length < 1 &&
+            renderToggle(characterConfig)}
+        </Fragment>
+      );
+    },
+    () => {
+      return <FeedbackCard type="error" message="Something went wrong." />;
+    },
+  );
+
+  return (
+    <Main className="mb-4 min-h-[90vh] w-full px-4">
+      <h1>Characters</h1>
+      {element}
+    </Main>
+  );
 }
 
 function renderToggle(characterConfig: CharacterConfig) {

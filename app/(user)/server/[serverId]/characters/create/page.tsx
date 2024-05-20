@@ -5,6 +5,8 @@ import CharacterForm from "./_components/CharacterForm";
 import { getServerCharacterConfig } from "@/prisma/services/characterService";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import errorHandler from "@/utils/errorHandler";
+import { Fragment } from "react";
 
 export default async function ServerCharactersCreate({
   params,
@@ -19,19 +21,23 @@ export default async function ServerCharactersCreate({
     redirect("/login");
   }
 
-  try {
-    const config = await getServerCharacterConfig(id);
+  const element: JSX.Element = await errorHandler(
+    async () => {
+      const config = await getServerCharacterConfig(id);
+      return (
+        <Fragment>
+          <h1>Create character</h1>
+          <CharacterForm
+            user_id={(session as ExtendedSession).userId}
+            config={config}
+          />
+        </Fragment>
+      );
+    },
+    () => {
+      return <FeedbackCard type="error" message="Something went wrong." />;
+    },
+  );
 
-    return (
-      <Main className="mb-4 min-h-[90vh] w-full px-4">
-        <h1>Create character</h1>
-        <CharacterForm
-          user_id={(session as ExtendedSession).userId}
-          config={config}
-        />
-      </Main>
-    );
-  } catch (e) {
-    return <FeedbackCard type="error" message="Something went wrong." />;
-  }
+  return <Main className="mb-4 min-h-[90vh] w-full px-4">{element}</Main>;
 }
