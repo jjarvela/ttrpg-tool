@@ -16,6 +16,9 @@ type ServerData = {
   gameboard: string | null;
   created_at: Date;
   description: string | null;
+  config?: ServerConfig[];
+  server_members?: ServerMember[];
+  invitations?: Invitation[];
 };
 
 type ServerConfig = {
@@ -36,7 +39,7 @@ type ServerMember = {
   role: string;
   nickname: string | null;
   icon: string | null;
-  user: {
+  user?: {
     username: string;
     screen_name: string | null;
     timezone: string | null;
@@ -104,4 +107,56 @@ type ServerCharacter = {
   statics: number[];
   skills: string;
   items: string;
+};
+
+/**
+ * SELECT TYPES
+ */
+
+type UserSelect = {
+  id?: boolean;
+  username?: boolean;
+  password_hash?: boolean;
+  email?: boolean;
+  emailVerified?: boolean;
+  created_at?: boolean;
+  screen_name?: boolean;
+  socket_id?: boolean;
+  timezone?: boolean;
+  share_timezone?: boolean;
+  person_description?: boolean;
+  profile_image?: boolean;
+  person_status?: boolean;
+};
+
+type ServerDataSelect = {
+  id?: boolean;
+  socket_id?: boolean;
+  server_name?: boolean;
+  image?: boolean;
+  jamboard?: boolean;
+  gameboard?: boolean;
+  created_at?: boolean;
+  description?: boolean;
+};
+
+type ServerConfigSelect = {
+  id: boolean;
+  server_id: boolean;
+  config_permission: boolean;
+  protected: boolean;
+  password_hash: boolean;
+  explorable: boolean;
+  searchable: boolean;
+  join_permission: boolean;
+};
+
+type ServerMemberSelect = {
+  id?: boolean;
+  server_id?: boolean;
+  member_id?: boolean;
+  role?: boolean;
+  nickname?: boolean;
+  icon?: boolean;
+  user?: UserSelect;
 };
