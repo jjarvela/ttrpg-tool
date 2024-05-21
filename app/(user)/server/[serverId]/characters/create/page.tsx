@@ -2,7 +2,10 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import Main from "@/app/_components/wrappers/PageMain";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import CharacterForm from "./_components/CharacterForm";
-import { getServerCharacterConfig } from "@/prisma/services/characterService";
+import {
+  getServerCharacterConfig,
+  getUserCharacterBases,
+} from "@/prisma/services/characterService";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import errorHandler from "@/utils/errorHandler";
@@ -24,13 +27,13 @@ export default async function ServerCharactersCreate({
   const element: JSX.Element = await errorHandler(
     async () => {
       const config = await getServerCharacterConfig(id);
+      const characters = await getUserCharacterBases(
+        (session as ExtendedSession).userId,
+      );
       return (
         <Fragment>
           <h1>Create character</h1>
-          <CharacterForm
-            user_id={(session as ExtendedSession).userId}
-            config={config}
-          />
+          <CharacterForm characters={characters} config={config} />
         </Fragment>
       );
     },
