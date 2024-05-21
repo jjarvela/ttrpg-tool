@@ -57,7 +57,7 @@ export default async function createServer(
       attributes_count: 2,
       attributes_names: ["Strength", "Dexterity"],
       statics_count: 2,
-      statics_names: ["Stealth", "Persuation"],
+      statics_names: ["Stealth", "Persuasion"],
     });
 
     return server;
