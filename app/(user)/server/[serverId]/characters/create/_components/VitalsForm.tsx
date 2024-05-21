@@ -1,14 +1,23 @@
 import NumberInput from "@/app/_components/inputs/NumberInput";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
-import { useState } from "react";
 
 export default function VitalsForm({
   vitals_names,
+  vitals,
+  setVitals,
 }: {
   vitals_names: string[];
+  vitals: {
+    vitals: number[];
+    vitals_max: number[];
+  };
+  setVitals: React.Dispatch<
+    React.SetStateAction<{
+      vitals: number[];
+      vitals_max: number[];
+    }>
+  >;
 }) {
-  const [statList, setStatList] = useState<number[]>([]);
-
   return (
     <RowWrapper className="w-full flex-wrap gap-2">
       {vitals_names.map((item, index) => (
