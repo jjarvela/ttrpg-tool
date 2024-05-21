@@ -37,10 +37,10 @@ export default function NumberInput({
   const inputRef = useRef<HTMLInputElement>(null);
   const [number, setNumber] = useState(value || min || 0);
   const [reachedMax, setReachedMax] = useState(
-    max && number ? parseFloat(number.toString()) >= max : false,
+    typeof max === "number" ? parseFloat(number.toString()) >= max : false,
   );
   const [reachedMin, setReachedMin] = useState(
-    min && number ? parseFloat(number.toString()) >= min : false,
+    typeof min === "number" ? parseFloat(number.toString()) <= min : false,
   );
 
   //remotely trigger input onChange event
