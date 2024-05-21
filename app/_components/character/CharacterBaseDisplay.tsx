@@ -10,8 +10,8 @@ export default function CharacterBaseDisplay({
   character: CharacterBase;
 }) {
   return (
-    <RowWrapper align="items-start w-[24rem]">
-      <div className="relative flex h-44 w-[10rem] items-center justify-center overflow-hidden border-[1px] border-black50">
+    <RowWrapper align="items-start w-[26.5rem]">
+      <div className="relative h-44 w-[10rem] flex-shrink-0 overflow-hidden border-[1px] border-black50">
         {character.image && (
           <CharacterPortrait filename={character.image} alt={character.name} />
         )}

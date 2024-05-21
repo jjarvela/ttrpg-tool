@@ -19,7 +19,7 @@ export default function DeleteCharacterBaseButton({
   return (
     <Fragment>
       <MaterialSymbolsLightDeleteOutlineRounded
-        className="cursor-pointer text-2xl"
+        className="flex-shrink-0 cursor-pointer text-2xl"
         onClick={() => confirmRef.current?.showModal()}
       />
       <ConfirmModal
