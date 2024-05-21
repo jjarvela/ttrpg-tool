@@ -23,8 +23,40 @@ export default function VitalsForm({
       {vitals_names.map((item, index) => (
         <RowWrapper key={item + index}>
           <label htmlFor={item}>{item}</label>
-          <NumberInput id={item} min={0} /> /
-          <NumberInput id={item + "-max"} min={0} />
+          <NumberInput
+            id={item}
+            min={0}
+            max={vitals.vitals_max[index]}
+            value={vitals.vitals[index]}
+            handleChange={(e) => {
+              const newVitals = vitals.vitals.map((stat, stat_index) => {
+                if (stat_index === index && e) {
+                  return parseInt(e.target.value);
+                } else {
+                  return stat;
+                }
+              });
+
+              setVitals({ ...vitals, vitals: newVitals });
+            }}
+          />{" "}
+          /
+          <NumberInput
+            id={item + "-max"}
+            min={0}
+            value={vitals.vitals_max[index]}
+            handleChange={(e) => {
+              const newVitals = vitals.vitals_max.map((stat, stat_index) => {
+                if (stat_index === index && e) {
+                  return parseInt(e.target.value);
+                } else {
+                  return stat;
+                }
+              });
+
+              setVitals({ ...vitals, vitals_max: newVitals });
+            }}
+          />
         </RowWrapper>
       ))}
     </RowWrapper>
