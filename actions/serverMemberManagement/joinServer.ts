@@ -16,59 +16,61 @@ export default async function joinServer(
   invitation_id: string,
   password?: string,
 ) {
-  console.log(invitation_id);
-  const invitation = await getInvitationById(invitation_id);
-
-  console.log(invitation);
-
-  if (!invitation) return "Invitation has expired.";
-  if (typeof invitation === "string") return "Something went wrong.";
-
-  if (new Date(invitation.expires) < new Date(Date.now()))
-    return "Invitation has expired.";
-
-  const session = await auth();
-
-  if (!(session as ExtendedSession).userId) return "Something went wrong.";
-
-  const id = (session as ExtendedSession).userId;
-
-  const alreadyThere = await getServerMember(invitation.server_id, id);
-
-  if (typeof alreadyThere === "string") return "Something went wrong.";
-  if (alreadyThere) return "You are already a member of this server";
-
-  const config = await getServerConfig(invitation.server_id);
-
-  console.log(config);
-
-  if (!config || typeof config === "string") return "Something went wrong.";
-
-  if (!password && config.protected)
-    return "Please provide the password to join this server.";
-
-  if (password && config.protected && config.password_hash) {
-    const passwordsMatch = await bcrypt.compare(password, config.password_hash);
-    if (!passwordsMatch) return "Wrong password.";
-  }
-
   try {
-    const member = createServerMember({
-      server_id: invitation.server_id,
-      member_id: id,
-      role: "member",
-    });
-    console.log(member);
+    const invitation = await getInvitationById(invitation_id);
 
-    if (typeof member === "string") return "Error when trying to join.";
-    else {
+    if (new Date(invitation.expires) < new Date(Date.now()))
+      return "Invitation has expired.";
+
+    const session = await auth();
+
+    if (!(session as ExtendedSession).userId) return "Something went wrong.";
+
+    const id = (session as ExtendedSession).userId;
+
+    try {
+      const alreadyThere = await getServerMember(invitation.server_id, id);
+      return "You are already a member of this server";
+    } catch (e) {
+      if ((e as Error).message !== "No user could be found") {
+        return "Something went wrong.";
+      }
+    }
+
+    try {
+      const config = await getServerConfig(invitation.server_id);
+
+      if (!password && config.protected)
+        return "Please provide the password to join this server.";
+
+      if (password && config.protected && config.password_hash) {
+        const passwordsMatch = await bcrypt.compare(
+          password,
+          config.password_hash,
+        );
+        if (!passwordsMatch) return "Wrong password.";
+      }
+
+      const member = createServerMember({
+        server_id: invitation.server_id,
+        member_id: id,
+        role: "member",
+      });
+
       await updateInvitation(invitation.id, {
         used_count: invitation.used_count + 1,
       });
+
       return member;
+    } catch (e) {
+      console.log(e);
+      return (e as Error).message;
     }
   } catch (e) {
-    console.log(e);
-    return (e as Error).message;
+    if ((e as Error).message === "No invitation found") {
+      return "Invitation has expired.";
+    } else {
+      return "Something went wrong.";
+    }
   }
 }
