@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 2401 2401" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-6568.03,-1222.54)">
+        <g transform="matrix(4.16667,0,0,4.16667,0,0)">
+            <path d="M1864.38,304.462L2141.38,581.461L1864.38,858.46L1587.38,581.461L1864.38,304.462Z" style="fill:none;stroke:rgb(196,196,196);stroke-width:22.11px;"/>
+            <path d="M1603.01,581.462L1722.79,554.063L1864.38,629.501L1864.38,842.83" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M2125.75,581.462L2005.97,554.063L1864.38,629.501" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M1722.79,554.063L1864.38,320.092L2005.97,554.063" style="fill:none;stroke:rgb(196,196,196);stroke-width:10.69px;"/>
+            <path d="M1819.99,476.183C1831.55,476.183 1834.13,471.355 1836.44,465.82L1846.5,465.82L1846.5,548.244L1831.55,548.244L1831.55,485.367L1819.99,485.367L1819.99,476.183Z" style="fill:rgb(196,196,196);fill-rule:nonzero;stroke:rgb(196,196,196);stroke-width:0.24px;stroke-linecap:butt;"/>
+            <g transform="matrix(1,0,0,1,0,7.44)">
+                <path d="M1878.32,529.286C1878.32,535.174 1881.31,537.41 1886.07,537.41C1890.82,537.41 1893.82,535.174 1893.82,529.286L1893.82,484.777C1893.82,478.891 1890.82,476.653 1886.07,476.653C1881.31,476.653 1878.32,478.891 1878.32,484.777L1878.32,529.286ZM1863.36,485.603C1863.36,472.415 1871.39,464.879 1886.07,464.879C1900.75,464.879 1908.77,472.415 1908.77,485.603L1908.77,528.462C1908.77,541.65 1900.75,549.186 1886.07,549.186C1871.39,549.186 1863.36,541.65 1863.36,528.462L1863.36,485.603Z" style="fill:rgb(196,196,196);fill-rule:nonzero;stroke:rgb(196,196,196);stroke-width:0.24px;stroke-linecap:butt;"/>
+            </g>
+        </g>
+    </g>
+</svg>
