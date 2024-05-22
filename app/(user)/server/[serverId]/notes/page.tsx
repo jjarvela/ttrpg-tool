@@ -126,6 +126,7 @@ export default function ServerNotes() {
         setNotes((prevNotes) =>
           prevNotes.filter((note) => note.id !== data.noteId),
         );
+        window.location.reload();
       }
     });
 

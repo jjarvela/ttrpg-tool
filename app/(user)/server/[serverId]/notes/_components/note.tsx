@@ -84,22 +84,7 @@ export function Note({
       socket.emit("delete-note", {
         noteId: id,
         serverId: server_id,
-        originatorId: socket.id,
       }); // Notify server and other clients
-      const listener = (data: {
-        noteId: string;
-        originatorId: string | undefined;
-      }) => {
-        if (data.noteId === id && data.originatorId === socket.id) {
-          // Reload the page only if this client initiated the deletion
-          window.location.reload();
-        }
-      };
-      socket.once("delete-note-confirmed", listener);
-
-      return () => {
-        socket.off("delete-note-confirmed", listener);
-      };
     } catch (error) {
       console.error("Error deleting note:", error);
     }

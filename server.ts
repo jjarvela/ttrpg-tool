@@ -140,8 +140,7 @@ app.prepare().then(() => {
     });
 
     socket.on("delete-note", (data) => {
-      socket.broadcast.to(data.serverId).emit("delete-note", data);
-      socket.emit("delete-note-confirmed", data);
+      io.to(data.serverId).emit("delete-note", data);
     });
 
     socket.on("disconnect", () => {
