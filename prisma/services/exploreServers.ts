@@ -2,6 +2,7 @@ import { db } from "../db";
 
 export async function getNewlyCreated() {
   const limit = subtractDays(new Date(Date.now()).toISOString(), 14);
+
   //get all servers created within the past 14 days
   const servers = await db.server.findMany({
     where: {
@@ -25,12 +26,14 @@ export async function getNewlyCreated() {
       server_members: { select: { user: { select: { socket_id: true } } } },
     },
   });
-  console.log(servers);
+
   return servers;
 }
 
-function subtractDays(date: string, days: number) {
+function subtractDays(date: string, days: number): Date {
   var result = new Date(date);
+
   result.setDate(result.getDate() - days);
+
   return result;
 }

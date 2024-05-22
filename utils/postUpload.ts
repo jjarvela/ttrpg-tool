@@ -10,7 +10,7 @@ import axios, { AxiosResponse } from "axios";
 export default function postUpload(
   file: File,
   callback: (response: AxiosResponse) => void,
-) {
+): void {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onloadend = async () => {

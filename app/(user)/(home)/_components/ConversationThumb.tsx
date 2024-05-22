@@ -69,7 +69,7 @@ export default function ConversationThumb({
           }
         }}
       >
-        <ColumnWrapper className="w-60 rounded-lg hover:bg-black25 dark:hover:bg-black75">
+        <ColumnWrapper className="w-[13rem] rounded-lg hover:bg-black25 dark:hover:bg-black75">
           {hasUnread && (
             <svg
               width={20}
