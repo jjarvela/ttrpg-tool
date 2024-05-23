@@ -60,22 +60,6 @@ export function Note({
     [id, note, server_id],
   );
 
-  const handlePositionChange = useCallback(
-    async (newPositionX: number, newPositionY: number) => {
-      try {
-        await handleNotePositionChange(
-          id,
-          newPositionX,
-          newPositionY,
-          server_id,
-        );
-      } catch (error) {
-        console.error("Error updating note position:", error);
-      }
-    },
-    [id],
-  );
-
   const handleNoteDeletion = useCallback(async () => {
     try {
       await handleNoteDelete(id, server_id);
@@ -108,10 +92,7 @@ export function Note({
     const newPositionX = positionX + transform.x;
     const newPositionY = positionY + transform.y;
     // Ensure that the update only happens if there's an actual change in position
-    if (transform.x !== 0 || transform.y !== 0) {
-      handlePositionChange(newPositionX, newPositionY);
-    }
-  }, [transform, handlePositionChange, positionX, positionY]);
+  }, [transform, positionX, positionY]);
 
   const style: React.CSSProperties = {
     transform: transform

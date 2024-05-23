@@ -17,6 +17,7 @@ import Main from "@/app/_components/wrappers/PageMain";
 import handleNewNote from "@/actions/notesManagement/handleNewNote";
 import handleGetAllNotes from "@/actions/notesManagement/handleGetAllNotes";
 import { getCurrentUser } from "./_components/GetCurrentUser";
+import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
 
 export interface NoteData {
   id: string;
@@ -149,31 +150,63 @@ export default function ServerNotes() {
     }
   }
 
+  const handlePositionChange = useCallback(
+    async (noteId: string, newPositionX: number, newPositionY: number) => {
+      try {
+        if (serverId !== null) {
+          await handleNotePositionChange(
+            noteId,
+            newPositionX,
+            newPositionY,
+            serverId,
+          );
+          console.log(noteId, newPositionX, newPositionY, serverId);
+        }
+      } catch (error) {
+        console.error("Error updating note position:", error);
+      }
+    },
+    [id, serverId],
+  );
+
   const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
+    async (event: DragEndEvent) => {
       const noteId = event.active.id;
       const delta = event.delta;
 
-      setNotes((prevNotes) => {
-        return prevNotes.map((note) => {
-          if (note.id === noteId) {
-            const updatedNote = {
-              ...note,
-              positionX: note.positionX + delta.x,
-              positionY: note.positionY + delta.y,
-            };
-            // Emit the updated note to the server
-            socket.emit("update-note", {
-              note: updatedNote,
-              serverId: serverId,
-            });
-            return updatedNote;
-          }
-          return note;
-        });
+      // Find the note based on noteId
+      const note = notes.find((n) => n.id === noteId);
+      if (!note) {
+        console.error("Note not found:", noteId);
+        return;
+      }
+
+      const newPositionX = note.positionX + delta.x;
+      const newPositionY = note.positionY + delta.y;
+
+      // Update the note's position in the local state
+      setNotes((prevNotes) =>
+        prevNotes.map((n) => {
+          return n.id === noteId
+            ? { ...n, positionX: newPositionX, positionY: newPositionY }
+            : n;
+        }),
+      );
+
+      // Perform the database update and socket communication
+
+      handlePositionChange(note.id, newPositionX, newPositionY);
+      console.log(
+        `Position updated in database for note ${noteId} at (${newPositionX}, ${newPositionY})`,
+      );
+
+      // After updating the database, emit the updated note via socket
+      socket.emit("update-note", {
+        note: { ...note, positionX: newPositionX, positionY: newPositionY },
+        serverId: serverId,
       });
     },
-    [serverId],
+    [notes, handlePositionChange, serverId],
   );
 
   if (!user) {
