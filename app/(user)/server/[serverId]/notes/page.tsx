@@ -66,12 +66,6 @@ export default function ServerNotes() {
     }
   }, [serverId]); // This effect runs whenever the serverId changes
 
-  const handleNoteDeletion = useCallback((deletedNoteId: string) => {
-    setNotes((prevNotes) =>
-      prevNotes.filter((note) => note.id !== deletedNoteId),
-    );
-  }, []);
-
   useEffect(() => {
     async function fetchUser() {
       const userData = await getCurrentUser();
@@ -213,7 +207,6 @@ export default function ServerNotes() {
                 }}
                 key={note.id}
                 note={note}
-                onNoteDelete={removeNoteFromState}
                 currentUser={{
                   username: user?.username,
                   profile_image: user?.profile_image,

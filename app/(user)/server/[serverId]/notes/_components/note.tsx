@@ -23,12 +23,10 @@ interface currentUserType {
 export function Note({
   note,
   styles,
-  onNoteDelete,
   currentUser,
 }: {
   note: NoteData;
   styles?: React.CSSProperties;
-  onNoteDelete: (noteId: string) => void;
   currentUser: currentUserType;
 }) {
   const { id, server_id, author, documentName, content, positionX, positionY } =
@@ -122,7 +120,7 @@ export function Note({
     ...NoteSize,
     ...styles,
     opacity: isDeleted || isNewNote ? 0 : 1,
-    transition: "opacity 0.2s ease-in-out",
+    transition: "opacity 0.3s ease-in-out",
   };
 
   return (
