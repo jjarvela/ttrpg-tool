@@ -81,10 +81,13 @@ export function Note({
   const handleNoteDeletion = useCallback(async () => {
     try {
       await handleNoteDelete(id, server_id);
-      socket.emit("delete-note", {
-        noteId: id,
-        serverId: server_id,
-      }); // Notify server and other clients
+      setIsDeleted(true);
+      setTimeout(() => {
+        socket.emit("delete-note", {
+          noteId: id,
+          serverId: server_id,
+        }); // Notify server and other clients
+      }, 300);
     } catch (error) {
       console.error("Error deleting note:", error);
     }
