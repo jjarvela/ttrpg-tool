@@ -111,7 +111,13 @@ export default function ServerNotes() {
 
     socket.on("create-note", (data) => {
       if (data.serverId === serverId) {
-        setNotes((prevNotes) => [...prevNotes, { ...data.note }]);
+        setNotes((prevNotes) => {
+          // Only add the note if it doesn't already exist in the array
+          if (!prevNotes.find((note) => note.id === data.note.id)) {
+            return [...prevNotes, { ...data.note }];
+          }
+          return prevNotes;
+        });
       }
     });
 
