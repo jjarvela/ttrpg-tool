@@ -3,7 +3,8 @@ export default async function errorHandler(
   exceptionFunc?: Function,
 ) {
   try {
-    return func();
+    const returnResult = await func();
+    return returnResult;
   } catch (e) {
     if (exceptionFunc) {
       return exceptionFunc();
