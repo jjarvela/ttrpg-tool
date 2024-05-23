@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { socket } from "@/socket";
 import { useRouter } from "next/navigation";
+import logOut from "@/actions/logout";
+import { fetchUser } from "@/actions/userManagement/fetchUser";
 
 export default function SocketWrapper({
   userId,
@@ -19,12 +21,16 @@ export default function SocketWrapper({
   const router = useRouter();
 
   useEffect(() => {
-    if (socket.connected) {
-      onConnect();
-    } else {
-      console.log("socket not connected, connecting");
-      socket.connect();
-    }
+    fetchUser(userId)
+      .then(() => {
+        if (socket.connected) {
+          onConnect();
+        } else {
+          console.log("socket not connected, connecting");
+          socket.connect();
+        }
+      })
+      .catch(() => logOut());
 
     socket.on("connect", onConnect);
 

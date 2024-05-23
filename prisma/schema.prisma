@@ -50,25 +50,26 @@ model User {
   ConversationParticipant ConversationParticipant[]
   Message                 Message[]
   accounts                Account[]
-  Character               Character[]
+  characters               CharacterBase[]
   notifications           Notification[]
 }
 
 model Server {
-  id             String         @id @default(cuid())
-  socket_id      String?
-  server_name    String
-  image          String?
-  jamboard       String?
-  gameboard      String?
-  created_at     DateTime       @default(now())
-  description    String?
-  config         ServerConfig[]
-  server_members ServerMember[]
-  channels       Channel[]
-  characters     Character[]
-  invitations    Invitation[]
-  notifications  Notification[]
+  id                String         @id @default(cuid())
+  socket_id         String?
+  server_name       String
+  image             String?
+  jamboard          String?
+  gameboard         String?
+  created_at        DateTime       @default(now())
+  description       String?
+  config            ServerConfig[]
+  server_members    ServerMember[]
+  channels          Channel[]
+  character_config  ServerCharacterConfig[]
+  characters        ServerCharacter[]
+  invitations       Invitation[]
+  notifications     Notification[]
   notes          Note[]
 }
 
@@ -157,14 +158,48 @@ model Notification {
   server          Server?       @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
-model Character {
-  id        Int    @id @default(autoincrement())
-  uid       String
-  server_id String
-  owner_id  String
-  name      String
-  server    Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  owner     User   @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+model CharacterBase {
+  id            String    @id @default(cuid())
+  owner_id      String
+  name          String
+  description   String?
+  image         String?
+  notes         String?
+  owner         User @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  server_stats  ServerCharacter[]
+}
+
+model ServerCharacterConfig {
+  id                Int @id @default(autoincrement())
+  server_id         String @unique
+  enable_creation   Boolean
+  vitals_count      Int
+  vitals_names      String[]
+  attributes_count  Int
+  attributes_names  String[]
+  statics_count     Int
+  statics_names     String[]
+  server            Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+}
+
+model ServerCharacter {
+  id                String @id @default(cuid())
+  base_id           String 
+  server_id         String
+  class             String
+  level             Int
+  experience        Float
+  experience_max    Float
+  vitals            Float[]
+  vitals_max        Float[]
+  attributes        Float[]
+  statics           Float[]
+  skills            String
+  items             String
+  base              CharacterBase @relation(fields: [base_id], references: [id], onDelete: Cascade)
+  server            Server         @relation(fields: [server_id], references: [id], onDelete: Cascade)
+
+  @@unique([base_id, server_id])
 }
 
 model VerificationToken {

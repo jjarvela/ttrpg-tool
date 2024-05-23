@@ -14,7 +14,7 @@ export default function handleClickOutside(
   >,
   event: MouseEvent,
   callback: () => void,
-) {
+): void {
   if (refObject.current) {
     //get object position constraints
     const top = refObject.current.getBoundingClientRect().top;

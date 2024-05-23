@@ -15,23 +15,7 @@ export default function RoleEdit({
   member,
 }: {
   serverAuth: ServerAuth;
-  member: {
-    id: number;
-    server_id: string;
-    member_id: string;
-    role: string;
-    nickname: string | null;
-    icon: string | null;
-    user: {
-      username: string;
-      screen_name: string | null;
-      timezone: string | null;
-      share_timezone: boolean | null;
-      profile_image: string | null;
-      socket_id: string | null;
-      person_status: string | null;
-    };
-  };
+  member: ServerMember;
 }) {
   const [editMode, setEditMode] = useState(false);
   const [selected, setSelected] = useState<Option[]>([
@@ -40,7 +24,7 @@ export default function RoleEdit({
   const [error, setError] = useState("");
 
   const memberName =
-    member.nickname || member.user.screen_name || member.user.username;
+    member.nickname || member.user!.screen_name || member.user!.username;
 
   function disableOptions() {
     if (serverAuth.role === "member") {

@@ -6,7 +6,7 @@ export default async function errorHandler(
     return func();
   } catch (e) {
     if (exceptionFunc) {
-      exceptionFunc();
+      return exceptionFunc();
     }
   }
 }

@@ -100,11 +100,11 @@
   }
 
   p {
-    @apply text-base;
+    @apply font-body text-base;
   }
 
   small {
-    @apply text-sm;
+    @apply font-body text-sm;
   }
 
   .shadow {

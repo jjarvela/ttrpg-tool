@@ -9,51 +9,51 @@ import { getServerData } from "@/prisma/services/serverService";
 export default async function JoinServer({ params }: { params: Params }) {
   const id = params.invitationId;
 
-  const invitation = await getInvitationById(id);
+  try {
+    const invitation = await getInvitationById(id);
 
-  if (typeof invitation === "string")
-    return <FeedbackCard type="error" message="Something went wrong!" />;
+    checkValidity(invitation);
 
-  const invitationIsValid = checkValidity(invitation);
+    const server: unknown = await getServerData(invitation.server_id, {
+      select: { server_name: true },
+    });
 
-  if (!invitation || !invitationIsValid) return <InvitationNotValid />;
+    if (invitation.protected)
+      return (
+        <PasswordProtected
+          invitationId={invitation.id}
+          serverName={(server as { server_name: string }).server_name}
+        />
+      );
 
-  const server = await getServerData(invitation.server_id, {
-    server_name: true,
-  });
-
-  if (!server || typeof server === "string")
-    return <FeedbackCard type="error" message="Something went wrong!" />;
-
-  if (invitation.protected)
     return (
-      <PasswordProtected
+      <NotProtected
         invitationId={invitation.id}
-        serverName={server.server_name}
+        serverName={(server as { server_name: string }).server_name}
       />
     );
+  } catch (e) {
+    if ((e as Error).message.includes("invitation")) {
+      return <InvitationNotValid />;
+    }
 
-  return (
-    <NotProtected
-      invitationId={invitation.id}
-      serverName={server.server_name}
-    />
-  );
+    return <FeedbackCard type="error" message="Something went wrong!" />;
+  }
 }
 
-function checkValidity(
-  invitation: {
-    id: string;
-    server_id: string;
-    expires: string;
-    used_count: number;
-    max_uses: number | null;
-    protected: boolean;
-  } | null,
-) {
-  if (!invitation) return false;
-  if (new Date(invitation.expires) < new Date(Date.now())) return false;
-  if (invitation.max_uses && invitation.used_count >= invitation.max_uses)
-    return false;
+function checkValidity(invitation: {
+  id: string;
+  server_id: string;
+  expires: string;
+  used_count: number;
+  max_uses: number | null;
+  protected: boolean;
+}) {
+  if (new Date(invitation.expires) < new Date(Date.now())) {
+    throw new Error("This invitation is invalid");
+  }
+  if (invitation.max_uses && invitation.used_count >= invitation.max_uses) {
+    throw new Error("This invitation is invalid");
+  }
   return true;
 }
