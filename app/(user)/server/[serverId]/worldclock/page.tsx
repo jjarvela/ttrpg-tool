@@ -10,45 +10,87 @@ import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import ProfilePicture from "@/app/_components/ProfilePicture";
 import UsernameHover from "./_components/UsernameHover";
+import errorHandler from "@/utils/errorHandler";
+import ServerNotFound from "../_components/ServerNotFound";
 
-type member = {
-  user: {
-    username: string;
-    screen_name: string | null;
-    timezone: string | null;
-    share_timezone: boolean | null;
-    profile_image: string | null;
-  };
-} & {
-  id: number;
-  server_id: string;
-  member_id: string;
-  role: string;
-  nickname: string | null;
-  icon: string | null;
-};
 export default async function ServerWorldClock({ params }: { params: Params }) {
   const id = params.serverId;
 
-  const server = await getServerData(id);
+  const serverError: JSX.Element | null = await errorHandler(
+    async () => {
+      const server = await getServerData(id);
+      return null;
+    },
+    () => {
+      return <ServerNotFound />;
+    },
+  );
 
-  if (!server || typeof server === "string") {
-    return <FeedbackCard type="error" message="Something went wrong." />;
+  if (serverError) {
+    return serverError;
   }
-  const members = await getServerMembers(id);
 
-  if (!members || typeof members === "string") {
-    return <FeedbackCard type="error" message="Something went wrong." />;
-  }
+  const element: JSX.Element = await errorHandler(
+    async () => {
+      const members = await getServerMembers(id);
 
-  function memberSort(members: member[]) {
-    const timezones: { timezone: string; members: member[] }[] = [];
+      const sortedMembers = memberSort(members);
+      return (
+        <RowWrapper breakPoint="sm" className="flex-wrap">
+          {sortedMembers.map((item) => {
+            return (
+              <ColumnWrapper key={item.timezone}>
+                <h5>{item.timezone}</h5>
+                <Clock timezone={item.members[0].user!.timezone!} />
+                <div className="flex items-center">
+                  {item.members.map((member) => (
+                    <UsernameHover
+                      key={member.member_id}
+                      username={
+                        member.nickname ||
+                        member.user!.screen_name ||
+                        member.user!.username
+                      }
+                    >
+                      <ProfilePicture
+                        className="outline-6 mx-[-0.2rem] outline outline-white dark:outline-black85"
+                        width={28}
+                        image={member.icon || member.user!.profile_image || ""}
+                        isActive={false}
+                      />
+                    </UsernameHover>
+                  ))}
+                </div>
+              </ColumnWrapper>
+            );
+          })}
+        </RowWrapper>
+      );
+    },
+    () => {
+      return (
+        <h5>
+          Something went wrong while loading the page. Please try refreshing.
+        </h5>
+      );
+    },
+  );
+
+  return (
+    <Main className="w-full px-4">
+      <h1>World Clock</h1>
+      {element}
+    </Main>
+  );
+
+  function memberSort(members: ServerMember[]) {
+    const timezones: { timezone: string; members: ServerMember[] }[] = [];
     members.forEach((member) => {
-      if (!member.user.share_timezone) return;
+      if (member.user!.share_timezone) return;
       const time = new Intl.DateTimeFormat("fi", {
         dateStyle: "short",
         timeStyle: "long",
-        timeZone: member.user.timezone || "Australia/Sydney",
+        timeZone: member.user!.timezone || "Australia/Sydney",
       })
         .format(new Date())
         .split(" ")
@@ -57,7 +99,7 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
       const timezone = new Intl.DateTimeFormat("fi", {
         dateStyle: "short",
         timeStyle: "long",
-        timeZone: member.user.timezone || "Australia/Sydney",
+        timeZone: member.user!.timezone || "Australia/Sydney",
       })
         .format(new Date())
         .split(" ")
@@ -70,41 +112,4 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
 
     return timezones;
   }
-
-  const sortedMembers = memberSort(members);
-
-  return (
-    <Main className="mx-4">
-      <h1>World Clock</h1>
-      <RowWrapper breakPoint="sm" className="flex-wrap">
-        {sortedMembers.map((item) => {
-          return (
-            <ColumnWrapper key={item.timezone}>
-              <h5>{item.timezone}</h5>
-              <Clock timezone={item.members[0].user.timezone!} />
-              <div className="flex items-center">
-                {item.members.map((member) => (
-                  <UsernameHover
-                    key={member.member_id}
-                    username={
-                      member.nickname ||
-                      member.user.screen_name ||
-                      member.user.username
-                    }
-                  >
-                    <ProfilePicture
-                      className="outline-6 mx-[-0.2rem] outline outline-white dark:outline-black85"
-                      width={28}
-                      image={member.icon || member.user.profile_image || ""}
-                      isActive={false}
-                    />
-                  </UsernameHover>
-                ))}
-              </div>
-            </ColumnWrapper>
-          );
-        })}
-      </RowWrapper>
-    </Main>
-  );
 }

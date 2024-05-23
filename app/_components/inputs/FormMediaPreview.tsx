@@ -13,6 +13,7 @@ export default function FormMediaPreview({ file }: FormMediaPreviewProps) {
           className="min-h-[100%] min-w-[100%] object-cover"
           src={url}
           onDrop={() => URL.revokeObjectURL(url)}
+          alt="upload-preview"
         />
       ) : (
         <video

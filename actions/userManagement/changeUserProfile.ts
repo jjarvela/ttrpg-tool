@@ -9,10 +9,7 @@ type ProfileData = {
 export default async function changeUserProfile(id: string, data: ProfileData) {
   try {
     const updatedUser = await updateUser(id, data);
-
-    if (typeof updatedUser === "string")
-      return { error: "Something went wrong. Please try again." };
   } catch (e) {
-    return { error: (e as Error).message };
+    return { error: "Something went wrong. Please try again." };
   }
 }
