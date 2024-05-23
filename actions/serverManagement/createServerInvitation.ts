@@ -9,7 +9,6 @@ export default async function createServerInvitation(
 ) {
   try {
     const config = await getServerConfig(server_id);
-    if (!config || typeof config === "string") return "Something went wrong!";
 
     const invitation = await createInvitation(server_id, {
       expires: addDays(new Date(Date.now()).toISOString(), 10).toISOString(),
@@ -17,15 +16,9 @@ export default async function createServerInvitation(
       protected: config.protected || false,
     });
 
-    console.log(invitation);
-
-    if (!invitation || typeof invitation === "string")
-      return "Something went wrong!";
-
     return invitation;
   } catch (e) {
-    console.log((e as Error).message);
-    return "Something went wrong!";
+    throw new Error("Something went wrong!");
   }
 }
 
