@@ -5,6 +5,7 @@ import CharacterForm from "./_components/CharacterForm";
 import {
   getServerCharacterConfig,
   getUserCharacterBases,
+  getUserCharacterBasesExceptServer,
 } from "@/prisma/services/characterService";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -27,13 +28,18 @@ export default async function ServerCharactersCreate({
   const element: JSX.Element = await errorHandler(
     async () => {
       const config = await getServerCharacterConfig(id);
-      const characters = await getUserCharacterBases(
+      const characters = await getUserCharacterBasesExceptServer(
         (session as ExtendedSession).userId,
+        id,
       );
       return (
         <Fragment>
           <h1>Create character</h1>
-          <CharacterForm characters={characters} config={config} />
+          <CharacterForm
+            user_id={(session as ExtendedSession).userId}
+            characters={characters}
+            config={config}
+          />
         </Fragment>
       );
     },

@@ -17,6 +17,7 @@ import checkAuthMatch from "../../../../../utils/checkServerAuthMatch";
 import ToggleCreation from "./configure/_components/ToggleCreation";
 import errorHandler from "@/utils/errorHandler";
 import { Fragment } from "react";
+import ServerCharacterDisplay from "@/app/_components/character/ServerCharacterDisplay";
 
 export default async function ServerCharacters({ params }: { params: Params }) {
   const id = params.serverId;
@@ -26,7 +27,15 @@ export default async function ServerCharacters({ params }: { params: Params }) {
 
   const element: JSX.Element = await errorHandler(
     async () => {
-      const characters = await getServerCharacters(id);
+      const characters = await getServerCharacters(id, {
+        base: {
+          id: true,
+          name: true,
+          description: true,
+          image: true,
+          owner_id: true,
+        },
+      });
 
       const characterConfig = await getServerCharacterConfig(id);
 
@@ -40,7 +49,7 @@ export default async function ServerCharacters({ params }: { params: Params }) {
       return (
         <Fragment>
           <RowWrapper justify="justify-between">
-            {characters.length < 1 && characterConfig.enable_creation ? (
+            {characters.length > 0 || characterConfig.enable_creation ? (
               <Link href={`/server/${id}/characters/create`}>
                 <Button className="btn-primary">Create new</Button>
               </Link>
@@ -54,6 +63,23 @@ export default async function ServerCharacters({ params }: { params: Params }) {
           {checkAuthMatch(serverAuth!, config) &&
             characters.length < 1 &&
             renderToggle(characterConfig)}
+          {characters.length > 0 ? (
+            <RowWrapper
+              className="mt-4 flex-wrap gap-4"
+              align="content-start items-start"
+            >
+              {characters.map((character) => (
+                <ServerCharacterDisplay
+                  user_id={(session as ExtendedSession).userId}
+                  key={character.base.id}
+                  character={character}
+                  config={characterConfig}
+                />
+              ))}
+            </RowWrapper>
+          ) : (
+            <p>This server has no characters yet.</p>
+          )}
         </Fragment>
       );
     },

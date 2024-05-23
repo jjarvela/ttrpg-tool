@@ -19,7 +19,7 @@ export default async function UserCharacters() {
       const characters = await getUserCharacterBases(
         (session as ExtendedSession).userId,
         {
-          server: { id: true, server_name: true, image: true },
+          server_stats: { server_id: true },
         },
       );
 
