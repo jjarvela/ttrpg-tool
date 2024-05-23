@@ -218,7 +218,6 @@ export const getUserCharacterBases = async (
     select?: CharacterBaseSelect;
     owner?: UserSelect;
     server_stats?: ServerCharacterSelect;
-    server?: ServerDataSelect;
   },
 ) => {
   if (select?.select) {
@@ -227,17 +226,13 @@ export const getUserCharacterBases = async (
       select: {
         ...select?.select,
         owner: select.owner ? { select: { ...select?.owner } } : false,
-        server_stats:
-          select.server_stats || select.server
-            ? {
-                select: {
-                  ...select?.server_stats,
-                  server: select.server
-                    ? { select: { ...select.server } }
-                    : false,
-                },
-              }
-            : false,
+        server_stats: select.server_stats
+          ? {
+              select: {
+                ...select?.server_stats,
+              },
+            }
+          : false,
       },
     });
 
@@ -248,17 +243,71 @@ export const getUserCharacterBases = async (
     where: { owner_id: user_id },
     include: {
       owner: select?.owner ? { select: { ...select?.owner } } : false,
-      server_stats:
-        select?.server_stats || select?.server
-          ? {
-              select: {
-                ...select?.server_stats,
-                server: select.server
-                  ? { select: { ...select.server } }
-                  : false,
-              },
-            }
-          : false,
+      server_stats: select?.server_stats
+        ? {
+            select: {
+              ...select?.server_stats,
+            },
+          }
+        : false,
+    },
+  });
+
+  return characters;
+};
+
+export async function getCharacterServers(character_base_id: string) {
+  const servers = await db.server.findMany({
+    where: {
+      characters: {
+        some: {
+          base_id: character_base_id,
+        },
+      },
+    },
+    select: {
+      id: true,
+      server_name: true,
+      image: true,
+    },
+  });
+
+  return servers;
+}
+
+/**
+ * Get specified user's character bases excluding ones present on specified server
+ * @param user_id string
+ * @param server_id string Characters used on this specified server will be excluded from the selection
+ * @returns character base array with the following properties
+   {
+    id: string;
+    name: string;
+    description: string | null;
+    image: string | null;
+}[]
+ */
+export const getUserCharacterBasesExceptServer = async (
+  user_id: string,
+  server_id: string,
+) => {
+  const characters = await db.characterBase.findMany({
+    where: {
+      owner_id: user_id,
+      AND: {
+        server_stats: {
+          every: {
+            server_id: { not: server_id },
+          },
+        },
+      },
+    },
+
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      image: true,
     },
   });
 
@@ -353,8 +402,8 @@ export const getServerCharacter = async (
 export const getServerCharacters = async (
   server_id: string,
   select?: {
-    select: { [key: string]: boolean };
-    base?: { [key: string]: boolean };
+    select?: ServerCharacterSelect;
+    base?: CharacterBaseSelect;
   },
 ) => {
   if (select?.select) {
