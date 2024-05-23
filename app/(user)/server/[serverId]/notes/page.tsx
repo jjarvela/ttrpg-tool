@@ -29,8 +29,9 @@ export interface NoteData {
 }
 
 const dropAreaSize = {
-  width: "700px",
-  height: "700px",
+  width: "1000px",
+  height: "1000px",
+  position: "relative",
 };
 
 const socket = io();
@@ -201,7 +202,7 @@ export default function ServerNotes() {
             {notes.map((note) => (
               <Note
                 styles={{
-                  position: "fixed",
+                  position: "absolute",
                   left: `${note.positionX}px`,
                   top: `${note.positionY}px`,
                 }}
