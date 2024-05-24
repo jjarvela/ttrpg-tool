@@ -29,7 +29,7 @@ export interface NoteData {
   content: string;
 }
 
-const dropAreaSize = {
+const dropAreaSize: React.CSSProperties = {
   width: "1000px",
   height: "1000px",
   position: "relative",
@@ -166,7 +166,7 @@ export default function ServerNotes() {
         console.error("Error updating note position:", error);
       }
     },
-    [id, serverId],
+    [serverId],
   );
 
   const handleDragEnd = useCallback(
