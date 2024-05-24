@@ -227,7 +227,7 @@ export default function ServerNotes() {
         modifiers={[restrictToParentElement]}
       >
         <div
-          className="scrollbar-thin h-[95vh] w-[74vw] overflow-auto md:h-[90vh] lg:w-[88vw]"
+          className="scrollbar-thin h-[86vh] w-[64vw] overflow-auto xs:h-[80vh] xs:w-[68vw] sm:h-[76vh] md:h-[76vh] md:w-[70vw] lg:h-[84vh] lg:w-[76vw] xl:h-[90vh] xl:w-[80vw]"
           style={{ backgroundColor: "transparent" }}
         >
           <div ref={setNodeRef} style={dropAreaSize}>
