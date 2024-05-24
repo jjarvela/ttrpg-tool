@@ -52,7 +52,7 @@ const config: Config = {
         md: "768px",
         lg: "1024px",
         mlg: "1274px",
-        xl: "1280px",
+        xl: "1380px",
         "2xl": "1536px",
         short: { raw: "(min-height: 720px)" },
         mid: { raw: "(min-height: 800px)" },

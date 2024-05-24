@@ -5,6 +5,7 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsGroupOutline from "@/public/icons/MaterialSymbolsGroupOutline";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
+import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -21,28 +22,32 @@ export default function LayoutClientWrapper({
 }) {
   const [showInnerNav, setShowInnerNav] = useState(true);
   const [showMembers, setShowMembers] = useState(true);
+
+  const pathname = usePathname();
+
+  const isNotes = pathname.endsWith("/notes");
+  const isBoard =
+    pathname.includes("/boards") && !pathname.endsWith("/boards" || "/create");
+
   return (
-    <div
-      className={twMerge(
-        "flex max-w-[76vw] flex-grow sm:max-w-[80vw] ",
-        showMembers
-          ? "lg:max-w-[94vw] xl:max-w-[99vw]"
-          : "mlg:max-w-[95vw] xl:max-w-[100vw]",
-      )}
-    >
+    <div className="flex w-[100vw] overflow-hidden">
       {/*server inner nav*/}
       <RowWrapper
-        className={twMerge("gap-0 md:max-w-[15%]", showInnerNav ? "w-40" : "")}
+        className={twMerge("gap-0 lg:w-40", showInnerNav ? "w-40" : "")}
       >
         <div
+          id="inner-nav-container"
           className={twMerge(
-            "h-full w-full md:block",
+            "h-full w-full lg:block",
             showInnerNav ? "block" : "hidden",
           )}
         >
           {innerNav}
         </div>
-        <div className="flex h-[5%] cursor-pointer flex-col rounded-r-lg bg-black50 text-lg md:hidden">
+        <div
+          id="inner-nav-toggle"
+          className="flex h-[5%] cursor-pointer flex-col rounded-r-lg bg-black50 text-lg lg:hidden"
+        >
           <MaterialSymbolsLightChevronLeftRounded
             className={twMerge(
               "my-auto justify-self-center duration-300 ease-linear",
@@ -57,8 +62,8 @@ export default function LayoutClientWrapper({
       <ColumnWrapper
         align="items-start"
         className={twMerge(
-          "m-0 max-h-screen flex-grow gap-0 p-0 md:max-h-[90%] lg:gap-2",
-          showMembers ? "max-w-[80%]" : "max-w-[95%]",
+          "m-0 max-h-screen flex-grow gap-0 p-0 lg:gap-2",
+          isNotes || isBoard ? "mlg:w-[80%] w-[70%]" : "w-full",
         )}
       >
         <TopMenu serverId={id} setShowMembers={setShowMembers} />
@@ -66,7 +71,12 @@ export default function LayoutClientWrapper({
       </ColumnWrapper>
 
       {/*server members bar*/}
-      <RowWrapper className="bg-color-dark absolute right-0 top-0 z-[999] h-full border-l-[1px] border-black50 pl-2 lg:relative lg:z-0 lg:pl-0">
+      <RowWrapper
+        className={twMerge(
+          "bg-color-dark absolute right-0 top-0 z-[999] h-full border-l-[1px] border-black50 pl-2 lg:relative lg:z-0 lg:w-0 lg:pl-0",
+          showMembers && "lg:w-60",
+        )}
+      >
         <MaterialSymbolsGroupOutline
           className="block h-7 w-7 cursor-pointer self-start justify-self-center opacity-60 hover:opacity-100 lg:hidden"
           onClick={() => setShowMembers((prev) => !prev)}

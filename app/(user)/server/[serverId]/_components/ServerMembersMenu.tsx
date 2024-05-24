@@ -75,7 +75,11 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
   );
 
   return (
-    <ColumnWrapper mode="section" id="server-members-nav" className="h-full">
+    <ColumnWrapper
+      mode="section"
+      id="server-members-nav"
+      className="h-full w-full"
+    >
       {element}
     </ColumnWrapper>
   );
