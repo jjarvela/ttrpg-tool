@@ -5,6 +5,7 @@ import FeedbackCard from "../../../../../_components/FeedbackCard";
 import ChatForm from "./_components/ChatForm";
 import Main from "@/app/_components/wrappers/PageMain";
 import { getChannelByChannelId } from "@/prisma/services/channelService";
+import errorHandler from "@/utils/errorHandler";
 
 export default async function FormLayout({
   params,
@@ -18,33 +19,29 @@ export default async function FormLayout({
   if (!session) return redirect("/welcome");
 
   const userId = (session as ExtendedSession).userId;
+
   const channelId = params.channelId;
 
-  const channel = await getChannelByChannelId(channelId);
+  const element: JSX.Element = await errorHandler(
+    async () => {
+      const channel = await getChannelByChannelId(channelId);
 
-  if (!channel || typeof channel === "string") {
-    return (
-      <FeedbackCard
-        type="error"
-        message="Something went wrong. Please try again."
-      />
-    );
-  } else {
-    const channeltype = channel.channel_type;
+      const channeltype = channel.channel_type;
 
-    return (
-      <>
-        {channeltype === "text" ? (
+      if (channeltype === "text") {
+        return (
           <div className="flex w-full flex-grow flex-col justify-end overflow-hidden">
             {children}
             <ChatForm userId={userId} channelId={channelId} />
           </div>
-        ) : (
-          <Main className="mx-4">
-            <h4></h4>
-          </Main>
-        )}
-      </>
-    );
-  }
+        );
+      } else {
+        return <p>Voice channels are not implemented yet.</p>;
+      }
+    },
+    () => (
+      <p className="text-warning">Something went wrong. Please try again.</p>
+    ),
+  );
+  return element;
 }

@@ -116,7 +116,7 @@ export default function NumberInput({
           type="number"
           {...rest}
         ></input>
-        <ColumnWrapper className="gap-0 p-0">
+        <ColumnWrapper className="flex-shrink-0 gap-0 p-0">
           <NumberInputSpinner
             input={inputRef}
             step={step ? parseFloat(step?.toString()) : 1}

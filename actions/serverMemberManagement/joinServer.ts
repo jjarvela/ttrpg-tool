@@ -20,20 +20,21 @@ export default async function joinServer(
     const invitation = await getInvitationById(invitation_id);
 
     if (new Date(invitation.expires) < new Date(Date.now()))
-      return "Invitation has expired.";
+      throw new Error("Invitation has expired.");
 
     const session = await auth();
 
-    if (!(session as ExtendedSession).userId) return "Something went wrong.";
+    if (!(session as ExtendedSession).userId)
+      throw new Error("Something went wrong.");
 
     const id = (session as ExtendedSession).userId;
 
     try {
       const alreadyThere = await getServerMember(invitation.server_id, id);
-      return "You are already a member of this server";
+      throw new Error("You are already a member of this server");
     } catch (e) {
       if ((e as Error).message !== "No user could be found") {
-        return "Something went wrong.";
+        throw new Error("Something went wrong.");
       }
     }
 
@@ -41,14 +42,14 @@ export default async function joinServer(
       const config = await getServerConfig(invitation.server_id);
 
       if (!password && config.protected)
-        return "Please provide the password to join this server.";
+        throw new Error("Please provide the password to join this server.");
 
       if (password && config.protected && config.password_hash) {
         const passwordsMatch = await bcrypt.compare(
           password,
           config.password_hash,
         );
-        if (!passwordsMatch) return "Wrong password.";
+        if (!passwordsMatch) throw new Error("Wrong password.");
       }
 
       const member = createServerMember({
@@ -63,14 +64,13 @@ export default async function joinServer(
 
       return member;
     } catch (e) {
-      console.log(e);
-      return (e as Error).message;
+      throw new Error("Something went wrong.");
     }
   } catch (e) {
     if ((e as Error).message === "No invitation found") {
-      return "Invitation has expired.";
+      throw new Error("Invitation has expired.");
     } else {
-      return "Something went wrong.";
+      throw new Error("Something went wrong.");
     }
   }
 }

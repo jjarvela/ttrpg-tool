@@ -65,39 +65,13 @@ export default function UserCharacterForm({
               }
               const filename = res.data.filename;
 
-              if (character) {
-                await updateCharacterForUser(character.id, {
-                  name: baseData.name,
-                  description: baseData.description,
-                  image: filename,
-                  notes,
-                });
-              } else {
-                await createCharacterForUser(user_id, {
-                  name: baseData.name,
-                  description: baseData.description,
-                  image: filename,
-                  notes,
-                });
-              }
+              await handleCharacter(filename);
 
               router.push("/characters");
               router.refresh();
             });
           } else {
-            if (character) {
-              await updateCharacterForUser(character.id, {
-                name: baseData.name,
-                description: baseData.description,
-                notes,
-              });
-            } else {
-              await createCharacterForUser(user_id, {
-                name: baseData.name,
-                description: baseData.description,
-                notes,
-              });
-            }
+            await handleCharacter();
 
             router.push("/characters");
             router.refresh();
@@ -106,7 +80,6 @@ export default function UserCharacterForm({
           return null;
         },
         () => {
-          console.log("error block");
           return "Something went wrong.";
         },
       );
@@ -149,4 +122,22 @@ export default function UserCharacterForm({
       {error !== "" && <FeedbackCard type="error" message={error} />}
     </ColumnWrapper>
   );
+
+  async function handleCharacter(image?: string) {
+    if (character) {
+      await updateCharacterForUser(character.id, {
+        name: baseData.name,
+        description: baseData.description,
+        image: image || undefined,
+        notes,
+      });
+    } else {
+      await createCharacterForUser(user_id, {
+        name: baseData.name,
+        description: baseData.description,
+        image: image || undefined,
+        notes,
+      });
+    }
+  }
 }

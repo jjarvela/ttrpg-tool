@@ -9,7 +9,7 @@ export default function CharacterThumb({
   size,
   onClick,
 }: {
-  character: CharacterBase;
+  character: Omit<CharacterBase, "owner_id" | "notes">;
   size: "sm" | "lg";
   onClick?: () => void;
 }) {
