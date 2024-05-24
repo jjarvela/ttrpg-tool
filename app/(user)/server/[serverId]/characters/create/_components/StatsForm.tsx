@@ -5,10 +5,12 @@ export default function StatsForm({
   stats_names,
   stats,
   setStats,
+  isPending,
 }: {
   stats_names: string[];
   stats: number[];
   setStats: React.Dispatch<React.SetStateAction<number[]>>;
+  isPending: boolean;
 }) {
   return (
     <RowWrapper className="w-full flex-wrap gap-2">
@@ -30,6 +32,7 @@ export default function StatsForm({
 
               setStats(newStats);
             }}
+            disabled={isPending}
           />
         </RowWrapper>
       ))}

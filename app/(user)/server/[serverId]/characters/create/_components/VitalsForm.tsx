@@ -5,6 +5,7 @@ export default function VitalsForm({
   vitals_names,
   vitals,
   setVitals,
+  isPending,
 }: {
   vitals_names: string[];
   vitals: {
@@ -17,6 +18,7 @@ export default function VitalsForm({
       vitals_max: number[];
     }>
   >;
+  isPending: boolean;
 }) {
   return (
     <RowWrapper className="w-full flex-wrap gap-2">
@@ -39,6 +41,7 @@ export default function VitalsForm({
 
               setVitals({ ...vitals, vitals: newVitals });
             }}
+            disabled={isPending}
           />{" "}
           /
           <NumberInput
@@ -56,6 +59,7 @@ export default function VitalsForm({
 
               setVitals({ ...vitals, vitals_max: newVitals });
             }}
+            disabled={isPending}
           />
         </RowWrapper>
       ))}

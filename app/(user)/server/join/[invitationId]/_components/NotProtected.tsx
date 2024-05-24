@@ -4,6 +4,7 @@ import joinServer from "@/actions/serverMemberManagement/joinServer";
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Main from "@/app/_components/wrappers/PageMain";
+import errorHandler from "@/utils/errorHandler";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -18,11 +19,17 @@ export default function NotProtected({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   async function handleJoin() {
-    const result = await joinServer(invitationId);
-    if (typeof result === "string") setError(result);
-    else {
-      router.push(`/server/${result.server_id}`);
-      router.refresh();
+    const error = await errorHandler(
+      async () => {
+        const result = await joinServer(invitationId);
+        router.push(`/server/${result.server_id}`);
+        router.refresh();
+      },
+      (e) => (e as Error).message,
+    );
+    if (error) {
+      setError(error);
+      return;
     }
   }
   return (

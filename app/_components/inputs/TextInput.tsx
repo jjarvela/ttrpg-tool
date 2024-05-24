@@ -37,7 +37,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             type={type || "text"}
             {...props}
           ></input>
-          {endElement}
+          {endElement && <div className="flex-shrink-0">{endElement}</div>}
         </RowWrapper>
       </ColumnWrapper>
     );

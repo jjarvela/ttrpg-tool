@@ -18,6 +18,7 @@ import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 
 import { useState, useRef, useTransition } from "react";
 import createServer from "@/actions/serverManagement/createServer";
+import errorHandler from "@/utils/errorHandler";
 
 export default function CreateServer({ userId }: { userId: string }) {
   const [serverName, setServerName] = useState("");
@@ -41,30 +42,50 @@ export default function CreateServer({ userId }: { userId: string }) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!passwordsMatch) {
       setError("Password-protected is selected but passwords don't match.");
       return;
     }
+
     if (formRef.current) {
       const isValid = formRef.current.checkValidity();
       if (!isValid) {
         formRef.current.reportValidity();
-      } else {
-        startTransition(async () => {
-          if (icon) {
-            if (icon.size / 1024 / 1024 > 3) {
-              setError("Image file is too large. The limit is 3MB.");
-              return;
-            }
-            postUpload(icon, async (res) => {
-              if (res.data.message) {
-                setError("Something went wrong!");
-                return;
+        return;
+      }
+      startTransition(async () => {
+        const error: string | null = await errorHandler(
+          async () => {
+            if (icon) {
+              if (icon.size / 1024 / 1024 > 3) {
+                return "Image file is too large. The limit is 3MB.";
               }
-              const filename = res.data.filename;
+
+              postUpload(icon, async (res) => {
+                if (res.data.message) {
+                  return "Something went wrong!";
+                }
+
+                const filename = res.data.filename;
+
+                const server = await createServer(userId, {
+                  serverName,
+                  image: filename,
+                  description,
+                  isProtected,
+                  password,
+                  explorePermission,
+                  searchPermission,
+                  settingsRightsHolders,
+                });
+
+                router.push(`/server/${server.id}`);
+                router.refresh();
+              });
+            } else {
               const server = await createServer(userId, {
                 serverName,
-                image: filename,
                 description,
                 isProtected,
                 password,
@@ -72,32 +93,21 @@ export default function CreateServer({ userId }: { userId: string }) {
                 searchPermission,
                 settingsRightsHolders,
               });
-              if (!server || typeof server === "string") {
-                setError(server || "Something went wrong!");
-                return;
-              }
+
               router.push(`/server/${server.id}`);
               router.refresh();
-            });
-          } else {
-            const server = await createServer(userId, {
-              serverName,
-              description,
-              isProtected,
-              password,
-              explorePermission,
-              searchPermission,
-              settingsRightsHolders,
-            });
-            if (!server || typeof server === "string") {
-              setError(server || "Something went wrong!");
-              return;
             }
-            router.push(`/server/${server.id}`);
-            router.refresh();
-          }
-        });
-      }
+          },
+          () => {
+            return "Something went wrong";
+          },
+        );
+
+        if (error) {
+          setError(error);
+          return;
+        }
+      });
     }
   };
 
