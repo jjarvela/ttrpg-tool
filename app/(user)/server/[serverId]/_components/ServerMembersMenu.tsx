@@ -8,7 +8,7 @@ import {
 import errorHandler from "@/utils/errorHandler";
 
 export default async function ServerMembersMenu({ id }: { id: string }) {
-  const element = await errorHandler(
+  const element: JSX.Element = await errorHandler(
     async () => {
       const server = await getServerData(id);
 

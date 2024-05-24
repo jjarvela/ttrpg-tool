@@ -35,6 +35,9 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
       const members = await getServerMembers(id);
 
       const sortedMembers = memberSort(members);
+
+      console.log(sortedMembers);
+
       return (
         <RowWrapper breakPoint="sm" className="flex-wrap">
           {sortedMembers.map((item) => {
@@ -85,8 +88,10 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
 
   function memberSort(members: ServerMember[]) {
     const timezones: { timezone: string; members: ServerMember[] }[] = [];
+
     members.forEach((member) => {
-      if (member.user!.share_timezone) return;
+      if (!member.user!.share_timezone) return;
+
       const time = new Intl.DateTimeFormat("fi", {
         dateStyle: "short",
         timeStyle: "long",
@@ -95,7 +100,7 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
         .format(new Date())
         .split(" ")
         .filter((item) => item.includes("UTC"))[0];
-      console.log(time);
+
       const timezone = new Intl.DateTimeFormat("fi", {
         dateStyle: "short",
         timeStyle: "long",
@@ -104,6 +109,7 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
         .format(new Date())
         .split(" ")
         .filter((item) => item.includes("UTC"))[0];
+
       if (timezones.map((i) => i.timezone).indexOf(timezone) > -1) {
         const index = timezones.map((i) => i.timezone).indexOf(timezone);
         timezones[index].members.push(member);

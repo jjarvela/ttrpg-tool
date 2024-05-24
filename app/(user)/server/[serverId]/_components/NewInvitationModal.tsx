@@ -8,6 +8,7 @@ import TextInput from "@/app/_components/inputs/TextInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import MaterialSymbolsLightCloseRounded from "@/public/icons/MaterialSymbolsLightCloseRounded";
 import MaterialSymbolsLightContentCopyOutlineRounded from "@/public/icons/MaterialSymbolsLightContentCopyOutlineRounded";
+import errorHandler from "@/utils/errorHandler";
 import { useState } from "react";
 
 type NewInvitationModalProps = {
@@ -55,20 +56,25 @@ export default function NewInvitationModal({
           <Button
             className="btn-primary"
             handleClick={async () => {
-              if (hasMaxUses) {
-                const invitation = await createServerInvitation(
-                  serverId,
-                  maxUses,
-                );
-                if (typeof invitation === "string") return;
-                setLink(`/server/join/${invitation.id}`);
-              } else {
-                const invitation = await createServerInvitation(serverId);
-                if (typeof invitation === "string") {
-                  setError("Something went wrong!");
-                  return;
-                }
-                setLink(`${baseUrl}/server/join/${invitation.id}`);
+              const error: string | null = await errorHandler(
+                async () => {
+                  if (hasMaxUses) {
+                    const invitation = await createServerInvitation(
+                      serverId,
+                      maxUses,
+                    );
+                    setLink(`/server/join/${invitation.id}`);
+                  } else {
+                    const invitation = await createServerInvitation(serverId);
+                    setLink(`${baseUrl}/server/join/${invitation.id}`);
+                  }
+                },
+                () => "Something went wrong.",
+              );
+
+              if (error) {
+                setError(error);
+                return;
               }
             }}
           >

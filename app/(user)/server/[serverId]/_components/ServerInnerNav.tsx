@@ -22,7 +22,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
 
   if (!session) redirect("/welcome");
 
-  const element = await errorHandler(
+  const element: JSX.Element = await errorHandler(
     async () => {
       const server = await getServerData(id);
 

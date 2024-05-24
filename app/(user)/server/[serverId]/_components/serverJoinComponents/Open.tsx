@@ -5,6 +5,7 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import PasswordInput from "@/app/_components/inputs/PasswordInput";
 import Main from "@/app/_components/wrappers/PageMain";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
+import errorHandler from "@/utils/errorHandler";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -24,10 +25,15 @@ export default function Open({
   const router = useRouter();
 
   async function handleJoin() {
-    const result = await joinServer(invitation_id, password);
-    if (typeof result === "string") setError(result);
+    const error: string | null = await errorHandler(
+      async () => {
+        const result = await joinServer(invitation_id, password);
+        router.push(`/server/${result.server_id}`);
+      },
+      (e) => (e as Error).message,
+    );
+    if (error) setError(error);
     else {
-      router.push(`/server/${result.server_id}`);
       router.refresh();
     }
   }

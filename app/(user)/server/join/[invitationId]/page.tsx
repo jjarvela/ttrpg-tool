@@ -14,22 +14,25 @@ export default async function JoinServer({ params }: { params: Params }) {
 
     checkValidity(invitation);
 
-    const server: unknown = await getServerData(invitation.server_id, {
-      select: { server_name: true },
-    });
+    const server: { server_name: string } = await getServerData(
+      invitation.server_id,
+      {
+        select: { server_name: true },
+      },
+    );
 
     if (invitation.protected)
       return (
         <PasswordProtected
           invitationId={invitation.id}
-          serverName={(server as { server_name: string }).server_name}
+          serverName={server.server_name}
         />
       );
 
     return (
       <NotProtected
         invitationId={invitation.id}
-        serverName={(server as { server_name: string }).server_name}
+        serverName={server.server_name}
       />
     );
   } catch (e) {
