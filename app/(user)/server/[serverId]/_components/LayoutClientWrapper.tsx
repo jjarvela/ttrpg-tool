@@ -22,7 +22,14 @@ export default function LayoutClientWrapper({
   const [showInnerNav, setShowInnerNav] = useState(true);
   const [showMembers, setShowMembers] = useState(true);
   return (
-    <div className="flex flex-grow">
+    <div
+      className={twMerge(
+        "flex max-w-[76vw] flex-grow sm:max-w-[80vw] ",
+        showMembers
+          ? "lg:max-w-[94vw] xl:max-w-[99vw]"
+          : "mlg:max-w-[95vw] xl:max-w-[100vw]",
+      )}
+    >
       {/*server inner nav*/}
       <RowWrapper
         className={twMerge("gap-0 md:max-w-[15%]", showInnerNav ? "w-40" : "")}
@@ -49,7 +56,10 @@ export default function LayoutClientWrapper({
       {/*top menu and content*/}
       <ColumnWrapper
         align="items-start"
-        className="m-0 flex-grow gap-0 p-0 lg:gap-2"
+        className={twMerge(
+          "m-0 max-h-screen flex-grow gap-0 p-0 md:max-h-[90%] lg:gap-2",
+          showMembers ? "max-w-[80%]" : "max-w-[95%]",
+        )}
       >
         <TopMenu serverId={id} setShowMembers={setShowMembers} />
         {children}

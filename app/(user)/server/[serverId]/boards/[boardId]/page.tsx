@@ -7,6 +7,8 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import Link from "next/link";
 import ServerNotFound from "../../_components/ServerNotFound";
 import Main from "@/app/_components/wrappers/PageMain";
+import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
+import { Fragment } from "react";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
@@ -41,9 +43,13 @@ export default async function GameBoard({ params }: { params: Params }) {
   );
 
   return (
-    <Main className="gap-4">
-      <Link href={`/server/${server_id}/boards`}>Return</Link>
-      {element}
-    </Main>
+    <Fragment>
+      <Link className="ml-4" href={`/server/${server_id}/boards`}>
+        Return
+      </Link>
+      <ColumnWrapper align="content-start items-start w-[99%] h-full">
+        {element}
+      </ColumnWrapper>
+    </Fragment>
   );
 }

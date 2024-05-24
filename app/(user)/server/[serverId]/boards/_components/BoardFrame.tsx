@@ -30,7 +30,7 @@ export default function BoardFrame({ board }: { board: GameBoard }) {
       sensors={sensors}
       modifiers={[restrictToParentElement]}
     >
-      <div className="scrollbar-thin h-full w-full overflow-auto">
+      <div className="scrollbar-thin h-[90%] w-full overflow-auto">
         <div
           ref={setNodeRef}
           style={{

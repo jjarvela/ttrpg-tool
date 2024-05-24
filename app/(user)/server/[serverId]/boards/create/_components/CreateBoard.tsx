@@ -53,8 +53,8 @@ export default function CreateBoard({ server_id }: { server_id: string }) {
           id="board-width"
           min={1}
           value={board.width}
-          onChange={(e) =>
-            setBoard({ ...board, width: parseInt(e.target.value.toString()) })
+          handleChange={(e) =>
+            setBoard({ ...board, width: parseInt(e!.target.value.toString()) })
           }
           disabled={isPending}
         />
@@ -64,8 +64,8 @@ export default function CreateBoard({ server_id }: { server_id: string }) {
           id="board-height"
           min={1}
           value={board.height}
-          onChange={(e) =>
-            setBoard({ ...board, height: parseInt(e.target.value.toString()) })
+          handleChange={(e) =>
+            setBoard({ ...board, height: parseInt(e!.target.value.toString()) })
           }
           disabled={isPending}
         />
