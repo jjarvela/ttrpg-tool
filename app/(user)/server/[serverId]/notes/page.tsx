@@ -55,12 +55,6 @@ export default function ServerNotes() {
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
 
-  const removeNoteFromState = useCallback((noteId: string) => {
-    setNotes((currentNotes) =>
-      currentNotes.filter((note) => note.id !== noteId),
-    );
-  }, []);
-
   useEffect(() => {
     if (serverId) {
       socket.emit("join-note-server", serverId); // Join the server room
@@ -160,7 +154,6 @@ export default function ServerNotes() {
             newPositionY,
             serverId,
           );
-          console.log(noteId, newPositionX, newPositionY, serverId);
         }
       } catch (error) {
         console.error("Error updating note position:", error);
@@ -196,9 +189,6 @@ export default function ServerNotes() {
       // Perform the database update and socket communication
 
       handlePositionChange(note.id, newPositionX, newPositionY);
-      console.log(
-        `Position updated in database for note ${noteId} at (${newPositionX}, ${newPositionY})`,
-      );
 
       // After updating the database, emit the updated note via socket
       socket.emit("update-note", {
