@@ -13,9 +13,11 @@ export const getNoteById = async (id: string) => {
   }
 };
 
-export const getAllNotes = async (): Promise<NoteData[]> => {
+export const getAllNotes = async (serverId: string): Promise<NoteData[]> => {
   try {
-    const notes = await db.note.findMany();
+    const notes = await db.note.findMany({
+      where: { server_id: serverId },
+    });
     return notes;
   } catch (e) {
     throw new Error((e as Error).message);
@@ -28,6 +30,7 @@ export const createNote = async (data: {
   positionX: number;
   positionY: number;
   content: string;
+  server_id: string;
 }): Promise<NoteData | string> => {
   try {
     const newNote = await db.note.create({
@@ -43,9 +46,12 @@ export const updateNotePosition = async (
   id: string,
   positionX: number,
   positionY: number,
+  server_id: string,
 ) => {
   try {
-    const note = await db.note.findUnique({ where: { id: id } });
+    const note = await db.note.findFirst({
+      where: { id: id, server_id: server_id },
+    });
     if (!note) return "Note not found.";
 
     const updatedNote = await db.note.update({
@@ -75,8 +81,13 @@ export const updateNoteContent = async (id: string, content: string) => {
   }
 };
 
-export const deleteNoteById = async (id: string) => {
+export const deleteNoteById = async (id: string, server_id: string) => {
   try {
+    const note = await db.note.findFirst({
+      where: { id: id, server_id: server_id },
+    });
+    if (!note) return "Note not found.";
+
     await db.note.delete({
       where: {
         id: id,
