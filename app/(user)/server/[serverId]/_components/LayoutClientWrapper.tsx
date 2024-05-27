@@ -33,7 +33,10 @@ export default function LayoutClientWrapper({
     <div className="flex w-[100vw] overflow-hidden">
       {/*server inner nav*/}
       <RowWrapper
-        className={twMerge("gap-0 lg:w-40", showInnerNav ? "w-40" : "")}
+        className={twMerge(
+          "gap-0 lg:w-[14.5rem]",
+          showInnerNav ? "w-[14.5rem]" : "",
+        )}
       >
         <div
           id="inner-nav-container"
@@ -63,7 +66,7 @@ export default function LayoutClientWrapper({
         align="items-start"
         className={twMerge(
           "m-0 max-h-screen flex-grow gap-0 p-0 lg:gap-2",
-          isNotes || isBoard ? "mlg:w-[80%] w-[70%]" : "w-full",
+          isNotes || isBoard ? "mlg:w-[75%] w-[75%]" : "w-full",
         )}
       >
         <TopMenu serverId={id} setShowMembers={setShowMembers} />
