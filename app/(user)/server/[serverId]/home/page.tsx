@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { NoteData } from "../notes/page";
 import { getCurrentUser } from "../notes/_components/GetCurrentUser";
 import handleGetAllNotes from "@/actions/notesManagement/handleGetAllNotes";
+import { usePathname } from "next/navigation";
 
 export default function ServerHome() {
   const [notes, setNotes] = useState<NoteData[]>([]);
@@ -10,6 +11,12 @@ export default function ServerHome() {
     username: string;
     profile_image: string | null;
   } | null>(null);
+
+  const pathname = usePathname();
+  const segments = pathname.split("/"); // This splits the pathname into an array
+
+  // Check that segments array is long enough to have a serverId
+  const serverId = segments.length > 2 ? segments[2] : null;
 
   useEffect(() => {
     async function fetchUser() {
@@ -23,15 +30,18 @@ export default function ServerHome() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await handleGetAllNotes();
-        setNotes(data);
+        if (serverId) {
+          const data = await handleGetAllNotes(serverId);
+          setNotes(data);
+        } else {
+          // Handle the case when serverId is null
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
-  }, []);
+  }, [serverId]);
 
   return (
     <div className="flex-grow overflow-auto p-5">
