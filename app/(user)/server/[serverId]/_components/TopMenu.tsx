@@ -41,9 +41,9 @@ const TopMenu = ({
       <div className="flex items-center justify-center space-x-4">
         {/* Left icons */}
         <IconLink
-          href={`/server/${serverId}`}
+          href={`/server/${serverId}/home`}
           icon={MaterialSymbolsCastleOutline}
-          isActive={pathname === `/server/${serverId}`}
+          isActive={pathname.includes("home")}
         />
         <IconLink
           href={`/server/${serverId}/chat`}

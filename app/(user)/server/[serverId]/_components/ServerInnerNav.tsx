@@ -67,6 +67,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
             <ServerSettingsMenu serverAuth={serverAuth} authMatch={authMatch} />
           </RowWrapper>
           <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
+            <ServerInnerNavLink title="Home" to={`/server/${id}/home`} />
             <ServerSubMenu title="Channels">
               <ul className="flex-grow">{listChannels}</ul>
               <Link href={`/server/${id}/chat/createChannel`}>
