@@ -9,6 +9,8 @@ import ServerNotFound from "../../_components/ServerNotFound";
 import Main from "@/app/_components/wrappers/PageMain";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { Fragment } from "react";
+import GamePieceManager from "../_components/game piece management/GamePieceManager";
+import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
@@ -44,11 +46,16 @@ export default async function GameBoard({ params }: { params: Params }) {
 
   return (
     <Fragment>
-      <Link className="ml-4" href={`/server/${server_id}/boards`}>
-        Return
+      <Link
+        className="card-back flex h-[2.4rem] w-full content-center items-center gap-2 pl-4"
+        href={`/server/${server_id}/boards`}
+      >
+        <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
+        <span>Return</span>
       </Link>
-      <ColumnWrapper align="content-start items-start w-[99%] h-full">
+      <ColumnWrapper align="content-start items-start w-full h-full overflow-hidden p-0">
         {element}
+        <GamePieceManager server_id={server_id} />
       </ColumnWrapper>
     </Fragment>
   );
