@@ -71,18 +71,19 @@ model Server {
   invitations       Invitation[]
   notifications     Notification[]
   boards            GameBoard[]
+  notes          Note[]
 }
 
 model ServerConfig {
-  id                  Int     @id @default(autoincrement())
-  server_id           String  @unique
-  config_permission   String
-  protected           Boolean?
-  password_hash       String?
-  explorable          Boolean?
-  searchable          Boolean?
-  join_permission     String?
-  server              Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  id                Int      @id @default(autoincrement())
+  server_id         String   @unique
+  config_permission String
+  protected         Boolean?
+  password_hash     String?
+  explorable        Boolean?
+  searchable        Boolean?
+  join_permission   String?
+  server            Server   @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
 model ServerMember {
@@ -99,7 +100,7 @@ model ServerMember {
 }
 
 model Channel {
-  uid           String            @id @default(cuid())
+  uid           String         @id @default(cuid())
   server_id     String
   channel_name  String
   channel_type  String
@@ -116,7 +117,7 @@ model Conversation {
   created_at    DateTime                  @default(now())
   messages      Message[]
   participants  ConversationParticipant[]
-  channel       Channel?                   @relation(fields: [channel_id], references: [uid])
+  channel       Channel?                  @relation(fields: [channel_id], references: [uid])
   notifications Notification[]
 }
 
@@ -131,31 +132,31 @@ model ConversationParticipant {
 }
 
 model Message {
-  uid              String      @id @default(cuid())
+  uid              String         @id @default(cuid())
   conversation_uid String
   sender_id        String
   message          String
-  created_at       DateTime     @default(now())
-  conversation     Conversation @relation(fields: [conversation_uid], references: [uid], onDelete: Cascade)
-  sender           User         @relation(fields: [sender_id], references: [id], onDelete: Cascade)
-  notifications    Notification[] 
+  created_at       DateTime       @default(now())
+  conversation     Conversation   @relation(fields: [conversation_uid], references: [uid], onDelete: Cascade)
+  sender           User           @relation(fields: [sender_id], references: [id], onDelete: Cascade)
+  notifications    Notification[]
 }
 
 model Notification {
-  id              String          @id @default(cuid())
-  recipient_id    String  
+  id              String        @id @default(cuid())
+  recipient_id    String
   type            String
   read_status     Boolean
-  created_at      DateTime        @default(now())
-  recipient       User            @relation(fields: [recipient_id], references: [id], onDelete: Cascade)
+  created_at      DateTime      @default(now())
+  recipient       User          @relation(fields: [recipient_id], references: [id], onDelete: Cascade)
   message_id      String?
-  message         Message?        @relation(fields: [message_id], references: [uid], onDelete: Cascade)
+  message         Message?      @relation(fields: [message_id], references: [uid], onDelete: Cascade)
   conversation_id String?
-  conversation    Conversation?   @relation(fields: [conversation_id], references: [uid], onDelete: Cascade)
-  channel_id      String? 
-  channel         Channel?        @relation(fields: [channel_id], references: [uid], onDelete: Cascade)
+  conversation    Conversation? @relation(fields: [conversation_id], references: [uid], onDelete: Cascade)
+  channel_id      String?
+  channel         Channel?      @relation(fields: [channel_id], references: [uid], onDelete: Cascade)
   server_id       String?
-  server          Server?         @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  server          Server?       @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
 model CharacterBase {
@@ -243,20 +244,22 @@ model VerificationToken {
 }
 
 model Invitation {
-  id          String         @id @default(cuid())
-  server_id   String
-  expires     String
-  used_count  Int
-  max_uses    Int?
-  protected   Boolean
-  server      Server  @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  id         String  @id @default(cuid())
+  server_id  String
+  expires    String
+  used_count Int
+  max_uses   Int?
+  protected  Boolean
+  server     Server  @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
 model Note {
-  id           String  @id @default(cuid())
-  author       String  // User ID of the note author
+  id           String @id @default(cuid())
+  author       String // User ID of the note author
   documentName String
   positionX    Int
   positionY    Int
   content      String
+  server_id    String
+  server       Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
