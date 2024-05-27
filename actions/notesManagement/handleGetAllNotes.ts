@@ -2,9 +2,11 @@
 import { NoteData } from "@/app/(user)/server/[serverId]/notes/page";
 import { getAllNotes } from "@/prisma/services/notesService";
 
-export default async function handleGetAllNotes(): Promise<NoteData[]> {
+export default async function handleGetAllNotes(
+  server_id: string,
+): Promise<NoteData[]> {
   try {
-    const notes = await getAllNotes();
+    const notes = await getAllNotes(server_id);
     if (typeof notes === "string") {
       return [];
     }
