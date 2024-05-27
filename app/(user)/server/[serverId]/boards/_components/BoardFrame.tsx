@@ -12,7 +12,13 @@ import {
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { GameBoard } from "@prisma/client";
 
-export default function BoardFrame({ board }: { board: GameBoard }) {
+export default function BoardFrame({
+  board,
+  imageUrl,
+}: {
+  board: GameBoard;
+  imageUrl?: string;
+}) {
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
@@ -30,13 +36,13 @@ export default function BoardFrame({ board }: { board: GameBoard }) {
       sensors={sensors}
       modifiers={[restrictToParentElement]}
     >
-      <div className="scrollbar-thin h-[90%] w-full overflow-auto">
+      <div className="scrollbar-thin max-h-full w-full flex-grow overflow-auto">
         <div
           ref={setNodeRef}
           style={{
             width: board.width,
             height: board.height,
-            background: board.background || "#ad9372",
+            background: imageUrl ? `url(${imageUrl})` : "#ad9372",
           }}
         ></div>
       </div>
