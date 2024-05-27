@@ -109,6 +109,23 @@ type ServerCharacter = {
   items: string;
 };
 
+type GamePiece = {
+  id: string;
+  board_id: string;
+  character_id: string;
+  user_id: string;
+  style: number;
+  color: string;
+  position_x: number | null;
+  position_y: number | null;
+  character: {
+    base: {
+      name: string;
+      image: string | null;
+    };
+  };
+};
+
 /**
  * SELECT TYPES
  */

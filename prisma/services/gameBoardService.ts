@@ -41,23 +41,55 @@ export const deleteGameBoard = async (board_id: string) => {
 
 export const createGamePiece = async (
   board_id: string,
-  data: { character_id: string; user_id: string; style: number; color: string },
+  data: {
+    character_id: string;
+    user_id: string;
+    style: number;
+    color: string;
+    position_x: number;
+    position_y: number;
+  },
 ) => {
+  console.log(data);
   const piece = await db.gamePiece.create({
     data: {
-      ...data,
       board_id,
+      ...data,
     },
   });
 
   return piece;
 };
 
+export const getBoardPieces = async (
+  board_id: string,
+): Promise<GamePiece[]> => {
+  const pieces = await db.gamePiece.findMany({
+    where: { board_id },
+    include: {
+      character: { select: { base: { select: { name: true, image: true } } } },
+    },
+  });
+  return pieces;
+};
+
+export const getUserPiecesForBoard = async (
+  board_id: string,
+  user_id: string,
+): Promise<GamePiece[]> => {
+  const pieces = await db.gamePiece.findMany({
+    where: { board_id, AND: { user_id } },
+    include: {
+      character: { select: { base: { select: { name: true, image: true } } } },
+    },
+  });
+  return pieces;
+};
+
 export const updateGamePiece = async (
   piece_id: string,
   data: {
-    top_piece?: number;
-    bottom_piece?: number;
+    style?: number;
     color?: string;
     position_x?: number;
     position_y?: number;

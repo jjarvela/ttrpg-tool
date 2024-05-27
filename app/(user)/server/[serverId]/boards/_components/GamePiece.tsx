@@ -6,7 +6,7 @@ export default function GamePiece({
   character,
   style,
 }: {
-  character: ServerCharacter;
+  character: { base: { name: string; image: string | null } };
   style: number;
 }) {
   function selectStyle(style: number) {
@@ -21,7 +21,7 @@ export default function GamePiece({
   }
 
   return (
-    <div className="relative flex items-center justify-items-center">
+    <div className="flex items-center justify-items-center">
       <div className="h-[100px] w-[100px]">
         {character.base.image && (
           <CharacterPortrait

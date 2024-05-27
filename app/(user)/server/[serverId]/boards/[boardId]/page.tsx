@@ -1,4 +1,7 @@
-import { getGameBoard } from "@/prisma/services/gameBoardService";
+import {
+  getBoardPieces,
+  getGameBoard,
+} from "@/prisma/services/gameBoardService";
 import BoardFrame from "../_components/BoardFrame";
 import Button from "@/app/_components/Button";
 import { getServerData } from "@/prisma/services/serverService";
@@ -35,7 +38,11 @@ export default async function GameBoard({ params }: { params: Params }) {
     async () => {
       const board = await getGameBoard(board_id);
 
-      return <BoardFrame board={board} />;
+      const pieces = await getBoardPieces(board_id);
+
+      console.log(pieces);
+
+      return <BoardFrame board={board} pieces={pieces} />;
     },
     () => (
       <p className="text-warning">
@@ -55,7 +62,7 @@ export default async function GameBoard({ params }: { params: Params }) {
       </Link>
       <ColumnWrapper align="content-start items-start w-full h-full overflow-hidden p-0">
         {element}
-        <GamePieceManager server_id={server_id} />
+        <GamePieceManager server_id={server_id} board_id={board_id} />
       </ColumnWrapper>
     </Fragment>
   );

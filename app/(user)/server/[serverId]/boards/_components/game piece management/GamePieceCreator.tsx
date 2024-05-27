@@ -3,14 +3,20 @@
 import "@/styles/gamePiece.css";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import CharacterCarousel from "./CharacterCarousel";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import GamePiece from "../GamePiece";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
+import Button from "@/app/_components/Button";
+import { useRouter } from "next/navigation";
+import errorHandler from "@/utils/errorHandler";
+import createPiece from "@/actions/gameBoardManagement/createPiece";
 
 export default function GamePieceCreator({
   characters,
+  board_id,
 }: {
+  board_id: string;
   characters: ServerCharacter[];
 }) {
   const [startIndex, setStartIndex] = useState(0);
@@ -34,6 +40,10 @@ export default function GamePieceCreator({
     setCarouselCharacters(filterCarouselCharacters(newIndex));
   }
 
+  const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
+
   return (
     <RowWrapper className="w-full justify-between px-4">
       <CharacterCarousel
@@ -43,7 +53,28 @@ export default function GamePieceCreator({
         selectedCharacter={selectedCharacter}
         setSelectedCharacter={setSelectedCharacter}
       />
+      <Button
+        className="btn-primary"
+        disabled={isPending}
+        onClick={() => {
+          startTransition(async () => {
+            const error: string | null = await errorHandler(async () => {
+              await createPiece(
+                board_id,
+                selectedCharacter.id,
+                selectedCharacter.base.owner_id,
+                style,
+              );
+            });
 
+            if (!error) {
+              router.refresh();
+            }
+          });
+        }}
+      >
+        Add to board
+      </Button>
       <ColumnWrapper>
         <RowWrapper>
           <MaterialSymbolsLightChevronLeftRounded
