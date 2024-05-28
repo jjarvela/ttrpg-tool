@@ -95,7 +95,7 @@ export default function LatestNotes() {
         </h2>
       </div>
       <div className="m-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {notes.map((note) => (
+        {notes.slice(0, 6).map((note) => (
           <HomeNote
             note={note}
             currentUser={{
