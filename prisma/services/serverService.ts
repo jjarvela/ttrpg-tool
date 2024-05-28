@@ -411,9 +411,25 @@ export const getServerMembersExcept = async (
 export const getServerMember = async (
   server_id: string,
   member_id: string,
-): Promise<Omit<ServerMember, "user">> => {
+  include_user?: boolean,
+): Promise<ServerMember> => {
   const member = await db.serverMember.findFirst({
     where: { server_id, member_id },
+    include: {
+      user: include_user
+        ? {
+            select: {
+              username: true,
+              profile_image: true,
+              screen_name: true,
+              timezone: true,
+              share_timezone: true,
+              socket_id: true,
+              person_status: true,
+            },
+          }
+        : false,
+    },
   });
 
   if (!member) throw new Error("No user could be found");

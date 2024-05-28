@@ -5,9 +5,10 @@ export default async function handleNotePositionChange(
   id: string,
   positionX: number,
   positionY: number,
+  serverId: string,
 ) {
   try {
-    const result = await updateNotePosition(id, positionX, positionY);
+    const result = await updateNotePosition(id, positionX, positionY, serverId);
     return result;
   } catch (error) {
     console.error("Error updating note position:", error);

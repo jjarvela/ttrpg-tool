@@ -2,7 +2,6 @@
 
 import Button from "@/app/_components/Button";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
-import { Fragment } from "react";
 
 export default function BaseSelect({
   characterSelector,
@@ -15,11 +14,20 @@ export default function BaseSelect({
     <RowWrapper>
       <Button
         className="btn-secondary"
-        onClick={() => characterSelector.current?.showModal()}
+        onClick={(e) => {
+          e.preventDefault();
+          characterSelector.current?.showModal();
+        }}
       >
         Select from existing
       </Button>
-      <Button className="btn-secondary" onClick={() => selectNew()}>
+      <Button
+        className="btn-secondary"
+        onClick={(e) => {
+          e.preventDefault();
+          selectNew();
+        }}
+      >
         Create new
       </Button>
     </RowWrapper>

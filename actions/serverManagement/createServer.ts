@@ -24,44 +24,47 @@ export default async function createServer(
   data: newServerData,
 ) {
   if (data.isProtected && data.password === "") {
-    return "Server is set to protected but no password was given.";
+    throw new Error("Server is set to protected but no password was given.");
   }
+  const server = await createServerEntry({
+    server_name: data.serverName,
+    description: data.description,
+    image: data.image || undefined,
+  });
 
-  try {
-    const server = await createServerEntry({
-      server_name: data.serverName,
-      description: data.description,
-      image: data.image || undefined,
-    });
+  console.log(server);
 
-    const password_hash = await bcrypt.hash(String(data.password), 10);
+  const password_hash = await bcrypt.hash(String(data.password), 10);
 
-    const serverConfig = await createServerConfig({
-      server_id: server.id,
-      config_permission: data.settingsRightsHolders,
-      protected: data.isProtected,
-      password_hash: data.isProtected ? password_hash : undefined,
-      explorable: data.explorePermission,
-      searchable: data.searchPermission,
-    });
+  const serverConfig = await createServerConfig({
+    server_id: server.id,
+    config_permission: data.settingsRightsHolders,
+    protected: data.isProtected,
+    password_hash: data.isProtected ? password_hash : undefined,
+    explorable: data.explorePermission,
+    searchable: data.searchPermission,
+  });
 
-    const serverOwner = await createServerMember({
-      server_id: server.id,
-      member_id: user_id,
-      role: "admin",
-    });
+  console.log(serverConfig);
 
-    const serverCharacterConfig = await createServerCharacterConfig(server.id, {
-      vitals_count: 1,
-      vitals_names: ["HP"],
-      attributes_count: 2,
-      attributes_names: ["Strength", "Dexterity"],
-      statics_count: 2,
-      statics_names: ["Stealth", "Persuasion"],
-    });
+  const serverOwner = await createServerMember({
+    server_id: server.id,
+    member_id: user_id,
+    role: "admin",
+  });
 
-    return server;
-  } catch (e) {
-    throw new Error("Something went wrong. Please try again.");
-  }
+  console.log(serverOwner);
+
+  const serverCharacterConfig = await createServerCharacterConfig(server.id, {
+    vitals_count: 1,
+    vitals_names: ["HP"],
+    attributes_count: 2,
+    attributes_names: ["Strength", "Dexterity"],
+    statics_count: 2,
+    statics_names: ["Stealth", "Persuasion"],
+  });
+
+  console.log(serverCharacterConfig);
+
+  return server;
 }
