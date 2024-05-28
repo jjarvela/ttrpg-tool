@@ -21,6 +21,15 @@ export default function LatestNotes() {
   // Check that segments array is long enough to have a serverId
   const serverId = segments.length > 2 ? segments[2] : null;
 
+  function sortNotes(notes: NoteData[]) {
+    return notes.sort(
+      (
+        a: { createdAt: string | number | Date },
+        b: { createdAt: string | number | Date },
+      ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  }
+
   useEffect(() => {
     if (serverId) {
       socket.emit("join-note-server", serverId); // Join the server room
@@ -32,7 +41,13 @@ export default function LatestNotes() {
       try {
         if (serverId) {
           const data = await handleGetAllNotes(serverId);
-          setNotes(data);
+          // Assuming `data` is an array of notes and each note has a `createdAt` timestamp
+          const sortedData = data.sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            return dateB - dateA;
+          });
+          setNotes(sortedData);
         } else {
           // Handle the case when serverId is null
         }
@@ -58,9 +73,10 @@ export default function LatestNotes() {
     socket.on("create-note", (data) => {
       if (data.serverId === serverId) {
         setNotes((prevNotes) => {
-          // Only add the note if it doesn't already exist in the array
+          // Check if the note already exists to prevent duplicates
           if (!prevNotes.find((note) => note.id === data.note.id)) {
-            return [...prevNotes, { ...data.note }];
+            const updatedNotes = [...prevNotes, data.note as NoteData]; // Add the new note
+            return sortNotes(updatedNotes); // Sort notes after addition
           }
           return prevNotes;
         });

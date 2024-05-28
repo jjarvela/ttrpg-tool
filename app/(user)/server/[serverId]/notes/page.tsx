@@ -27,6 +27,8 @@ export interface NoteData {
   positionX: number;
   positionY: number;
   content: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const dropAreaSize: React.CSSProperties = {

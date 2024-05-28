@@ -50,10 +50,24 @@ export default function HomeNote({
     [id, note, server_id],
   );
 
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isNewNote, setIsNewNote] = useState(true);
+
+  useEffect(() => {
+    if (isNewNote) {
+      setIsNewNote(false);
+    }
+  }, [isNewNote]);
+
+  const style: React.CSSProperties = {
+    opacity: isDeleted || isNewNote ? 0 : 1,
+    transition: "opacity 0.3s ease-in-out",
+  };
+
   return (
     <div
       className={`flex h-[140px] w-[140px] flex-col border border-black50 bg-green-800 p-1 shadow-xl`}
-      style={NoteSize}
+      style={style}
     >
       <div className="mb-2 flex justify-center text-center">
         <p className="text-sm">{author}</p>
