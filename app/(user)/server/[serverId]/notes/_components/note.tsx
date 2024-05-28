@@ -23,17 +23,14 @@ interface currentUserType {
 export function Note({
   note,
   styles,
-  onNoteDelete,
   currentUser,
-  setActiveNoteId,
 }: {
   note: NoteData;
   styles?: React.CSSProperties;
-  onNoteDelete: (noteId: string) => void;
   currentUser: currentUserType;
-  setActiveNoteId: (noteId: string) => void;
 }) {
-  const { id, author, documentName, content, positionX, positionY } = note;
+  const { id, server_id, author, documentName, content, positionX, positionY } =
+    note;
 
   const isCurrentUserAuthor = author === currentUser.username;
 
@@ -49,37 +46,34 @@ export function Note({
       try {
         await handleNoteContentChange(id, newContent);
         setCurrentContent(newContent); // Update current content locally
-        socket.emit("update-note", { ...note, content: newContent });
+        socket.emit("update-note", {
+          note: {
+            ...note,
+            content: newContent,
+          },
+          serverId: server_id,
+        });
       } catch (error) {
         console.error("Error updating note content:", error);
       }
     },
-    [id, note],
-  );
-
-  const handlePositionChange = useCallback(
-    async (newPositionX: number, newPositionY: number) => {
-      try {
-        await handleNotePositionChange(id, newPositionX, newPositionY);
-      } catch (error) {
-        console.error("Error updating note position:", error);
-      }
-    },
-    [id],
+    [id, note, server_id],
   );
 
   const handleNoteDeletion = useCallback(async () => {
     try {
-      await handleNoteDelete(id);
-      setIsDeleted(true); // Trigger fade-out animation
+      await handleNoteDelete(id, server_id);
+      setIsDeleted(true);
       setTimeout(() => {
-        onNoteDelete(id); // Remove the note from UI
-        socket.emit("delete-note", id); // Emit delete event to the server
+        socket.emit("delete-note", {
+          noteId: id,
+          serverId: server_id,
+        }); // Notify server and other clients
       }, 300);
     } catch (error) {
       console.error("Error deleting note:", error);
     }
-  }, [id, onNoteDelete]);
+  }, [id, server_id]);
 
   const { attributes, listeners, transform, setNodeRef } = useDraggable({
     id,
@@ -97,8 +91,8 @@ export function Note({
     if (!transform) return;
     const newPositionX = positionX + transform.x;
     const newPositionY = positionY + transform.y;
-    handlePositionChange(newPositionX, newPositionY);
-  }, [transform, handlePositionChange, positionX, positionY]);
+    // Ensure that the update only happens if there's an actual change in position
+  }, [transform, positionX, positionY]);
 
   const style: React.CSSProperties = {
     transform: transform
@@ -107,7 +101,7 @@ export function Note({
     ...NoteSize,
     ...styles,
     opacity: isDeleted || isNewNote ? 0 : 1,
-    transition: "opacity 0.3s ease-in",
+    transition: "opacity 0.3s ease-in-out",
   };
 
   return (

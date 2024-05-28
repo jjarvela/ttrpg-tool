@@ -18,7 +18,6 @@ const TipTapEditor = ({
     extensions: [StarterKit],
     content: initialContent,
     editable: !disabled,
-    autofocus: "start",
   });
 
   // Effect to update the editor content when initialContent changes

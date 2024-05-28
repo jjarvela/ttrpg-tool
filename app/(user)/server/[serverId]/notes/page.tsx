@@ -1,5 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useId, useState } from "react";
+import { usePathname } from "next/navigation";
 import { io } from "socket.io-client";
 import {
   DndContext,
@@ -16,30 +17,33 @@ import Main from "@/app/_components/wrappers/PageMain";
 import handleNewNote from "@/actions/notesManagement/handleNewNote";
 import handleGetAllNotes from "@/actions/notesManagement/handleGetAllNotes";
 import { getCurrentUser } from "./_components/GetCurrentUser";
+import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
 
 export interface NoteData {
   id: string;
   author: string;
-
+  server_id: string;
   documentName: string;
   positionX: number;
   positionY: number;
   content: string;
 }
 
-const dropAreaSize = {
-  width: "700px",
-  height: "700px",
+const dropAreaSize: React.CSSProperties = {
+  width: "1000px",
+  height: "1000px",
+  position: "relative",
 };
 
 const socket = io();
 
 export default function ServerNotes() {
-  const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
+  const pathname = usePathname();
+  const segments = pathname.split("/"); // This splits the pathname into an array
 
-  function handleSetActiveNoteId(noteId: string) {
-    setActiveNoteId(noteId);
-  }
+  // Check that segments array is long enough to have a serverId
+  const serverId = segments.length > 2 ? segments[2] : null;
+
   const id = useId();
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>([]);
@@ -51,19 +55,11 @@ export default function ServerNotes() {
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
 
-  const removeNoteFromState = useCallback((noteId: string) => {
-    setNotes((currentNotes) =>
-      currentNotes.filter((note) => note.id !== noteId),
-    );
-  }, []);
-
-  const handleNoteDeletion = useCallback((deletedNoteId: string) => {
-    setTimeout(() => {
-      setNotes((prevNotes) =>
-        prevNotes.filter((note) => note.id !== deletedNoteId),
-      );
-    }, 300);
-  }, []);
+  useEffect(() => {
+    if (serverId) {
+      socket.emit("join-note-server", serverId); // Join the server room
+    }
+  }, [serverId]); // This effect runs whenever the serverId changes
 
   useEffect(() => {
     async function fetchUser() {
@@ -77,8 +73,12 @@ export default function ServerNotes() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await handleGetAllNotes();
-        setNotes(data);
+        if (serverId) {
+          const data = await handleGetAllNotes(serverId);
+          setNotes(data);
+        } else {
+          // Handle the case when serverId is null
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -86,61 +86,118 @@ export default function ServerNotes() {
 
     fetchData();
 
-    socket.on("update-note", (updatedNote) => {
-      setNotes((prevNotes) =>
-        prevNotes.map((note) =>
-          note.documentName === updatedNote.documentName ? updatedNote : note,
-        ),
-      );
+    socket.on("update-note", (data) => {
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note.documentName === data.note.documentName
+              ? { ...data.note }
+              : note,
+          ),
+        );
+      }
     });
 
-    socket.on("create-note", (newNote) => {
-      setNotes((prevNotes) => [...prevNotes, newNote]);
+    socket.on("create-note", (data) => {
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) => {
+          // Only add the note if it doesn't already exist in the array
+          if (!prevNotes.find((note) => note.id === data.note.id)) {
+            return [...prevNotes, { ...data.note }];
+          }
+          return prevNotes;
+        });
+      }
     });
-
-    socket.on("delete-note", handleNoteDeletion);
 
     return () => {
       socket.off("update-note");
       socket.off("create-note");
+    };
+  }, [serverId]);
+
+  useEffect(() => {
+    socket.on("delete-note", (data) => {
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) =>
+          prevNotes.filter((note) => note.id !== data.noteId),
+        );
+      }
+    });
+
+    return () => {
       socket.off("delete-note");
     };
-  }, [handleNoteDeletion]);
+  }, [serverId]);
 
   async function handleNewNoteClient() {
-    try {
-      const newNote = await handleNewNote();
-      socket.emit("create-note", newNote);
-      setNotes((prevNotes) => [...prevNotes, newNote]);
-    } catch (error) {
-      console.error("Error creating note:", error);
+    if (serverId) {
+      try {
+        const newNote = await handleNewNote(serverId);
+        socket.emit("create-note", { note: newNote, serverId: serverId });
+        setNotes((prevNotes) => [...prevNotes, { ...newNote }]);
+      } catch (error) {
+        console.error("Error creating note:", error);
+      }
+    } else {
+      console.log("No serverId provided for new note creation.");
     }
   }
 
-  function handleDragEnd(event: DragEndEvent) {
-    const noteId = event.active.id;
-    const delta = event.delta;
+  const handlePositionChange = useCallback(
+    async (noteId: string, newPositionX: number, newPositionY: number) => {
+      try {
+        if (serverId !== null) {
+          await handleNotePositionChange(
+            noteId,
+            newPositionX,
+            newPositionY,
+            serverId,
+          );
+        }
+      } catch (error) {
+        console.error("Error updating note position:", error);
+      }
+    },
+    [serverId],
+  );
 
-    setNotes((prevNotes) => {
-      const updatedNotes = prevNotes.map((note) =>
-        note.id === noteId
-          ? {
-              ...note,
-              positionX: note.positionX + delta.x,
-              positionY: note.positionY + delta.y,
-            }
-          : note,
-      );
+  const handleDragEnd = useCallback(
+    async (event: DragEndEvent) => {
+      const noteId = event.active.id;
+      const delta = event.delta;
 
-      // Emit the updated note to the server
-      const updatedNote = updatedNotes.find((note) => note.id === noteId);
-      if (updatedNote) {
-        socket.emit("update-note", updatedNote);
+      // Find the note based on noteId
+      const note = notes.find((n) => n.id === noteId);
+      if (!note) {
+        console.error("Note not found:", noteId);
+        return;
       }
 
-      return updatedNotes;
-    });
-  }
+      const newPositionX = note.positionX + delta.x;
+      const newPositionY = note.positionY + delta.y;
+
+      // Update the note's position in the local state
+      setNotes((prevNotes) =>
+        prevNotes.map((n) => {
+          return n.id === noteId
+            ? { ...n, positionX: newPositionX, positionY: newPositionY }
+            : n;
+        }),
+      );
+
+      // Perform the database update and socket communication
+
+      handlePositionChange(note.id, newPositionX, newPositionY);
+
+      // After updating the database, emit the updated note via socket
+      socket.emit("update-note", {
+        note: { ...note, positionX: newPositionX, positionY: newPositionY },
+        serverId: serverId,
+      });
+    },
+    [notes, handlePositionChange, serverId],
+  );
 
   if (!user) {
     return null; // Render loading state or redirect to login
@@ -160,26 +217,23 @@ export default function ServerNotes() {
         modifiers={[restrictToParentElement]}
       >
         <div
-          className="scrollbar-thin h-[95vh] w-[74vw] overflow-auto md:h-[90vh] lg:w-[88vw]"
+          className="scrollbar-thin h-[86vh] w-[64vw] overflow-auto xs:h-[80vh] xs:w-[68vw] sm:h-[76vh] md:h-[76vh] md:w-[70vw] lg:h-[84vh] lg:w-[76vw] xl:h-[90vh] xl:w-[80vw]"
           style={{ backgroundColor: "transparent" }}
         >
           <div ref={setNodeRef} style={dropAreaSize}>
             {notes.map((note) => (
               <Note
                 styles={{
-                  position: "fixed",
+                  position: "absolute",
                   left: `${note.positionX}px`,
                   top: `${note.positionY}px`,
-                  zIndex: note.id === activeNoteId ? 1000 : 1,
                 }}
-                key={note.documentName}
+                key={note.id}
                 note={note}
-                onNoteDelete={removeNoteFromState}
                 currentUser={{
                   username: user?.username,
                   profile_image: user?.profile_image,
                 }}
-                setActiveNoteId={handleSetActiveNoteId}
               />
             ))}
           </div>
