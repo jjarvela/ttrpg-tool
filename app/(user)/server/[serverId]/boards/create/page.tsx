@@ -27,7 +27,7 @@ export default async function ServerBoardCreate({
   }
 
   return (
-    <Main className="px-4 pb-4">
+    <Main className="w-full px-4 pb-4">
       <h1>Create Gameboard</h1>
       <CreateBoard server_id={id} />
     </Main>

@@ -3,17 +3,16 @@ import {
   getGameBoard,
 } from "@/prisma/services/gameBoardService";
 import BoardFrame from "../_components/BoardFrame";
-import Button from "@/app/_components/Button";
 import { getServerData } from "@/prisma/services/serverService";
 import errorHandler from "@/utils/errorHandler";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import Link from "next/link";
 import ServerNotFound from "../../_components/ServerNotFound";
-import Main from "@/app/_components/wrappers/PageMain";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { Fragment } from "react";
 import GamePieceManager from "../_components/game piece management/GamePieceManager";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
+import getBlobSASUrl from "@/actions/getBlobSASUrl";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
@@ -40,7 +39,10 @@ export default async function GameBoard({ params }: { params: Params }) {
 
       const pieces = await getBoardPieces(board_id);
 
-      console.log(pieces);
+      if (board.background) {
+        const imageUrl = await getBlobSASUrl(board.background);
+        return <BoardFrame imageUrl={imageUrl} board={board} pieces={pieces} />;
+      }
 
       return <BoardFrame board={board} pieces={pieces} />;
     },
