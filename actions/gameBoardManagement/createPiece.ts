@@ -19,7 +19,7 @@ export default async function createPiece(
     character_id,
     user_id,
     style,
-    color: "#ffff",
+    color: "#ffffff",
     position_x: x_spawn,
     position_y: y_spawn,
   });

@@ -2,7 +2,6 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import { auth } from "@/auth";
 import { getUserServerCharacters } from "@/prisma/services/characterService";
 import errorHandler from "@/utils/errorHandler";
-import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { redirect } from "next/navigation";
 import GamePieceManagerClientWrapper from "./GamePieceManagerClientWrapper";
 import { Fragment } from "react";
@@ -48,10 +47,16 @@ export default async function GamePieceManager({
         (session as ExtendedSession).userId,
       );
 
+      console.log(existing);
+
       return (
         <Fragment>
           {characters.length > 0 ? (
-            <GamePieceCreator characters={characters} board_id={board_id} />
+            <GamePieceCreator
+              characters={characters}
+              existing={existing}
+              board_id={board_id}
+            />
           ) : (
             <ColumnWrapper className="w-full">
               <p>You have no characters on this server.</p>
