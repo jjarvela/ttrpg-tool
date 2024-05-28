@@ -15,9 +15,9 @@ export default function ServerCharacterStatDisplay({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <ColumnWrapper className="w-full p-0">
-      <div className="flex">
-        <div className="flex-grow">
+    <ColumnWrapper className="w-full p-0 pb-[0.1rem]">
+      <div className="card-back flex w-full overflow-hidden">
+        <div className="flex-grow px-4">
           <h5>{title}</h5>
         </div>
         <MaterialSymbolsLightChevronLeftRounded
