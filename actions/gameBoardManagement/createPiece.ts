@@ -12,11 +12,8 @@ export default async function createPiece(
   style: number,
 ) {
   const board = await getGameBoard(board_id);
-  const x_spawn = Math.floor(Math.random() * board.width);
-  const y_spawn = Math.floor(Math.random() * board.height);
-
-  console.log(style);
-  console.log(character_id);
+  const x_spawn = Math.floor((Math.random() * board.width) / 2);
+  const y_spawn = Math.floor((Math.random() * board.height) / 2);
 
   await createGamePiece(board_id, {
     character_id,
