@@ -1,4 +1,6 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-export const preset = "ts-jest";
-export const testEnvironment = "node";
-export const setupFilesAfterEnv = ["<rootDir>/singleton.ts"];
+module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
+  setupFilesAfterEnv: ["<rootDir>/singleton.ts"],
+};
