@@ -12,7 +12,7 @@ import {
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { GameBoard } from "@prisma/client";
 import GamePiece from "./GamePiece";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { socket } from "@/socket";
 import movePiece from "@/actions/gameBoardManagement/movePiece";
 import GamePieceBoardWrapper from "./GamePieceBoardWrapper";
@@ -33,17 +33,51 @@ export default function BoardFrame({
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
 
+  useEffect(() => {
+    socket.emit("join-board", board.id);
+  }, [board]);
+
+  useEffect(() => {
+    socket.on("add-piece", (piece) => {
+      console.log(piece);
+      const newPieces = [...gamePieces, piece];
+      setPieces(newPieces);
+    });
+
+    socket.on("update-piece", (piece) => {
+      const filtered = gamePieces.filter((item) => item.id !== piece.id);
+      setPieces([...filtered, piece]);
+    });
+
+    socket.on("delete-piece", (piece_id) => {
+      const filtered = gamePieces.filter((item) => item.id !== piece_id);
+      setPieces(filtered);
+    });
+
+    return () => {
+      socket.off("add-piece");
+      socket.off("update-piece");
+      socket.off("delete-piece");
+    };
+  });
+
   const { setNodeRef } = useDroppable({ id: "game-pieces" });
 
   const handlePositionChange = useCallback(
     async (piece_id: string, newPositionX: number, newPositionY: number) => {
       try {
         const piece = await movePiece(piece_id, newPositionX, newPositionY);
+
+        // After updating the database, emit the updated note via socket
+        socket.emit("update-piece", {
+          piece_id: piece.id,
+          board_id: board.id,
+        });
       } catch (error) {
         console.error("Error updating note position:", error);
       }
     },
-    [],
+    [board],
   );
 
   const handleDragEnd = useCallback(
@@ -73,22 +107,9 @@ export default function BoardFrame({
             : item;
         }),
       );
-
-      // Perform the database update and socket communication
-
       handlePositionChange(piece.id, newPositionX, newPositionY);
-
-      // After updating the database, emit the updated note via socket
-      socket.emit("update-board", {
-        updatedPiece: {
-          ...piece,
-          position_x: newPositionX,
-          position_y: newPositionY,
-        },
-        board_id: board.id,
-      });
     },
-    [gamePieces, handlePositionChange, board.id],
+    [gamePieces, handlePositionChange],
   );
 
   return (
@@ -119,7 +140,11 @@ export default function BoardFrame({
                   top: `${piece.position_y}px`,
                 }}
               >
-                <GamePiece character={piece.character} style={piece.style} />
+                <GamePiece
+                  character={piece.character}
+                  style={piece.style}
+                  hoverEffect={true}
+                />
               </GamePieceBoardWrapper>
             );
           })}

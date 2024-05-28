@@ -97,6 +97,25 @@ export const getUserPiecesForBoard = async (
   return pieces;
 };
 
+export const getGamePiece = async (piece_id: string): Promise<GamePiece> => {
+  const piece = await db.gamePiece.findUnique({
+    where: { id: piece_id },
+    include: {
+      character: {
+        select: {
+          class: true,
+          level: true,
+          base: { select: { name: true, image: true } },
+        },
+      },
+    },
+  });
+  if (!piece) {
+    throw new Error("Piece could not be found");
+  }
+  return piece;
+};
+
 export const updateGamePiece = async (
   piece_id: string,
   data: {

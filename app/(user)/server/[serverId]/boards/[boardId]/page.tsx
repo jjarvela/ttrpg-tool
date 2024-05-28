@@ -15,6 +15,7 @@ import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbo
 import getBlobSASUrl from "@/actions/getBlobSASUrl";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import BoardTop from "../_components/BoardTop";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
@@ -74,13 +75,15 @@ export default async function GameBoard({ params }: { params: Params }) {
 
   return (
     <Fragment>
-      <Link
-        className="card-back flex h-[2.4rem] w-full content-center items-center gap-2 pl-4"
-        href={`/server/${server_id}/boards`}
-      >
-        <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
-        <span>Return</span>
-      </Link>
+      <BoardTop server_id={server_id} board_id={board_id}>
+        <Link
+          href={`/server/${server_id}/boards`}
+          className="flex content-center items-center"
+        >
+          <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
+          <span>Return</span>
+        </Link>
+      </BoardTop>
       <ColumnWrapper align="content-start items-start w-full h-full overflow-hidden p-0">
         {element}
         <GamePieceManager server_id={server_id} board_id={board_id} />

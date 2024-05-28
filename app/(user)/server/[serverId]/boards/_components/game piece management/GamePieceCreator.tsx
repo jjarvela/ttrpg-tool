@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import errorHandler from "@/utils/errorHandler";
 import createPiece from "@/actions/gameBoardManagement/createPiece";
 import editPiece from "@/actions/gameBoardManagement/editPiece";
+import { socket } from "@/socket";
+import deletePiece from "@/actions/gameBoardManagement/deletePiece";
 
 export default function GamePieceCreator({
   characters,
@@ -71,32 +73,54 @@ export default function GamePieceCreator({
         selectedCharacter={selectedCharacter}
         setSelectedCharacter={setSelectedCharacter}
       />
-      <Button
-        className="btn-primary"
-        disabled={isPending}
-        onClick={() => {
-          startTransition(async () => {
-            const error: string | null = await errorHandler(async () => {
-              if (charaPiece) {
-                await editPiece(charaPiece.id, style, color);
-              } else {
-                await createPiece(
-                  board_id,
-                  selectedCharacter.id,
-                  selectedCharacter.base.owner_id,
-                  style,
-                );
-              }
+      <ColumnWrapper>
+        <Button
+          className="btn-primary"
+          disabled={isPending}
+          onClick={() => {
+            startTransition(async () => {
+              const error: string | null = await errorHandler(async () => {
+                if (charaPiece) {
+                  await editPiece(charaPiece.id, style, color);
+                  socket.emit("update-piece", {
+                    piece_id: charaPiece.id,
+                    board_id,
+                  });
+                } else {
+                  const piece = await createPiece(
+                    board_id,
+                    selectedCharacter.id,
+                    selectedCharacter.base.owner_id,
+                    style,
+                  );
+                  socket.emit("add-piece", { piece_id: piece.id, board_id });
+                  router.refresh();
+                }
+              });
             });
-
-            if (!error) {
-              router.refresh();
-            }
-          });
-        }}
-      >
-        {existing ? "Update" : "Add to board"}
-      </Button>
+          }}
+        >
+          {charaPiece ? "Update" : "Add to board"}
+        </Button>
+        {charaPiece && (
+          <Button
+            className="btn-secondary bg-warning"
+            onClick={() => {
+              errorHandler(async () => {
+                await deletePiece(charaPiece.id);
+                socket.emit("delete-piece", {
+                  piece_id: charaPiece.id,
+                  board_id,
+                });
+                router.refresh();
+                return null;
+              });
+            }}
+          >
+            Delete from board
+          </Button>
+        )}
+      </ColumnWrapper>
       <ColumnWrapper>
         <RowWrapper className="px-2">
           <MaterialSymbolsLightChevronLeftRounded
@@ -125,7 +149,6 @@ export default function GamePieceCreator({
           type="color"
           value={color}
           onChange={(e) => {
-            console.log(e.target.value);
             setColor(e.target.value);
           }}
         />
