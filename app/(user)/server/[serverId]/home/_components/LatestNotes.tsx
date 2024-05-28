@@ -2,7 +2,6 @@
 import handleGetAllNotes from "@/actions/notesManagement/handleGetAllNotes";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getCurrentUser } from "../../notes/_components/GetCurrentUser";
 import { NoteData } from "../../notes/page";
 import HomeNote from "./HomeNote";
 import { io } from "socket.io-client";
@@ -29,15 +28,6 @@ export default function LatestNotes() {
   }, [serverId]); // This effect runs whenever the serverId changes
 
   useEffect(() => {
-    async function fetchUser() {
-      const userData = await getCurrentUser();
-      setUser(userData);
-    }
-
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         if (serverId) {
@@ -50,6 +40,7 @@ export default function LatestNotes() {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
 
     socket.on("update-note", (data) => {
@@ -63,14 +54,47 @@ export default function LatestNotes() {
         );
       }
     });
+
+    socket.on("create-note", (data) => {
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) => {
+          // Only add the note if it doesn't already exist in the array
+          if (!prevNotes.find((note) => note.id === data.note.id)) {
+            return [...prevNotes, { ...data.note }];
+          }
+          return prevNotes;
+        });
+      }
+    });
+
+    return () => {
+      socket.off("update-note");
+      socket.off("create-note");
+    };
+  }, [serverId]);
+
+  useEffect(() => {
+    socket.on("delete-note", (data) => {
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) =>
+          prevNotes.filter((note) => note.id !== data.noteId),
+        );
+      }
+    });
+
+    return () => {
+      socket.off("delete-note");
+    };
   }, [serverId]);
 
   return (
-    <div className="flex-grow overflow-auto p-5">
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-        Latest Notes
-      </h2>
-      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex flex-col overflow-auto bg-black75 p-5">
+      <div className="flex">
+        <h2 className="mx-auto text-lg font-semibold text-gray-800 dark:text-gray-200">
+          Latest Notes
+        </h2>
+      </div>
+      <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {notes.map((note) => (
           <HomeNote
             note={note}
