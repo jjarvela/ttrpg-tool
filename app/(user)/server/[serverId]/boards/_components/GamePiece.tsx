@@ -1,12 +1,18 @@
 "use client";
 
 import CharacterPortrait from "@/app/_components/character/CharacterPortraitClient";
+import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
+import { useState } from "react";
 
 export default function GamePiece({
   character,
   style,
 }: {
-  character: { base: { name: string; image: string | null } };
+  character: {
+    class: string;
+    level: number;
+    base: { name: string; image: string | null };
+  };
   style: number;
 }) {
   function selectStyle(style: number) {
@@ -20,8 +26,15 @@ export default function GamePiece({
     }
   }
 
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
-    <div className="flex items-center justify-items-center">
+    <div
+      className="relative flex items-center justify-items-center"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      onMouseDown={() => setIsHovering(false)}
+    >
       <div className="h-[100px] w-[100px]">
         {character.base.image && (
           <CharacterPortrait
@@ -31,6 +44,15 @@ export default function GamePiece({
           />
         )}
       </div>
+      {isHovering && (
+        <ColumnWrapper className="bg-color-dark fixed translate-x-20 translate-y-2 gap-0 rounded-lg">
+          <p>{character.base.name}</p>
+          <small>
+            {character.class}
+            <span className="ml-1">Lvl {character.level}</span>
+          </small>
+        </ColumnWrapper>
+      )}
     </div>
   );
 }

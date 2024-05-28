@@ -66,7 +66,13 @@ export const getBoardPieces = async (
   const pieces = await db.gamePiece.findMany({
     where: { board_id },
     include: {
-      character: { select: { base: { select: { name: true, image: true } } } },
+      character: {
+        select: {
+          class: true,
+          level: true,
+          base: { select: { name: true, image: true } },
+        },
+      },
     },
   });
   return pieces;
@@ -79,7 +85,13 @@ export const getUserPiecesForBoard = async (
   const pieces = await db.gamePiece.findMany({
     where: { board_id, AND: { user_id } },
     include: {
-      character: { select: { base: { select: { name: true, image: true } } } },
+      character: {
+        select: {
+          class: true,
+          level: true,
+          base: { select: { name: true, image: true } },
+        },
+      },
     },
   });
   return pieces;

@@ -119,6 +119,8 @@ type GamePiece = {
   position_x: number;
   position_y: number;
   character: {
+    class: string;
+    level: number;
     base: {
       name: string;
       image: string | null;

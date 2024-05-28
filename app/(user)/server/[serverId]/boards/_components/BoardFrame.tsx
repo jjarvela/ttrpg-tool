@@ -18,10 +18,12 @@ import movePiece from "@/actions/gameBoardManagement/movePiece";
 import GamePieceBoardWrapper from "./GamePieceBoardWrapper";
 
 export default function BoardFrame({
+  currentUser,
   board,
   pieces,
   imageUrl,
 }: {
+  currentUser: string;
   board: GameBoard;
   pieces: GamePiece[];
   imageUrl?: string;
@@ -78,7 +80,11 @@ export default function BoardFrame({
 
       // After updating the database, emit the updated note via socket
       socket.emit("update-board", {
-        note: { ...piece, position_x: newPositionX, position_y: newPositionY },
+        updatedPiece: {
+          ...piece,
+          position_x: newPositionX,
+          position_y: newPositionY,
+        },
         board_id: board.id,
       });
     },
@@ -105,6 +111,7 @@ export default function BoardFrame({
           {gamePieces.map((piece) => {
             return (
               <GamePieceBoardWrapper
+                isOwn={currentUser === piece.user_id}
                 key={piece.id}
                 piece={piece}
                 float={{

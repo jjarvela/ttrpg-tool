@@ -4,10 +4,12 @@ import { useDraggable } from "@dnd-kit/core";
 import { useEffect } from "react";
 
 export default function GamePieceBoardWrapper({
+  isOwn,
   children,
   piece,
   float,
 }: {
+  isOwn: boolean;
   children: React.ReactNode;
   piece: GamePiece;
   float: { left: string; top: string };
@@ -31,8 +33,16 @@ export default function GamePieceBoardWrapper({
     ...float,
   };
 
+  if (isOwn) {
+    return (
+      <div style={style} ref={setNodeRef} {...listeners} {...attributes}>
+        {children}
+      </div>
+    );
+  }
+
   return (
-    <div style={style} ref={setNodeRef} {...listeners} {...attributes}>
+    <div style={style} ref={setNodeRef}>
       {children}
     </div>
   );

@@ -13,6 +13,8 @@ import { Fragment } from "react";
 import GamePieceManager from "../_components/game piece management/GamePieceManager";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
 import getBlobSASUrl from "@/actions/getBlobSASUrl";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
@@ -31,6 +33,10 @@ export default async function GameBoard({ params }: { params: Params }) {
     return serverError;
   }
 
+  const session = await auth();
+
+  if (!session) redirect(`/login?srv=${server_id}`);
+
   const board_id = params.boardId;
 
   const element: JSX.Element = await errorHandler(
@@ -41,10 +47,23 @@ export default async function GameBoard({ params }: { params: Params }) {
 
       if (board.background) {
         const imageUrl = await getBlobSASUrl(board.background);
-        return <BoardFrame imageUrl={imageUrl} board={board} pieces={pieces} />;
+        return (
+          <BoardFrame
+            currentUser={(session as ExtendedSession).userId}
+            imageUrl={imageUrl}
+            board={board}
+            pieces={pieces}
+          />
+        );
       }
 
-      return <BoardFrame board={board} pieces={pieces} />;
+      return (
+        <BoardFrame
+          currentUser={(session as ExtendedSession).userId}
+          board={board}
+          pieces={pieces}
+        />
+      );
     },
     () => (
       <p className="text-warning">
