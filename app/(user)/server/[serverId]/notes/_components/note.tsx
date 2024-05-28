@@ -15,7 +15,7 @@ const NoteSize = {
   minHeight: "140px",
 };
 
-interface currentUserType {
+export interface currentUserType {
   username: string;
   profile_image: string | null;
 }

@@ -4,6 +4,10 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "../../notes/_components/GetCurrentUser";
 import { NoteData } from "../../notes/page";
+import HomeNote from "./HomeNote";
+import { io } from "socket.io-client";
+
+const socket = io();
 
 export default function LatestNotes() {
   const [notes, setNotes] = useState<NoteData[]>([]);
@@ -17,6 +21,12 @@ export default function LatestNotes() {
 
   // Check that segments array is long enough to have a serverId
   const serverId = segments.length > 2 ? segments[2] : null;
+
+  useEffect(() => {
+    if (serverId) {
+      socket.emit("join-note-server", serverId); // Join the server room
+    }
+  }, [serverId]); // This effect runs whenever the serverId changes
 
   useEffect(() => {
     async function fetchUser() {
@@ -41,6 +51,18 @@ export default function LatestNotes() {
       }
     };
     fetchData();
+
+    socket.on("update-note", (data) => {
+      if (data.serverId === serverId) {
+        setNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note.documentName === data.note.documentName
+              ? { ...data.note }
+              : note,
+          ),
+        );
+      }
+    });
   }, [serverId]);
 
   return (
@@ -50,11 +72,15 @@ export default function LatestNotes() {
       </h2>
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {notes.map((note) => (
-          <div key={note.id} className="rounded-lg bg-gray-200 p-4 shadow">
-            <h5 className="font-bold text-gray-700">{note.author}</h5>
-            <p className="text-gray-600">{note.content}</p>
-            {/* Add more details as needed */}
-          </div>
+          <HomeNote
+            note={note}
+            currentUser={{
+              username: user?.username || "",
+              profile_image: user?.profile_image ?? null,
+            }}
+            styles={{}}
+            key={note.id}
+          />
         ))}
       </div>
     </div>
