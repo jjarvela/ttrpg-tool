@@ -4,7 +4,7 @@ import LatestMessages from "./_components/LatestMessages";
 
 export default function ServerHome() {
   return (
-    <Main className="grid grid-cols-2 gap-5 p-6">
+    <Main className="grid grid-cols-1 gap-4 p-6 lg:grid-cols-2">
       <LatestMessages />
       <LatestNotes />
     </Main>
