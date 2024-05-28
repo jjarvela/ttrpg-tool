@@ -94,7 +94,7 @@ export default function LatestNotes() {
           Latest Notes
         </h2>
       </div>
-      <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="m-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {notes.map((note) => (
           <HomeNote
             note={note}
