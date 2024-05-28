@@ -225,8 +225,8 @@ model GamePiece {
   user_id       String
   style         Int
   color         String
-  position_x    Int?
-  position_y    Int?
+  position_x    Int
+  position_y    Int
   board         GameBoard @relation(fields: [board_id], references: [id], onDelete: Cascade)
   character     ServerCharacter @relation(fields: [character_id], references: [id], onDelete: Cascade)
 

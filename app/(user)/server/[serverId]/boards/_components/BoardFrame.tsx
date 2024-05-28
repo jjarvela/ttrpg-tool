@@ -36,7 +36,7 @@ export default function BoardFrame({
   const handlePositionChange = useCallback(
     async (piece_id: string, newPositionX: number, newPositionY: number) => {
       try {
-        await movePiece(piece_id, newPositionX, newPositionY);
+        const piece = await movePiece(piece_id, newPositionX, newPositionY);
       } catch (error) {
         console.error("Error updating note position:", error);
       }
@@ -49,10 +49,10 @@ export default function BoardFrame({
       const piece_id = event.active.id;
       const delta = event.delta;
 
-      // Find the note based on noteId
-      const piece = gamePieces.find((n) => n.id === piece_id);
+      // Find the piece based on id
+      const piece = gamePieces.find((item) => item.id === piece_id);
       if (!piece) {
-        console.error("Note not found:", piece_id);
+        console.error("Piece not found:", piece_id);
         return;
       }
 
@@ -63,12 +63,12 @@ export default function BoardFrame({
         ? piece.position_y + delta.y
         : delta.y;
 
-      // Update the note's position in the local state
+      // Update the piece's position in the local state
       setPieces((prev) =>
-        prev.map((n) => {
-          return n.id === piece_id
-            ? { ...n, positionX: newPositionX, positionY: newPositionY }
-            : n;
+        prev.map((item) => {
+          return item.id === piece_id
+            ? { ...item, position_x: newPositionX, position_y: newPositionY }
+            : item;
         }),
       );
 
@@ -103,20 +103,18 @@ export default function BoardFrame({
           }}
         >
           {gamePieces.map((piece) => {
-            if (piece.position_x && piece.position_y) {
-              return (
-                <GamePieceBoardWrapper
-                  key={piece.id}
-                  piece={piece}
-                  float={{
-                    left: `${piece.position_x}px`,
-                    top: `${piece.position_y}px`,
-                  }}
-                >
-                  <GamePiece character={piece.character} style={piece.style} />
-                </GamePieceBoardWrapper>
-              );
-            }
+            return (
+              <GamePieceBoardWrapper
+                key={piece.id}
+                piece={piece}
+                float={{
+                  left: `${piece.position_x}px`,
+                  top: `${piece.position_y}px`,
+                }}
+              >
+                <GamePiece character={piece.character} style={piece.style} />
+              </GamePieceBoardWrapper>
+            );
           })}
         </div>
       </div>

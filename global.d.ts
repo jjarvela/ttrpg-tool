@@ -116,8 +116,8 @@ type GamePiece = {
   user_id: string;
   style: number;
   color: string;
-  position_x: number | null;
-  position_y: number | null;
+  position_x: number;
+  position_y: number;
   character: {
     base: {
       name: string;

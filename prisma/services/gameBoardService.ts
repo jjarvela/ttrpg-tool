@@ -16,7 +16,6 @@ export const createGameBoard = async (
 export const getGameBoard = async (board_id: string) => {
   const board = await db.gameBoard.findUnique({
     where: { id: board_id },
-    include: { game_pieces: true },
   });
 
   if (!board) {
