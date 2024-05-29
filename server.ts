@@ -161,6 +161,7 @@ app.prepare().then(() => {
       async (data: { piece_id: string; board_id: string }) => {
         try {
           const piece = await getGamePiece(data.piece_id);
+          socket.emit("update-piece", piece);
           socket.to(data.board_id).emit("update-piece", piece);
         } catch (e) {
           socket.to(data.board_id).emit("error", "Something went wrong.");
