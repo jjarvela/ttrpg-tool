@@ -10,6 +10,7 @@ export default async function createPiece(
   character_id: string,
   user_id: string,
   style: number,
+  color: string,
 ) {
   const board = await getGameBoard(board_id);
   const x_spawn = Math.floor((Math.random() * board.width) / 2);
@@ -19,7 +20,7 @@ export default async function createPiece(
     character_id,
     user_id,
     style,
-    color: "#ffffff",
+    color: color,
     position_x: x_spawn,
     position_y: y_spawn,
   });

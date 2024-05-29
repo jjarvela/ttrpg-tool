@@ -39,7 +39,6 @@ export default function BoardFrame({
 
   useEffect(() => {
     socket.on("add-piece", (piece) => {
-      console.log(piece);
       const newPieces = [...gamePieces, piece];
       setPieces(newPieces);
     });
@@ -74,7 +73,7 @@ export default function BoardFrame({
           board_id: board.id,
         });
       } catch (error) {
-        console.error("Error updating note position:", error);
+        console.error("Error updating piece position:", error);
       }
     },
     [board],
@@ -142,6 +141,7 @@ export default function BoardFrame({
               >
                 <GamePiece
                   character={piece.character}
+                  color={piece.color}
                   style={piece.style}
                   hoverEffect={true}
                 />

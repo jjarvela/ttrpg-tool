@@ -4,10 +4,12 @@ import CharacterPortrait from "@/app/_components/character/CharacterPortraitClie
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import FrameStyle1 from "./Frames/FrameStyle1";
 
 export default function GamePiece({
   character,
   style,
+  color,
   hoverEffect,
 }: {
   character: {
@@ -15,18 +17,39 @@ export default function GamePiece({
     level: number;
     base: { name: string; image: string | null };
   };
-  hoverEffect?: boolean;
   style: number;
+  color: string;
+  hoverEffect?: boolean;
 }) {
   function selectStyle(style: number) {
-    switch (style) {
-      case 1:
-        return "diamond-shape";
-      case 2:
-        return "hexagon-shape";
-      default:
-        return "circle-shape";
+    if (style.toString().startsWith("1")) {
+      return "circle-shape";
     }
+    if (style.toString().startsWith("2")) {
+      return "diamond-shape";
+    }
+    if (style.toString().startsWith("3")) {
+      return "hexagon-shape";
+    }
+    return "circle-shape";
+  }
+
+  function setFrame(style: number): JSX.Element | null {
+    if (style.toString().startsWith("1")) {
+      switch (style) {
+        case 1:
+          return <FrameStyle1 color={color} />;
+        default:
+          return null;
+      }
+    }
+    /*if (style.toString().startsWith("2")) {
+      return "diamond-shape";
+    }
+    if (style.toString().startsWith("3")) {
+      return "hexagon-shape";
+    }*/
+    return null;
   }
 
   const [isHovering, setIsHovering] = useState(false);
@@ -51,8 +74,9 @@ export default function GamePiece({
           />
         )}
       </div>
+      {setFrame(style)}
       {hoverEffect && isHovering && (
-        <ColumnWrapper className="bg-color-dark fixed translate-x-20 translate-y-2 gap-0 rounded-lg">
+        <ColumnWrapper className="bg-color-dark absolute left-20 top-2 w-max gap-0 rounded-lg">
           <p>{character.base.name}</p>
           <small>
             {character.class}

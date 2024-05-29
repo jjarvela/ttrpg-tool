@@ -32,8 +32,9 @@ export default function GamePieceCreator({
   const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
   const [charaPiece, setCharapiece] = useState<GamePiece>();
 
-  const [style, setStyle] = useState(0);
-  const [color, setColor] = useState("#000000");
+  const [style, setStyle] = useState(1);
+  const [selectedColor, setSelectedColor] = useState("#985F2E");
+  const [color, setColor] = useState("#985F2E");
 
   useEffect(() => {
     const piece = existing.find(
@@ -44,6 +45,7 @@ export default function GamePieceCreator({
     if (piece) {
       setStyle(piece.style);
       setColor(piece.color);
+      setSelectedColor(piece.color);
     }
   }, [charaPiece, existing, selectedCharacter.id]);
 
@@ -86,12 +88,14 @@ export default function GamePieceCreator({
                     piece_id: charaPiece.id,
                     board_id,
                   });
+                  router.refresh();
                 } else {
                   const piece = await createPiece(
                     board_id,
                     selectedCharacter.id,
                     selectedCharacter.base.owner_id,
                     style,
+                    color,
                   );
                   socket.emit("add-piece", { piece_id: piece.id, board_id });
                   router.refresh();
@@ -126,31 +130,36 @@ export default function GamePieceCreator({
           <MaterialSymbolsLightChevronLeftRounded
             className="flex-shrink-0 cursor-pointer text-2xl"
             onClick={() => {
-              if (style > 0) {
+              if (style > 1) {
                 setStyle((prev) => prev - 1);
               } else {
-                setStyle(2);
+                setStyle(3);
               }
             }}
           />
-          <GamePiece character={selectedCharacter} style={style} />
+          <GamePiece
+            character={selectedCharacter}
+            style={style}
+            color={color}
+          />
           <MaterialSymbolsLightChevronLeftRounded
             className="flex-shrink-0 rotate-180 cursor-pointer text-2xl"
             onClick={() => {
-              if (style < 2) {
+              if (style < 3) {
                 setStyle((prev) => prev + 1);
               } else {
-                setStyle(0);
+                setStyle(1);
               }
             }}
           />
         </RowWrapper>
         <input
           type="color"
-          value={color}
+          value={selectedColor}
           onChange={(e) => {
-            setColor(e.target.value);
+            setSelectedColor(e.target.value);
           }}
+          onBlur={() => setColor(selectedColor)}
         />
       </ColumnWrapper>
     </RowWrapper>
