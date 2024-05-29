@@ -2,6 +2,7 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import Main from "@/app/_components/wrappers/PageMain";
 import { getServerData } from "@/prisma/services/serverService";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import DiceSelector from "./_components/DiceSelector"
 
 export default async function ServerDice({ params }: { params: Params }) {
   const id = params.serverId;
@@ -14,7 +15,7 @@ export default async function ServerDice({ params }: { params: Params }) {
 
   return (
     <Main className="mx-4">
-      <h1>Dice Box</h1>
+      <DiceSelector />
     </Main>
   );
 }
