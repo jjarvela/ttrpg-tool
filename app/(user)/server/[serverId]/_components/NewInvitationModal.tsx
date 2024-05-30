@@ -9,6 +9,7 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import MaterialSymbolsLightCloseRounded from "@/public/icons/MaterialSymbolsLightCloseRounded";
 import MaterialSymbolsLightContentCopyOutlineRounded from "@/public/icons/MaterialSymbolsLightContentCopyOutlineRounded";
 import errorHandler from "@/utils/errorHandler";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 type NewInvitationModalProps = {
@@ -16,12 +17,14 @@ type NewInvitationModalProps = {
   serverId: string;
 };
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 export default function NewInvitationModal({
   refObject,
   serverId,
 }: NewInvitationModalProps) {
+  const path = usePathname();
+
+  const baseUrl = path.split("/")[0];
+
   const [hasMaxUses, setHasMaxUses] = useState(false);
   const [maxUses, setMaxUses] = useState(1);
 
