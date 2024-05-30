@@ -12,6 +12,7 @@ import {
   getConversationByUid,
   getConversationParticipants,
 } from "./prisma/services/conversationService";
+import { getGamePiece } from "./prisma/services/gameBoardService";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOST_NAME || "localhost";
@@ -136,6 +137,48 @@ app.prepare().then(() => {
 
     socket.on("delete-note", (data) => {
       io.to(data.serverId).emit("delete-note", data);
+    });
+
+    socket.on("join-board", (board_id: string) => {
+      socket.join(board_id);
+    });
+
+    socket.on(
+      "add-piece",
+      async (data: { piece_id: string; board_id: string }) => {
+        try {
+          const piece = await getGamePiece(data.piece_id);
+          socket.emit("add-piece", piece);
+          socket.to(data.board_id).emit("add-piece", piece);
+        } catch (e) {
+          socket.to(data.board_id).emit("error", "Something went wrong.");
+        }
+      },
+    );
+
+    socket.on(
+      "update-piece",
+      async (data: { piece_id: string; board_id: string }) => {
+        try {
+          const piece = await getGamePiece(data.piece_id);
+          socket.emit("update-piece", piece);
+          socket.to(data.board_id).emit("update-piece", piece);
+        } catch (e) {
+          socket.to(data.board_id).emit("error", "Something went wrong.");
+        }
+      },
+    );
+
+    socket.on(
+      "delete-piece",
+      (data: { piece_id: string; board_id: string }) => {
+        socket.emit("delete-piece", data.piece_id);
+        socket.to(data.board_id).emit("delete-piece", data.piece_id);
+      },
+    );
+
+    socket.on("board-deleted", (board_id: string) => {
+      socket.to(board_id).emit("board-deleted");
     });
 
     socket.on("disconnect", () => {

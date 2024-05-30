@@ -35,7 +35,7 @@ export default function MenuIconServer({
           width={20}
           height={20}
           viewBox="0 0 20 20"
-          className="absolute -right-2 top-2 fill-primary"
+          className="absolute -right-2 top-2 fill-accent dark:fill-primary"
         >
           <circle r={6} cx={8} cy={8} />
         </svg>
