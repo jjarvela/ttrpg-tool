@@ -24,16 +24,11 @@ const LatestMessages = ({ newMessages }: LatestMessagesProps) => {
     setLatestMessages(newMessages);
   }, [newMessages]);
 
-  useEffect(() => {
-    console.log("New Messages:", newMessages);
-    setLatestMessages(newMessages);
-  }, [newMessages]);
-
   return (
-    <div className="scrollbar-thin flex h-5/6 flex-col overflow-auto bg-black75 p-5">
-      <div className="flex">
+    <div className="scrollbar-thin relative flex max-h-64 flex-col overflow-auto bg-black75 px-5 lg:max-h-96">
+      <div className="sticky top-0 flex h-32 w-full bg-black75">
         <h2 className="mx-auto text-lg font-semibold text-gray-800 dark:text-gray-200">
-          Latest Messages
+          New Messages
         </h2>
       </div>
       <div className="m-4 grid grid-cols-1 gap-4 ">
