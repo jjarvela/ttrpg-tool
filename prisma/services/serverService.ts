@@ -1,4 +1,4 @@
-import { db } from "../db";
+import db from "../db";
 
 /**
  * Create a new server for users to chat and play together

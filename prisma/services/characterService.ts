@@ -1,4 +1,4 @@
-import { db } from "../db";
+import db from "../db";
 
 /**
  * Create a user-bound character bases
