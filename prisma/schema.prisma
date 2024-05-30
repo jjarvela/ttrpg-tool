@@ -70,6 +70,7 @@ model Server {
   characters        ServerCharacter[]
   invitations       Invitation[]
   notifications     Notification[]
+  boards            GameBoard[]
   notes          Note[]
 }
 
@@ -198,9 +199,41 @@ model ServerCharacter {
   items             String
   base              CharacterBase @relation(fields: [base_id], references: [id], onDelete: Cascade)
   server            Server         @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  game_pieces       GamePiece[]
 
   @@unique([base_id, server_id])
 }
+
+
+model GameBoard {
+  id                String    @id @default(cuid())
+  server_id         String
+  name              String
+  width             Float
+  height            Float
+  background        String?
+  server            Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  game_pieces       GamePiece[]
+
+  @@unique([server_id, name])
+}
+
+model GamePiece {
+  id            String    @id @default(cuid())
+  board_id      String
+  character_id  String
+  user_id       String
+  style         Int
+  color         String
+  position_x    Int
+  position_y    Int
+  board         GameBoard @relation(fields: [board_id], references: [id], onDelete: Cascade)
+  character     ServerCharacter @relation(fields: [character_id], references: [id], onDelete: Cascade)
+
+  @@unique([board_id, character_id])
+}
+
+
 
 model VerificationToken {
   identifier String

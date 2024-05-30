@@ -427,6 +427,49 @@ export const getServerCharacters = async (
 };
 
 /**
+ * Get all user's characters registered to a specific server
+ * @param server_id - string
+ * @param user_id - string
+ * @param select optional, to set which properties should be included - {
+    select: { [key: string]: boolean };
+    base?: { [key: string]: boolean };
+ * @returns array of server characters with either original properties or custom properties
+    to include character base properties, please use the base property of the select object
+ */
+export const getUserServerCharacters = async (
+  server_id: string,
+  user_id: string,
+  select?: {
+    select?: ServerCharacterSelect;
+    base?: CharacterBaseSelect;
+  },
+) => {
+  if (select?.select) {
+    const characters = await db.serverCharacter.findMany({
+      where: {
+        server_id: server_id,
+        AND: {
+          base: { owner_id: user_id },
+        },
+      },
+      select: {
+        ...select?.select,
+        base: select.base ? { select: { ...select?.base } } : false,
+      },
+    });
+
+    return characters;
+  }
+
+  const characters = await db.serverCharacter.findMany({
+    where: { server_id: server_id },
+    include: { base: select?.base ? { select: { ...select?.base } } : false },
+  });
+
+  return characters;
+};
+
+/**
  * Update a user-bound character base
  * @param character_id string - character base id
  * @param data {name?: string, description?: string, image?: string, notes?: string}

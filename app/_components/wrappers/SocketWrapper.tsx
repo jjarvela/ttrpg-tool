@@ -63,5 +63,9 @@ export default function SocketWrapper({
     }
   }, []);
 
-  return <div className="fixed flex h-screen w-screen">{children}</div>;
+  return (
+    <div className="fixed flex h-screen w-screen overflow-hidden">
+      {children}
+    </div>
+  );
 }

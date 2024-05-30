@@ -49,7 +49,7 @@ export default async function ServerCharacterDisplay({
 
   return (
     <ColumnWrapper
-      className="bg-color-default border-50 w-[50vw] gap-0 rounded-lg border-[1px] p-0 lg:w-[24rem]"
+      className="bg-color-default border-50 w-[50vw] gap-0 overflow-hidden rounded-lg border-[1px] p-0 lg:w-[24rem]"
       align="content-start items-start"
     >
       <RowWrapper className="w-full px-2 pt-4" align="items-start">

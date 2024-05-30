@@ -4,7 +4,6 @@ import TextInput from "@/app/_components/inputs/TextInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightImageOutlineRounded from "@/public/icons/MaterialSymbolsLightImageOutlineRounded";
-import { useState } from "react";
 
 export default function BaseForm({
   isPending,
@@ -35,7 +34,7 @@ export default function BaseForm({
           )
         }
         <FileInput
-          id="server-icon"
+          id="character-portrait"
           accept=".jpg, .png, .svg, .gif"
           labelElement={
             <MaterialSymbolsLightImageOutlineRounded className="text-2xl" />

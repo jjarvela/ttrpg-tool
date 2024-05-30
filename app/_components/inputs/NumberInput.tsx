@@ -1,5 +1,11 @@
 "use client";
-import { DetailedHTMLProps, ReactNode, useRef, useState } from "react";
+import {
+  DetailedHTMLProps,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "../../../styles/numberInput.css";
 import RowWrapper from "../wrappers/RowWrapper";
 import { twMerge } from "tailwind-merge";
@@ -54,6 +60,10 @@ export default function NumberInput({
 
     inputRef.current?.dispatchEvent(event);
   };
+
+  useEffect(() => {
+    setNumber(value || min || 0);
+  }, [value, min, max]);
 
   return (
     <RowWrapper

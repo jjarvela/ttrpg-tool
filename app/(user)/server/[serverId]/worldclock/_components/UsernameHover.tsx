@@ -25,7 +25,7 @@ export default function UsernameHover({
     >
       {children}
       {showElement && (
-        <span className="absolute top-8 min-w-max rounded-lg bg-black25 p-2 dark:bg-black">
+        <span className="fixed min-w-max translate-y-10 rounded-lg bg-black25 p-2 dark:bg-black">
           {username}
         </span>
       )}
