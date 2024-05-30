@@ -31,11 +31,13 @@ export default async function ServerHome({ params }: { params: Params }) {
   const newMessages = await fetchUnreadMessages();
 
   return (
-    <Main className="grid grid-cols-1 gap-4 p-6 lg:grid-cols-2">
+    <Main className="grid grid-cols-1 gap-2 p-6 lg:grid-cols-2">
       {newMessages && newMessages.length > 0 ? (
         <LatestMessages newMessages={newMessages} />
       ) : (
-        <div>No new messages</div>
+        <div className="flex h-20 flex-col overflow-auto bg-black75 p-5">
+          No new messages
+        </div>
       )}
       <LatestNotes />
     </Main>

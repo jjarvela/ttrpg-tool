@@ -104,7 +104,7 @@ export default function LatestNotes() {
   }, [serverId]);
 
   return (
-    <div className="flex flex-col overflow-auto bg-black75 p-5">
+    <div className="scrollbar-thin flex h-4/6 flex-col overflow-auto bg-black75 p-5">
       <div className="flex">
         <h2 className="mx-auto text-lg font-semibold text-gray-800 dark:text-gray-200">
           Latest Notes
