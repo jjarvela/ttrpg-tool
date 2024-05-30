@@ -43,6 +43,7 @@ export const createServerConfig = async (data: {
   password_hash?: string;
   explorable?: boolean;
   searchable?: boolean;
+  join_permission?: string;
 }): Promise<ServerConfig> => {
   const serverConfig = await db.serverConfig.create({ data });
 
