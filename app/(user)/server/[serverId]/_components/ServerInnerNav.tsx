@@ -16,6 +16,7 @@ import { redirect } from "next/navigation";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
 import ContextMenu from "../chat/[channelId]/_components/ContextMenu";
 import errorHandler from "@/utils/errorHandler";
+import { getServerBoards } from "@/prisma/services/gameBoardService";
 
 export default async function ServerInnerNav({ id }: { id: string }) {
   const session = await auth();
@@ -36,6 +37,8 @@ export default async function ServerInnerNav({ id }: { id: string }) {
       const config = await getServerConfig(id);
 
       const channels = await getChannels(id);
+
+      const boards = await getServerBoards(id);
 
       const listChannels = channels.map((channel) => {
         return (
@@ -69,15 +72,28 @@ export default async function ServerInnerNav({ id }: { id: string }) {
           <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
             <ServerSubMenu title="Channels">
               <ul className="flex-grow">{listChannels}</ul>
-              <Link href={`/server/${id}/chat/createChannel`}>
-                {"add channel"}
-              </Link>
+              <SubmenuLink
+                to={`/server/${id}/chat/createChannel`}
+                title="Add Channel"
+              />
             </ServerSubMenu>
             <ServerInnerNavLink
               title="Characters"
               to={`/server/${id}/characters`}
             />
-            <ServerSubMenu title="Boards"></ServerSubMenu>
+            <ServerSubMenu title="Game Boards">
+              {boards.map((board) => (
+                <SubmenuLink
+                  key={board.id}
+                  to={`/server/${id}/boards/${board.id}`}
+                  title={board.name}
+                />
+              ))}
+              <SubmenuLink
+                to={`/server/${id}/boards/create`}
+                title="New Board"
+              />
+            </ServerSubMenu>
             <ServerInnerNavLink title="Notes" to={`/server/${id}/notes`} />
             <ServerInnerNavLink title="Dice" to={`/server/${id}/dice`} />
             <ServerInnerNavLink
@@ -94,4 +110,15 @@ export default async function ServerInnerNav({ id }: { id: string }) {
     },
   );
   return element;
+}
+
+function SubmenuLink({ to, title }: { to: string; title: string }) {
+  return (
+    <Link
+      className="w-full px-2 py-1 hover:bg-black25 hover:dark:bg-black75"
+      href={to}
+    >
+      {title}
+    </Link>
+  );
 }
