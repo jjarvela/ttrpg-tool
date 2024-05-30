@@ -5,6 +5,8 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import FrameStyle1 from "./Frames/FrameStyle1";
+import FrameStyle2 from "./Frames/FrameStyle2";
+import FrameStyle3 from "./Frames/FrameStyle3";
 
 export default function GamePiece({
   character,
@@ -43,12 +45,22 @@ export default function GamePiece({
           return null;
       }
     }
-    /*if (style.toString().startsWith("2")) {
-      return "diamond-shape";
+    if (style.toString().startsWith("2")) {
+      switch (style) {
+        case 2:
+          return <FrameStyle2 color={color} />;
+        default:
+          return null;
+      }
     }
     if (style.toString().startsWith("3")) {
-      return "hexagon-shape";
-    }*/
+      switch (style) {
+        case 3:
+          return <FrameStyle3 color={color} />;
+        default:
+          return null;
+      }
+    }
     return null;
   }
 
