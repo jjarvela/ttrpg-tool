@@ -16,21 +16,32 @@ export function convertHexToHSL(hex: string): {
     throw new Error("Could not convert hex");
   }
 
-  const r = parseInt(result[1], 16);
-  const g = parseInt(result[2], 16);
-  const b = parseInt(result[3], 16);
+  console.log(result);
 
-  const max = Math.max(r / 255, g / 255, b / 255);
-  const min = Math.min(r / 255, g / 255, b / 255);
+  let r = parseInt(result[1], 16);
+  let g = parseInt(result[2], 16);
+  let b = parseInt(result[3], 16);
+
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  console.log(max, min);
 
   let hue = 0;
   let sat = 0;
   let lum = (max + min) / 2;
 
   if (max === min) {
+    console.log("max equals min");
     hue = sat = 0;
   } else {
     const difference = max - min;
+
+    console.log(difference);
 
     sat = lum > 0.5 ? difference / (2 - max - min) : difference * (max + min);
 
@@ -38,9 +49,10 @@ export function convertHexToHSL(hex: string): {
       case r:
         hue = (g - b) / difference + (g < b ? 6 : 0);
         break;
-      case g:
+      case g: {
         hue = (b - r) / difference + 2;
         break;
+      }
       case b:
         hue = (r - g) / difference + 4;
         break;
