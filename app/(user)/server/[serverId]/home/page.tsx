@@ -5,15 +5,14 @@ import { getUnreadForUserForServer } from "@/prisma/services/notificationService
 import { auth } from "@/auth";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
-export default function ServerHome({ params }: { params: Params }) {
+export default async function ServerHome({ params }: { params: Params }) {
   const serverId = params.serverId;
-  console.log(params.serverId);
 
   async function fetchUnreadMessages() {
     const session = await auth();
     console.log(session, serverId);
     if (session && serverId) {
-      const notifications = await getUnreadForUserForServer(
+      const newMessagesData = await getUnreadForUserForServer(
         (session as ExtendedSession).userId,
         serverId,
         {
@@ -23,15 +22,21 @@ export default function ServerHome({ params }: { params: Params }) {
         },
       );
 
-      console.log(notifications);
+      return newMessagesData;
     }
+
+    return [];
   }
 
-  fetchUnreadMessages();
+  const newMessages = await fetchUnreadMessages();
 
   return (
     <Main className="grid grid-cols-1 gap-4 p-6 lg:grid-cols-2">
-      <LatestMessages />
+      {newMessages && newMessages.length > 0 ? (
+        <LatestMessages newMessages={newMessages} />
+      ) : (
+        <div>No new messages</div>
+      )}
       <LatestNotes />
     </Main>
   );
