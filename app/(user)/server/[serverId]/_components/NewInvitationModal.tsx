@@ -9,7 +9,7 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import MaterialSymbolsLightCloseRounded from "@/public/icons/MaterialSymbolsLightCloseRounded";
 import MaterialSymbolsLightContentCopyOutlineRounded from "@/public/icons/MaterialSymbolsLightContentCopyOutlineRounded";
 import errorHandler from "@/utils/errorHandler";
-import { usePathname } from "next/navigation";
+import { getLocationOrigin } from "next/dist/shared/lib/utils";
 import { useState } from "react";
 
 type NewInvitationModalProps = {
@@ -21,9 +21,7 @@ export default function NewInvitationModal({
   refObject,
   serverId,
 }: NewInvitationModalProps) {
-  const path = usePathname();
-
-  const baseUrl = path.split("/")[0];
+  const baseUrl = getLocationOrigin();
 
   const [hasMaxUses, setHasMaxUses] = useState(false);
   const [maxUses, setMaxUses] = useState(1);
@@ -37,13 +35,13 @@ export default function NewInvitationModal({
       ref={refObject}
       className="bg-transparent backdrop:bg-black backdrop:bg-opacity-50"
     >
-      <ColumnWrapper className="bg-color-dark text-color-default gap-0 rounded-lg border-[1px] border-black50 py-4">
+      <ColumnWrapper className="bg-color-dark text-color-default w-[30rem] max-w-[95vw] gap-0 rounded-lg border-[1px] border-black50 py-4">
         <MaterialSymbolsLightCloseRounded
           className="cursor-pointer self-end"
           onClick={() => refObject.current?.close()}
         />
         <ColumnWrapper className="px-8">
-          <h5>Create invitation link</h5>
+          <h3>Create invitation link</h3>
           <Checkbox
             id="toggle-max"
             label="Max uses"
