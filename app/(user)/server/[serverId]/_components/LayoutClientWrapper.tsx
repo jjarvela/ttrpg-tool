@@ -30,7 +30,7 @@ export default function LayoutClientWrapper({
     pathname.includes("/boards") && !pathname.endsWith("/boards" || "/create");
 
   return (
-    <div className="flex w-[100vw] overflow-hidden">
+    <div className="flex w-[90vw] overflow-hidden sm:w-[100vw]">
       {/*server inner nav*/}
       <RowWrapper
         className={twMerge(
