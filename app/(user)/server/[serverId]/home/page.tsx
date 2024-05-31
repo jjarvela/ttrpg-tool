@@ -1,7 +1,10 @@
 import Main from "@/app/_components/wrappers/PageMain";
 import LatestNotes from "./_components/LatestNotes";
-import LatestMessages from "./_components/LatestMessages";
-import { getUnreadForUserForServer } from "@/prisma/services/notificationService";
+import LatestMessages, { NewMessage } from "./_components/LatestMessages";
+import {
+  getUnreadForUserForServer,
+  getUnreadForUserForServerWithSender,
+} from "@/prisma/services/notificationService";
 import { auth } from "@/auth";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
@@ -12,14 +15,9 @@ export default async function ServerHome({ params }: { params: Params }) {
     const session = await auth();
     console.log(session, serverId);
     if (session && serverId) {
-      const newMessagesData = await getUnreadForUserForServer(
+      const newMessagesData = await getUnreadForUserForServerWithSender(
         (session as ExtendedSession).userId,
         serverId,
-        {
-          id: true,
-          message: true,
-          created_at: true,
-        },
       );
 
       return newMessagesData;
@@ -28,7 +26,9 @@ export default async function ServerHome({ params }: { params: Params }) {
     return [];
   }
 
-  const newMessages = await fetchUnreadMessages();
+  const newMessages = (await fetchUnreadMessages()).filter(
+    (message) => message !== null,
+  ) as NewMessage[];
 
   return (
     <Main className="grid grid-cols-1 gap-5 p-6 lg:grid-cols-2">

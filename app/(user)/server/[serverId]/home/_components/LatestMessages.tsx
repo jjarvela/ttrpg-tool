@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 export interface NewMessage {
   id: string;
   message: {
-    conversation_uid: string;
-    created_at: Date;
-    message: string;
-    sender_id: string;
     uid: string;
+    message: string;
+    sender: {
+      username: string;
+    };
+    created_at: Date;
   };
-  created_at: Date;
+  channel: {
+    channel_name: string;
+  };
 }
 
 interface LatestMessagesProps {
@@ -33,10 +36,16 @@ const LatestMessages = ({ newMessages }: LatestMessagesProps) => {
       </div>
       <div className="m-4 grid grid-cols-1 gap-4 ">
         {latestMessages.map((message) => (
-          <div key={message.id} className="rounded-lg bg-black85 p-4 shadow">
+          <div
+            key={message.message.uid}
+            className="rounded-lg bg-black85 p-4 shadow"
+          >
             <h5 className="text-sm font-bold text-white">
-              {message.message.sender_id}
+              {message.message.sender.username}
             </h5>
+            <p className="text-xs text-gray-300">
+              {message.channel.channel_name}
+            </p>
             <p className="text-xs text-gray-300">{message.message.message}</p>
             <p className="text-xs text-gray-500">
               {message.message.created_at.toLocaleTimeString()}

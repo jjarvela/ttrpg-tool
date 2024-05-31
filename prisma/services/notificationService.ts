@@ -111,3 +111,50 @@ export async function deleteNotification(id: string): Promise<Notif> {
 
   return deleted;
 }
+
+export async function getUnreadForUserForServerWithSender(
+  userId: string,
+  serverId: string,
+) {
+  const notifications = await db.notification.findMany({
+    where: {
+      recipient_id: userId,
+      read_status: false,
+      server_id: serverId,
+    },
+    include: {
+      message: {
+        select: {
+          uid: true,
+          message: true,
+          created_at: true,
+          sender: {
+            select: {
+              username: true, // This selects the username from the sender related record
+            },
+          },
+        },
+      },
+      channel: {
+        select: {
+          channel_name: true,
+        },
+      },
+    },
+  });
+
+  // Map to create a new structure combining message and channel
+  const combinedData = notifications
+    .map((notification) => {
+      if (notification.message && notification.channel) {
+        return {
+          message: notification.message,
+          channel: notification.channel,
+        };
+      }
+      return null; // Or an appropriate default object if needed
+    })
+    .filter((item) => item != null); // Remove null entries if message or channel was missing
+
+  return combinedData;
+}
