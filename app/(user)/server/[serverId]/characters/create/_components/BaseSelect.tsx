@@ -11,7 +11,7 @@ export default function BaseSelect({
   selectNew: () => void;
 }) {
   return (
-    <RowWrapper>
+    <RowWrapper className="flex-wrap">
       <Button
         className="btn-secondary"
         onClick={(e) => {
