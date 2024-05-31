@@ -2,17 +2,19 @@
 
 import CharacterPortrait from "@/app/_components/character/CharacterPortraitClient";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import FrameStyle1 from "./Frames/FrameStyle1";
 import FrameStyle2 from "./Frames/FrameStyle2";
 import FrameStyle3 from "./Frames/FrameStyle3";
+import getBlobSASUrl from "@/actions/getBlobSASUrl";
 
 export default function GamePiece({
   character,
   style,
   color,
   hoverEffect,
+  size,
 }: {
   character: {
     class: string;
@@ -22,18 +24,31 @@ export default function GamePiece({
   style: number;
   color: string;
   hoverEffect?: boolean;
+  size?: number;
 }) {
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    if (character.base.image) {
+      try {
+        getBlobSASUrl(character.base.image).then((url) => setUrl(url));
+      } catch (e) {
+        return;
+      }
+    }
+  });
+
   function selectStyle(style: number) {
     if (style.toString().startsWith("1")) {
-      return "circle-shape";
+      return "url(#circle)";
     }
     if (style.toString().startsWith("2")) {
-      return "diamond-shape";
+      return "url(#diamond)";
     }
     if (style.toString().startsWith("3")) {
-      return "hexagon-shape";
+      return "url(#hexagon)";
     }
-    return "circle-shape";
+    return "url(#circle)";
   }
 
   function setFrame(style: number): JSX.Element | null {
@@ -74,17 +89,39 @@ export default function GamePiece({
       onMouseDown={() => setIsHovering(false)}
     >
       <div
-        className={twMerge(
-          "h-[100px] w-[100px] overflow-hidden bg-primary",
-          selectStyle(style),
-        )}
+        className="overflow-hidden"
+        style={{
+          width: size || 100,
+          height: size || 100,
+          background: "var(--primary-to-accent)",
+          backgroundColor: "#d9ebd1",
+          clipPath: selectStyle(style),
+        }}
       >
-        {character.base.image && (
-          <CharacterPortrait
-            filename={character.base.image}
+        {url !== "" && (
+          <img
             alt={character.base.name}
+            src={url}
+            style={{ minHeight: "100%", minWidth: "100%", objectFit: "cover" }}
           />
         )}
+        <svg width={0} height={0}>
+          <clipPath id="circle" clipPathUnits="objectBoundingBox">
+            <circle id="circle" cx="0.489" cy="0.484" r="0.4" />{" "}
+          </clipPath>
+          <clipPath id="diamond" clipPathUnits="objectBoundingBox">
+            <path
+              id="diamond"
+              d="M0.5,0.1L0.9,0.483L0.485,0.9L0.142,0.483L0.485,0.1Z"
+            />
+          </clipPath>
+          <clipPath id="hexagon" clipPathUnits="objectBoundingBox">
+            <path
+              id="hexagon"
+              d="M0.627,0.083L0.9,0.483L0.727,0.803L0.282,0.803L0.1,0.483L0.442,0.063L0.627,0.083Z"
+            />
+          </clipPath>
+        </svg>
       </div>
       {setFrame(style)}
       {hoverEffect && isHovering && (

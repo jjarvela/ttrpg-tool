@@ -183,7 +183,7 @@ export default function GamePieceCreator({
       <RowWrapper className="md:hidden">
         <small
           className={twMerge(
-            "hover:bg-color-dark cursor-pointer rounded-lg px-2 py-1",
+            "hover:bg-color-dark mini-link",
             mode === 1 && "bg-black25 dark:bg-black75",
           )}
           onClick={() => setMode(1)}
@@ -192,7 +192,7 @@ export default function GamePieceCreator({
         </small>
         <small
           className={twMerge(
-            "hover:bg-color-dark cursor-pointer rounded-lg px-2 py-1",
+            "hover:bg-color-dark mini-link",
             mode === 2 && "bg-black25 dark:bg-black75",
           )}
           onClick={() => setMode(2)}

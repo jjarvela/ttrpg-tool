@@ -171,6 +171,12 @@ textarea:-webkit-autofill {
     #8f8d8f 0px 2px 4px;
 }
 
+.mini-link {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
 @media (prefers-color-scheme: dark) {
   input:-internal-autofill-selected,
   input:-internal-autofill-previewed,

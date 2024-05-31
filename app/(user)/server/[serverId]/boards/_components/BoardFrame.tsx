@@ -12,22 +12,22 @@ import {
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { GameBoard } from "@prisma/client";
 import GamePiece from "./GamePiece";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { socket } from "@/socket";
 import movePiece from "@/actions/gameBoardManagement/movePiece";
 import GamePieceBoardWrapper from "./GamePieceBoardWrapper";
+import { BoardContext, boardContext } from "./BoardContextWrapper";
 
 export default function BoardFrame({
   currentUser,
-  board,
   pieces,
   imageUrl,
 }: {
   currentUser: string;
-  board: GameBoard;
   pieces: GamePiece[];
   imageUrl?: string;
 }) {
+  const { board, pieceSize } = useContext(boardContext) as BoardContext;
   const [gamePieces, setPieces] = useState(pieces);
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
@@ -111,6 +111,19 @@ export default function BoardFrame({
     [gamePieces, handlePositionChange],
   );
 
+  function sizePieces() {
+    switch (pieceSize) {
+      case "sm":
+        return 50;
+      case "md":
+        return 75;
+      case "lg":
+        return 100;
+      default:
+        return 100;
+    }
+  }
+
   return (
     <DndContext
       id={board.id}
@@ -144,6 +157,7 @@ export default function BoardFrame({
                   color={piece.color}
                   style={piece.style}
                   hoverEffect={true}
+                  size={sizePieces()}
                 />
               </GamePieceBoardWrapper>
             );

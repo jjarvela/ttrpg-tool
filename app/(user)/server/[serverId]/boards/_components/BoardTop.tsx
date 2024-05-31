@@ -10,7 +10,9 @@ import MaterialSymbolsLightDeleteOutlineRounded from "@/public/icons/MaterialSym
 import { socket } from "@/socket";
 import errorHandler from "@/utils/errorHandler";
 import { useRouter } from "next/navigation";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
+import { BoardContext, boardContext } from "./BoardContextWrapper";
+import { twMerge } from "tailwind-merge";
 
 export default function BoardTop({
   board_id,
@@ -24,6 +26,7 @@ export default function BoardTop({
   const confirmRef = useRef<HTMLDialogElement>(null);
   const announceRef = useRef<HTMLDialogElement>(null);
   const [error, setError] = useState("");
+  const { pieceSize, setPieceSize } = useContext(boardContext) as BoardContext;
 
   const router = useRouter();
 
@@ -44,12 +47,41 @@ export default function BoardTop({
         className="card-back flex h-[2.4rem] w-full gap-2 px-4"
       >
         {children}
+        <RowWrapper>
+          <small
+            className={twMerge(
+              "hover:bg-color-dark mini-link",
+              pieceSize === "sm" && "bg-black25 dark:bg-black75",
+            )}
+            onClick={() => setPieceSize("sm")}
+          >
+            sm
+          </small>
+          <small
+            className={twMerge(
+              "hover:bg-color-dark mini-link",
+              pieceSize === "md" && "bg-black25 dark:bg-black75",
+            )}
+            onClick={() => setPieceSize("md")}
+          >
+            md
+          </small>
+          <small
+            className={twMerge(
+              "hover:bg-color-dark mini-link",
+              pieceSize === "lg" && "bg-black25 dark:bg-black75",
+            )}
+            onClick={() => setPieceSize("lg")}
+          >
+            lg
+          </small>
+        </RowWrapper>
         <span
           className="flex cursor-pointer content-center items-center gap-2"
           onClick={() => confirmRef.current?.showModal()}
         >
           <MaterialSymbolsLightDeleteOutlineRounded className="flex-shrink-0 text-2xl" />
-          <span>Delete board</span>
+          <span className="hidden md:block">Delete board</span>
         </span>
       </RowWrapper>
       <ConfirmModal
