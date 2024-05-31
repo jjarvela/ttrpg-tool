@@ -28,13 +28,11 @@ export default async function ServerHome({ params }: { params: Params }) {
   ) as NewMessage[];
 
   return (
-    <Main className="grid grid-cols-1 gap-4 p-6 lg:grid-cols-2">
+    <Main className="grid grid-cols-1 grid-rows-3 gap-4 p-6 md:grid-rows-2 lg:grid-cols-2">
       {newMessages && newMessages.length > 0 ? (
         <LatestMessages newMessages={newMessages} serverId={serverId} />
       ) : (
-        <div className="row-span-full overflow-auto bg-black75 p-5">
-          No new messages
-        </div>
+        <div className="overflow-auto bg-black75 p-5">No new messages</div>
       )}
       <LatestNotes />
     </Main>
