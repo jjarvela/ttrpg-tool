@@ -1,12 +1,9 @@
 import { calcLight, calcShadow, convertHexToHSL } from "@/utils/colourUtil";
 
 export default function FrameStyle2({ color }: { color: string }) {
-  console.log(color);
   const hsl = convertHexToHSL(color);
-  console.log(hsl);
 
   const shadow = calcShadow(hsl);
-  console.log(shadow);
 
   const light = calcLight(hsl);
 
