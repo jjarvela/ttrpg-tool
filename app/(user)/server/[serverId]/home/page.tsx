@@ -1,10 +1,7 @@
 import Main from "@/app/_components/wrappers/PageMain";
 import LatestNotes from "./_components/LatestNotes";
 import LatestMessages, { NewMessage } from "./_components/LatestMessages";
-import {
-  getUnreadForUserForServer,
-  getUnreadForUserForServerWithSender,
-} from "@/prisma/services/notificationService";
+import { getUnreadForUserForServerWithSender } from "@/prisma/services/notificationService";
 import { auth } from "@/auth";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
@@ -31,11 +28,11 @@ export default async function ServerHome({ params }: { params: Params }) {
   ) as NewMessage[];
 
   return (
-    <Main className="grid grid-cols-1 gap-5 p-6 lg:grid-cols-2">
+    <Main className="grid grid-cols-1 gap-4 p-6 lg:grid-cols-2">
       {newMessages && newMessages.length > 0 ? (
-        <LatestMessages newMessages={newMessages} />
+        <LatestMessages newMessages={newMessages} serverId={serverId} />
       ) : (
-        <div className="flex h-20 flex-col overflow-auto bg-black75 p-5">
+        <div className="row-span-full overflow-auto bg-black75 p-5">
           No new messages
         </div>
       )}

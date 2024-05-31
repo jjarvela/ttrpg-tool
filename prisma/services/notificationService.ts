@@ -138,6 +138,7 @@ export async function getUnreadForUserForServerWithSender(
       channel: {
         select: {
           channel_name: true,
+          uid: true,
         },
       },
     },

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export interface NewMessage {
@@ -12,15 +13,17 @@ export interface NewMessage {
     created_at: Date;
   };
   channel: {
+    uid: string;
     channel_name: string;
   };
 }
 
 interface LatestMessagesProps {
   newMessages: NewMessage[];
+  serverId: string;
 }
 
-const LatestMessages = ({ newMessages }: LatestMessagesProps) => {
+const LatestMessages = ({ newMessages, serverId }: LatestMessagesProps) => {
   const [latestMessages, setLatestMessages] = useState<NewMessage[]>([]);
 
   useEffect(() => {
@@ -41,13 +44,16 @@ const LatestMessages = ({ newMessages }: LatestMessagesProps) => {
             className="rounded-lg bg-black85 p-4 shadow"
           >
             <h5 className="text-sm font-bold text-white">
-              {message.message.sender.username}
+              {message.message.sender.username}{" "}
+              <Link
+                href={`/server/${serverId}/chat/${message.channel.uid}`}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                @{message.channel.channel_name}
+              </Link>
             </h5>
-            <p className="text-xs text-gray-300">
-              {message.channel.channel_name}
-            </p>
-            <p className="text-xs text-gray-300">{message.message.message}</p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-black25">{message.message.message}</p>
+            <p className="text-xs text-black50">
               {message.message.created_at.toLocaleTimeString()}
             </p>
           </div>
