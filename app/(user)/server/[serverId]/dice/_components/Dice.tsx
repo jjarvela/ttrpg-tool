@@ -1,19 +1,11 @@
+import type { diceObject, diceSet } from '@/global';
 import Image from 'next/image'
+import { useState, useContext } from 'react'
+import React from 'react';
 
-interface Dice {
-  DiceType: "d4" | "d6" | "d8" | "d10" | "d12" | "d20",
-
-}
-
-export function Dice({ DiceType }: Dice) {
-
-  function clickHandler() {
-
-    console.log(`Dice type ${DiceType} was clicked!`)
-
-  }
+export function Dice({ diceType, eventHandler }: diceObject) {
   return (
-    <Image src={`/icons/dices/${DiceType}_light.svg`} onClick={clickHandler} width="100" height="100" alt={`dice_${DiceType}`} />
+    <Image src={`/icons/dices/${diceType}_light.svg`} onClick={() => eventHandler({ diceType })} width="100" height="100" alt={`dice_${diceType}`} />
   )
 }
 

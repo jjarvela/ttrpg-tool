@@ -1,3 +1,5 @@
+import { MouseEventHandler, Reference } from "react";
+
 type ServerAuth = {
   id: number;
   server_id: string;
@@ -109,6 +111,15 @@ type ServerCharacter = {
   items: string;
 };
 
+type diceObject = {
+  diceType: "d4" | "d6" | "d8" | "d10" | "d12" | "d20",
+  eventHandler: Function
+}
+
+type diceSet = {
+  members: diceObject[]
+}
+
 /**
  * SELECT TYPES
  */
@@ -185,3 +196,4 @@ type ServerCharacterSelect = {
   skills?: boolean;
   items?: boolean;
 };
+

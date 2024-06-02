@@ -4,6 +4,7 @@ import { getServerData } from "@/prisma/services/serverService";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import DiceSelector from "./_components/DiceSelector"
 
+
 export default async function ServerDice({ params }: { params: Params }) {
   const id = params.serverId;
 
