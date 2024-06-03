@@ -10,12 +10,12 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import GamePiece from "./GamePiece";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { socket } from "@/socket";
 import movePiece from "@/actions/gameBoardManagement/movePiece";
 import GamePieceBoardWrapper from "./GamePieceBoardWrapper";
 import { BoardContext, boardContext } from "./BoardContextWrapper";
+import GamePiece from "./GamePiece";
 
 export default function BoardFrame({
   currentUser,

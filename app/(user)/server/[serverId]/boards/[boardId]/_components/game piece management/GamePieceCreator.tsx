@@ -5,7 +5,6 @@ import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import CharacterCarousel from "./CharacterCarousel";
 import { Fragment, useEffect, useState, useTransition } from "react";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
-import GamePiece from "../GamePiece";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
 import Button from "@/app/_components/Button";
 import { useRouter } from "next/navigation";
@@ -15,6 +14,7 @@ import editPiece from "@/actions/gameBoardManagement/editPiece";
 import { socket } from "@/socket";
 import deletePiece from "@/actions/gameBoardManagement/deletePiece";
 import { twMerge } from "tailwind-merge";
+import GamePiece from "../GamePiece";
 
 export default function GamePieceCreator({
   characters,

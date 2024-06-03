@@ -2,7 +2,7 @@ import {
   getBoardPieces,
   getGameBoard,
 } from "@/prisma/services/gameBoardService";
-import BoardFrame from "../_components/BoardFrame";
+import BoardFrame from "./_components/BoardFrame";
 import { getServerData } from "@/prisma/services/serverService";
 import errorHandler from "@/utils/errorHandler";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
@@ -10,15 +10,15 @@ import Link from "next/link";
 import ServerNotFound from "../../_components/ServerNotFound";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { Fragment } from "react";
-import GamePieceManager from "../_components/game piece management/GamePieceManager";
+import GamePieceManager from "./_components/game piece management/GamePieceManager";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
 import getBlobSASUrl from "@/actions/getBlobSASUrl";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import BoardTop from "../_components/BoardTop";
-import BoardContextWrapper from "../_components/BoardContextWrapper";
+import BoardTop from "./_components/BoardTop";
+import BoardContextWrapper from "./_components/BoardContextWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
-import ZoomInput from "../_components/ZoomInput";
+import ZoomInput from "./_components/ZoomInput";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
