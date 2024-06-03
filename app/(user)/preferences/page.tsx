@@ -9,6 +9,9 @@ import Icon from "@/app/_components/Icon";
 import PrivacyAndSafety from "./_components/PrivacyAndSafety";
 import errorHandler from "@/utils/errorHandler";
 import { Fragment } from "react";
+import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
+import Link from "next/link";
+import Divider from "@/app/_components/Divider";
 
 export default async function UserPreferences() {
   const session = await auth();
@@ -21,7 +24,7 @@ export default async function UserPreferences() {
       return (
         <Fragment>
           <AccountInfo user={user} />
-          <div className="h-[1px] w-full bg-black50"></div>
+          <Divider className="my-8" />
           <ProfileInfo
             user={user}
             profile_image={
@@ -32,7 +35,7 @@ export default async function UserPreferences() {
               />
             }
           />
-          <div className="mx-auto h-[1px] w-full bg-black50"></div>
+          <Divider className="my-8" />
           <PrivacyAndSafety user={user} />
         </Fragment>
       );
@@ -42,5 +45,16 @@ export default async function UserPreferences() {
     },
   );
 
-  return <Main className="p-4">{element}</Main>;
+  return (
+    <Main className="relative px-4 py-10">
+      <Link
+        href={`/`}
+        className="card-back absolute left-0 top-0 flex h-[2.4rem] w-full content-center items-center gap-2 px-4"
+      >
+        <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
+        <span>Return</span>
+      </Link>
+      {element}
+    </Main>
+  );
 }
