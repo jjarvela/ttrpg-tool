@@ -4,12 +4,13 @@ import LatestMessages, { NewMessage } from "./_components/LatestMessages";
 import { getUnreadForUserForServerWithSender } from "@/prisma/services/notificationService";
 import { auth } from "@/auth";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import OnlineUsers from "./_components/OnlineUsers";
 
 export default async function ServerHome({ params }: { params: Params }) {
   const serverId = params.serverId;
+  const session = await auth();
 
   async function fetchUnreadMessages() {
-    const session = await auth();
     console.log(session, serverId);
     if (session && serverId) {
       const newMessagesData = await getUnreadForUserForServerWithSender(
@@ -35,6 +36,14 @@ export default async function ServerHome({ params }: { params: Params }) {
         <div className="overflow-auto bg-black75 p-5">No new messages</div>
       )}
       <LatestNotes />
+      <div className="scrollbar-thin flex flex-col overflow-auto bg-black75 p-5">
+        <h2 className="mx-auto mb-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
+          Online Users
+        </h2>
+        <OnlineUsers
+          user={session ? (session as ExtendedSession).userId : ""}
+        />
+      </div>
     </Main>
   );
 }
