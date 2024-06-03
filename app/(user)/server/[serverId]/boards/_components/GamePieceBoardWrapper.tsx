@@ -1,18 +1,21 @@
 "use client";
 
 import { useDraggable } from "@dnd-kit/core";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { BoardContext, boardContext } from "./BoardContextWrapper";
 
 export default function GamePieceBoardWrapper({
   isOwn,
   children,
   piece,
   float,
+  zoomLevel,
 }: {
   isOwn: boolean;
   children: React.ReactNode;
   piece: GamePiece;
   float: { left: string; top: string };
+  zoomLevel: number;
 }) {
   const { attributes, listeners, transform, setNodeRef } = useDraggable({
     id: piece.id,
@@ -20,10 +23,10 @@ export default function GamePieceBoardWrapper({
 
   useEffect(() => {
     if (!transform) return;
-    const newPositionX = piece.position_x! + transform.x;
-    const newPositionY = piece.position_y! + transform.y;
+    const newPositionX = piece.position_x! + transform.x / zoomLevel;
+    const newPositionY = piece.position_y! + transform.y / zoomLevel;
     // Ensure that the update only happens if there's an actual change in position
-  }, [transform, piece.position_x, piece.position_y]);
+  }, [transform, piece.position_x, piece.position_y, zoomLevel]);
 
   const style: React.CSSProperties = {
     position: "absolute",

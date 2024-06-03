@@ -17,6 +17,7 @@ import { socket } from "@/socket";
 import movePiece from "@/actions/gameBoardManagement/movePiece";
 import GamePieceBoardWrapper from "./GamePieceBoardWrapper";
 import { BoardContext, boardContext } from "./BoardContextWrapper";
+import { z } from "zod";
 
 export default function BoardFrame({
   currentUser,
@@ -29,6 +30,8 @@ export default function BoardFrame({
 }) {
   const { board, pieceSize } = useContext(boardContext) as BoardContext;
   const [gamePieces, setPieces] = useState(pieces);
+  const [zoomLevel, setZoomLevel] = useState(1);
+
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
@@ -92,23 +95,27 @@ export default function BoardFrame({
       }
 
       const newPositionX = piece.position_x
-        ? piece.position_x + delta.x
+        ? piece.position_x + delta.x / zoomLevel
         : delta.x;
       const newPositionY = piece.position_y
-        ? piece.position_y + delta.y
+        ? piece.position_y + delta.y / zoomLevel
         : delta.y;
 
       // Update the piece's position in the local state
       setPieces((prev) =>
         prev.map((item) => {
           return item.id === piece_id
-            ? { ...item, position_x: newPositionX, position_y: newPositionY }
+            ? {
+                ...item,
+                position_x: Math.floor(newPositionX),
+                position_y: Math.floor(newPositionY),
+              }
             : item;
         }),
       );
       handlePositionChange(piece.id, newPositionX, newPositionY);
     },
-    [gamePieces, handlePositionChange],
+    [gamePieces, handlePositionChange, zoomLevel],
   );
 
   function sizePieces() {
@@ -136,9 +143,19 @@ export default function BoardFrame({
           ref={setNodeRef}
           style={{
             position: "relative",
-            width: board.width,
-            height: board.height,
+            width: board.width * zoomLevel,
+            height: board.height * zoomLevel,
             background: imageUrl ? `url(${imageUrl})` : "#ad9372",
+            backgroundSize: "cover",
+          }}
+          onWheel={(e) => {
+            if (e.deltaY < 0 && zoomLevel < 2) {
+              setZoomLevel(zoomLevel + 0.1);
+            } else if (e.deltaY > 1 && zoomLevel > 0.5) {
+              setZoomLevel(zoomLevel - 0.1);
+            } else {
+              return;
+            }
           }}
         >
           {gamePieces.map((piece) => {
@@ -148,9 +165,10 @@ export default function BoardFrame({
                 key={piece.id}
                 piece={piece}
                 float={{
-                  left: `${piece.position_x}px`,
-                  top: `${piece.position_y}px`,
+                  left: `${piece.position_x * zoomLevel}px`,
+                  top: `${piece.position_y * zoomLevel}px`,
                 }}
+                zoomLevel={zoomLevel}
               >
                 <GamePiece
                   character={piece.character}
