@@ -109,8 +109,10 @@ export default function BoardTop({
           });
         }}
       >
-        <h4>Are you sure you wish to delete this board?</h4>
-        <p>Deleting the board will not affect game pieces on other boards.</p>
+        <h4 className="my-2">Are you sure you wish to delete this board?</h4>
+        <p className="my-2">
+          Deleting the board will not affect game pieces on other boards.
+        </p>
         {error !== "" && <FeedbackCard type="error" message={error} />}
       </ConfirmModal>
 
