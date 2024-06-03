@@ -128,7 +128,7 @@ export default function ServerSecurity({
           disabled={isPending}
           readonly={serverAuth.role !== "admin"}
         />
-        <Button className="btn-primary" type="submit">
+        <Button className="btn-primary my-4" type="submit">
           Save
         </Button>
         {success !== "" && (
