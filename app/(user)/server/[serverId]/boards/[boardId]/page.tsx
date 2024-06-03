@@ -87,6 +87,7 @@ export default async function GameBoard({ params }: { params: Params }) {
             </Link>
           </BoardTop>
           <ColumnWrapper align="content-start items-start w-full h-full overflow-hidden p-0">
+            <ZoomInput />
             <BoardFrame
               currentUser={(session as ExtendedSession).userId}
               pieces={pieces}
