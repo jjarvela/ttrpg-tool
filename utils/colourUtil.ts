@@ -78,10 +78,12 @@ export function calcShadow(hsl: { H: number; S: number; L: number }): {
     sh.S = hsl.S + 5;
   }
 
-  if (hsl.L < 41) {
+  if (hsl.L < 41 && hsl.L > 19) {
+    sh.L = hsl.L - 20;
+  } else if (hsl.L < 19) {
     sh.L = 0;
   } else {
-    sh.L = hsl.L - 40;
+    sh.L = hsl.L - 30;
   }
 
   return sh;
