@@ -9,14 +9,13 @@ export default function GamePieceBoardWrapper({
   children,
   piece,
   float,
-  zoomLevel,
 }: {
   isOwn: boolean;
   children: React.ReactNode;
   piece: GamePiece;
   float: { left: string; top: string };
-  zoomLevel: number;
 }) {
+  const { zoomLevel } = useContext(boardContext) as BoardContext;
   const { attributes, listeners, transform, setNodeRef } = useDraggable({
     id: piece.id,
   });

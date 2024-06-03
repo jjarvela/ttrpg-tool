@@ -18,6 +18,7 @@ import { redirect } from "next/navigation";
 import BoardTop from "../_components/BoardTop";
 import BoardContextWrapper from "../_components/BoardContextWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
+import ZoomInput from "../_components/ZoomInput";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
@@ -61,7 +62,8 @@ export default async function GameBoard({ params }: { params: Params }) {
                 <span>Return</span>
               </Link>
             </BoardTop>
-            <ColumnWrapper align="content-start items-start w-full h-full overflow-hidden p-0">
+            <ColumnWrapper align="relative content-start items-start w-full h-full overflow-hidden p-0">
+              <ZoomInput />
               <BoardFrame
                 currentUser={(session as ExtendedSession).userId}
                 imageUrl={imageUrl}

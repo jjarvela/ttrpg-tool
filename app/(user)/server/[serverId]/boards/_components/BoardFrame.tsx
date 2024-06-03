@@ -10,14 +10,12 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import { GameBoard } from "@prisma/client";
 import GamePiece from "./GamePiece";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { socket } from "@/socket";
 import movePiece from "@/actions/gameBoardManagement/movePiece";
 import GamePieceBoardWrapper from "./GamePieceBoardWrapper";
 import { BoardContext, boardContext } from "./BoardContextWrapper";
-import { z } from "zod";
 
 export default function BoardFrame({
   currentUser,
@@ -28,9 +26,10 @@ export default function BoardFrame({
   pieces: GamePiece[];
   imageUrl?: string;
 }) {
-  const { board, pieceSize } = useContext(boardContext) as BoardContext;
+  const { board, pieceSize, zoomLevel, setZoomLevel } = useContext(
+    boardContext,
+  ) as BoardContext;
   const [gamePieces, setPieces] = useState(pieces);
-  const [zoomLevel, setZoomLevel] = useState(1);
 
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
@@ -138,7 +137,7 @@ export default function BoardFrame({
       sensors={sensors}
       modifiers={[restrictToParentElement]}
     >
-      <div className="scrollbar-thin max-h-full w-full flex-grow overflow-auto">
+      <div className="scrollbar-thin relative max-h-full w-full flex-grow overflow-auto">
         <div
           ref={setNodeRef}
           style={{
@@ -168,7 +167,6 @@ export default function BoardFrame({
                   left: `${piece.position_x * zoomLevel}px`,
                   top: `${piece.position_y * zoomLevel}px`,
                 }}
-                zoomLevel={zoomLevel}
               >
                 <GamePiece
                   character={piece.character}

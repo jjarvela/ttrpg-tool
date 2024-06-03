@@ -1,9 +1,6 @@
 "use client";
-
-import CharacterPortrait from "@/app/_components/character/CharacterPortraitClient";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import FrameStyle1 from "./Frames/FrameStyle1";
 import FrameStyle2 from "./Frames/FrameStyle2";
 import FrameStyle3 from "./Frames/FrameStyle3";
