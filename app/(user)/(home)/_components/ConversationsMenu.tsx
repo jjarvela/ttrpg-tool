@@ -9,6 +9,8 @@ import UserSideMenuLink from "./UserSideMenuLink";
 import MaterialSymbolsPersonPlayOutline from "@/public/icons/MaterialSymbolsPersonPlayOutline";
 import errorHandler from "@/utils/errorHandler";
 import FeedbackCard from "@/app/_components/FeedbackCard";
+import ActiveUserDisplay from "@/app/_components/ActiveUserDisplay";
+import TextInput from "@/app/_components/inputs/TextInput";
 
 export default async function ConversationsMenu() {
   const session = await auth();
@@ -39,7 +41,7 @@ export default async function ConversationsMenu() {
       };
 
       return (
-        <ColumnWrapper className="flex-grow">
+        <ColumnWrapper className="h-full flex-grow p-0">
           <div className="mb-1 border-b-[1px] border-black50 py-1">
             <UserSideMenuLink
               title="Characters"
@@ -48,24 +50,31 @@ export default async function ConversationsMenu() {
             />
           </div>
           <h4>Direct messages</h4>
-          {conversations.length > 0 ? (
-            conversations.map((conversation) => (
-              <ConversationThumb
-                key={conversation.uid}
-                userId={(session as ExtendedSession).userId}
-                conversation={conversation}
-                hasUnread={readStatus(conversation.uid)}
-                contextMenu={
-                  <ConversationContextMenu
-                    conversation={conversation}
-                    unread={getUnread(conversation.uid)}
-                  />
-                }
-              />
-            ))
-          ) : (
-            <p>No conversations</p>
-          )}
+          <TextInput
+            placeholder="Search conversations..."
+            className="w-[92%] overflow-hidden text-ellipsis"
+          />
+          <ColumnWrapper className="scrollbar-thin w-full flex-grow overflow-y-auto">
+            {conversations.length > 0 ? (
+              conversations.map((conversation) => (
+                <ConversationThumb
+                  key={conversation.uid}
+                  userId={(session as ExtendedSession).userId}
+                  conversation={conversation}
+                  hasUnread={readStatus(conversation.uid)}
+                  contextMenu={
+                    <ConversationContextMenu
+                      conversation={conversation}
+                      unread={getUnread(conversation.uid)}
+                    />
+                  }
+                />
+              ))
+            ) : (
+              <p>No conversations</p>
+            )}
+          </ColumnWrapper>
+          <ActiveUserDisplay />
         </ColumnWrapper>
       );
     },

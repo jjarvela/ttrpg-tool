@@ -15,29 +15,28 @@ export default function HomeClientWrapper({
 }) {
   const [isOpen, setIsOpen] = useState(true);
   return (
-    <RowWrapper className="h-full w-full gap-0">
+    <RowWrapper className="relative h-full w-full gap-0">
       <RowWrapper
         className={twMerge(
-          "h-full gap-0 lg:w-[14.5rem]",
-          isOpen ? "w-[14.5rem]" : "",
+          "absolute h-full gap-0 lg:relative lg:w-[13.5em] lg:flex-shrink-0",
+          isOpen ? "w-[13.5em] flex-shrink-0 md:relative" : "",
         )}
       >
-        <ColumnWrapper
-          align="content-start items-start"
+        <div
           className={twMerge(
-            "full h-full w-full border-r-[1px] border-black50 p-0 lg:block",
+            "bg-color-default full z-50 h-full w-full border-r-[1px] border-black50 p-0 lg:block",
             isOpen ? "block" : "hidden",
           )}
         >
           {conversationsMenu}
-        </ColumnWrapper>
+        </div>
         <div
           id="inner-nav-toggle"
-          className="flex h-[5%] cursor-pointer flex-col rounded-r-lg bg-black50 text-lg lg:hidden"
+          className="z-50 flex h-[5%] cursor-pointer flex-col rounded-r-lg bg-black50 text-lg lg:hidden"
         >
           <MaterialSymbolsLightChevronLeftRounded
             className={twMerge(
-              "my-auto justify-self-center duration-300 ease-linear",
+              "my-auto cursor-pointer justify-self-center duration-300 ease-linear",
               isOpen ? "" : "rotate-180",
             )}
             onClick={() => setIsOpen((prev) => !prev)}
