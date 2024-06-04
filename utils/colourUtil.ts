@@ -16,8 +16,6 @@ export function convertHexToHSL(hex: string): {
     throw new Error("Could not convert hex");
   }
 
-  console.log(result);
-
   let r = parseInt(result[1], 16);
   let g = parseInt(result[2], 16);
   let b = parseInt(result[3], 16);
@@ -29,19 +27,14 @@ export function convertHexToHSL(hex: string): {
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
 
-  console.log(max, min);
-
   let hue = 0;
   let sat = 0;
   let lum = (max + min) / 2;
 
   if (max === min) {
-    console.log("max equals min");
     hue = sat = 0;
   } else {
     const difference = max - min;
-
-    console.log(difference);
 
     sat = lum > 0.5 ? difference / (2 - max - min) : difference * (max + min);
 
@@ -85,10 +78,12 @@ export function calcShadow(hsl: { H: number; S: number; L: number }): {
     sh.S = hsl.S + 5;
   }
 
-  if (hsl.L < 41) {
+  if (hsl.L < 41 && hsl.L > 19) {
+    sh.L = hsl.L - 20;
+  } else if (hsl.L < 19) {
     sh.L = 0;
   } else {
-    sh.L = hsl.L - 40;
+    sh.L = hsl.L - 30;
   }
 
   return sh;

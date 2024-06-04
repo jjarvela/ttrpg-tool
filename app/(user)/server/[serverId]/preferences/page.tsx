@@ -16,6 +16,9 @@ import Discoverability from "./_components/Discoverability";
 import ServerInfo from "./_components/ServerInfo";
 import Icon from "@/app/_components/Icon";
 import errorHandler from "@/utils/errorHandler";
+import Link from "next/link";
+import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
+import Divider from "@/app/_components/Divider";
 
 export default async function ServerPreferences({
   params,
@@ -46,7 +49,6 @@ export default async function ServerPreferences({
 
       return (
         <Fragment>
-          <h1>Preferences</h1>
           <h2>Server information</h2>
 
           <ServerInfo
@@ -63,21 +65,25 @@ export default async function ServerPreferences({
             }
           />
 
+          <Divider />
+
           {authMatch && (
             <Fragment>
-              <h2>Security</h2>
+              <h2 className="my-2">Security</h2>
               <ServerSecurity serverAuth={serverAuth} config={config} />{" "}
+              <Divider />
             </Fragment>
           )}
 
           {authMatch && (
             <Fragment>
-              <h2>Discoverability</h2>
+              <h2 className="my-2">Discoverability</h2>
               <Discoverability serverAuth={serverAuth} config={config} />{" "}
+              <Divider />
             </Fragment>
           )}
 
-          <h2>Invitations</h2>
+          <h2 className="my-2">Invitations</h2>
           <ServerInvitationsList serverId={id} authMatch={authMatch} />
         </Fragment>
       );
@@ -87,5 +93,16 @@ export default async function ServerPreferences({
     },
   );
 
-  return <Main className="min-h-[90vh] w-[98%] px-4">{element}</Main>;
+  return (
+    <Main className="relative min-h-[90vh] w-full px-4 py-10">
+      <Link
+        href={`/server/${id}`}
+        className="card-back absolute left-0 top-0 flex h-[2.4rem] w-full content-center items-center gap-2 px-4"
+      >
+        <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
+        <span>Return</span>
+      </Link>
+      {element}
+    </Main>
+  );
 }

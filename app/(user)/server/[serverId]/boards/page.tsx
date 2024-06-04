@@ -7,6 +7,7 @@ import { getServerBoards } from "@/prisma/services/gameBoardService";
 import Link from "next/link";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import Button from "@/app/_components/Button";
+import BoardThumb from "./_components/BoardThumb";
 
 export default async function ServerBoards({ params }: { params: Params }) {
   const id = params.serverId;
@@ -36,15 +37,7 @@ export default async function ServerBoards({ params }: { params: Params }) {
       return (
         <RowWrapper className="flex-wrap">
           {boards.map((board) => {
-            return (
-              <Link
-                key={board.id}
-                href={`/server/${id}/boards/${board.id}`}
-                className="hover:bg-primary-soft flex"
-              >
-                {board.name}
-              </Link>
-            );
+            return <BoardThumb key={board.id} board={board} />;
           })}
         </RowWrapper>
       );

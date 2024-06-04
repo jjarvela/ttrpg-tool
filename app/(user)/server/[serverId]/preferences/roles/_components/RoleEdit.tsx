@@ -112,7 +112,7 @@ export default function RoleEdit({
             <p className="mb-4">Your role will be changed to moderator.</p>
           </>
         ) : (
-          <p className="mb-4">{`Set ${memberName}'s role to ${selected[0].label}?`}</p>
+          <p className="my-4 max-w-80 text-wrap">{`Set ${memberName}'s role to ${selected[0].label}?`}</p>
         )}
         {error !== "" && <FeedbackCard type="error" message={error} />}
       </ConfirmModal>
