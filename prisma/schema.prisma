@@ -35,35 +35,59 @@ model Account {
 model User {
   id                                String                    @id @default(cuid())
   username                          String                    @unique
+  screen_name                       String?
+  profile_image                     String?
+  
+  person_description                String?
+  person_status                     String?
+  
   password_hash                     String
   email                             String                    @unique
-  emailVerified                     DateTime?
   created_at                        DateTime                  @default(now())
-  screen_name                       String?
+  
   socket_id                         String?
+  
   timezone                          String?
   share_timezone                    Boolean?
-  person_description                String?
-  profile_image                     String?
-  person_status                     String?
-  friends                           String[]
+
   blocklist                         String[]
+  
   server_members                    ServerMember[]
   ConversationParticipant           ConversationParticipant[]
   Message                           Message[]
   accounts                          Account[]
   characters                        CharacterBase[]
   notifications                     Notification[]
-  friend_requests_pending           FriendRequest[] @relation("pending")
-  friend_requests_received          FriendRequest[] @relation("received")
+  
+  friend_list                       FriendList[]
+  friend_requests_pending           FriendRequest[]           @relation("pending")
+  friend_requests_received          FriendRequest[]           @relation("received")
+  friend_instances                  FriendInstance[]
 }
 
 model FriendRequest {
-  id              Int     @id @default(autoincrement())
+  id              Int               @id @default(autoincrement())
   requester_id    String
   recipient_id    String
-  requester       User  @relation(name: "pending", fields: [requester_id], references: [id], onDelete: Cascade)
-  recipient       User  @relation(name: "received", fields: [recipient_id], references: [id], onDelete: Cascade)
+  requester       User              @relation(name: "pending", fields: [requester_id], references: [id], onDelete: Cascade)
+  recipient       User              @relation(name: "received", fields: [recipient_id], references: [id], onDelete: Cascade)
+}
+
+model FriendList {
+  id          String                @id @default(cuid())
+  owner_id    String                @unique
+  owner       User                  @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  friends     FriendInstance[]
+}
+
+model FriendInstance {
+  id        Int         @id @default(autoincrement())
+  list_id   String
+  list      FriendList  @relation(fields: [list_id], references: [id], onDelete: Cascade)
+  user_id   String  
+  user      User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([list_id, user_id])
 }
 
 model Server {
@@ -83,7 +107,7 @@ model Server {
   invitations       Invitation[]
   notifications     Notification[]
   boards            GameBoard[]
-  notes          Note[]
+  notes             Note[]
 }
 
 model ServerConfig {
