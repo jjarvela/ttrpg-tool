@@ -1,6 +1,5 @@
 "use client";
 
-import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
 import { useState } from "react";

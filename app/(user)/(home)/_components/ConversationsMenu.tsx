@@ -5,12 +5,11 @@ import { redirect } from "next/navigation";
 import ConversationThumb from "./ConversationThumb";
 import { getUnreadForUserConversations } from "@/prisma/services/notificationService";
 import ConversationContextMenu from "./ConversationContextMenu";
-import UserSideMenuLink from "./UserSideMenuLink";
-import MaterialSymbolsPersonPlayOutline from "@/public/icons/MaterialSymbolsPersonPlayOutline";
 import errorHandler from "@/utils/errorHandler";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import ActiveUserDisplay from "@/app/_components/ActiveUserDisplay";
 import TextInput from "@/app/_components/inputs/TextInput";
+import UserSideNav from "./UserSideNav";
 
 export default async function ConversationsMenu() {
   const session = await auth();
@@ -42,13 +41,7 @@ export default async function ConversationsMenu() {
 
       return (
         <ColumnWrapper className="h-full flex-grow p-0">
-          <div className="mb-1 border-b-[1px] border-black50 py-1">
-            <UserSideMenuLink
-              title="Characters"
-              to="/characters"
-              icon={<MaterialSymbolsPersonPlayOutline className="text-2xl" />}
-            />
-          </div>
+          <UserSideNav friendRequests={[]} />
           <h4>Direct messages</h4>
           <TextInput
             placeholder="Search conversations..."
