@@ -16,6 +16,7 @@ type newServerData = {
   password?: string;
   explorePermission?: boolean;
   searchPermission?: boolean;
+  joinPermission?: string;
   settingsRightsHolders: string;
 };
 
@@ -43,6 +44,7 @@ export default async function createServer(
     password_hash: data.isProtected ? password_hash : undefined,
     explorable: data.explorePermission,
     searchable: data.searchPermission,
+    join_permission: data.joinPermission,
   });
 
   console.log(serverConfig);

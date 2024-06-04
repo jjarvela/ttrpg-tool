@@ -30,7 +30,7 @@ export default function LayoutClientWrapper({
     pathname.includes("/boards") && !pathname.endsWith("/boards" || "/create");
 
   return (
-    <div className="flex w-[100vw] overflow-hidden">
+    <div className="flex w-[90vw] overflow-hidden sm:w-[100vw]">
       {/*server inner nav*/}
       <RowWrapper
         className={twMerge(
@@ -66,7 +66,7 @@ export default function LayoutClientWrapper({
         align="items-start"
         className={twMerge(
           "m-0 max-h-screen flex-grow gap-0 p-0 lg:gap-2",
-          isNotes || isBoard ? "mlg:w-[75%] w-[75%]" : "w-full",
+          isNotes || isBoard ? "w-[75%] mlg:w-[75%]" : "w-full",
         )}
       >
         <TopMenu serverId={id} setShowMembers={setShowMembers} />
@@ -76,8 +76,8 @@ export default function LayoutClientWrapper({
       {/*server members bar*/}
       <RowWrapper
         className={twMerge(
-          "bg-color-dark absolute right-0 top-0 z-[999] h-full border-l-[1px] border-black50 pl-2 lg:relative lg:z-0 lg:w-0 lg:pl-0",
-          showMembers && "lg:w-60",
+          "bg-color-dark z-[999] h-full border-l-[1px] border-black50 pl-2 lg:relative lg:z-0 lg:w-0 lg:pl-0",
+          showMembers && "absolute right-0 top-0 lg:w-60",
         )}
       >
         <MaterialSymbolsGroupOutline

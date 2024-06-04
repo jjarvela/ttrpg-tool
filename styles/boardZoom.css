@@ -1,0 +1,42 @@
+.board-zoom {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  margin-bottom: 3.2rem;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 0.4em;
+  padding: 0;
+  outline: none;
+
+  position: relative;
+
+  background: rgb(255, 255, 255);
+  opacity: 0.8;
+  border: 1px black;
+}
+
+.board-zoom::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+
+  position: relative;
+
+  height: 1.4em;
+  width: 0.5em;
+  background-color: white;
+  border-radius: 30%;
+  border: 0.5px grey solid;
+  cursor: pointer;
+}
+
+.board-zoom::-moz-range-thumb {
+  height: 1em;
+  width: 1em;
+  background-color: white;
+  border-radius: 100%;
+  border: 0.5px grey solid;
+  cursor: pointer;
+}

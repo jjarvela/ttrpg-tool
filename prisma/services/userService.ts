@@ -100,10 +100,7 @@ export const updateUser = async (
   return updatedUser;
 };
 
-export const getUsersExcept = async (
-  user_id: string,
-  select?: { [key: string]: boolean },
-) => {
+export const getUsersExcept = async (user_id: string, select?: UserSelect) => {
   const users = await db.user.findMany({
     where: {
       id: {

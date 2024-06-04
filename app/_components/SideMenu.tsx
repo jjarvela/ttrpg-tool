@@ -75,7 +75,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
               </svg>
             )}
           </Link>
-          <ul className="scrollbar-thin max-h-[70%] overflow-y-auto overflow-x-hidden pr-2">
+          <ul className="scrollbar-thin ml-2 max-h-[70%] overflow-y-auto overflow-x-hidden pr-2">
             {servers.map((server) => (
               <li key={server.id}>
                 <MenuIconServer

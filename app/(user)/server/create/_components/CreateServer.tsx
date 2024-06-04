@@ -30,6 +30,9 @@ export default function CreateServer({ userId }: { userId: string }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [explorePermission, setExplorePermission] = useState(false);
   const [searchPermission, setSearchPermission] = useState(false);
+  const [joinPermission, setJoinPermission] = useState<
+    string | number | readonly string[] | undefined
+  >("invitation link");
   const [settingsRightsHolders, setSettingsRightsHolders] = useState("Admin");
 
   const passwordsMatch = isProtected ? password === confirmPassword : true;
@@ -77,6 +80,9 @@ export default function CreateServer({ userId }: { userId: string }) {
                   password,
                   explorePermission,
                   searchPermission,
+                  joinPermission: joinPermission
+                    ? joinPermission.toString()
+                    : undefined,
                   settingsRightsHolders,
                 });
 
@@ -91,6 +97,9 @@ export default function CreateServer({ userId }: { userId: string }) {
                 password,
                 explorePermission,
                 searchPermission,
+                joinPermission: joinPermission
+                  ? joinPermission.toString()
+                  : undefined,
                 settingsRightsHolders,
               });
 
@@ -210,6 +219,24 @@ export default function CreateServer({ userId }: { userId: string }) {
           label="Include server in search results"
           checked={searchPermission}
           onToggle={(checked) => setSearchPermission(checked)}
+          disabled={isPending}
+        />
+
+        <h4 className="mt-5">Join permissions</h4>
+        <small>
+          Configure the rules for how non-members who find the server can join
+        </small>
+        <RadioGroup
+          className="my-4 flex-col gap-2"
+          groupName="join-permissions"
+          labels={[
+            "Only through direct link to an invitation",
+            "If there is an available unlimited use invitation",
+            "If there is any type of available invitation",
+          ]}
+          values={["invitation link", "unlimited invitation", "any invitation"]}
+          selected={joinPermission}
+          setSelected={setJoinPermission}
           disabled={isPending}
         />
 

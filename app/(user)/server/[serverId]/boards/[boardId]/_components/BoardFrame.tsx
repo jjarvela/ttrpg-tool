@@ -10,25 +10,27 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import { GameBoard } from "@prisma/client";
-import GamePiece from "./GamePiece";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { socket } from "@/socket";
 import movePiece from "@/actions/gameBoardManagement/movePiece";
 import GamePieceBoardWrapper from "./GamePieceBoardWrapper";
+import { BoardContext, boardContext } from "./BoardContextWrapper";
+import GamePiece from "./GamePiece";
 
 export default function BoardFrame({
   currentUser,
-  board,
   pieces,
   imageUrl,
 }: {
   currentUser: string;
-  board: GameBoard;
   pieces: GamePiece[];
   imageUrl?: string;
 }) {
+  const { board, pieceSize, zoomLevel, setZoomLevel } = useContext(
+    boardContext,
+  ) as BoardContext;
   const [gamePieces, setPieces] = useState(pieces);
+
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const sensors = useSensors(mouseSensor, touchSensor);
@@ -92,24 +94,41 @@ export default function BoardFrame({
       }
 
       const newPositionX = piece.position_x
-        ? piece.position_x + delta.x
+        ? piece.position_x + delta.x / zoomLevel
         : delta.x;
       const newPositionY = piece.position_y
-        ? piece.position_y + delta.y
+        ? piece.position_y + delta.y / zoomLevel
         : delta.y;
 
       // Update the piece's position in the local state
       setPieces((prev) =>
         prev.map((item) => {
           return item.id === piece_id
-            ? { ...item, position_x: newPositionX, position_y: newPositionY }
+            ? {
+                ...item,
+                position_x: Math.floor(newPositionX),
+                position_y: Math.floor(newPositionY),
+              }
             : item;
         }),
       );
       handlePositionChange(piece.id, newPositionX, newPositionY);
     },
-    [gamePieces, handlePositionChange],
+    [gamePieces, handlePositionChange, zoomLevel],
   );
+
+  function sizePieces() {
+    switch (pieceSize) {
+      case "sm":
+        return 50;
+      case "md":
+        return 75;
+      case "lg":
+        return 100;
+      default:
+        return 100;
+    }
+  }
 
   return (
     <DndContext
@@ -118,14 +137,24 @@ export default function BoardFrame({
       sensors={sensors}
       modifiers={[restrictToParentElement]}
     >
-      <div className="scrollbar-thin max-h-full w-full flex-grow overflow-auto">
+      <div className="scrollbar-thin relative max-h-full w-full flex-grow overflow-auto">
         <div
           ref={setNodeRef}
           style={{
             position: "relative",
-            width: board.width,
-            height: board.height,
+            width: board.width * zoomLevel,
+            height: board.height * zoomLevel,
             background: imageUrl ? `url(${imageUrl})` : "#ad9372",
+            backgroundSize: "cover",
+          }}
+          onWheel={(e) => {
+            if (e.deltaY < 0 && zoomLevel < 2) {
+              setZoomLevel(zoomLevel + 0.1);
+            } else if (e.deltaY > 1 && zoomLevel > 0.5) {
+              setZoomLevel(zoomLevel - 0.1);
+            } else {
+              return;
+            }
           }}
         >
           {gamePieces.map((piece) => {
@@ -135,8 +164,8 @@ export default function BoardFrame({
                 key={piece.id}
                 piece={piece}
                 float={{
-                  left: `${piece.position_x}px`,
-                  top: `${piece.position_y}px`,
+                  left: `${piece.position_x * zoomLevel}px`,
+                  top: `${piece.position_y * zoomLevel}px`,
                 }}
               >
                 <GamePiece
@@ -144,6 +173,7 @@ export default function BoardFrame({
                   color={piece.color}
                   style={piece.style}
                   hoverEffect={true}
+                  size={sizePieces()}
                 />
               </GamePieceBoardWrapper>
             );
