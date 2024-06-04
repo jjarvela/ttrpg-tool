@@ -1,3 +1,18 @@
+interface UserBasic {
+  id: string;
+  username: string;
+  screen_name: string | null;
+  profile_image: string | null;
+  person_status: string | null;
+  socket_id: string | null;
+}
+
+interface UserDetailed extends UserBasic {
+  person_description: string | null;
+  timezone: string | null;
+  share_timezone: boolean | null;
+}
+
 type ServerAuth = {
   id: number;
   server_id: string;
@@ -39,15 +54,7 @@ type ServerMember = {
   role: string;
   nickname: string | null;
   icon: string | null;
-  user?: {
-    username: string;
-    screen_name: string | null;
-    timezone: string | null;
-    share_timezone: boolean | null;
-    profile_image: string | null;
-    person_status: string | null;
-    socket_id: string | null;
-  };
+  user?: UserDetailed;
 };
 
 type Notif = {

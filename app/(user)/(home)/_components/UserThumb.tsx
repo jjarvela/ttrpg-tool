@@ -1,9 +1,8 @@
 import ProfilePicture from "@/app/_components/ProfilePicture";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
-import { User } from "@prisma/client";
 
-export default function UserThumb({ user }: { user: User }) {
+export default function UserThumb({ user }: { user: UserBasic }) {
   return (
     <ColumnWrapper className="card-back w-[90%] rounded-lg border-[1px] border-black50 lg:w-[55%]">
       <RowWrapper className="w-full justify-start">

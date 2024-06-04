@@ -43,9 +43,13 @@ export default function InvitationObject({
             className="cursor-pointer"
             onClick={async () => {
               setError("");
-              const result = await deleteServerInvitation(invitation.id);
-              if (typeof result === "string") setError(result);
-              else router.refresh();
+              try {
+                const result = await deleteServerInvitation(invitation.id);
+                router.refresh();
+              } catch (e) {
+                setError((e as Error).message);
+                return;
+              }
             }}
           />
         )}

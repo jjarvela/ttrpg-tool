@@ -22,16 +22,17 @@ export default async function editServerConfig(
     config_permission?: string;
     password?: string;
   },
-) {
+): Promise<ServerConfig> {
   //make sure there is at least a previous password in the database if protected is set to true
-  if (data.protected && !serverConfig.password_hash && !data.password)
-    return "Password protection is chosen but no password has been set.";
+  if (data.protected && !serverConfig.password_hash && !data.password) {
+    throw new Error(
+      "Password protection is chosen but no password has been set.",
+    );
+  }
 
   //get updater information to check their privileges before allowing updates
   const updater = await getServerMember(serverConfig.server_id, userId);
-  if (!updater || typeof updater === "string") {
-    return "An unexpected error occurred.";
-  }
+
   const auth = checkAuthMatch(updater, serverConfig);
 
   //don't allow users who aren't admins to touch config_permission
@@ -40,7 +41,9 @@ export default async function editServerConfig(
   }
 
   if (!auth) {
-    return "You don't have the required permissions to alter these settings.";
+    throw new Error(
+      "You don't have the required permissions to alter these settings.",
+    );
   }
   try {
     if (!data.password) {
@@ -60,6 +63,7 @@ export default async function editServerConfig(
       return updatedConfig;
     }
   } catch (e) {
-    return (e as Error).message;
+    console.error(e);
+    throw new Error("Something went wrong.");
   }
 }

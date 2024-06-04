@@ -5,7 +5,6 @@ import CharacterPortrait from "./CharacterPortrait";
 import DeleteCharacterBaseButton from "./DeleteCharacterBaseButton";
 import { getCharacterServers } from "@/prisma/services/characterService";
 import errorHandler from "@/utils/errorHandler";
-import ProfilePicture from "../ProfilePicture";
 import ServersDisplay from "./ServersDisplay";
 
 export default async function CharacterBaseDisplay({
