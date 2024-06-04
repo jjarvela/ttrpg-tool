@@ -71,6 +71,12 @@ export const createUser = async (data: {
     data: data,
   });
 
+  await db.friendList.create({
+    data: {
+      owner_id: newUser.id,
+    },
+  });
+
   return newUser;
 };
 
@@ -140,4 +146,70 @@ export const findUserBySocket = async (socket_id: string) => {
   if (!user) throw new Error("No user could be found");
 
   return user;
+};
+
+/**
+ * Add user to another user's blocklist
+ * @param user_id - string
+ * @param target_id  - string
+ */
+export const blockUser = async (
+  user_id: string,
+  target_id: string,
+): Promise<void> => {
+  const user = await db.user.findUniqueOrThrow({
+    where: { id: user_id },
+    select: { blocklist: true },
+  });
+
+  await db.user.update({
+    where: { id: user_id },
+    data: {
+      blocklist: [...user.blocklist, target_id],
+    },
+  });
+};
+
+/**
+ * Remove user from another user's blocklist
+ * @param user_id - string
+ * @param target_id - string
+ */
+export const unblockUser = async (
+  user_id: string,
+  target_id: string,
+): Promise<void> => {
+  const user = await db.user.findUniqueOrThrow({
+    where: { id: user_id },
+    select: { blocklist: true },
+  });
+
+  await db.user.update({
+    where: { id: user_id },
+    data: {
+      blocklist: user.blocklist.filter((item) => item !== target_id),
+    },
+  });
+};
+
+/**
+ * Check if target user is blocked by user
+ * @param user_id - string, user whose blocklist is queried
+ * @param target_id - string, user whose ID is being queried for
+ * @returns boolean based on whether target_id was present on user's blocklist or not
+ */
+export const isBlocked = async (
+  user_id: string,
+  target_id: string,
+): Promise<boolean> => {
+  const user = await db.user.findUniqueOrThrow({
+    where: { id: user_id },
+    select: { blocklist: true },
+  });
+
+  if (user.blocklist.indexOf(target_id) > -1) {
+    return true;
+  }
+
+  return false;
 };
