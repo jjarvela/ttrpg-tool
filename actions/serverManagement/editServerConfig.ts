@@ -29,23 +29,25 @@ export default async function editServerConfig(
 
   //get updater information to check their privileges before allowing updates
   const updater = await getServerMember(serverConfig.server_id, userId);
-  if (!updater || typeof updater === "string")
+  if (!updater || typeof updater === "string") {
     return "An unexpected error occurred.";
-  const auth = await checkAuthMatch(updater, serverConfig);
+  }
+  const auth = checkAuthMatch(updater, serverConfig);
 
   //don't allow users who aren't admins to touch config_permission
-  if (updater.role !== "admin" && data.config_permission)
+  if (updater.role !== "admin" && data.config_permission) {
     delete data.config_permission;
+  }
 
-  if (!auth)
+  if (!auth) {
     return "You don't have the required permissions to alter these settings.";
+  }
   try {
     if (!data.password) {
       const updatedConfig = await updateServerConfig(
         serverConfig.server_id,
         data,
       );
-      console.log(updatedConfig);
       return updatedConfig;
     } else {
       const password_hash = await bcrypt.hash(String(data.password), 10);
@@ -55,7 +57,6 @@ export default async function editServerConfig(
         config_permission: data.config_permission,
         password_hash,
       });
-      console.log(updatedConfig);
       return updatedConfig;
     }
   } catch (e) {
