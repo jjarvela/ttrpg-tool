@@ -2,7 +2,7 @@ import {
   getBoardPieces,
   getGameBoard,
 } from "@/prisma/services/gameBoardService";
-import BoardFrame from "../_components/BoardFrame";
+import BoardFrame from "./_components/BoardFrame";
 import { getServerData } from "@/prisma/services/serverService";
 import errorHandler from "@/utils/errorHandler";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
@@ -10,12 +10,15 @@ import Link from "next/link";
 import ServerNotFound from "../../_components/ServerNotFound";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { Fragment } from "react";
-import GamePieceManager from "../_components/game piece management/GamePieceManager";
+import GamePieceManager from "./_components/game piece management/GamePieceManager";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
 import getBlobSASUrl from "@/actions/getBlobSASUrl";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import BoardTop from "../_components/BoardTop";
+import BoardTop from "./_components/BoardTop";
+import BoardContextWrapper from "./_components/BoardContextWrapper";
+import RowWrapper from "@/app/_components/wrappers/RowWrapper";
+import ZoomInput from "./_components/ZoomInput";
 
 export default async function GameBoard({ params }: { params: Params }) {
   const server_id = params.serverId;
@@ -49,45 +52,71 @@ export default async function GameBoard({ params }: { params: Params }) {
       if (board.background) {
         const imageUrl = await getBlobSASUrl(board.background);
         return (
-          <BoardFrame
-            currentUser={(session as ExtendedSession).userId}
-            imageUrl={imageUrl}
-            board={board}
-            pieces={pieces}
-          />
+          <BoardContextWrapper board={board}>
+            <BoardTop server_id={server_id} board_id={board_id}>
+              <Link
+                href={`/server/${server_id}/boards`}
+                className="flex content-center items-center"
+              >
+                <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
+                <span>Return</span>
+              </Link>
+            </BoardTop>
+            <ColumnWrapper align="relative content-start items-start w-full h-full overflow-hidden p-0">
+              <ZoomInput />
+              <BoardFrame
+                currentUser={(session as ExtendedSession).userId}
+                imageUrl={imageUrl}
+                pieces={pieces}
+              />
+              <GamePieceManager server_id={server_id} board_id={board_id} />
+            </ColumnWrapper>
+          </BoardContextWrapper>
         );
       }
 
       return (
-        <BoardFrame
-          currentUser={(session as ExtendedSession).userId}
-          board={board}
-          pieces={pieces}
-        />
+        <BoardContextWrapper board={board}>
+          <BoardTop server_id={server_id} board_id={board_id}>
+            <Link
+              href={`/server/${server_id}/boards`}
+              className="flex content-center items-center"
+            >
+              <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
+              <span>Return</span>
+            </Link>
+          </BoardTop>
+          <ColumnWrapper align="content-start items-start w-full h-full overflow-hidden p-0">
+            <ZoomInput />
+            <BoardFrame
+              currentUser={(session as ExtendedSession).userId}
+              pieces={pieces}
+            />
+            <GamePieceManager server_id={server_id} board_id={board_id} />
+          </ColumnWrapper>
+        </BoardContextWrapper>
       );
     },
     () => (
-      <p className="text-warning">
-        Something went wrong. Please refresh the page.
-      </p>
+      <Fragment>
+        <RowWrapper
+          justify="justify-between justify-items-between"
+          className="card-back flex h-[2.4rem] w-full gap-2 px-4"
+        >
+          <Link
+            href={`/server/${server_id}/boards`}
+            className="flex content-center items-center"
+          >
+            <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
+            <span>Return</span>
+          </Link>
+        </RowWrapper>
+        <p className="text-warning">
+          Something went wrong. Please refresh the page.
+        </p>
+      </Fragment>
     ),
   );
 
-  return (
-    <Fragment>
-      <BoardTop server_id={server_id} board_id={board_id}>
-        <Link
-          href={`/server/${server_id}/boards`}
-          className="flex content-center items-center"
-        >
-          <MaterialSymbolsLightChevronLeftRounded className="flex-shrink-0 text-2xl" />
-          <span>Return</span>
-        </Link>
-      </BoardTop>
-      <ColumnWrapper align="content-start items-start w-full h-full overflow-hidden p-0">
-        {element}
-        <GamePieceManager server_id={server_id} board_id={board_id} />
-      </ColumnWrapper>
-    </Fragment>
-  );
+  return element;
 }

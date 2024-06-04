@@ -102,6 +102,9 @@ export default function CharacterForm({
               attributes,
               statics,
             });
+
+            router.push(`/server/${config.server_id}/characters`);
+            router.refresh();
           } else {
             if (baseData.image) {
               if (baseData.image.size / 1024 / 1024 > 3) {
@@ -113,11 +116,16 @@ export default function CharacterForm({
                   return "Failed to upload image.";
                 }
                 const filename = res.data.filename;
-
                 await handleCharacter(filename);
+
+                router.push(`/server/${config.server_id}/characters`);
+                router.refresh();
               });
             } else {
               await handleCharacter();
+
+              router.push(`/server/${config.server_id}/characters`);
+              router.refresh();
             }
           }
         },
@@ -129,9 +137,6 @@ export default function CharacterForm({
       if (error) {
         setError(error);
         return;
-      } else {
-        router.push(`/server/${config.server_id}/characters`);
-        router.refresh();
       }
     });
   }
@@ -242,10 +247,13 @@ export default function CharacterForm({
     </ColumnWrapper>
   );
 
-  async function handleCharacter(image?: string) {
+  async function handleCharacter(filename?: string) {
+    console.log(filename);
+
     const base = await createCharacterForUser(user_id, {
-      ...baseData,
-      image: image || undefined,
+      name: baseData.name,
+      description: baseData.description,
+      image: filename,
     });
 
     await createCharacterForServer(base.id, config.server_id, {

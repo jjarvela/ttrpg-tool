@@ -62,7 +62,9 @@ export default function ServerCharacterOwnerOptions({
           router.refresh();
         }}
       >
-        <h5>Are you sure you wish to delete this character?</h5>
+        <h4 className="my-4">
+          Are you sure you wish to delete this character?
+        </h4>
         <p>The base information will still be retained.</p>
         {error && (
           <p className="mt-4 text-warning">

@@ -42,7 +42,10 @@ export default async function ServerInnerNav({ id }: { id: string }) {
 
       const listChannels = channels.map((channel) => {
         return (
-          <li key={channel.uid}>
+          <li
+            key={channel.uid}
+            className="w-full px-2 py-1 hover:bg-black25 hover:dark:bg-black75"
+          >
             <ContextMenu
               serverId={server.id}
               channelId={channel.uid}
@@ -71,7 +74,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
           </RowWrapper>
           <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
             <ServerSubMenu title="Channels">
-              <ul className="flex-grow">{listChannels}</ul>
+              <ul className="w-full flex-grow">{listChannels}</ul>
               <SubmenuLink
                 to={`/server/${id}/chat/createChannel`}
                 title="Add Channel"

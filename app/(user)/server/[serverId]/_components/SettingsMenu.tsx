@@ -120,7 +120,7 @@ export default function ServerSettingsMenu({
         confirmText="Leave"
         confirmButtonClass="bg-warning"
       >
-        <h5 className="mb-4">Are you sure you wish to leave this server?</h5>
+        <h4 className="my-4">Are you sure you wish to leave this server?</h4>
         <p className="text-center">
           Servers with no remaining members will be automatically deleted.
         </p>
