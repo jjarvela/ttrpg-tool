@@ -5,6 +5,10 @@ import { getUnreadForUserForServerWithSender } from "@/prisma/services/notificat
 import { auth } from "@/auth";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import OnlineUsers from "./_components/OnlineUsers";
+import { getServerCharacters } from "@/prisma/services/characterService";
+import HomeCharacters, {
+  HomeCharactersProps,
+} from "./_components/HomeCharacters";
 
 export default async function ServerHome({ params }: { params: Params }) {
   const serverId = params.serverId;
@@ -28,6 +32,29 @@ export default async function ServerHome({ params }: { params: Params }) {
     (message) => message !== null,
   ) as NewMessage[];
 
+  async function getHomeServerCharacters() {
+    if (serverId) {
+      const charactersData = await getServerCharacters(serverId, {
+        select: {
+          level: true,
+          vitals: true,
+          vitals_max: true,
+        },
+        base: {
+          name: true,
+          image: true,
+        },
+      });
+
+      return charactersData;
+    }
+
+    return [];
+  }
+  const latestCharacters =
+    (await getHomeServerCharacters()) as unknown as HomeCharactersProps["latestCharacters"];
+  console.log(latestCharacters);
+
   return (
     <Main className="grid grid-cols-1 grid-rows-3 gap-4 p-6 md:grid-rows-2 lg:grid-cols-2">
       {newMessages && newMessages.length > 0 ? (
@@ -44,6 +71,7 @@ export default async function ServerHome({ params }: { params: Params }) {
           user={session ? (session as ExtendedSession).userId : ""}
         />
       </div>
+      <HomeCharacters latestCharacters={latestCharacters} />
     </Main>
   );
 }
