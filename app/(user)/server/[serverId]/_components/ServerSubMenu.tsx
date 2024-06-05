@@ -34,7 +34,7 @@ export default function ServerSubMenu({
       {isOpen && (
         <ColumnWrapper
           align="items-start"
-          className="scrollbar-thin mb-0 max-h-[15em] overflow-y-auto pb-0"
+          className="scrollbar-thin m-0 max-h-[15em] overflow-y-auto p-0"
         >
           {children}
         </ColumnWrapper>

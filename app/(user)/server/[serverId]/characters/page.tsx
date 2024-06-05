@@ -48,7 +48,11 @@ export default async function ServerCharacters({ params }: { params: Params }) {
 
       return (
         <Fragment>
-          <RowWrapper justify="justify-between">
+          <RowWrapper
+            breakPoint="sm"
+            justify="justify-start sm:justify-between"
+            align="content-start sm:content-center items-start sm:items-center"
+          >
             {characters.length > 0 || characterConfig.enable_creation ? (
               <Link href={`/server/${id}/characters/create`}>
                 <Button className="btn-primary">Create new</Button>

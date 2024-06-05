@@ -4,7 +4,6 @@ import TextInput from "@/app/_components/inputs/TextInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightImageOutlineRounded from "@/public/icons/MaterialSymbolsLightImageOutlineRounded";
-import { useState } from "react";
 
 export default function BaseForm({
   isPending,
@@ -22,7 +21,7 @@ export default function BaseForm({
   >;
 }) {
   return (
-    <RowWrapper justify="justify-items-start">
+    <RowWrapper breakPoint="sm" justify="flex-col-reverse justify-items-start">
       <div className="relative flex h-44 w-[10rem] items-center justify-center overflow-hidden border-[1px] border-black50">
         {
           /*Icon display priority: icon remove selected => icon uploaded => user original icon */
@@ -35,7 +34,7 @@ export default function BaseForm({
           )
         }
         <FileInput
-          id="server-icon"
+          id="character-portrait"
           accept=".jpg, .png, .svg, .gif"
           labelElement={
             <MaterialSymbolsLightImageOutlineRounded className="text-2xl" />
@@ -50,7 +49,7 @@ export default function BaseForm({
         />
       </div>
       <ColumnWrapper align="items-start">
-        <RowWrapper className="text-xl">
+        <RowWrapper className="flex-wrap text-xl">
           <label htmlFor="character-name">Character name</label>
           <TextInput
             id="character-name"

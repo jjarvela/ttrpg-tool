@@ -5,6 +5,7 @@ import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightCheckCircleOutlineRounded from "@/public/icons/MaterialSymbolsLightCheckCircleOutlineRounded";
 import MaterialSymbolsLightContentCopyOutlineRounded from "@/public/icons/MaterialSymbolsLightContentCopyOutlineRounded";
 import MaterialSymbolsLightDeleteOutlineRounded from "@/public/icons/MaterialSymbolsLightDeleteOutlineRounded";
+import { getLocationOrigin } from "next/dist/shared/lib/utils";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 
@@ -25,7 +26,7 @@ export default function InvitationObject({
   const router = useRouter();
   const [error, setError] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl = getLocationOrigin();
   return (
     <Fragment>
       <RowWrapper>

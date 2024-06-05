@@ -38,6 +38,7 @@ export default async function ServerCharacterDisplay({
             width={40}
             isActive={owner.user!.socket_id ? true : false}
             image={owner.icon || owner.user!.profile_image || undefined}
+            className="hidden md:block"
           />
         </UsernameHover>
       );
@@ -49,11 +50,11 @@ export default async function ServerCharacterDisplay({
 
   return (
     <ColumnWrapper
-      className="bg-color-default border-50 w-[50vw] gap-0 rounded-lg border-[1px] p-0 lg:w-[24rem]"
+      className="bg-color-default border-50 w-[50vw] gap-0 overflow-hidden rounded-lg border-[1px] p-0 lg:w-[24rem]"
       align="content-start items-start"
     >
       <RowWrapper className="w-full px-2 pt-4" align="items-start">
-        <div className="relative h-[7rem] w-[6rem] flex-shrink-0 overflow-hidden border-[1px] border-black50">
+        <div className="relative hidden h-[7rem] w-[6rem] flex-shrink-0 overflow-hidden border-[1px] border-black50 sm:block">
           {character.base.image && (
             <CharacterPortrait
               filename={character.base.image}

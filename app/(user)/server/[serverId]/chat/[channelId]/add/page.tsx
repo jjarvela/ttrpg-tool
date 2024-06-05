@@ -70,7 +70,7 @@ export default async function AddMembersToChannel({
   );
 
   return (
-    <Main className="content-center items-center justify-center text-center">
+    <Main className="w-full content-center items-center justify-center text-center">
       {element}
     </Main>
   );

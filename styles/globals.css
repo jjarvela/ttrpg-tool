@@ -18,6 +18,11 @@
     @apply bg-black25 dark:bg-black;
   }
 
+  .bg-monochrome-gradient {
+    background: var(--light-mode-gradient);
+    background-color: #fff;
+  }
+
   .bg-gradient-light {
     background: var(--primary-to-light);
     background-color: #d9ebd1;
@@ -166,6 +171,12 @@ textarea:-webkit-autofill {
     #8f8d8f 0px 2px 4px;
 }
 
+.mini-link {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
 @media (prefers-color-scheme: dark) {
   input:-internal-autofill-selected,
   input:-internal-autofill-previewed,
@@ -192,5 +203,10 @@ textarea:-webkit-autofill {
     box-shadow:
       #1f1c20 0px 1px 0px,
       #1f1c20 0px 2px 4px;
+  }
+
+  .bg-monochrome-gradient {
+    background: var(--dark-mode-gradient);
+    background-color: #575558;
   }
 }

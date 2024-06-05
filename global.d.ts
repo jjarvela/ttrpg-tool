@@ -111,6 +111,25 @@ type ServerCharacter = {
   items: string;
 };
 
+type GamePiece = {
+  id: string;
+  board_id: string;
+  character_id: string;
+  user_id: string;
+  style: number;
+  color: string;
+  position_x: number;
+  position_y: number;
+  character: {
+    class: string;
+    level: number;
+    base: {
+      name: string;
+      image: string | null;
+    };
+  };
+};
+
 type diceType = "d4" | "d6" | "d8" | "d10" | "d12" | "d20"
 
 type diceObject = {

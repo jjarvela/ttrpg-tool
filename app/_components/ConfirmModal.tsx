@@ -3,6 +3,7 @@ import ColumnWrapper from "./wrappers/ColumnWrapper";
 import RowWrapper from "./wrappers/RowWrapper";
 import Button from "./Button";
 import { twMerge } from "tailwind-merge";
+import Divider from "./Divider";
 
 type ConfirmModalProps = {
   refObject: React.RefObject<HTMLDialogElement>;
@@ -34,13 +35,20 @@ export default function ConfirmModal({
       ref={refObject}
       className="bg-transparent backdrop:bg-black backdrop:bg-opacity-50"
     >
-      <ColumnWrapper className="bg-color-dark text-color-default gap-0 rounded-lg border-[1px] border-black50 py-4">
-        <MaterialSymbolsLightCloseRounded
-          className="cursor-pointer self-end"
-          onClick={() => refObject.current?.close()}
-        />
+      <ColumnWrapper className="bg-color-dark text-color-default gap-0 rounded-lg border-[1px] border-black50 px-8 py-4">
+        <RowWrapper
+          justify="justify-between"
+          align="content-start items-start"
+          className="w-full border-b-[1px] border-black50 px-2"
+        >
+          <h5>Confirm</h5>
+          <MaterialSymbolsLightCloseRounded
+            className="cursor-pointer"
+            onClick={() => refObject.current?.close()}
+          />
+        </RowWrapper>
         {children}
-        <RowWrapper>
+        <RowWrapper className="mt-4">
           <Button
             className={twMerge("btn-primary", confirmButtonClass)}
             onClick={() => onConfirm()}

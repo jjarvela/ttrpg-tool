@@ -69,13 +69,13 @@ const SideMenu = async ({ className }: { className?: string }) => {
                 width={20}
                 height={20}
                 viewBox="0 0 20 20"
-                className="absolute -right-3 top-0 fill-primary"
+                className="absolute -right-3 top-0 fill-accent dark:fill-primary"
               >
                 <circle r={6} cx={8} cy={8} />
               </svg>
             )}
           </Link>
-          <ul className="scrollbar-thin max-h-[70%] overflow-y-auto overflow-x-hidden pr-2">
+          <ul className="scrollbar-thin ml-2 max-h-[70%] overflow-y-auto overflow-x-hidden pr-2">
             {servers.map((server) => (
               <li key={server.id}>
                 <MenuIconServer

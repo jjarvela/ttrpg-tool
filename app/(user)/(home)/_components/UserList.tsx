@@ -3,6 +3,7 @@ import { getUsersExcept } from "../../../../prisma/services/userService";
 import UserInfo from "../../../_components/UserInfo";
 import Link from "next/link";
 import FeedbackCard from "@/app/_components/FeedbackCard";
+import UserThumb from "./UserThumb";
 
 export default async function UserList({ user }: { user: string }) {
   const element: JSX.Element = await errorHandler(
@@ -18,24 +19,11 @@ export default async function UserList({ user }: { user: string }) {
 
       if (users.length < 1) return <p>No users</p>;
 
-      const listUsers = users.map((user) => {
-        return (
-          <li className="m-2 hover:bg-black25" key={user.id}>
-            <Link href={`/message/${user.id}`}>
-              <UserInfo
-                key={user.id}
-                username={user.username}
-                width={40}
-                image={user.profile_image ? user.profile_image : undefined}
-                isActive={user.socket_id ? true : false}
-                screen_name={user.screen_name || undefined}
-              />
-            </Link>
-          </li>
-        );
-      });
+      const listUsers = users.map((user) => (
+        <UserThumb key={user.id} user={user} />
+      ));
 
-      return <ul className="flex-grow">{listUsers}</ul>;
+      return <ul className="w-full flex-grow">{listUsers}</ul>;
     },
     () => {
       return <FeedbackCard type="error" message="Something went wrong." />;

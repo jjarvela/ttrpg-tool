@@ -43,7 +43,9 @@ export default function DeleteCharacterBaseButton({
           }
         }}
       >
-        <h5>Are you sure you wish to delete this character?</h5>
+        <h4 className="my-4">
+          Are you sure you wish to delete this character?
+        </h4>
         <p>
           The character will also be deleted from any server they are in use in.
         </p>
