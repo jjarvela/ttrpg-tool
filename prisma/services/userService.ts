@@ -62,6 +62,33 @@ export const getUsersByUsername = async (
   return user;
 };
 
+interface UserResult extends UserBasic {
+  blocklist: string[];
+}
+export const searchUsers = async (
+  searchTerm: string,
+): Promise<UserResult[]> => {
+  const users = db.user.findMany({
+    where: {
+      OR: [
+        { username: { contains: searchTerm, mode: "insensitive" } },
+        { screen_name: { contains: searchTerm, mode: "insensitive" } },
+      ],
+    },
+    select: {
+      id: true,
+      username: true,
+      screen_name: true,
+      profile_image: true,
+      person_status: true,
+      socket_id: true,
+      blocklist: true,
+    },
+  });
+
+  return users;
+};
+
 export const createUser = async (data: {
   email: string;
   username: string;
@@ -148,12 +175,39 @@ export const findUserBySocket = async (socket_id: string) => {
   return user;
 };
 
+export const getUserBlocklist = async (
+  user_id: string,
+): Promise<Omit<UserBasic, "person_status" | "socket_id">[]> => {
+  const blocklist = await db.user.findUniqueOrThrow({
+    where: { id: user_id },
+    select: { blocklist: true },
+  });
+
+  if (blocklist.blocklist.length < 1) {
+    return [];
+  }
+
+  const users = await db.user.findMany({
+    where: {
+      id: { in: blocklist.blocklist },
+    },
+    select: {
+      id: true,
+      username: true,
+      screen_name: true,
+      profile_image: true,
+    },
+  });
+
+  return users;
+};
+
 /**
  * Add user to another user's blocklist
  * @param user_id - string
  * @param target_id  - string
  */
-export const blockUser = async (
+export const addToBlocklist = async (
   user_id: string,
   target_id: string,
 ): Promise<void> => {
@@ -175,7 +229,7 @@ export const blockUser = async (
  * @param user_id - string
  * @param target_id - string
  */
-export const unblockUser = async (
+export const removeFromBlocklist = async (
   user_id: string,
   target_id: string,
 ): Promise<void> => {
