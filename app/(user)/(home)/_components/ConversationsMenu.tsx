@@ -10,6 +10,7 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import ActiveUserDisplay from "@/app/_components/ActiveUserDisplay";
 import TextInput from "@/app/_components/inputs/TextInput";
 import UserSideNav from "./UserSideNav";
+import { getUserReceivedRequests } from "@/prisma/services/friendService";
 
 export default async function ConversationsMenu() {
   const session = await auth();
@@ -39,9 +40,13 @@ export default async function ConversationsMenu() {
         return notifications.filter((item) => item.conversation_id === id);
       };
 
+      const friendRequests = await getUserReceivedRequests(
+        (session as ExtendedSession).userId,
+      );
+
       return (
         <ColumnWrapper className="h-full flex-grow p-0">
-          <UserSideNav friendRequests={[]} />
+          <UserSideNav friendRequests={friendRequests} />
           <h4>Direct messages</h4>
           <TextInput
             placeholder="Search conversations..."

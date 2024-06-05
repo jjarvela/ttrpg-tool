@@ -29,7 +29,7 @@ export default function UserSideMenuLink({
           width={20}
           height={20}
           viewBox="0 0 20 20"
-          className="absolute -right-3 top-0 fill-accent dark:fill-primary"
+          className="absolute right-3 top-0 fill-accent dark:fill-primary"
         >
           <circle r={6} cx={8} cy={8} />
         </svg>
