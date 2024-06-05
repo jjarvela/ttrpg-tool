@@ -1,10 +1,11 @@
 import Main from "../../_components/wrappers/PageMain";
 import { auth } from "@/auth";
-import { getUsersExcept } from "@/prisma/services/userService";
 import errorHandler from "@/utils/errorHandler";
 import { redirect } from "next/navigation";
 import { Fragment } from "react";
 import UserThumb from "./_components/UserThumb";
+import { getUserFriends } from "@/prisma/services/friendService";
+import FriendOptionsElement from "./_components/FriendOptionsElement";
 
 export default async function Home() {
   const session = await auth();
@@ -14,35 +15,57 @@ export default async function Home() {
 
   const element: JSX.Element = await errorHandler(
     async () => {
-      const users = await getUsersExcept((session as ExtendedSession).userId, {
-        screen_name: true,
-        username: true,
-        profile_image: true,
-        person_status: true,
-        socket_id: true,
-      });
+      const friendList = await getUserFriends(
+        (session as ExtendedSession).userId,
+      );
 
-      if (users.length < 1) return <p>No users</p>;
+      if (friendList.length < 1)
+        return <p>{"You haven't added any friends yet."}</p>;
 
-      const online = users.filter((person) => person.socket_id !== null);
+      const online = friendList.filter((person) => person.socket_id !== null);
 
-      const offline = users.filter((person) => person.socket_id === null);
+      const offline = friendList.filter((person) => person.socket_id === null);
 
       return (
         <Fragment>
           <h3>Online</h3>
 
           {online.length > 0 &&
-            online.map((user) => <UserThumb key={user.id} user={user} />)}
+            online.map((user) => (
+              <UserThumb
+                key={user.id}
+                user={user}
+                optionsElement={
+                  <FriendOptionsElement
+                    name={user.screen_name || user.username}
+                    user_id={user.id}
+                  />
+                }
+              />
+            ))}
 
           <h3>Offline</h3>
 
           {offline.length > 0 &&
-            offline.map((user) => <UserThumb key={user.id} user={user} />)}
+            offline.map((user) => (
+              <UserThumb
+                key={user.id}
+                user={user}
+                optionsElement={
+                  <FriendOptionsElement
+                    name={user.screen_name || user.username}
+                    user_id={user.id}
+                  />
+                }
+              />
+            ))}
         </Fragment>
       );
     },
-    () => <p className="text-warning">Something went wrong</p>,
+    (e) => {
+      console.log(e);
+      return <p className="text-warning">Something went wrong</p>;
+    },
   );
 
   return (
