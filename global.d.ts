@@ -153,6 +153,7 @@ type UserSelect = {
   person_description?: boolean;
   profile_image?: boolean;
   person_status?: boolean;
+  blocklist?: boolean;
 };
 
 type ServerDataSelect = {
