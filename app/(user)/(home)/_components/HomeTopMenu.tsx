@@ -40,8 +40,8 @@ export default function HomeTopMenu({
         </Link>
         <Link
           className="relative font-heading text-lg aria-[current=page]:text-primary"
-          href={"/"}
-          aria-current={pathname === "/friends/pending" ? "page" : undefined}
+          href={"/friends/requests"}
+          aria-current={pathname === "/friends/requests" ? "page" : undefined}
         >
           {friendRequests.length > 0 && (
             <svg
@@ -57,13 +57,15 @@ export default function HomeTopMenu({
         </Link>
         <Link
           className="font-heading text-lg aria-[current=page]:text-primary"
-          href={"/"}
-          aria-current={pathname === "/blocked" ? "page" : undefined}
+          href={"/blocklist"}
+          aria-current={pathname === "/blocklist" ? "page" : undefined}
         >
           Blocked
         </Link>
       </RowWrapper>
-      <Button className="btn-primary">Add friend</Button>
+      <Link href={"/friends/add"}>
+        <Button className="btn-primary">Add friend</Button>
+      </Link>
     </RowWrapper>
   );
 }
