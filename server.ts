@@ -123,6 +123,14 @@ app.prepare().then(() => {
       },
     );
 
+    socket.on("friend-request-event", async (recipient_id: string) => {
+      const recipient = await getUserById(recipient_id, { socket_id: true });
+
+      if (recipient.socket_id) {
+        socket.to(recipient.socket_id).emit("client-refresh");
+      }
+    });
+
     socket.on("join-note-server", (serverId) => {
       socket.join(serverId);
     });
