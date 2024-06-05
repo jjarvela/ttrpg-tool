@@ -189,6 +189,22 @@ export const getRequestById = async (
   return request;
 };
 
+export const getFriendRequestByUsers = async (
+  uid1: string,
+  uid2: string,
+): Promise<FriendRequest | null> => {
+  const existing = await db.friendRequest.findFirst({
+    where: {
+      OR: [
+        { requester_id: uid1, recipient_id: uid2 },
+        { requester_id: uid2, recipient_id: uid1 },
+      ],
+    },
+  });
+
+  return existing;
+};
+
 export const deleteRequest = async (
   request_id: number,
 ): Promise<FriendRequest> => {
