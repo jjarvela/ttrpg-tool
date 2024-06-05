@@ -2,18 +2,24 @@
 
 import { auth } from "@/auth";
 import { isFriend } from "@/prisma/services/friendService";
-import { searchUsers } from "@/prisma/services/userService";
+import { getUserById, searchUsers } from "@/prisma/services/userService";
 
 export default async function searchForUsers(search_term: string) {
   const session = await auth();
 
   if (!session) throw new Error("Something went wrong");
 
+  const user = await getUserById((session as ExtendedSession).userId, {
+    blocklist: true,
+  });
+
   const users = await searchUsers(search_term);
 
-  //filter out any users that have the searched blocked
+  //filter out any users that have the searched blocked, or that the searcher has blocked
   const filtered = users.filter(
-    (user) => user.blocklist.indexOf((session as ExtendedSession).userId) < 0,
+    (target) =>
+      target.blocklist.indexOf(user.id) < 0 &&
+      user.blocklist.indexOf(target.id) < 0,
   );
 
   const result = await Promise.all(
