@@ -62,7 +62,7 @@ type ServerMember = {
   role: string;
   nickname: string | null;
   icon: string | null;
-  user?: UserDetailed;
+  user?: Omit<UserDetailed, "id" | "person_description">;
 };
 
 type Notif = {
