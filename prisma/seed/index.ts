@@ -6,13 +6,26 @@ const prisma = new PrismaClient();
 async function runSeeders() {
   // Users
   await Promise.all(
-    Users.map(async (user) =>
-      prisma.user.upsert({
+    Users.map(async (user) => {
+      await prisma.user.upsert({
         where: { username: user.username },
         update: {},
         create: user,
-      }),
-    ),
+      });
+    }),
+  );
+
+  const users = await prisma.user.findMany();
+
+  //Friend lists
+  await Promise.all(
+    users.map(async (user) => {
+      await prisma.friendList.upsert({
+        where: { owner_id: user.id },
+        update: {},
+        create: { owner_id: user.id },
+      });
+    }),
   );
 }
 

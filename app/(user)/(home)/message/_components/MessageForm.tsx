@@ -1,7 +1,7 @@
 "use client";
 
 import addMessage from "../../../../../actions/directMessageActions/addMessage";
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition, useEffect } from "react";
 import TextAreaInput from "../../../../_components/inputs/TextAreaInput";
 import { useRouter } from "next/navigation";
 import { sendMessage } from "@/socket";
@@ -15,6 +15,7 @@ export default function MessageForm({ userId, receiverId }: FormProp) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
   const [textArea, setTextArea] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const userIds = [userId, receiverId];
 
@@ -26,6 +27,16 @@ export default function MessageForm({ userId, receiverId }: FormProp) {
   };
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (formSubmitted) {
+      if (ref.current) {
+        ref.current.focus();
+      }
+      setFormSubmitted(false);
+    }
+  }, [formSubmitted]);
+
   return (
     <form
       action={async (formData) => {
@@ -33,10 +44,10 @@ export default function MessageForm({ userId, receiverId }: FormProp) {
           const message = await addMessage(userIds, formData);
           if (typeof message === "string") return;
           sendMessage(userId, message.uid, message.conversation_uid);
-          ref.current?.focus();
           setTextArea("");
           router.refresh();
         });
+        setFormSubmitted(true);
       }}
       className=""
     >

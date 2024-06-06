@@ -1,23 +1,11 @@
+import { User } from "@prisma/client";
 import changeUserInfo from "../../../../actions/userManagement/changeUserInfo";
 import Button from "../../../_components/Button";
 import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
 import SettingsTextInput from "./SettingsTextInput";
 import SettingsTimezoneInput from "./SettingsTimezoneInput";
 
-type user = {
-  id: string;
-  username: string;
-  password_hash: string;
-  email: string;
-  emailVerified: Date | null;
-  created_at: Date;
-  screen_name: string | null;
-  timezone: string | null;
-  person_description: string | null;
-  profile_image: string | null;
-};
-
-export default function AccountInfo({ user }: { user: user }) {
+export default function AccountInfo({ user }: { user: User }) {
   return (
     <section id="account" className="w-[30em] lg:w-[80%]">
       <h1>Account Information</h1>
