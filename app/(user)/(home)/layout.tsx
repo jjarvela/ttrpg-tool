@@ -1,7 +1,7 @@
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
-import HomeClientWrapper from "./_components/HomeClientWrapper";
-import ConversationsMenu from "./_components/ConversationsMenu";
-import HomeTopMenu from "./_components/HomeTopMenu";
+import HomeClientWrapper from "./_components/homeNavElements/HomeClientWrapper";
+import ConversationsMenu from "./_components/homeNavElements/ConversationsMenu";
+import HomeTopMenu from "./_components/homeNavElements/HomeTopMenu";
 import { auth } from "@/auth";
 import errorHandler from "@/utils/errorHandler";
 import { getUserReceivedRequests } from "@/prisma/services/friendService";

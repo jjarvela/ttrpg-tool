@@ -4,8 +4,15 @@ import errorHandler from "@/utils/errorHandler";
 import { redirect } from "next/navigation";
 import { Fragment } from "react";
 import UserThumb from "./_components/UserThumb";
-import { getUserFriends } from "@/prisma/services/friendService";
+import {
+  getUserFriends,
+  getUserPendingRequests,
+} from "@/prisma/services/friendService";
 import FriendOptionsElement from "./_components/FriendOptionsElement";
+import FriendListNavWrapper from "./_components/friendListDisplay/FriendListNavWrapper";
+import OnlineList from "./_components/friendListDisplay/OnlineList";
+import AllList from "./_components/friendListDisplay/AllList";
+import PendingRequestsList from "./_components/friendListDisplay/PendingRequestsList";
 
 export default async function Home() {
   const session = await auth();
@@ -19,47 +26,30 @@ export default async function Home() {
         (session as ExtendedSession).userId,
       );
 
-      if (friendList.length < 1)
-        return <p>{"You haven't added any friends yet."}</p>;
+      const pending = await getUserPendingRequests(
+        (session as ExtendedSession).userId,
+      );
+
+      if (friendList.length < 1) {
+        return (
+          <FriendListNavWrapper
+            onlineList={<p>{"You haven't added any friends yet."}</p>}
+            allList={<p>{"You haven't added any friends yet."}</p>}
+            pendingList={<PendingRequestsList pending={pending} />}
+          />
+        );
+      }
 
       const online = friendList.filter((person) => person.socket_id !== null);
 
       const offline = friendList.filter((person) => person.socket_id === null);
 
       return (
-        <Fragment>
-          <h3>Online</h3>
-
-          {online.length > 0 &&
-            online.map((user) => (
-              <UserThumb
-                key={user.id}
-                user={user}
-                optionsElement={
-                  <FriendOptionsElement
-                    name={user.screen_name || user.username}
-                    user_id={user.id}
-                  />
-                }
-              />
-            ))}
-
-          <h3>Offline</h3>
-
-          {offline.length > 0 &&
-            offline.map((user) => (
-              <UserThumb
-                key={user.id}
-                user={user}
-                optionsElement={
-                  <FriendOptionsElement
-                    name={user.screen_name || user.username}
-                    user_id={user.id}
-                  />
-                }
-              />
-            ))}
-        </Fragment>
+        <FriendListNavWrapper
+          onlineList={<OnlineList users={online} />}
+          allList={<AllList online={online} offline={offline} />}
+          pendingList={<PendingRequestsList pending={pending} />}
+        />
       );
     },
     (e) => {
