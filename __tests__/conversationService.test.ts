@@ -49,29 +49,6 @@ const messages = [
   },
 ];
 
-// const data3 = {
-//   uid: "12345gjdskri6789",
-//   channel_id: null,
-//   created_at: new Date("2024-05-22 11:50:54.154"),
-//   messages: [
-//     {
-//       uid: "clwhrj9ip0",
-//       conversation_uid: "12345gjdskri6789",
-//       sender_id: "clwg08vaf000099",
-//       message: "ddff",
-//       created_at: new Date("2024-05-22T11:50:54.154"),
-//     },
-//     {
-//       uid: "clwhrl2zg0",
-//       conversation_uid: "12345gjdskri6789",
-//       sender_id: "clwg08vaf000099",
-//       message: "dd",
-//       created_at: new Date("2024-05-22T11:52:19.036"),
-//     },
-//   ],
-//   channel: null,
-// };
-
 test("should return conversation uid of two participants", async () => {
   const conversationUid = { uid: conversationData.uid };
 
@@ -254,8 +231,3 @@ test("should return conversation uid by channel id", async () => {
     uid: conversationData.uid,
   });
 });
-
-// set up error
-// mockImplementation(() => {
-//   throw new Error('There was an error.')
-// })
