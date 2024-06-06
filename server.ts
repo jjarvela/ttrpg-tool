@@ -28,7 +28,6 @@ app.prepare().then(() => {
 
   io.on("connection", (socket) => {
     socket.on("send-user", (user_id: string) => {
-      console.log("updating user");
       socket.data.userId = user_id;
       //when user has connected, add user's socket id to db (can be used to send events and check active status)
       updateUser(user_id, { socket_id: socket.id }).then((user) => {
@@ -43,7 +42,6 @@ app.prepare().then(() => {
         message_id: string;
         conversation_id: string;
       }) => {
-        console.log(data.conversation_id);
         const conversation = await getConversationByUid(
           data.conversation_id,
           false,
@@ -71,7 +69,6 @@ app.prepare().then(() => {
               channel_id: conversation.channel_id || undefined,
               server_id: conversation.channel?.server_id || undefined,
             });
-            console.log(notification);
             if (recipient && typeof recipient !== "string") {
               //if recipient has a socket_id set, send event to their socket
               recipient.socket_id &&
