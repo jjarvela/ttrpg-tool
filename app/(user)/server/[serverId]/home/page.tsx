@@ -39,6 +39,7 @@ export default async function ServerHome({ params }: { params: Params }) {
           level: true,
           vitals: true,
           vitals_max: true,
+          class: true,
         },
         base: {
           name: true,
@@ -56,14 +57,16 @@ export default async function ServerHome({ params }: { params: Params }) {
   console.log(latestCharacters);
 
   return (
-    <Main className="grid grid-cols-1 grid-rows-3 gap-4 p-6 md:grid-rows-2 lg:grid-cols-2">
+    <Main className="grid grid-cols-1 grid-rows-3 gap-4 p-6 md:grid-rows-3 lg:grid-flow-col lg:grid-cols-2">
       {newMessages && newMessages.length > 0 ? (
         <LatestMessages newMessages={newMessages} serverId={serverId} />
       ) : (
-        <div className="overflow-auto bg-black75 p-5">No new messages</div>
+        <div className="grid overflow-auto bg-black75 p-5">No new messages</div>
       )}
-      <LatestNotes />
-      <div className="scrollbar-thin flex flex-col overflow-auto bg-black75 p-5">
+      <div className="grid lg:row-span-2">
+        <HomeCharacters latestCharacters={latestCharacters} />
+      </div>
+      <div className="scrollbar-thin grid overflow-auto bg-black75 p-5 lg:h-60">
         <h2 className="mx-auto mb-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
           Online Users
         </h2>
@@ -71,7 +74,9 @@ export default async function ServerHome({ params }: { params: Params }) {
           user={session ? (session as ExtendedSession).userId : ""}
         />
       </div>
-      <HomeCharacters latestCharacters={latestCharacters} />
+      <div className="grid">
+        <LatestNotes />
+      </div>
     </Main>
   );
 }
