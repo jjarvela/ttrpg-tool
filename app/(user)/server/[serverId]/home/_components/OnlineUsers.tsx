@@ -22,7 +22,10 @@ export default async function OnlineUsers({ user }: { user: string }) {
         // .filter((user) => user.socket_id)
         .map((user) => {
           return (
-            <div className="m-2 hover:bg-black25" key={user.id}>
+            <div
+              className="m-2 text-black85 hover:bg-black50 dark:hover:bg-black25"
+              key={user.id}
+            >
               <Link href={`/message/${user.id}`}>
                 <UserInfo
                   key={user.id}
@@ -37,7 +40,7 @@ export default async function OnlineUsers({ user }: { user: string }) {
           );
         });
 
-      return <div className="grid grid-cols-2 lg:grid-cols-3">{listUsers}</div>;
+      return <div className="grid grid-cols-2 xl:grid-cols-3">{listUsers}</div>;
     },
     () => {
       return <FeedbackCard type="error" message="Something went wrong." />;

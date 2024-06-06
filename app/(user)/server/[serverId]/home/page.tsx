@@ -61,13 +61,15 @@ export default async function ServerHome({ params }: { params: Params }) {
       {newMessages && newMessages.length > 0 ? (
         <LatestMessages newMessages={newMessages} serverId={serverId} />
       ) : (
-        <div className="grid overflow-auto bg-black75 p-5">No new messages</div>
+        <div className="grid overflow-auto bg-black25 p-5 dark:bg-black75">
+          No new messages
+        </div>
       )}
       <div className="grid lg:row-span-2">
         <HomeCharacters latestCharacters={latestCharacters} />
       </div>
-      <div className="scrollbar-thin grid overflow-auto bg-black75 p-5 lg:h-60">
-        <h2 className="mx-auto mb-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
+      <div className="scrollbar-thin grid overflow-auto bg-black25 p-5 lg:h-60 dark:bg-black75">
+        <h2 className="mx-auto mb-2 text-lg font-semibold text-gray-800 dark:text-white">
           Online Users
         </h2>
         <OnlineUsers

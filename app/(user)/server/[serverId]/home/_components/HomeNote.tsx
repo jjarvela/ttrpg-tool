@@ -66,7 +66,7 @@ export default function HomeNote({
 
   return (
     <div
-      className={`flex h-[140px] w-[140px] flex-col border border-black50 bg-green-800 p-1 shadow-xl`}
+      className={`flex h-[140px] w-[140px] flex-col border border-black50 bg-primary p-1 shadow-xl`}
       style={style}
     >
       <div className="mb-2 flex justify-center text-center">

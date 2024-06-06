@@ -47,9 +47,9 @@ const LatestMessages = ({ newMessages, serverId }: LatestMessagesProps) => {
   };
 
   return (
-    <div className="scrollbar-thin relative flex flex-col overflow-auto bg-black75 px-5">
-      <div className="sticky top-0 flex w-full bg-black75">
-        <h2 className="mx-auto text-lg font-semibold text-gray-800 dark:text-gray-200">
+    <div className="scrollbar-thin relative flex flex-col overflow-auto bg-black25 px-5 dark:bg-black75">
+      <div className="sticky top-0 flex w-full bg-black25 dark:bg-black75">
+        <h2 className="mx-auto text-lg font-semibold text-gray-800 dark:text-white">
           New Messages
         </h2>
       </div>
@@ -57,22 +57,20 @@ const LatestMessages = ({ newMessages, serverId }: LatestMessagesProps) => {
         {latestMessages.map((message, index) => (
           <div
             key={message.message.uid}
-            className="rounded-lg bg-black85 p-4 shadow"
+            className="rounded-lg bg-black50 p-4 shadow dark:bg-black85"
             style={index === 0 ? messageStyle : undefined}
           >
             <h5 className="mb-1 text-sm font-bold text-white">
               {message.message.sender.username}{" "}
               <Link
                 href={`/server/${serverId}/chat/${message.channel.uid}`}
-                className="text-blue-500 hover:text-blue-700"
+                className="text-blue-700 hover:text-blue-900 dark:text-blue-500 dark:hover:text-blue-700"
               >
                 @{message.channel.channel_name}
               </Link>
             </h5>
-            <p className="mb-1 text-xs text-black25">
-              {message.message.message}
-            </p>
-            <p className="text-xs text-black50">
+            <p className="mb-1 text-xs text-white">{message.message.message}</p>
+            <p className="text-xs text-black25">
               {message.message.created_at.toLocaleTimeString()}
             </p>
           </div>

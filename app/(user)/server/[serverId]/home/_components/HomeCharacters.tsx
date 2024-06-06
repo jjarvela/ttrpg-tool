@@ -26,14 +26,14 @@ export default function HomeCharacters({
   }, [latestCharacters]);
 
   return (
-    <div className="scrollbar-thin flex flex-col gap-4 overflow-auto bg-black75 p-4">
-      <h3 className="mx-auto text-lg font-bold text-white">
+    <div className="scrollbar-thin flex flex-col gap-4 overflow-auto bg-black25 p-4 dark:bg-black75">
+      <h3 className="mx-auto text-lg font-bold dark:text-white">
         Latest Characters
       </h3>
       {latestCharacters.map((character) => (
         <div
           key={character.base.name}
-          className="flex flex-row rounded-lg bg-black85 p-4 shadow"
+          className="flex flex-row rounded-lg bg-black50 p-4 shadow dark:bg-black85"
         >
           <div className="me-4 flex">
             <img
@@ -46,13 +46,17 @@ export default function HomeCharacters({
             <p className="text-sm font-bold text-white">
               {character.base.name}
             </p>
-            <p className="text-sm text-black25">
+            <p className="text-sm text-white dark:text-black25">
               HP: {character.vitals}/{character.vitals_max}
             </p>
           </div>
           <div className="flex flex-auto flex-col items-end">
-            <p className="text-sm text-black25">{character.class}</p>
-            <p className="text-sm text-black25">Level {character.level}</p>
+            <p className="text-sm text-white dark:text-black25">
+              {character.class}
+            </p>
+            <p className="text-sm text-white dark:text-black25">
+              Level {character.level}
+            </p>
           </div>
         </div>
       ))}
