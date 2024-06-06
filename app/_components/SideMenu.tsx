@@ -14,6 +14,7 @@ import Link from "next/link";
 import { getUnreadForUser } from "@/prisma/services/notificationService";
 import errorHandler from "@/utils/errorHandler";
 import { redirect } from "next/navigation";
+import { getUserReceivedRequests } from "@/prisma/services/friendService";
 
 //global types file doesn't like imports so we're declaring this here for now
 declare global {
@@ -50,6 +51,10 @@ const SideMenu = async ({ className }: { className?: string }) => {
 
       const serversWithUnread = notifications.map((item) => item.server_id);
 
+      const friendRequests = await getUserReceivedRequests(
+        (session as ExtendedSession).userId,
+      );
+
       return (
         <ColumnWrapper
           align="items-center"
@@ -64,7 +69,7 @@ const SideMenu = async ({ className }: { className?: string }) => {
               width={40}
               height={40}
             />
-            {unreadNoServer.length > 0 && (
+            {(unreadNoServer.length > 0 || friendRequests.length > 0) && (
               <svg
                 width={20}
                 height={20}

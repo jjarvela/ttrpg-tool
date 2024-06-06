@@ -1,3 +1,26 @@
+interface UserBasic {
+  id: string;
+  username: string;
+  screen_name: string | null;
+  profile_image: string | null;
+  person_status: string | null;
+  socket_id: string | null;
+}
+
+interface UserDetailed extends UserBasic {
+  person_description: string | null;
+  timezone: string | null;
+  share_timezone: boolean | null;
+}
+
+type FriendRequest = {
+  id: number;
+  requester_id: string;
+  recipient_id: string;
+  requester: Omit<UserBasic, "id" | "person_status" | "socket_id">;
+  recipient: Omit<UserBasic, "id" | "person_status" | "socket_id">;
+};
+
 type ServerAuth = {
   id: number;
   server_id: string;
@@ -39,15 +62,7 @@ type ServerMember = {
   role: string;
   nickname: string | null;
   icon: string | null;
-  user?: {
-    username: string;
-    screen_name: string | null;
-    timezone: string | null;
-    share_timezone: boolean | null;
-    profile_image: string | null;
-    person_status: string | null;
-    socket_id: string | null;
-  };
+  user?: Omit<UserDetailed, "id" | "person_description">;
 };
 
 type Notif = {
@@ -146,6 +161,7 @@ type UserSelect = {
   person_description?: boolean;
   profile_image?: boolean;
   person_status?: boolean;
+  blocklist?: boolean;
 };
 
 type ServerDataSelect = {

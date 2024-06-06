@@ -21,16 +21,19 @@ export default async function editServerInfo(
 ) {
   //get updater information to check their privileges before allowing updates
   const updater = await getServerMember(serverConfig.server_id, userId);
-  if (!updater || typeof updater === "string")
-    return "An unexpected error occurred.";
-  const auth = await checkAuthMatch(updater, serverConfig);
 
-  if (!auth)
-    return "You don't have the required permissions to alter these settings.";
+  const auth = checkAuthMatch(updater, serverConfig);
+
+  if (!auth) {
+    throw new Error(
+      "You don't have the required permissions to alter these settings.",
+    );
+  }
   try {
     const result = await updateServerData(serverConfig.server_id, data);
     return result;
   } catch (e) {
-    return (e as Error).message;
+    console.error(e);
+    throw new Error("Something went wrong");
   }
 }

@@ -30,18 +30,18 @@ export default function LayoutClientWrapper({
     pathname.includes("/boards") && !pathname.endsWith("/boards" || "/create");
 
   return (
-    <div className="flex w-[90vw] overflow-hidden sm:w-[100vw]">
+    <div className="relative flex w-[90vw] overflow-hidden sm:w-[100vw]">
       {/*server inner nav*/}
       <RowWrapper
         className={twMerge(
-          "gap-0 lg:w-[14.5rem]",
-          showInnerNav ? "w-[14.5rem]" : "",
+          "absolute h-full gap-0 lg:relative lg:w-[13.5em] lg:flex-shrink-0",
+          showInnerNav ? "w-[13.5em] flex-shrink-0 md:relative" : "",
         )}
       >
         <div
           id="inner-nav-container"
           className={twMerge(
-            "h-full w-full lg:block",
+            "bg-color-default z-50 h-full w-full lg:block",
             showInnerNav ? "block" : "hidden",
           )}
         >
@@ -49,7 +49,7 @@ export default function LayoutClientWrapper({
         </div>
         <div
           id="inner-nav-toggle"
-          className="flex h-[5%] cursor-pointer flex-col rounded-r-lg bg-black50 text-lg lg:hidden"
+          className="z-50 flex h-[5%] cursor-pointer flex-col rounded-r-lg bg-black50 text-lg lg:hidden"
         >
           <MaterialSymbolsLightChevronLeftRounded
             className={twMerge(

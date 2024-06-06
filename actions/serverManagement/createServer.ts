@@ -33,8 +33,6 @@ export default async function createServer(
     image: data.image || undefined,
   });
 
-  console.log(server);
-
   const password_hash = await bcrypt.hash(String(data.password), 10);
 
   const serverConfig = await createServerConfig({
@@ -47,15 +45,11 @@ export default async function createServer(
     join_permission: data.joinPermission,
   });
 
-  console.log(serverConfig);
-
   const serverOwner = await createServerMember({
     server_id: server.id,
     member_id: user_id,
     role: "admin",
   });
-
-  console.log(serverOwner);
 
   const serverCharacterConfig = await createServerCharacterConfig(server.id, {
     vitals_count: 1,
@@ -65,8 +59,6 @@ export default async function createServer(
     statics_count: 2,
     statics_names: ["Stealth", "Persuasion"],
   });
-
-  console.log(serverCharacterConfig);
 
   return server;
 }
