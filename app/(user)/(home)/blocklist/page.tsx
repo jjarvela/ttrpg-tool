@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { getUserBlocklist } from "@/prisma/services/userService";
 import errorHandler from "@/utils/errorHandler";
 import { redirect } from "next/navigation";
+import BlockedUserThumb from "./_components/BlockedUserThumb";
 
 export default async function BlocklistPage() {
   const session = await auth();
@@ -24,7 +25,7 @@ export default async function BlocklistPage() {
       return (
         <ColumnWrapper>
           {blocklist.map((user) => (
-            <p key={user.id}>{user.username}</p>
+            <BlockedUserThumb key={user.id} user={user} />
           ))}
         </ColumnWrapper>
       );
