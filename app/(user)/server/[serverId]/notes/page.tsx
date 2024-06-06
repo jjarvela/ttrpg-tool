@@ -22,13 +22,17 @@ import handleNotePositionChange from "@/actions/notesManagement/handleNotePositi
 export interface NoteData {
   id: string;
   author: string;
+  authorUser: {
+    username: string;
+    profile_image: string | null;
+  };
   server_id: string;
   documentName: string;
   positionX: number;
   positionY: number;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const dropAreaSize: React.CSSProperties = {
@@ -50,7 +54,7 @@ export default function ServerNotes() {
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>([]);
   const [user, setUser] = useState<{
-    username: string;
+    id: string;
     profile_image: string | null;
   } | null>(null);
   const mouseSensor = useSensor(MouseSensor);
@@ -78,6 +82,7 @@ export default function ServerNotes() {
         if (serverId) {
           const data = await handleGetAllNotes(serverId);
           setNotes(data);
+          console.log(data);
         } else {
           // Handle the case when serverId is null
         }
@@ -233,7 +238,7 @@ export default function ServerNotes() {
                 key={note.id}
                 note={note}
                 currentUser={{
-                  username: user?.username,
+                  username: user?.id,
                   profile_image: user?.profile_image,
                 }}
               />

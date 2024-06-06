@@ -4,6 +4,8 @@ import { currentUserType } from "../../notes/_components/note";
 import { useCallback, useEffect, useState } from "react";
 import handleNoteContentChange from "@/actions/notesManagement/updateNote";
 import { socket } from "@/socket";
+import MaterialSymbolsProfile from "@/public/icons/MaterialSymbolsProfile";
+import ClientIcon from "./ClientIcon";
 
 const NoteSize = {
   width: "140px",
@@ -19,8 +21,16 @@ export default function HomeNote({
   styles?: React.CSSProperties;
   currentUser: currentUserType;
 }) {
-  const { id, server_id, author, documentName, content, positionX, positionY } =
-    note;
+  const {
+    id,
+    server_id,
+    author,
+    documentName,
+    content,
+    positionX,
+    positionY,
+    authorUser,
+  } = note;
 
   const isCurrentUserAuthor = author === currentUser.username;
 
@@ -69,8 +79,21 @@ export default function HomeNote({
       className={`flex h-[140px] w-[140px] flex-col border border-black50 bg-primary p-1 shadow-xl`}
       style={style}
     >
-      <div className="mb-2 flex justify-center text-center">
-        <p className="text-sm">{author}</p>
+      <div className="mb-2 flex">
+        <div className="me-2 flex h-8 w-8 justify-start">
+          {authorUser.profile_image ? (
+            <ClientIcon
+              filename={authorUser.profile_image}
+              alt="profile image"
+            />
+          ) : (
+            <MaterialSymbolsProfile width={30} height={30} />
+          )}
+        </div>
+
+        <p className="flex items-center text-center text-sm">
+          {authorUser.username}
+        </p>
       </div>
 
       <div className="scrollbar-thin overflow-auto">
