@@ -118,7 +118,7 @@ export default function ServerSettingsMenu({
           router.refresh();
         }}
         confirmText="Leave"
-        confirmButtonClass="bg-warning"
+        confirmButtonClass="bg-warning active:bg-warning"
       >
         <h4 className="my-4">Are you sure you wish to leave this server?</h4>
         <p className="text-center">

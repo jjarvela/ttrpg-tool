@@ -25,3 +25,7 @@ export function sendNotification(data: {
 }): void {
   socket.emit("send-notification", data);
 }
+
+export function friendRequestEvent(recipient_id: string) {
+  socket.emit("friend-request-event", recipient_id);
+}

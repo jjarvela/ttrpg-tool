@@ -9,28 +9,15 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightImageOutlineRounded from "@/public/icons/MaterialSymbolsLightImageOutlineRounded";
 import postUpload from "@/utils/postUpload";
+import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-
-type user = {
-  id: string;
-  username: string;
-  password_hash: string;
-  email: string;
-  emailVerified: Date | null;
-  created_at: Date;
-  screen_name: string | null;
-  timezone: string | null;
-  person_description: string | null;
-  person_status: string | null;
-  profile_image: string | null;
-};
 
 export default function ProfileInfo({
   user,
   profile_image,
 }: {
-  user: user;
+  user: User;
   profile_image: React.ReactNode;
 }) {
   const [status, setStatus] = useState(user.person_status || "");
