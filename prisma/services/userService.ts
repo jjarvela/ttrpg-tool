@@ -1,4 +1,4 @@
-import { db } from "../db";
+import db from "../db";
 
 export const getUserById = async (user_id: string, select?: UserSelect) => {
   const user = await db.user.findUnique({

@@ -1,4 +1,4 @@
-import { db } from "../db";
+import db from "../db";
 
 export const createServerChannel = async (
   server_id: string,

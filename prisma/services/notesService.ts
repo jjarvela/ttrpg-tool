@@ -1,5 +1,5 @@
 import { NoteData } from "@/app/(user)/server/[serverId]/notes/page";
-import { db } from "../db";
+import db from "../db";
 export const getNoteById = async (id: string) => {
   try {
     const note = await db.note.findUnique({

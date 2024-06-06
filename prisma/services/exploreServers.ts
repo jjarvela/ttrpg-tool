@@ -1,4 +1,4 @@
-import { db } from "../db";
+import db from "../db";
 
 export async function getNewlyCreated() {
   const limit = subtractDays(new Date(Date.now()).toISOString(), 14);

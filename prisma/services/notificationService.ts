@@ -1,4 +1,4 @@
-import { db } from "../db";
+import db from "../db";
 
 export async function createNotification(data: {
   recipient_id: string;
