@@ -11,12 +11,6 @@ export const Servers = [
         join_permission: "any invitation",
       },
     },
-    server_members: {
-      create: {
-        member_id: "clwg08vaf000099zsgoss1dqb",
-        role: "admin",
-      },
-    },
     invitations: {
       create: {
         expires: new Date(new Date().getTime() + 1209600000).toISOString(),
@@ -35,12 +29,6 @@ export const Servers = [
         explorable: true,
         searchable: true,
         join_permission: "any invitation",
-      },
-    },
-    server_members: {
-      create: {
-        member_id: "clwg08vaf000099zsgoss1dqb",
-        role: "admin",
       },
     },
     invitations: {
