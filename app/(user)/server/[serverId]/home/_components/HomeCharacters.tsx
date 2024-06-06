@@ -1,5 +1,8 @@
 "use client";
+import Icon from "@/app/_components/Icon";
+import MaterialSymbolsProfile from "@/public/icons/MaterialSymbolsProfile";
 import { useEffect, useState } from "react";
+import ClientIcon from "./ClientIcon";
 
 export interface HomeCharactersProps {
   latestCharacters: {
@@ -35,12 +38,12 @@ export default function HomeCharacters({
           key={character.base.name}
           className="flex flex-row rounded-lg bg-black50 p-4 shadow dark:bg-black85"
         >
-          <div className="me-4 flex">
-            <img
-              src={character.base.image ?? undefined}
-              alt={character.base.name}
-              className="h-8 w-8 rounded-full p-3"
-            />
+          <div className="me-4 flex h-14 w-14 items-center justify-center">
+            {character.base.image ? (
+              <ClientIcon filename={character.base.image} alt="profile image" />
+            ) : (
+              <MaterialSymbolsProfile width={30} height={30} />
+            )}
           </div>
           <div className="flex flex-auto flex-col items-start">
             <p className="text-sm font-bold text-white">
