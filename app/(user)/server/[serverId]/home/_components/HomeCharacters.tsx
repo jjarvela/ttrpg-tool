@@ -38,7 +38,7 @@ export default function HomeCharacters({
           key={character.base.name}
           className="flex flex-row rounded-lg bg-black50 p-4 shadow dark:bg-black85"
         >
-          <div className="me-4 flex h-14 w-14 items-center justify-center">
+          <div className="me-4 flex h-12 w-12 items-center justify-center">
             {character.base.image ? (
               <ClientIcon filename={character.base.image} alt="profile image" />
             ) : (
