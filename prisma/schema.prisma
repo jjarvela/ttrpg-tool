@@ -93,7 +93,7 @@ model FriendInstance {
 model Server {
   id                String         @id @default(cuid())
   socket_id         String?
-  server_name       String
+  server_name       String          @unique
   image             String?
   jamboard          String?
   gameboard         String?
