@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Users } from "./data/users";
+import { Servers } from "./data/servers";
 
 const prisma = new PrismaClient();
 
@@ -26,6 +27,17 @@ async function runSeeders() {
         create: { owner_id: user.id },
       });
     }),
+  );
+
+  // Servers
+  await Promise.all(
+    Servers.map(async (server) =>
+      prisma.server.upsert({
+        where: { server_name: server.server_name },
+        update: {},
+        create: server,
+      }),
+    ),
   );
 }
 
