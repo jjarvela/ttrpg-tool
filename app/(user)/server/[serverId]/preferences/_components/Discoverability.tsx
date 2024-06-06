@@ -56,14 +56,10 @@ export default function Discoverability({
                   : undefined,
               },
             );
-            if (typeof result === "string") {
-              setError(result);
-              return;
-            }
             setSuccess("success");
             router.refresh();
           } catch (e) {
-            setError("An unexpected error occurred.");
+            setError((e as Error).message);
             return;
           }
         });

@@ -1,10 +1,18 @@
 import Main from "../../_components/wrappers/PageMain";
 import { auth } from "@/auth";
-import { getUsersExcept } from "@/prisma/services/userService";
 import errorHandler from "@/utils/errorHandler";
 import { redirect } from "next/navigation";
 import { Fragment } from "react";
 import UserThumb from "./_components/UserThumb";
+import {
+  getUserFriends,
+  getUserPendingRequests,
+} from "@/prisma/services/friendService";
+import FriendOptionsElement from "./_components/FriendOptionsElement";
+import FriendListNavWrapper from "./_components/friendListDisplay/FriendListNavWrapper";
+import OnlineList from "./_components/friendListDisplay/OnlineList";
+import AllList from "./_components/friendListDisplay/AllList";
+import PendingRequestsList from "./_components/friendListDisplay/PendingRequestsList";
 
 export default async function Home() {
   const session = await auth();
@@ -14,35 +22,40 @@ export default async function Home() {
 
   const element: JSX.Element = await errorHandler(
     async () => {
-      const users = await getUsersExcept((session as ExtendedSession).userId, {
-        screen_name: true,
-        username: true,
-        profile_image: true,
-        person_status: true,
-        socket_id: true,
-      });
+      const friendList = await getUserFriends(
+        (session as ExtendedSession).userId,
+      );
 
-      if (users.length < 1) return <p>No users</p>;
+      const pending = await getUserPendingRequests(
+        (session as ExtendedSession).userId,
+      );
 
-      const online = users.filter((person) => person.socket_id !== null);
+      if (friendList.length < 1) {
+        return (
+          <FriendListNavWrapper
+            onlineList={<p>{"You haven't added any friends yet."}</p>}
+            allList={<p>{"You haven't added any friends yet."}</p>}
+            pendingList={<PendingRequestsList pending={pending} />}
+          />
+        );
+      }
 
-      const offline = users.filter((person) => person.socket_id === null);
+      const online = friendList.filter((person) => person.socket_id !== null);
+
+      const offline = friendList.filter((person) => person.socket_id === null);
 
       return (
-        <Fragment>
-          <h3>Online</h3>
-
-          {online.length > 0 &&
-            online.map((user) => <UserThumb key={user.id} user={user} />)}
-
-          <h3>Offline</h3>
-
-          {offline.length > 0 &&
-            offline.map((user) => <UserThumb key={user.id} user={user} />)}
-        </Fragment>
+        <FriendListNavWrapper
+          onlineList={<OnlineList users={online} />}
+          allList={<AllList online={online} offline={offline} />}
+          pendingList={<PendingRequestsList pending={pending} />}
+        />
       );
     },
-    () => <p className="text-warning">Something went wrong</p>,
+    (e) => {
+      console.log(e);
+      return <p className="text-warning">Something went wrong</p>;
+    },
   );
 
   return (

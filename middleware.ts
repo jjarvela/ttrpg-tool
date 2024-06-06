@@ -17,6 +17,10 @@ export default auth((req) => {
   if (isServerRedirectPath)
     return Response.redirect(new URL("/server/explore", nextUrl));
 
+  //redirect from /friends to /
+  const isFriendsRedirectPath = nextUrl.pathname === "/friends";
+  if (isFriendsRedirectPath) return Response.redirect(new URL("/", nextUrl));
+
   //allow anyone to access APIAuthRoutes
   const isAPIAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   if (isAPIAuthRoute) return;

@@ -53,7 +53,7 @@ export default function ServerInfo({
           setError("Image file is too large. The limit is 3MB.");
           return;
         }
-        const authMatch = await checkAuthMatch(serverAuth, config);
+        const authMatch = checkAuthMatch(serverAuth, config);
         if (!authMatch) {
           setError(
             "You don't have the required permissions to change this information.",
@@ -66,26 +66,30 @@ export default function ServerInfo({
             return;
           }
           const filename = res.data.filename;
-          const result = await editServerInfo(serverAuth.member_id, config, {
-            image: filename,
-            description,
-            server_name: serverName,
-          });
-          if (typeof result === "string") setError(result);
-          else {
+          try {
+            const result = await editServerInfo(serverAuth.member_id, config, {
+              image: filename,
+              description,
+              server_name: serverName,
+            });
             setSuccess(true);
             router.refresh();
+          } catch (e) {
+            setError((e as Error).message);
+            return;
           }
         });
       } else {
-        const result = await editServerInfo(serverAuth.member_id, config, {
-          description,
-          server_name: serverName,
-        });
-        if (typeof result === "string") setError(result);
-        else {
+        try {
+          const result = await editServerInfo(serverAuth.member_id, config, {
+            description,
+            server_name: serverName,
+          });
           setSuccess(true);
           router.refresh();
+        } catch (e) {
+          setError((e as Error).message);
+          return;
         }
       }
     });
