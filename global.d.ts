@@ -13,6 +13,14 @@ interface UserDetailed extends UserBasic {
   share_timezone: boolean | null;
 }
 
+type FriendRequest = {
+  id: number;
+  requester_id: string;
+  recipient_id: string;
+  requester: Omit<UserBasic, "id" | "person_status" | "socket_id">;
+  recipient: Omit<UserBasic, "id" | "person_status" | "socket_id">;
+};
+
 type ServerAuth = {
   id: number;
   server_id: string;

@@ -16,11 +16,10 @@ export default async function searchForUsers(search_term: string) {
   const users = await searchUsers(search_term);
 
   //filter out any users that have the searched blocked, or that the searcher has blocked
-  const filtered = users.filter(
-    (target) =>
-      target.blocklist.indexOf(user.id) < 0 &&
-      user.blocklist.indexOf(target.id) < 0,
-  );
+  const filtered = users.filter((target) => {
+    target.blocklist.indexOf(user.id) < 0 &&
+      user.blocklist.indexOf(target.id) < 0;
+  });
 
   const result = await Promise.all(
     filtered.map(async (user) => {

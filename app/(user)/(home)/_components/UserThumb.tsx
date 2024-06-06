@@ -10,8 +10,8 @@ export default function UserThumb({
   optionsElement: React.ReactNode;
 }) {
   return (
-    <RowWrapper>
-      <ColumnWrapper className="card-back w-[90%] rounded-lg border-[1px] border-black50 lg:w-[55%]">
+    <RowWrapper className="card-back w-[90%] flex-wrap rounded-lg border-[1px] border-black50 px-4 py-2 lg:w-[55%]">
+      <ColumnWrapper className="flex-grow">
         <RowWrapper className="w-full justify-start">
           <ProfilePicture
             width={40}

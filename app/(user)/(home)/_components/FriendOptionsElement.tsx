@@ -54,6 +54,8 @@ export default function FriendOptionsElement({
 
           setBlockSuccess(true);
 
+          friendRequestEvent(user_id);
+
           router.refresh();
         },
         (e) => setError((e as Error).message),

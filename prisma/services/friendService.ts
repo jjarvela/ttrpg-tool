@@ -141,13 +141,21 @@ export const createFriendRequest = async (data: {
   return request;
 };
 
-export const getUserReceivedRequests = async (
-  user_id: string,
-): Promise<FriendRequest[]> => {
+export const getUserReceivedRequests = async (user_id: string) => {
   const requests = await db.friendRequest.findMany({
     where: { recipient_id: user_id },
-    include: {
+    select: {
+      id: true,
+      recipient_id: true,
+      requester_id: true,
       requester: {
+        select: {
+          username: true,
+          screen_name: true,
+          profile_image: true,
+        },
+      },
+      recipient: {
         select: {
           username: true,
           screen_name: true,

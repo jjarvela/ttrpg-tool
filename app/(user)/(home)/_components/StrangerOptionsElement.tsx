@@ -52,6 +52,8 @@ export default function StrangerOptionsElement({
 
           setBlockSuccess(true);
 
+          friendRequestEvent(user_id);
+
           router.refresh();
         },
         (e) => setError((e as Error).message),
