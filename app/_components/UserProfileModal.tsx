@@ -127,12 +127,15 @@ export default function UserProfileModal({
           ) : (
             <RowWrapper>
               {optionsElement}{" "}
-              {!user.onTheirBlocklist && user.dm_permission === "anyone" && (
-                <Link href={`/message/${user_id}`}>
-                  <MaterialSymbolsAndroidMessagesOutline className="flex-shrink-0 text-2xl" />
-                </Link>
-              )}
-              {!user.onTheirBlocklist &&
+              {!user.isSelf &&
+                !user.onTheirBlocklist &&
+                user.dm_permission === "anyone" && (
+                  <Link href={`/message/${user_id}`}>
+                    <MaterialSymbolsAndroidMessagesOutline className="flex-shrink-0 text-2xl" />
+                  </Link>
+                )}
+              {!user.isSelf &&
+                !user.onTheirBlocklist &&
                 user.dm_permission === "servers" &&
                 mutualServers.length > 0 && (
                   <Link href={`/message/${user_id}`}>
