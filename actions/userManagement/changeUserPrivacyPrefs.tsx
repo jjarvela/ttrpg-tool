@@ -12,7 +12,7 @@ import { updateUser } from "@/prisma/services/userService";
 export default async function changeUserPrivacyPrefs(
   id: string,
   data: {
-    //dm_permission?: "friends" | "server members" | "anyone";
+    dm_permission?: string;
     //block_suspicious_links?: boolean;
     //show_link_embeds: boolean;
     share_timezone?: boolean;
