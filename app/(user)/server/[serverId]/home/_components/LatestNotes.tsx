@@ -104,14 +104,14 @@ export default function LatestNotes() {
   }, [serverId]);
 
   return (
-    <div className="scrollbar-thin flex flex-col overflow-auto bg-black25 p-5 dark:bg-black75">
+    <div className="scrollbar-thin overflow-auto bg-black25 p-5 dark:bg-black75">
       <div className="flex">
         <h2 className="mx-auto text-lg font-semibold text-gray-800 dark:text-white">
           Latest Notes
         </h2>
       </div>
-      <div className="m-2 grid grid-cols-1 gap-5 lg:h-full lg:grid-cols-2 xl:grid-cols-3">
-        {notes.slice(0, 6).map((note) => (
+      <div className="m-2 grid grid-cols-2 gap-5 lg:h-full lg:grid-cols-2 xl:grid-cols-3">
+        {notes.slice(0, 4).map((note) => (
           <HomeNote
             note={note}
             currentUser={{

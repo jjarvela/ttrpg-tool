@@ -23,7 +23,7 @@ export default async function OnlineUsers({ user }: { user: string }) {
         .map((user) => {
           return (
             <div
-              className="m-2 text-black85 hover:bg-black50 dark:text-white dark:hover:bg-black25"
+              className="m-2 from-primary to-accent text-black85 hover:bg-opacity-50 hover:bg-gradient-to-r dark:text-white"
               key={user.id}
             >
               <Link href={`/message/${user.id}`}>

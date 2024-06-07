@@ -23,7 +23,7 @@ export interface NoteData {
   id: string;
   author: string;
   authorUser: {
-    username: string;
+    username: string | null;
     profile_image: string | null;
   };
   server_id: string;
@@ -54,6 +54,7 @@ export default function ServerNotes() {
   const { setNodeRef } = useDroppable({ id: "notes" });
   const [notes, setNotes] = useState<NoteData[]>([]);
   const [user, setUser] = useState<{
+    username: string;
     id: string;
     profile_image: string | null;
   } | null>(null);
@@ -81,8 +82,8 @@ export default function ServerNotes() {
       try {
         if (serverId) {
           const data = await handleGetAllNotes(serverId);
-          setNotes(data);
           console.log(data);
+          setNotes(data);
         } else {
           // Handle the case when serverId is null
         }
@@ -107,6 +108,7 @@ export default function ServerNotes() {
 
     socket.on("create-note", (data) => {
       if (data.serverId === serverId) {
+        console.log("Received note data:", data);
         setNotes((prevNotes) => {
           // Only add the note if it doesn't already exist in the array
           if (!prevNotes.find((note) => note.id === data.note.id)) {
@@ -138,11 +140,24 @@ export default function ServerNotes() {
   }, [serverId]);
 
   async function handleNewNoteClient() {
-    if (serverId) {
+    if (serverId && user) {
       try {
         const newNote = await handleNewNote(serverId);
-        socket.emit("create-note", { note: newNote, serverId: serverId });
-        setNotes((prevNotes) => [...prevNotes, { ...newNote }]);
+
+        const augmentedNote = {
+          ...newNote,
+          authorUser: {
+            username: user.username,
+            profile_image: user.profile_image,
+          },
+        };
+
+        socket.emit("create-note", {
+          note: augmentedNote,
+          serverId: serverId,
+        });
+
+        setNotes((prevNotes) => [...prevNotes, augmentedNote]);
       } catch (error) {
         console.error("Error creating note:", error);
       }

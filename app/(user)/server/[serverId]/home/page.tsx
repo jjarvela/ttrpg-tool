@@ -57,18 +57,18 @@ export default async function ServerHome({ params }: { params: Params }) {
   console.log(latestCharacters);
 
   return (
-    <Main className="grid grid-cols-1 grid-rows-3 gap-4 p-6 md:grid-rows-3 lg:grid-flow-col lg:grid-cols-2">
-      {newMessages && newMessages.length > 0 ? (
-        <LatestMessages newMessages={newMessages} serverId={serverId} />
-      ) : (
-        <div className="grid overflow-auto bg-black25 p-5 dark:bg-black75">
-          No new messages
-        </div>
-      )}
-      <div className="grid lg:row-span-2">
+    <Main className="grid h-full grid-cols-1 gap-6 p-3 lg:grid-cols-2">
+      <div className="scrollbar-thin h-96 flex-grow overflow-auto bg-black25 p-3 lg:h-full dark:bg-black75">
+        {newMessages && newMessages.length > 0 ? (
+          <LatestMessages newMessages={newMessages} serverId={serverId} />
+        ) : (
+          <div className="text-center">No new messages</div>
+        )}
+      </div>
+      <div className="h-full flex-grow">
         <HomeCharacters latestCharacters={latestCharacters} />
       </div>
-      <div className="scrollbar-thin grid overflow-auto bg-black25 p-5 lg:h-60 dark:bg-black75">
+      <div className="scrollbar-thin flex-grow bg-black25 p-5 dark:bg-black75">
         <h2 className="mx-auto mb-2 text-lg font-semibold text-gray-800 dark:text-white">
           Online Users
         </h2>
@@ -76,7 +76,7 @@ export default async function ServerHome({ params }: { params: Params }) {
           user={session ? (session as ExtendedSession).userId : ""}
         />
       </div>
-      <div className="grid">
+      <div className="flex-grow">
         <LatestNotes />
       </div>
     </Main>

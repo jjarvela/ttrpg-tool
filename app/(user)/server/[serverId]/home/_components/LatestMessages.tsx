@@ -47,8 +47,8 @@ const LatestMessages = ({ newMessages, serverId }: LatestMessagesProps) => {
   };
 
   return (
-    <div className="scrollbar-thin relative flex flex-col overflow-auto bg-black25 px-5 dark:bg-black75">
-      <div className="sticky top-0 flex w-full bg-black25 dark:bg-black75">
+    <div className="relative flex flex-col bg-black25 px-1 dark:bg-black75">
+      <div className="sticky top-0 flex bg-black25 dark:bg-black75">
         <h2 className="mx-auto text-lg font-semibold text-gray-800 dark:text-white">
           New Messages
         </h2>

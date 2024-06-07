@@ -1,9 +1,8 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
 import { useDraggable } from "@dnd-kit/core";
 import handleNoteContentChange from "@/actions/notesManagement/updateNote";
-import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
 import { NoteData } from "../page";
 import handleNoteDelete from "@/actions/notesManagement/handleNoteDelete";
 import TipTapEditor from "./TipTapEditor";
@@ -122,7 +121,7 @@ export function Note({
     >
       <div className="mb-2 flex">
         <div className="me-2 flex h-8 w-8 justify-start">
-          {authorUser.profile_image ? (
+          {authorUser && authorUser.profile_image ? (
             <ClientIcon
               filename={authorUser.profile_image}
               alt="profile image"
@@ -133,7 +132,7 @@ export function Note({
         </div>
 
         <p className="flex items-center text-center text-sm">
-          {authorUser.username}
+          {authorUser ? authorUser.username : "Unknown user"}
         </p>
       </div>
       <Tooltip id="delete-note-tooltip" />
