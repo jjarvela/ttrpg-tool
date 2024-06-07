@@ -37,11 +37,11 @@ export default function UserThumb({
   }
   return (
     <RowWrapper className="card-back w-[90%] flex-wrap rounded-lg border-[1px] border-black50 px-4 py-2 lg:w-[55%]">
-      <UserThumbProfileWrapper
-        user_id={user.id}
-        optionsElement={setOptionsElement("row")}
-      >
-        <ColumnWrapper className="flex-grow">
+      <ColumnWrapper className="flex-grow">
+        <UserThumbProfileWrapper
+          user_id={user.id}
+          optionsElement={setOptionsElement("row")}
+        >
           <RowWrapper className="w-full justify-start">
             <ProfilePicture
               width={40}
@@ -55,8 +55,8 @@ export default function UserThumb({
             </p>
           </RowWrapper>
           <RowWrapper>{user.person_status}</RowWrapper>
-        </ColumnWrapper>
-      </UserThumbProfileWrapper>
+        </UserThumbProfileWrapper>
+      </ColumnWrapper>
       {setOptionsElement()}
     </RowWrapper>
   );
