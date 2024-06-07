@@ -1,5 +1,5 @@
 import { FriendInstance, FriendRequest } from "@prisma/client";
-import { db } from "../db";
+import db from "../db";
 
 /**
  * Add two users to each others' friend lists
