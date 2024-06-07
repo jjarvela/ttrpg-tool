@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import { isFriend } from "@/prisma/services/friendService";
 import { getUserMutualServers } from "@/prisma/services/serverService";
-import { getUserById } from "@/prisma/services/userService";
+import { getUserById, isBlocked } from "@/prisma/services/userService";
 
 export default async function getUserDetails(user_id: string) {
   const session = await auth();
@@ -29,12 +29,24 @@ export default async function getUserDetails(user_id: string) {
     user.id,
   );
 
+  const onMyBlocklist = await isBlocked(
+    (session as ExtendedSession).userId,
+    user_id,
+  );
+
+  const onTheirBlocklist = await isBlocked(
+    user_id,
+    (session as ExtendedSession).userId,
+  );
+
   return {
     user: {
       user,
       isSelf,
       isFriend: friends,
       dm_permission: user.dm_permission,
+      onMyBlocklist,
+      onTheirBlocklist,
     },
     mutualServers,
   };
