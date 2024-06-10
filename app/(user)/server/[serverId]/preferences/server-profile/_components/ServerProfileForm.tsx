@@ -58,6 +58,7 @@ export default function ServerProfileForm({
                 {
                   icon: filename,
                   nickname: nickname !== "" ? nickname : null,
+                  share_timezone: shareTimezone,
                 },
               );
               setSuccess(true);
@@ -70,6 +71,7 @@ export default function ServerProfileForm({
               {
                 nickname: nickname !== "" ? nickname : null,
                 icon: removeIcon ? null : undefined,
+                share_timezone: shareTimezone,
               },
             );
             setSuccess(true);
@@ -159,27 +161,36 @@ export default function ServerProfileForm({
       </RowWrapper>
 
       <h5>Server-specific preferences</h5>
-      <Checkbox
-        id="share-timezone"
-        label="Share timezone"
-        labelClass="text-lg"
-        onByDefault={
-          memberData.share_timezone || memberData.user!.share_timezone || false
-        }
-        onCheck={(check) => {
-          setShareTimezone(check);
-        }}
-        disabled={isPending}
-        endElement={
-          <RowWrapper className="ml-4">
-            <MaterialSymbolsLightInfoOutlineRounded />
-            <span>
-              Sharing of timezone will not share the locale associated with the
-              timezone
-            </span>
-          </RowWrapper>
-        }
-      />
+      {
+        <Checkbox
+          id="share-timezone"
+          label="Share timezone"
+          labelClass="text-lg"
+          className={shareTimezone === null ? "opacity-30" : undefined}
+          onByDefault={memberData.share_timezone || false}
+          onCheck={(check) => {
+            setShareTimezone(check);
+          }}
+          disabled={isPending}
+          endElement={
+            <RowWrapper className="ml-4">
+              <MaterialSymbolsLightInfoOutlineRounded />
+              <span>
+                Sharing of timezone will not share the locale associated with
+                the timezone
+              </span>
+            </RowWrapper>
+          }
+        />
+      }
+
+      <Button
+        className="btn-secondary mb-8"
+        disabled={isPending || shareTimezone === null}
+        onClick={() => setShareTimezone(null)}
+      >
+        Use global timezone sharing setting
+      </Button>
 
       <Button
         className="btn-primary"

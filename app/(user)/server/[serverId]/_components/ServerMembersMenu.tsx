@@ -25,7 +25,12 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
         <ColumnWrapper className="h-full w-40">
           <h5>Admin</h5>
           <UserInfo
-            user={{ ...admin.user!, id: admin.member_id }}
+            user={{
+              ...admin.user!,
+              id: admin.member_id,
+              profile_image: admin.icon || admin.user!.profile_image,
+              screen_name: admin.nickname || admin.user!.screen_name,
+            }}
             self_id={(session as ExtendedSession).userId}
             width={40}
           />
@@ -35,7 +40,12 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
               {mods.map((item) => (
                 <UserInfo
                   key={item.id}
-                  user={{ ...item.user!, id: item.member_id }}
+                  user={{
+                    ...item.user!,
+                    id: item.member_id,
+                    profile_image: item.icon || item.user!.profile_image,
+                    screen_name: item.nickname || item.user!.screen_name,
+                  }}
                   self_id={(session as ExtendedSession).userId}
                   width={40}
                 />
@@ -46,7 +56,12 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
           {regulars.map((item) => (
             <UserInfo
               key={item.id}
-              user={{ ...item.user!, id: item.member_id }}
+              user={{
+                ...item.user!,
+                id: item.member_id,
+                profile_image: item.icon || item.user!.profile_image,
+                screen_name: item.nickname || item.user!.screen_name,
+              }}
               self_id={(session as ExtendedSession).userId}
               width={40}
             />

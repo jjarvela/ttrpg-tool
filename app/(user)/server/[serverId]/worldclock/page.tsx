@@ -90,7 +90,8 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
     const timezones: { timezone: string; members: ServerMember[] }[] = [];
 
     members.forEach((member) => {
-      if (!member.user!.share_timezone) return;
+      if (member.share_timezone === false || !member.user!.share_timezone)
+        return;
       if (!member.user!.timezone) return;
 
       const time = new Intl.DateTimeFormat("fi", {
