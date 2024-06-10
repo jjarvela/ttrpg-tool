@@ -22,7 +22,7 @@ import handleNotePositionChange from "@/actions/notesManagement/handleNotePositi
 export interface NoteData {
   id: string;
   author: string;
-  authorUser: {
+  authorUser?: {
     username: string | null;
     profile_image: string | null;
   };

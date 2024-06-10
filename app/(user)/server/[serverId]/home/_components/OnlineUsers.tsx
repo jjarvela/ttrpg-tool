@@ -1,25 +1,25 @@
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import UserInfo from "@/app/_components/UserInfo";
+import { getServerMembers } from "@/prisma/services/serverService";
 import { getUsersExcept } from "@/prisma/services/userService";
 import errorHandler from "@/utils/errorHandler";
 import Link from "next/link";
 
-export default async function OnlineUsers({ user }: { user: string }) {
+export default async function OnlineUsers({
+  user,
+  serverId,
+}: {
+  user: string;
+  serverId: string;
+}) {
   const element: JSX.Element = await errorHandler(
     async () => {
-      const users = await getUsersExcept(user, {
-        id: true,
-        username: true,
-        screen_name: true,
-        socket_id: true,
-        profile_image: true,
-        person_status: true,
-      });
+      const users = await getServerMembers(serverId);
 
       if (users.length < 1) return <p>No users</p>;
 
       const listUsers = users
-        // .filter((user) => user.socket_id)
+        .filter((user) => user.user?.socket_id)
         .map((user) => {
           return (
             <div
@@ -29,11 +29,11 @@ export default async function OnlineUsers({ user }: { user: string }) {
               <Link href={`/message/${user.id}`}>
                 <UserInfo
                   key={user.id}
-                  username={user.username}
+                  username={user.user?.username}
                   width={40}
-                  image={user.profile_image ? user.profile_image : undefined}
-                  isActive={user.socket_id ? true : false}
-                  screen_name={user.screen_name || undefined}
+                  screen_name={user.user?.screen_name || undefined}
+                  user={{ ...user.user!, id: user.member_id }}
+                  self_id={""}
                 />
               </Link>
             </div>
