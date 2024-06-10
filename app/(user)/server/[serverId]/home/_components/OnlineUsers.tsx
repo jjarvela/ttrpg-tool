@@ -8,9 +8,11 @@ import Link from "next/link";
 export default async function OnlineUsers({
   user,
   serverId,
+  session,
 }: {
   user: string;
   serverId: string;
+  session: any;
 }) {
   const element: JSX.Element = await errorHandler(
     async () => {
@@ -29,15 +31,9 @@ export default async function OnlineUsers({
               <Link href={`/message/${user.id}`}>
                 <UserInfo
                   key={user.id}
-                  username={user.user?.username ?? ""}
+                  user={{ ...user.user!, id: user.member_id }}
+                  self_id={(session as ExtendedSession).userId}
                   width={40}
-                  screen_name={user.user?.screen_name || undefined}
-                  image={
-                    user.user?.profile_image
-                      ? user.user.profile_image
-                      : undefined
-                  }
-                  isActive={user.user!.socket_id ? true : false}
                 />
               </Link>
             </div>

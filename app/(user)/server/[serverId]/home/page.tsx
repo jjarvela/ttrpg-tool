@@ -75,6 +75,7 @@ export default async function ServerHome({ params }: { params: Params }) {
         <OnlineUsers
           user={session ? (session as ExtendedSession).userId : ""}
           serverId={serverId}
+          session={session}
         />
       </div>
       <div className="flex-grow">
