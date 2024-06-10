@@ -7,30 +7,15 @@ import { socket } from "@/socket";
 import MaterialSymbolsProfile from "@/public/icons/MaterialSymbolsProfile";
 import ClientIcon from "./ClientIcon";
 
-const NoteSize = {
-  width: "140px",
-  minHeight: "140px",
-};
-
 export default function HomeNote({
   note,
-  styles,
   currentUser,
 }: {
   note: NoteData;
   styles?: React.CSSProperties;
   currentUser: currentUserType;
 }) {
-  const {
-    id,
-    server_id,
-    author,
-    documentName,
-    content,
-    positionX,
-    positionY,
-    authorUser,
-  } = note;
+  const { id, server_id, author, documentName, content, authorUser } = note;
 
   const isCurrentUserAuthor = author === currentUser.username;
 

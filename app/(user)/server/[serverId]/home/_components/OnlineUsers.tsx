@@ -1,7 +1,6 @@
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import UserInfo from "@/app/_components/UserInfo";
 import { getServerMembers } from "@/prisma/services/serverService";
-import { getUsersExcept } from "@/prisma/services/userService";
 import errorHandler from "@/utils/errorHandler";
 import Link from "next/link";
 

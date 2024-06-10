@@ -1,7 +1,5 @@
 "use client";
-import Icon from "@/app/_components/Icon";
 import MaterialSymbolsProfile from "@/public/icons/MaterialSymbolsProfile";
-import { useEffect, useState } from "react";
 import ClientIcon from "./ClientIcon";
 
 export interface HomeCharactersProps {
@@ -20,14 +18,6 @@ export interface HomeCharactersProps {
 export default function HomeCharacters({
   latestCharacters,
 }: HomeCharactersProps) {
-  const [listLatestCharacters, setListLatestCharacters] = useState<
-    typeof latestCharacters
-  >([]);
-
-  useEffect(() => {
-    setListLatestCharacters(latestCharacters);
-  }, [latestCharacters]);
-
   return (
     <div className="scrollbar-thin flex flex-col gap-4 overflow-auto bg-black25 p-4 dark:bg-black75">
       <h3 className="mx-auto text-lg font-bold dark:text-white">
