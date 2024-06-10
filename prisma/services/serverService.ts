@@ -487,3 +487,24 @@ export const deleteServerMember = async (
 
   return deletedMember;
 };
+
+export const getUserMutualServers = async (
+  user1_id: string,
+  user2_id: string,
+) => {
+  const servers = await db.server.findMany({
+    where: {
+      AND: [
+        { server_members: { some: { member_id: user1_id } } },
+        { server_members: { some: { member_id: user2_id } } },
+      ],
+    },
+    select: {
+      id: true,
+      server_name: true,
+      image: true,
+    },
+  });
+
+  return servers;
+};

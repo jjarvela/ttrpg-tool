@@ -45,14 +45,14 @@ export default async function ConversationsMenu() {
       );
 
       return (
-        <ColumnWrapper className="h-full flex-grow p-0">
+        <ColumnWrapper className="h-full flex-grow overflow-hidden p-0">
           <UserSideNav friendRequests={friendRequests} />
           <h4>Direct messages</h4>
           <TextInput
             placeholder="Search conversations..."
             className="w-[92%] overflow-hidden text-ellipsis"
           />
-          <ColumnWrapper className="scrollbar-thin w-full flex-grow overflow-y-auto">
+          <ColumnWrapper className="scrollbar-thin w-full flex-grow overflow-y-auto overflow-x-hidden">
             {conversations.length > 0 ? (
               conversations.map((conversation) => (
                 <ConversationThumb

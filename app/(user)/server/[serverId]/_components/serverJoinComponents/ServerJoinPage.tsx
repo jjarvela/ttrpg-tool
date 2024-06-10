@@ -1,12 +1,18 @@
 import FeedbackCard from "@/app/_components/FeedbackCard";
-import { getServerJoinData } from "@/prisma/services/serverService";
+import {
+  getServerJoinData,
+  getServerMembers,
+} from "@/prisma/services/serverService";
 import NotOpen from "./NotOpen";
 import Open from "./Open";
 import ServerNotFound from "../ServerNotFound";
+import { getUserBlocklist, getUserById } from "@/prisma/services/userService";
 
 export default async function ServerJoinPage({
+  user_id,
   server_id,
 }: {
+  user_id: string;
   server_id: string;
 }) {
   try {
@@ -18,6 +24,13 @@ export default async function ServerJoinPage({
       return (
         <NotOpen reason="Unfortunately this server can only be joined by a direct invitation." />
       );
+
+    const members = await getServerMembers(server_id);
+    const user = await getUserById(user_id, { blocklist: true });
+
+    const blocked = members.filter(
+      (member) => user.blocklist.indexOf(member.member_id) > -1,
+    );
 
     const validUnlimited = server.invitations.filter(
       (item) => !item.max_uses && new Date(item.expires) > new Date(),
@@ -34,6 +47,7 @@ export default async function ServerJoinPage({
             server_name={server.server_name}
             needsPassword={server.config[0].protected}
             invitation_id={validUnlimited[0].id}
+            hasBlocked={blocked.length > 0}
           />
         );
       }
@@ -57,6 +71,7 @@ export default async function ServerJoinPage({
         invitation_id={
           validUnlimited[0] ? validUnlimited[0].id : validLimited[0].id
         }
+        hasBlocked={blocked.length > 0}
       />
     );
   } catch (e) {

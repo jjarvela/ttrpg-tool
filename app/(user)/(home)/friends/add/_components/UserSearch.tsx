@@ -8,9 +8,6 @@ import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import MaterialSymbolsLightSearchRounded from "@/public/icons/MaterialSymbolsLightSearchRounded";
 import { useEffect, useState } from "react";
 import ResultUserThumb from "./ResultUserThumb";
-import SelfOptionsElement from "../../../_components/SelfOptionsElement";
-import FriendOptionsElement from "../../../_components/FriendOptionsElement";
-import StrangerOptionsElement from "../../../_components/StrangerOptionsElement";
 
 interface UserResult extends UserBasic {
   isFriend: boolean;
@@ -61,34 +58,24 @@ export default function UserSearch({ searcher_id }: { searcher_id: string }) {
             <ResultUserThumb
               key={user.id}
               user={user}
-              optionsElement={selectOptionsElement(user)}
+              options={selectOptions(user)}
             />
           ))}
         </ColumnWrapper>
       )}
     </ColumnWrapper>
   );
-  function selectOptionsElement(
+  function selectOptions(
     user: Omit<UserResult, "person_status" | "socket_id">,
-  ): React.ReactNode {
+  ): "self" | "friend" | "stranger" {
     if (user.id === searcher_id) {
-      return <SelfOptionsElement user_id={user.id} />;
+      return "self";
     }
 
     if (user.isFriend) {
-      return (
-        <FriendOptionsElement
-          name={user.screen_name || user.username}
-          user_id={user.id}
-        />
-      );
+      return "friend";
     }
 
-    return (
-      <StrangerOptionsElement
-        name={user.screen_name || user.username}
-        user_id={user.id}
-      />
-    );
+    return "stranger";
   }
 }
