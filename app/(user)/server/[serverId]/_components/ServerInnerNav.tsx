@@ -73,6 +73,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
             <ServerSettingsMenu serverAuth={serverAuth} authMatch={authMatch} />
           </RowWrapper>
           <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
+            <ServerInnerNavLink title="Home" to={`/server/${id}/`} />
             <ServerSubMenu title="Channels">
               <ul className="w-full flex-grow">{listChannels}</ul>
               <SubmenuLink

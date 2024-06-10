@@ -17,6 +17,14 @@ export const getAllNotes = async (serverId: string): Promise<NoteData[]> => {
   try {
     const notes = await db.note.findMany({
       where: { server_id: serverId },
+      include: {
+        authorUser: {
+          select: {
+            username: true,
+            profile_image: true,
+          },
+        },
+      },
     });
     return notes;
   } catch (e) {
@@ -31,14 +39,14 @@ export const createNote = async (data: {
   positionY: number;
   content: string;
   server_id: string;
-}): Promise<NoteData | string> => {
+}): Promise<NoteData> => {
   try {
     const newNote = await db.note.create({
       data: data,
     });
-    return newNote;
+    return newNote as NoteData;
   } catch (e) {
-    return (e as Error).message;
+    throw new Error((e as Error).message);
   }
 };
 
