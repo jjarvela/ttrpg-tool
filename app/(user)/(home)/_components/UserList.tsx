@@ -12,16 +12,7 @@ export default async function UserList({ user }: { user: string }) {
       if (users.length < 1) return <p>No users</p>;
 
       const listUsers = users.map((user) => (
-        <UserThumb
-          key={user.id}
-          user={user}
-          optionsElement={
-            <FriendOptionsElement
-              user_id={user.id}
-              name={user.screen_name || user.username}
-            />
-          }
-        />
+        <UserThumb key={user.id} user={user} options="friend" />
       ));
 
       return <ul className="w-full flex-grow">{listUsers}</ul>;

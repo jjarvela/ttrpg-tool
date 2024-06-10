@@ -162,6 +162,7 @@ type UserSelect = {
   profile_image?: boolean;
   person_status?: boolean;
   blocklist?: boolean;
+  dm_permission?: boolean;
 };
 
 type ServerDataSelect = {
