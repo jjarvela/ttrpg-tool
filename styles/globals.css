@@ -122,12 +122,12 @@
 
 @layer components {
   .btn-primary {
-    @apply active:bg-primary-harsh rounded-lg border bg-primary px-3 py-1 text-white hover:border-black75;
+    @apply active:bg-primary-harsh rounded-lg border border-[#54893C] bg-primary px-3 py-1 text-white hover:border-black75 disabled:border-none disabled:opacity-40 disabled:hover:border-none;
     @apply shadow;
   }
 
   .btn-secondary {
-    @apply rounded-lg border bg-black25 px-3 py-1 text-black hover:border-black75 active:bg-black50;
+    @apply rounded-lg border bg-black25 px-3 py-1 text-black hover:border-black75 active:bg-black50 disabled:border-none disabled:opacity-40 disabled:hover:border-none;
     @apply shadow;
   }
 }
