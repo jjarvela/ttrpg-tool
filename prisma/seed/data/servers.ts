@@ -11,10 +11,15 @@ export const Servers = [
         join_permission: "any invitation",
       },
     },
-    server_members: {
+    character_config: {
       create: {
-        member_id: "clwg08vaf000099zsgoss1dqb",
-        role: "admin",
+        enable_creation: false,
+        vitals_count: 1,
+        vitals_names: ["HP"],
+        attributes_count: 2,
+        attributes_names: ["Strength", "Dexterity"],
+        statics_count: 2,
+        statics_names: ["Stealth", "Persuasion"],
       },
     },
     invitations: {
@@ -37,10 +42,15 @@ export const Servers = [
         join_permission: "any invitation",
       },
     },
-    server_members: {
+    character_config: {
       create: {
-        member_id: "clwg08vaf000099zsgoss1dqb",
-        role: "admin",
+        enable_creation: false,
+        vitals_count: 1,
+        vitals_names: ["HP"],
+        attributes_count: 2,
+        attributes_names: ["Strength", "Dexterity"],
+        statics_count: 2,
+        statics_names: ["Stealth", "Persuasion"],
       },
     },
     invitations: {

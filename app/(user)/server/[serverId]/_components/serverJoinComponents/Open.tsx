@@ -5,6 +5,7 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import PasswordInput from "@/app/_components/inputs/PasswordInput";
 import Main from "@/app/_components/wrappers/PageMain";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
+import MaterialSymbolsLightInfoOutlineRounded from "@/public/icons/MaterialSymbolsLightInfoOutlineRounded";
 import errorHandler from "@/utils/errorHandler";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -13,10 +14,12 @@ export default function Open({
   server_name,
   needsPassword,
   invitation_id,
+  hasBlocked,
 }: {
   server_name: string;
   needsPassword: boolean | null;
   invitation_id: string;
+  hasBlocked: boolean;
 }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -57,6 +60,12 @@ export default function Open({
             disabled={isPending}
           />
         </>
+      )}
+      {hasBlocked && (
+        <h4 className="flex gap-2 text-warning">
+          <MaterialSymbolsLightInfoOutlineRounded className="text-2xl" /> One or
+          more members of this server are on your blocklist.
+        </h4>
       )}
       <RowWrapper>
         <Button

@@ -2,6 +2,8 @@ import RowWrapper from "../../../../_components/wrappers/RowWrapper";
 import UserInfo from "@/app/_components/UserInfo";
 import { getUserById } from "../../../../../prisma/services/userService";
 import errorHandler from "@/utils/errorHandler";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 type MessageCellProps = {
   sender_id: string;
@@ -14,9 +16,16 @@ export default async function MessageCell({
   message,
   created_at,
 }: MessageCellProps) {
+  const session = await auth();
+
+  if (!session) {
+    redirect("/welcome");
+  }
+
   const element: JSX.Element | null = await errorHandler(
     async () => {
       const userInfo = await getUserById(sender_id, {
+        id: true,
         username: true,
         screen_name: true,
         profile_image: true,
@@ -26,11 +35,9 @@ export default async function MessageCell({
         <UserInfo
           key={userInfo.id}
           className="w-[max-content]"
-          username={userInfo.username}
+          user={userInfo}
           width={40}
-          image={userInfo.profile_image ? userInfo.profile_image : undefined}
-          isActive={false}
-          screen_name={userInfo.screen_name || undefined}
+          self_id={(session as ExtendedSession).userId}
         />
       );
     },

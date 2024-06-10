@@ -4,12 +4,24 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import InvitationNotValid from "./_components/InvitationNotValid";
 import PasswordProtected from "./_components/PasswordProtected";
 import NotProtected from "./_components/NotProtected";
-import { getServerData } from "@/prisma/services/serverService";
+import {
+  getServerData,
+  getServerMembers,
+} from "@/prisma/services/serverService";
+import { auth } from "@/auth";
+import { getUserById } from "@/prisma/services/userService";
+import { redirect } from "next/navigation";
 
 export default async function JoinServer({ params }: { params: Params }) {
   const id = params.invitationId;
 
   try {
+    const session = await auth();
+
+    if (!session) {
+      redirect(`/login?inv=${id}`);
+    }
+
     const invitation = await getInvitationById(id);
 
     checkValidity(invitation);
@@ -21,11 +33,21 @@ export default async function JoinServer({ params }: { params: Params }) {
       },
     );
 
+    const members = await getServerMembers(invitation.server_id);
+    const user = await getUserById((session as ExtendedSession).userId, {
+      blocklist: true,
+    });
+
+    const blocked = members.filter(
+      (member) => user.blocklist.indexOf(member.member_id) > -1,
+    );
+
     if (invitation.protected)
       return (
         <PasswordProtected
           invitationId={invitation.id}
           serverName={server.server_name}
+          hasBlocked={blocked.length > 0}
         />
       );
 
@@ -33,6 +55,7 @@ export default async function JoinServer({ params }: { params: Params }) {
       <NotProtected
         invitationId={invitation.id}
         serverName={server.server_name}
+        hasBlocked={blocked.length > 0}
       />
     );
   } catch (e) {
