@@ -27,14 +27,12 @@ export default async function OnlineUsers({
               className="m-2 from-primary to-accent text-black85 hover:bg-opacity-50 hover:bg-gradient-to-r dark:text-white"
               key={user.id}
             >
-              <Link href={`/message/${user.member_id}`}>
-                <UserInfo
-                  key={user.id}
-                  user={{ ...user.user!, id: user.member_id }}
-                  self_id={(session as ExtendedSession).userId}
-                  width={40}
-                />
-              </Link>
+              <UserInfo
+                key={user.id}
+                user={{ ...user.user!, id: user.member_id }}
+                self_id={(session as ExtendedSession).userId}
+                width={40}
+              />
             </div>
           );
         });
