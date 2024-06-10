@@ -80,20 +80,23 @@ export default function HomeNote({
       style={style}
     >
       <div className="mb-2 flex">
-        <div className="me-2 flex h-8 w-8 justify-start">
-          {authorUser.profile_image ? (
-            <ClientIcon
-              filename={authorUser.profile_image}
-              alt="profile image"
-            />
-          ) : (
-            <MaterialSymbolsProfile width={30} height={30} />
-          )}
-        </div>
-
-        <p className="flex items-center text-center text-sm">
-          {authorUser.username}
-        </p>
+        {authorUser && (
+          <div className="me-2 flex h-8 w-8 justify-start">
+            {authorUser.profile_image ? (
+              <ClientIcon
+                filename={authorUser.profile_image}
+                alt="profile image"
+              />
+            ) : (
+              <MaterialSymbolsProfile width={30} height={30} />
+            )}
+          </div>
+        )}
+        {authorUser && (
+          <p className="flex items-center text-center text-sm">
+            {authorUser.username}
+          </p>
+        )}
       </div>
 
       <div className="scrollbar-thin overflow-auto">
