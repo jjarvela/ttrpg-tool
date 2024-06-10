@@ -8,7 +8,7 @@ import handleNoteDelete from "@/actions/notesManagement/handleNoteDelete";
 import TipTapEditor from "./TipTapEditor";
 import { socket } from "@/socket";
 import { Tooltip } from "react-tooltip";
-import ClientIcon from "../../home/_components/ClientIcon";
+import ClientIcon from "../../(home)/_components/ClientIcon";
 import MaterialSymbolsProfile from "@/public/icons/MaterialSymbolsProfile";
 
 const NoteSize = {
