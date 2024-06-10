@@ -11,6 +11,17 @@ export const Servers = [
         join_permission: "any invitation",
       },
     },
+    character_config: {
+      create: {
+        enable_creation: false,
+        vitals_count: 1,
+        vitals_names: ["HP"],
+        attributes_count: 2,
+        attributes_names: ["Strength", "Dexterity"],
+        statics_count: 2,
+        statics_names: ["Stealth", "Persuasion"],
+      },
+    },
     invitations: {
       create: {
         expires: new Date(new Date().getTime() + 1209600000).toISOString(),
@@ -29,6 +40,17 @@ export const Servers = [
         explorable: true,
         searchable: true,
         join_permission: "any invitation",
+      },
+    },
+    character_config: {
+      create: {
+        enable_creation: false,
+        vitals_count: 1,
+        vitals_names: ["HP"],
+        attributes_count: 2,
+        attributes_names: ["Strength", "Dexterity"],
+        statics_count: 2,
+        statics_names: ["Stealth", "Persuasion"],
       },
     },
     invitations: {
