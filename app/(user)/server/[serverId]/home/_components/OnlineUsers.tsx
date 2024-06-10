@@ -29,11 +29,15 @@ export default async function OnlineUsers({
               <Link href={`/message/${user.id}`}>
                 <UserInfo
                   key={user.id}
-                  username={user.user?.username}
+                  username={user.user?.username ?? ""}
                   width={40}
                   screen_name={user.user?.screen_name || undefined}
-                  user={{ ...user.user!, id: user.member_id }}
-                  self_id={""}
+                  image={
+                    user.user?.profile_image
+                      ? user.user.profile_image
+                      : undefined
+                  }
+                  isActive={user.user!.socket_id ? true : false}
                 />
               </Link>
             </div>
