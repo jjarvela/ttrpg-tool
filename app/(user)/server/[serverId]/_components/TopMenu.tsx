@@ -43,7 +43,7 @@ const TopMenu = ({
         <IconLink
           href={`/server/${serverId}/home`}
           icon={MaterialSymbolsCastleOutline}
-          isActive={pathname.includes("home")}
+          isActive={pathname === `/server/${serverId}`}
         />
         <IconLink
           href={`/server/${serverId}/chat`}
