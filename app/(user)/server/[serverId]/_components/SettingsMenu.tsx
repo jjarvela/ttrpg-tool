@@ -53,7 +53,7 @@ export default function ServerSettingsMenu({
                   setIsOpen(false);
                 }}
               >
-                Manage Your Profile
+                Manage your profile
               </p>
               <p
                 className="w-[max-content]"
