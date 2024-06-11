@@ -5,7 +5,6 @@ import MaterialSymbolsLightCloseRounded from "../../../../public/icons/MaterialS
 import MaterialSymbolsLightHistoryEduRounded from "../../../../public/icons/MaterialSymbolsLightHistoryEduRounded";
 import TextInput from "../../../_components/inputs/TextInput";
 import { useRouter } from "next/navigation";
-import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 
 type SettingsTextInputProps = {
   label: string;

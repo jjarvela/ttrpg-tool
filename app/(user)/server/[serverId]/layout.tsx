@@ -29,7 +29,13 @@ export default async function ServerLayout({
         (session as ExtendedSession).userId,
       );
 
-      if (!serverAuth) return <ServerJoinPage server_id={id} />;
+      if (!serverAuth)
+        return (
+          <ServerJoinPage
+            user_id={(session as ExtendedSession).userId}
+            server_id={id}
+          />
+        );
 
       return (
         <LayoutClientWrapper

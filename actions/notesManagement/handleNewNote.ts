@@ -12,12 +12,12 @@ export default async function handleNewNote(server_id: string) {
 
   const currentUser = await getCurrentUser();
 
-  if (!currentUser || !currentUser.username) {
+  if (!currentUser || !currentUser.id) {
     throw new Error("Current user or username is undefined");
   }
 
   const newNoteData = {
-    author: currentUser?.username,
+    author: currentUser.id,
     documentName: newDocumentName,
     positionX: newPositionX,
     positionY: newPositionY,
@@ -27,6 +27,7 @@ export default async function handleNewNote(server_id: string) {
 
   try {
     const result = await createNote(newNoteData);
+    console.log("Note created successfully:", result);
     return result as NoteData; // Ensure it always returns a NoteData object
   } catch (error) {
     console.error("Error creating note:", error);

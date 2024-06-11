@@ -58,14 +58,9 @@ export default function ServerSecurity({
                 config_permission: settingsRightsHolders,
               },
             );
-            if (typeof result === "string") {
-              setError(result);
-              return;
-            } else {
-              router.refresh();
-            }
+            router.refresh();
           } catch (e) {
-            setError("An unexpected error occurred.");
+            setError((e as Error).message);
             return;
           }
         });

@@ -8,6 +8,7 @@ import Divider from "./Divider";
 type ConfirmModalProps = {
   refObject: React.RefObject<HTMLDialogElement>;
   children: React.ReactNode;
+  title?: string;
   onConfirm: () => void;
   confirmText?: string;
   confirmButtonClass?: string;
@@ -26,6 +27,7 @@ type ConfirmModalProps = {
 export default function ConfirmModal({
   refObject,
   children,
+  title = "Confirm",
   onConfirm,
   confirmText,
   confirmButtonClass,
@@ -42,7 +44,7 @@ export default function ConfirmModal({
           align="content-start items-start"
           className="w-full border-b-[1px] border-black50 px-2"
         >
-          <h5>Confirm</h5>
+          <h5>{title}</h5>
           <MaterialSymbolsLightCloseRounded
             className="cursor-pointer"
             onClick={() => refObject.current?.close()}

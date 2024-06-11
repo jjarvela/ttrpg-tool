@@ -5,6 +5,7 @@ import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import PasswordInput from "@/app/_components/inputs/PasswordInput";
 import Main from "@/app/_components/wrappers/PageMain";
+import MaterialSymbolsLightInfoOutlineRounded from "@/public/icons/MaterialSymbolsLightInfoOutlineRounded";
 import errorHandler from "@/utils/errorHandler";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -12,9 +13,11 @@ import { useState, useTransition } from "react";
 export default function PasswordProtected({
   invitationId,
   serverName,
+  hasBlocked,
 }: {
   invitationId: string;
   serverName: string;
+  hasBlocked: boolean;
 }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -40,6 +43,12 @@ export default function PasswordProtected({
   return (
     <Main className="items-center justify-center">
       <h1>You have been invited to join {serverName}.</h1>
+      {hasBlocked && (
+        <h4 className="flex gap-2 text-warning">
+          <MaterialSymbolsLightInfoOutlineRounded className="text-2xl" /> One or
+          more members of this server are on your blocklist.
+        </h4>
+      )}
       <h5>This server requires a password.</h5>
       <PasswordInput
         placeholder="password"

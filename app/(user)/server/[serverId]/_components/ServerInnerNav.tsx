@@ -8,7 +8,6 @@ import {
 } from "@/prisma/services/serverService";
 import ServerInnerNavLink from "./ServerInnerNavLink";
 import Link from "next/link";
-import ServerUserDisplay from "./ServerUserDisplay";
 import { getChannels } from "@/prisma/services/channelService";
 import getServerAuth from "@/actions/getServerAuth";
 import { auth } from "@/auth";
@@ -17,6 +16,7 @@ import checkAuthMatch from "@/utils/checkServerAuthMatch";
 import ContextMenu from "../chat/[channelId]/_components/ContextMenu";
 import errorHandler from "@/utils/errorHandler";
 import { getServerBoards } from "@/prisma/services/gameBoardService";
+import ActiveUserDisplay from "../../../../_components/ActiveUserDisplay";
 
 export default async function ServerInnerNav({ id }: { id: string }) {
   const session = await auth();
@@ -73,6 +73,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
             <ServerSettingsMenu serverAuth={serverAuth} authMatch={authMatch} />
           </RowWrapper>
           <div className="scrollbar-thin w-full flex-grow overflow-y-auto">
+            <ServerInnerNavLink title="Home" to={`/server/${id}/`} />
             <ServerSubMenu title="Channels">
               <ul className="w-full flex-grow">{listChannels}</ul>
               <SubmenuLink
@@ -104,7 +105,7 @@ export default async function ServerInnerNav({ id }: { id: string }) {
               to={`/server/${id}/worldclock`}
             />
           </div>
-          <ServerUserDisplay />
+          <ActiveUserDisplay />
         </ColumnWrapper>
       );
     },
