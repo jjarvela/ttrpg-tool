@@ -18,6 +18,9 @@ import postUpload from "@/utils/postUpload";
 import { useRouter } from "next/navigation";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Button from "@/app/_components/Button";
+import { io } from "socket.io-client";
+
+const socket = io();
 
 export default function CharacterForm({
   user_id,
@@ -261,6 +264,21 @@ export default function CharacterForm({
       ...vitals,
       attributes,
       statics,
+    });
+
+    // Emit the new character event to Socket.IO server
+    socket.emit("new-character", {
+      serverId: config.server_id,
+      character: {
+        level: info.level,
+        class: info.class,
+        vitals: vitals.vitals,
+        vitals_max: vitals.vitals_max,
+        base: {
+          name: baseData.name,
+          image: filename || null,
+        },
+      },
     });
   }
 }

@@ -128,6 +128,21 @@ app.prepare().then(() => {
       }
     });
 
+    // character management
+    socket.on("join-character-server", (serverId) => {
+      socket.join(serverId);
+      console.log("joined char server " + serverId);
+    });
+
+    socket.on("new-character", (data) => {
+      const { serverId, character } = data;
+      io.to(serverId).emit("updateCharacters", character);
+      console.log(
+        "new character added to server " + serverId + " " + character,
+      );
+    });
+
+    // notes management
     socket.on("join-note-server", (serverId) => {
       socket.join(serverId);
     });
@@ -144,6 +159,7 @@ app.prepare().then(() => {
       io.to(data.serverId).emit("delete-note", data);
     });
 
+    // game board management
     socket.on("join-board", (board_id: string) => {
       socket.join(board_id);
     });

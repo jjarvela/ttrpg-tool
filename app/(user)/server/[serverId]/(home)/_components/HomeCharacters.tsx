@@ -1,9 +1,12 @@
 "use client";
 import MaterialSymbolsProfile from "@/public/icons/MaterialSymbolsProfile";
 import ClientIcon from "./ClientIcon";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
+const socket = io();
 export interface HomeCharactersProps {
-  latestCharacters: {
+  initialCharacters: {
     level: number;
     class: string;
     vitals: number[];
@@ -13,17 +16,32 @@ export interface HomeCharactersProps {
       image: string | null;
     };
   }[];
+  serverId: string;
 }
 
 export default function HomeCharacters({
-  latestCharacters,
+  initialCharacters,
+  serverId,
 }: HomeCharactersProps) {
+  const [characters, setCharacters] = useState(initialCharacters);
+
+  useEffect(() => {
+    socket.emit("join-character-server", serverId);
+    socket.on("updateCharacters", (newCharacters) => {
+      setCharacters((prevCharacters) => [newCharacters, ...prevCharacters]);
+    });
+
+    return () => {
+      socket.off("updateCharacters");
+      socket.off("join-character-server");
+    };
+  }, [serverId]);
   return (
     <div className="scrollbar-thin flex flex-col gap-4 overflow-auto bg-black25 p-4 dark:bg-black75">
       <h3 className="mx-auto text-lg font-bold dark:text-white">
         Latest Characters
       </h3>
-      {latestCharacters.map((character) => (
+      {characters.map((character) => (
         <div
           key={character.base.name}
           className="flex flex-row rounded-lg bg-black50 p-4 shadow dark:bg-black85"
