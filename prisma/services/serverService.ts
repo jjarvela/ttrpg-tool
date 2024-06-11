@@ -38,12 +38,12 @@ export const createServerEntry = async (data: {
  */
 export const createServerConfig = async (data: {
   server_id: string;
-  config_permission: string;
-  protected?: boolean;
+  protected?: boolean | null;
   password_hash?: string;
-  explorable?: boolean;
-  searchable?: boolean;
-  join_permission?: string;
+  explorable?: boolean | null;
+  searchable?: boolean | null;
+  join_permission?: string | null;
+  config_permission: string;
 }): Promise<ServerConfig> => {
   const serverConfig = await db.serverConfig.create({ data });
 
