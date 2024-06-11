@@ -18,7 +18,10 @@ export default function ServerSecurity({
   serverAuth,
   config,
 }: ServerSecurityProps) {
+  console.log(config);
+  const [configData, setConfigData] = useState<ServerConfig>(config);
   const [isProtected, setIsProtected] = useState(config.protected || false);
+  console.log(isProtected);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [settingsRightsHolders, setSettingsRightsHolders] = useState(
@@ -80,6 +83,8 @@ export default function ServerSecurity({
           id="password-protection"
           label="Password-protected server"
           labelClass="text-md-lg xl:text-lg"
+          onByDefault={isProtected}
+          checked={isProtected}
           onToggle={(checked) => setIsProtected(checked)}
           disabled={isPending}
         />

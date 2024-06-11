@@ -48,11 +48,11 @@ type ServerConfig = {
   id: number;
   server_id: string;
   config_permission: string;
-  protected: boolean | null;
+  protected: boolean;
   password_hash: string | null;
-  explorable: boolean | null;
-  searchable: boolean | null;
-  join_permission: string | null;
+  explorable: boolean;
+  searchable: boolean;
+  join_permission: string;
 };
 
 type ServerMember = {
