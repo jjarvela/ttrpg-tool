@@ -41,7 +41,7 @@ export default function ServerProfileForm({
     startTransition(async () => {
       await errorHandler(
         async () => {
-          if (icon) {
+          if (!removeIcon && icon) {
             if (icon.size / 1024 / 1024 > 3) {
               setError("Image file is too large. The limit is 3MB.");
               return;
@@ -126,6 +126,7 @@ export default function ServerProfileForm({
                 <MaterialSymbolsLightImageOutlineRounded className="text-2xl" />
               }
               onChange={(e) => {
+                console.log("change");
                 setIcon(e.target.files ? e.target.files[0] : undefined);
                 setRemoveIcon(false);
               }}
@@ -135,7 +136,6 @@ export default function ServerProfileForm({
           <Button
             className="btn-secondary"
             onClick={() => {
-              setIcon(undefined);
               setRemoveIcon(true);
             }}
             disabled={isPending || (icon === undefined && !memberData.icon)}
