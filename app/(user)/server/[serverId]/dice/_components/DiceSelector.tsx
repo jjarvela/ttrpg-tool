@@ -1,8 +1,8 @@
 'use client';
-import { ReactElement, ReactNode, useRef } from "react";
+import { ReactElement, ReactNode, useEffect, useRef } from "react";
 import Button from "../../../../../_components/Button";
-import type { diceObject, diceSet } from '@/global';
-import { useState } from 'react';
+import type { diceObject, diceSet } from "@/global";
+import { useState } from "react";
 import { Dice, SelectedDices } from "./Dice";
 import ConfirmModal from "@/app/_components/ConfirmModal";
 /** 
@@ -16,10 +16,13 @@ import ConfirmModal from "@/app/_components/ConfirmModal";
 export default function DiceSelector() {
   const [selectedDices, setDiceSet] = useState<diceSet>([]);
   const modalRef = useRef<HTMLDialogElement>(null);
-  console.log("Ikkunan tila " + modalRef.current);
-  if (!modalRef.current?.open) {
-    modalRef.current?.showModal();
-  }
+
+  useEffect(() => {
+    console.log("Ikkunan tila " + modalRef.current);
+    if (!modalRef.current?.open) {
+      modalRef.current?.showModal();
+    }
+  })
 
   function onClickHandler({ diceType }: diceObject): void {
     if (selectedDices.length < 18) {
@@ -29,8 +32,9 @@ export default function DiceSelector() {
   function onRemoveHandler(diceIndex: number): void {
 
     setDiceSet(
-      selectedDices.filter((value, index) =>
-        index !== diceIndex
+      selectedDices.filter((value: string, index: number) => {
+        return index !== diceIndex;
+      }
       )
     )
   }
@@ -44,8 +48,8 @@ export default function DiceSelector() {
 
   return (
     <ConfirmModal refObject={modalRef} title="Dice Selector" onConfirm={() => onConfirm(selectedDices)} confirmText="Throw!">
-      <div className="container">
-        <div className="grid gap-4 grid-cols-3 grid-rows-2" id="diceBox" >
+      <div className="container p-2">
+        <div className="grid p-2 gap-4 grid-cols-3 grid-rows-2" id="diceBox" >
           <Dice diceType="d4" eventHandler={onClickHandler} />
           <Dice diceType="d6" eventHandler={onClickHandler} />
           <Dice diceType="d8" eventHandler={onClickHandler} />
