@@ -1,4 +1,10 @@
+import ConfirmModal from '@/app/_components/ConfirmModal'
+import DiceSelector from './DiceSelector'
+
+
 function DiceModal() {
+
+
   return (
     <>
       <dialog
@@ -16,4 +22,4 @@ function DiceModal() {
   );
 }
 
-export default Modal;
+export default DiceModal;

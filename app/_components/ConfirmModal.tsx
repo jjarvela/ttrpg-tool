@@ -30,6 +30,7 @@ export default function ConfirmModal({
   confirmText,
   confirmButtonClass,
 }: ConfirmModalProps) {
+
   return (
     <dialog
       ref={refObject}
