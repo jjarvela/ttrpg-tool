@@ -43,7 +43,7 @@ export default function DiceSelector() {
 
 
   return (
-    <ConfirmModal refObject={modalRef} onConfirm={() => onConfirm(selectedDices)} confirmText="Throw!">
+    <ConfirmModal refObject={modalRef} title="Dice Selector" onConfirm={() => onConfirm(selectedDices)} confirmText="Throw!">
       <div className="container">
         <div className="grid gap-4 grid-cols-3 grid-rows-2" id="diceBox" >
           <Dice diceType="d4" eventHandler={onClickHandler} />
