@@ -10,6 +10,6 @@ export default async function changeUserProfile(id: string, data: ProfileData) {
   try {
     const updatedUser = await updateUser(id, data);
   } catch (e) {
-    return { error: "Something went wrong. Please try again." };
+    throw new Error("Something went wrong. Please try again.");
   }
 }

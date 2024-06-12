@@ -82,8 +82,8 @@ export default function PrivacyAndSafety({ user }: { user: User }) {
                 setSuccess(true);
                 router.refresh();
               },
-              () => {
-                setError("Something went wrong.");
+              (e) => {
+                setError((e as Error).message);
               },
             );
           });

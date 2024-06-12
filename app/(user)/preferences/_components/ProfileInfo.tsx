@@ -56,13 +56,13 @@ export default function ProfileInfo({
               await handleUser(filename);
             });
           } else {
-            handleUser();
+            await handleUser();
           }
           setSuccess(true);
           router.refresh();
         },
-        () => {
-          setError("Something went wrong.");
+        (e) => {
+          setError((e as Error).message);
         },
       );
     });
@@ -164,12 +164,20 @@ export default function ProfileInfo({
 
   async function handleUser(filename?: string) {
     if (filename) {
-      const result = await changeUserProfile(user.id, {
-        profile_image: filename,
-        ...profileInfo,
-      });
+      try {
+        const result = await changeUserProfile(user.id, {
+          profile_image: filename,
+          ...profileInfo,
+        });
+      } catch (e) {
+        throw new Error((e as Error).message);
+      }
     } else {
-      const result = await changeUserProfile(user.id, profileInfo);
+      try {
+        const result = await changeUserProfile(user.id, profileInfo);
+      } catch (e) {
+        throw new Error((e as Error).message);
+      }
     }
   }
 }
