@@ -151,6 +151,12 @@ type diceObject = {
 
 type diceSet = diceType[];
 
+interface DiceThrow {
+  diceSet: diceSet,
+  delivery: "channel" | "server" | "private"
+  serverId?: string,
+  channelId?: string
+}
 
 /**
  * SELECT TYPES

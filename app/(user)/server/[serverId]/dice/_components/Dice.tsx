@@ -1,4 +1,3 @@
-import type { diceObject, diceSet } from '@/global';
 import Image from 'next/image'
 import { useState, useContext } from 'react'
 import React from 'react';

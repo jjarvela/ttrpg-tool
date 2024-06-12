@@ -1,7 +1,6 @@
 'use client';
 import { ReactElement, ReactNode, useEffect, useRef } from "react";
 import Button from "../../../../../_components/Button";
-import type { diceObject, diceSet } from "@/global";
 import { useState } from "react";
 import { Dice, SelectedDices } from "./Dice";
 import ConfirmModal from "@/app/_components/ConfirmModal";
@@ -18,7 +17,7 @@ export default function DiceSelector() {
   const modalRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    console.log("Ikkunan tila " + modalRef.current);
+    console.log("Ikkunan tila " + modalRef.current?.open);
     if (!modalRef.current?.open) {
       modalRef.current?.showModal();
     }
