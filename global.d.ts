@@ -177,14 +177,14 @@ type ServerDataSelect = {
 };
 
 type ServerConfigSelect = {
-  id: boolean;
-  server_id: boolean;
-  config_permission: boolean;
-  protected: boolean;
-  password_hash: boolean;
-  explorable: boolean;
-  searchable: boolean;
-  join_permission: boolean;
+  id?: boolean;
+  server_id?: boolean;
+  config_permission?: boolean;
+  protected?: boolean;
+  password_hash?: boolean;
+  explorable?: boolean;
+  searchable?: boolean;
+  join_permission?: boolean;
 };
 
 type ServerMemberSelect = {

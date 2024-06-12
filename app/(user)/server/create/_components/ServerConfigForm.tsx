@@ -45,7 +45,7 @@ export default function ServerConfigForm({
         <PasswordInput
           className="self-start"
           placeholder="password"
-          required={configData.protected || false}
+          required={configData.protected}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           disabled={isPending}
@@ -56,7 +56,7 @@ export default function ServerConfigForm({
         <PasswordInput
           className="self-start"
           placeholder="confirm password"
-          required={configData.protected || false}
+          required={configData.protected}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           disabled={isPending}
@@ -66,7 +66,7 @@ export default function ServerConfigForm({
         <ToggleInput
           id="server-explore"
           label="Include server in explore"
-          checked={configData.explorable || false}
+          checked={configData.explorable}
           onToggle={(checked) =>
             setConfigData({ ...configData, explorable: checked })
           }
@@ -75,7 +75,7 @@ export default function ServerConfigForm({
         <ToggleInput
           id="server-search"
           label="Include server in search results"
-          checked={configData.searchable || false}
+          checked={configData.searchable}
           onToggle={(checked) =>
             setConfigData({ ...configData, searchable: checked })
           }
@@ -95,7 +95,7 @@ export default function ServerConfigForm({
             "If there is any type of available invitation",
           ]}
           values={["invitation link", "unlimited invitation", "any invitation"]}
-          selected={configData.join_permission!}
+          selected={configData.join_permission}
           setSelected={(s) =>
             setConfigData({ ...configData, join_permission: s!.toString() })
           }
