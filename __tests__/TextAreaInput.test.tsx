@@ -7,7 +7,7 @@ describe("TextAreaInput", () => {
   it("renders input field", () => {
     render(<TextAreaInput />);
 
-    const elem = screen.getByRole("textBox");
+    const elem = screen.getByRole("textbox");
 
     expect(elem).toBeInTheDocument();
   });
