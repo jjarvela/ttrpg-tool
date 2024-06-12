@@ -49,7 +49,6 @@ export default function UserCharacterForm({
     }
 
     startTransition(async () => {
-      console.log("transition");
       const error: string | null = await errorHandler(
         async () => {
           if (baseData.image) {

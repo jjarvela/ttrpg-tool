@@ -28,7 +28,6 @@ export default async function ChatBody({ server_id, channelId }: ChatProps) {
 
   if (typeof unread !== "string" && unread.length > 0) {
     setTimeout(() => {
-      console.log("timeout");
       unread.forEach(async (notification) => {
         await deleteNotification(notification.id);
       });

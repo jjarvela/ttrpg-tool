@@ -248,8 +248,6 @@ export default function CharacterForm({
   );
 
   async function handleCharacter(filename?: string) {
-    console.log(filename);
-
     const base = await createCharacterForUser(user_id, {
       name: baseData.name,
       description: baseData.description,

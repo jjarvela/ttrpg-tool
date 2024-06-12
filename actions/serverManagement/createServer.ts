@@ -16,11 +16,11 @@ type newServerData = {
     image?: string;
   };
   configData: {
-    protected?: boolean | null;
+    protected: boolean;
     password?: string | null;
-    explorable?: boolean | null;
-    searchable?: boolean | null;
-    join_permission?: string | null;
+    explorable: boolean;
+    searchable: boolean;
+    join_permission: string;
     config_permission: string;
   };
 };

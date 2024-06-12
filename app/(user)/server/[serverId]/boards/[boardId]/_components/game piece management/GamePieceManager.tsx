@@ -47,8 +47,6 @@ export default async function GamePieceManager({
         (session as ExtendedSession).userId,
       );
 
-      console.log(existing);
-
       return (
         <Fragment>
           {characters.length > 0 ? (
