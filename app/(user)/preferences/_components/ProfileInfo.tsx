@@ -3,6 +3,7 @@
 import changeUserProfile from "@/actions/userManagement/changeUserProfile";
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
+import ProfilePicture from "@/app/_components/ProfilePicture";
 import FileInput from "@/app/_components/inputs/FileInput";
 import TextAreaInput from "@/app/_components/inputs/TextAreaInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
@@ -35,7 +36,7 @@ export default function ProfileInfo({
     setSuccess(false);
     setError("");
     startTransition(async () => {
-      if (icon) {
+      if (!removeIcon && icon) {
         if (icon.size / 1024 / 1024 > 3) {
           setError("Image file is too large. The limit is 3MB.");
           return;
@@ -61,6 +62,7 @@ export default function ProfileInfo({
         const result = await changeUserProfile(user.id, {
           person_description: about,
           person_status: status,
+          profile_image: removeIcon ? null : undefined,
         });
         if (result) setError(result.error);
         else {
@@ -70,6 +72,24 @@ export default function ProfileInfo({
       }
     });
   };
+
+  function setImageDisplay() {
+    if (!removeIcon && icon) {
+      const url = URL.createObjectURL(icon);
+      return (
+        <img
+          src={url}
+          className="absolute left-0 top-0 z-0 min-h-[100%] min-w-[100%] object-cover"
+          alt="icon preview"
+          onDrop={() => URL.revokeObjectURL(url)}
+        />
+      );
+    } else if (!removeIcon && user.profile_image) {
+      return profile_image;
+    }
+
+    return null;
+  }
 
   if (!user) return <div></div>;
 
@@ -85,15 +105,8 @@ export default function ProfileInfo({
           <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-[3px] border-dashed border-black50">
             {
               /*Icon display priority: icon remove selected => icon uploaded => user original icon */
-              !removeIcon && icon && (
-                <img
-                  src={URL.createObjectURL(icon)}
-                  className="absolute left-0 top-0 z-0 min-h-[100%] min-w-[100%] object-cover"
-                  alt="icon preview"
-                />
-              )
+              setImageDisplay()
             }
-            {!icon && !removeIcon && user.profile_image && profile_image}
             <FileInput
               id="profile-icon"
               accept=".jpg, .png, .svg, .gif"
@@ -110,7 +123,6 @@ export default function ProfileInfo({
           <Button
             className="btn-secondary"
             onClick={() => {
-              setIcon(undefined);
               setRemoveIcon(true);
             }}
             disabled={isPending}

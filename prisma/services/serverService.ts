@@ -455,7 +455,12 @@ export const getServerMember = async (
 export const updateServerMember = async (
   server_id: string,
   member_id: string,
-  data: { role?: string; nickname?: string; icon?: string },
+  data: {
+    role?: string;
+    nickname?: string | null;
+    icon?: string | null;
+    share_timezone?: boolean | null;
+  },
 ): Promise<Omit<ServerMember, "user">> => {
   const member = await db.serverMember.findFirst({
     where: { server_id, member_id },

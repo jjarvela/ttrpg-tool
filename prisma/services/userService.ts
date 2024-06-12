@@ -116,7 +116,7 @@ export const updateUser = async (
     email?: string;
     timezone?: string;
     share_timezone?: boolean;
-    profile_image?: string;
+    profile_image?: string | null;
     person_description?: string;
     person_status?: string;
   },

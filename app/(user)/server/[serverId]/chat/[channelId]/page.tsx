@@ -7,6 +7,7 @@ import { getChannelByChannelId } from "@/prisma/services/channelService";
 import errorHandler from "@/utils/errorHandler";
 
 export default async function ServerChat({ params }: { params: Params }) {
+  const server_id = params.serverId;
   const channelId = params.channelId;
 
   const element: JSX.Element = await errorHandler(
@@ -19,7 +20,7 @@ export default async function ServerChat({ params }: { params: Params }) {
         return (
           <ConversationClientWrapper>
             <h3>{channelName}</h3>
-            <ChatBody channelId={channelId} />
+            <ChatBody channelId={channelId} server_id={server_id} />
           </ConversationClientWrapper>
         );
       }

@@ -29,7 +29,12 @@ export default async function OnlineUsers({
             >
               <UserInfo
                 key={user.id}
-                user={{ ...user.user!, id: user.member_id }}
+                user={{
+                  ...user.user!,
+                  id: user.member_id,
+                  profile_image: user.icon || user.user!.profile_image,
+                  screen_name: user.nickname || user.user!.screen_name,
+                }}
                 self_id={(session as ExtendedSession).userId}
                 width={40}
               />
