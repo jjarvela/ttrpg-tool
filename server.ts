@@ -187,7 +187,6 @@ app.prepare().then(() => {
     });
 
     socket.on("disconnect", () => {
-      console.log("disconnected");
       //when user disconnects, return user's socket id to null
       findUserBySocket(socket.id).then((user) => {
         if (user && typeof user !== "string") {
