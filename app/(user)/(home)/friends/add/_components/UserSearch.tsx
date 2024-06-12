@@ -33,16 +33,18 @@ export default function UserSearch({ searcher_id }: { searcher_id: string }) {
 
   return (
     <ColumnWrapper className="w-full">
-      <TextInput
-        value={searchTerm}
-        placeholder="Find users..."
-        onChange={(e) => setSearchTerm(e.target.value)}
-        endElement={
-          <button className="text-default text-xl">
-            <MaterialSymbolsLightSearchRounded />
-          </button>
-        }
-      />
+      <div className="md:max-w-[80%] lg:max-w-[40%]">
+        <TextInput
+          value={searchTerm}
+          placeholder="Find users..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+          endElement={
+            <button className="text-default text-xl">
+              <MaterialSymbolsLightSearchRounded />
+            </button>
+          }
+        />
+      </div>
       <Divider />
 
       {error !== "" && <FeedbackCard type="error" message={error} />}

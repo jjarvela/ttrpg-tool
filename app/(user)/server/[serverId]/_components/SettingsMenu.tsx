@@ -47,6 +47,17 @@ export default function ServerSettingsMenu({
               <p
                 className="w-[max-content]"
                 onClick={() => {
+                  router.push(
+                    `/server/${serverAuth.server_id}/preferences/server-profile`,
+                  );
+                  setIsOpen(false);
+                }}
+              >
+                Manage your profile
+              </p>
+              <p
+                className="w-[max-content]"
+                onClick={() => {
                   newInvitationRef.current?.showModal();
                   setIsOpen(false);
                   document.addEventListener("mousedown", (event) =>

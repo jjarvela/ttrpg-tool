@@ -62,6 +62,7 @@ type ServerMember = {
   role: string;
   nickname: string | null;
   icon: string | null;
+  share_timezone: boolean | null;
   user?: Omit<UserDetailed, "id" | "person_description">;
 };
 

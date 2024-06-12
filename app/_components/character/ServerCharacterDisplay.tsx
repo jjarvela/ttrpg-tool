@@ -33,7 +33,11 @@ export default async function ServerCharacterDisplay({
       );
 
       return (
-        <UsernameHover username={owner.user!.username}>
+        <UsernameHover
+          username={
+            owner.nickname || owner.user!.screen_name || owner.user!.username
+          }
+        >
           <ProfilePicture
             width={40}
             isActive={owner.user!.socket_id ? true : false}
