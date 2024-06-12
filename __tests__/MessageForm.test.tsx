@@ -19,10 +19,10 @@ describe("MessageForm", () => {
   it("renders form", () => {
     render(<MessageForm userId={"a"} receiverId={"b"} />);
 
-    const elem = screen.getByRole("textbox");
+    //const elem = screen.getByRole("textbox");
     //const form = screen.getByRole("form");
-    //const placehold = screen.getByPlaceholderText("Send message");
+    const placehold = screen.getByPlaceholderText("Send message");
 
-    expect(elem).toBeInTheDocument();
+    expect(placehold).toBeInTheDocument();
   });
 });
