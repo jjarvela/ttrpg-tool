@@ -3,6 +3,7 @@ import { ReactElement, ReactNode, useEffect, useRef } from "react";
 import Button from "../../../../../_components/Button";
 import { useState } from "react";
 import { Dice, SelectedDices } from "./Dice";
+import { DiceRoller } from "dice-roller-parser";
 import ConfirmModal from "@/app/_components/ConfirmModal";
 /** 
  * This component presents dice selection dialog and intrepret the selection into 
@@ -14,10 +15,10 @@ import ConfirmModal from "@/app/_components/ConfirmModal";
 
 export default function DiceSelector() {
   const [selectedDices, setDiceSet] = useState<diceSet>([]);
+  const [throwResult, setResult] = useState<number>();
   const modalRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    console.log("Ikkunan tila " + modalRef.current?.open);
     if (!modalRef.current?.open) {
       modalRef.current?.showModal();
     }
@@ -40,14 +41,17 @@ export default function DiceSelector() {
 
   function onConfirm(selectedDices: diceSet) {
 
-    console.log("Received diceSet" + selectedDices);
+    const rollString = selectedDices.toString();
+    const diceRoller = new DiceRoller();
+    const rollObject = diceRoller.roll(rollString.replaceAll(",", '+'))
+    setResult(rollObject?.value);
 
   }
 
 
   return (
     <ConfirmModal refObject={modalRef} title="Dice Selector" onConfirm={() => onConfirm(selectedDices)} confirmText="Throw!">
-      <div className="container p-2">
+      <div className="container p-2 justify-center">
         <div className="grid p-2 gap-4 grid-cols-3 grid-rows-2" id="diceBox" >
           <Dice diceType="d4" eventHandler={onClickHandler} />
           <Dice diceType="d6" eventHandler={onClickHandler} />
@@ -56,9 +60,13 @@ export default function DiceSelector() {
           <Dice diceType="d12" eventHandler={onClickHandler} />
           <Dice diceType="d20" eventHandler={onClickHandler} />
         </div>
-        <div className="pt-12 grid gap-1 grid-rows-1 grid-cols-6 grid-flow-row" id="selectedDice">
+        <div className="pt-12 grid justify-items-center gap-3 grid-rows-1 grid-cols-6 grid-flow-row" id="selectedDice">
           <SelectedDices members={selectedDices} eventHandler={onRemoveHandler} />
         </div>
+        <div className="flex pt-8 w-auto justify-center font-black">
+          <div>{throwResult}</div>
+        </div>
+
       </div>
     </ConfirmModal>
   )
