@@ -1,21 +1,22 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import RadixIconsDragHandleDots2 from "@/public/icons/RadixIconsDragHandleDots2";
 import { useDraggable } from "@dnd-kit/core";
 import handleNoteContentChange from "@/actions/notesManagement/updateNote";
-import handleNotePositionChange from "@/actions/notesManagement/handleNotePosition";
 import { NoteData } from "../page";
 import handleNoteDelete from "@/actions/notesManagement/handleNoteDelete";
 import TipTapEditor from "./TipTapEditor";
 import { socket } from "@/socket";
 import { Tooltip } from "react-tooltip";
+import ClientIcon from "../../(home)/_components/ClientIcon";
+import MaterialSymbolsProfile from "@/public/icons/MaterialSymbolsProfile";
 
 const NoteSize = {
   width: "140px",
   minHeight: "140px",
 };
 
-interface currentUserType {
+export interface currentUserType {
   username: string;
   profile_image: string | null;
 }
@@ -29,8 +30,16 @@ export function Note({
   styles?: React.CSSProperties;
   currentUser: currentUserType;
 }) {
-  const { id, server_id, author, documentName, content, positionX, positionY } =
-    note;
+  const {
+    id,
+    server_id,
+    author,
+    documentName,
+    content,
+    positionX,
+    positionY,
+    authorUser,
+  } = note;
 
   const isCurrentUserAuthor = author === currentUser.username;
 
@@ -106,12 +115,25 @@ export function Note({
 
   return (
     <div
-      className={`flex flex-col border border-black50 bg-green-800 p-1 shadow-xl`}
+      className={`flex flex-col border border-black50 bg-primary p-1 shadow-xl`}
       style={style}
       ref={setNodeRef}
     >
-      <div className="mb-2 flex justify-center text-center">
-        <p className="text-sm">{author}</p>
+      <div className="mb-2 flex">
+        <div className="me-2 flex h-8 w-8 justify-start">
+          {authorUser && authorUser.profile_image ? (
+            <ClientIcon
+              filename={authorUser.profile_image}
+              alt="profile image"
+            />
+          ) : (
+            <MaterialSymbolsProfile width={30} height={30} />
+          )}
+        </div>
+
+        <p className="flex items-center text-center text-sm">
+          {authorUser ? authorUser.username : "Unknown user"}
+        </p>
       </div>
       <Tooltip id="delete-note-tooltip" />
       {isCurrentUserAuthor && (

@@ -109,6 +109,7 @@ ADD COLUMN     "server_id" TEXT NOT NULL;
 ALTER TABLE "User" DROP CONSTRAINT "User_pkey",
 DROP COLUMN "uid",
 ADD COLUMN     "blocklist" TEXT[],
+ADD COLUMN      "dm_permission" TEXT,
 ADD COLUMN     "person_status" TEXT,
 ADD COLUMN     "share_timezone" BOOLEAN,
 ADD COLUMN     "socket_id" TEXT,

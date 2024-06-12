@@ -16,9 +16,11 @@ import { twMerge } from "tailwind-merge";
 export default function StrangerOptionsElement({
   name,
   user_id,
+  mode,
 }: {
   name: string;
   user_id: string;
+  mode?: "row" | "column";
 }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
@@ -68,7 +70,7 @@ export default function StrangerOptionsElement({
       <RowWrapper
         align="items-center"
         justify="justify-items-center"
-        className="px-2 sm:flex-col"
+        className={twMerge("relative px-2", mode !== "row" && "sm:flex-col")}
       >
         {requestSuccess ? (
           <MaterialSymbolsPersonCheckOutlineRounded className="flex-shrink-0 text-2xl text-primary" />

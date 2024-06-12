@@ -129,15 +129,17 @@ export default function CreateServer({ userId }: { userId: string }) {
         align="content-start items-start"
         className="m-0 md:ml-6"
       >
-        <TextInput
-          className="self-start px-2 py-0 text-xl"
-          placeholder="Server name"
-          value={serverName}
-          onChange={(e) => setServerName(e.target.value)}
-          required
-          endElement={<span className="text-warning">*</span>}
-          disabled={isPending}
-        />
+        <div className="md:max-w-[80%] lg:max-w-[40%]">
+          <TextInput
+            className="self-start px-2 py-0 text-xl"
+            placeholder="Server name"
+            value={serverName}
+            onChange={(e) => setServerName(e.target.value)}
+            required
+            endElement={<span className="text-warning">*</span>}
+            disabled={isPending}
+          />
+        </div>
 
         <h4 className="mt-5">Server icon</h4>
         <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-[3px] border-dashed border-black50">

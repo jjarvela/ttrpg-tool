@@ -1,5 +1,5 @@
 import { FriendInstance, FriendRequest } from "@prisma/client";
-import { db } from "../db";
+import db from "../db";
 
 /**
  * Add two users to each others' friend lists
@@ -141,9 +141,7 @@ export const createFriendRequest = async (data: {
   return request;
 };
 
-export const getUserReceivedRequests = async (
-  user_id: string,
-): Promise<FriendRequest[]> => {
+export const getUserReceivedRequests = async (user_id: string) => {
   const requests = await db.friendRequest.findMany({
     where: { recipient_id: user_id },
     select: {

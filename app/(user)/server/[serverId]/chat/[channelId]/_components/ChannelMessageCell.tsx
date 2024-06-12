@@ -1,17 +1,19 @@
-import RowWrapper from "../../../../_components/wrappers/RowWrapper";
 import UserInfo from "@/app/_components/UserInfo";
-import { getUserById } from "../../../../../prisma/services/userService";
 import errorHandler from "@/utils/errorHandler";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { getServerMember } from "@/prisma/services/serverService";
+import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 
 type MessageCellProps = {
+  server_id: string;
   sender_id: string;
   message: string;
   created_at: Date;
 };
 
-export default async function MessageCell({
+export default async function ChannelMessageCell({
+  server_id,
   sender_id,
   message,
   created_at,
@@ -24,18 +26,18 @@ export default async function MessageCell({
 
   const element: JSX.Element | null = await errorHandler(
     async () => {
-      const userInfo = await getUserById(sender_id, {
-        id: true,
-        username: true,
-        screen_name: true,
-        profile_image: true,
-      });
+      const user = await getServerMember(server_id, sender_id, true);
 
       return (
         <UserInfo
-          key={userInfo.id}
+          key={user.member_id}
           className="w-[max-content]"
-          user={userInfo}
+          user={{
+            ...user.user!,
+            id: user.member_id,
+            profile_image: user.icon || user.user!.profile_image,
+            screen_name: user.nickname || user.user!.screen_name,
+          }}
           width={40}
           self_id={(session as ExtendedSession).userId}
         />

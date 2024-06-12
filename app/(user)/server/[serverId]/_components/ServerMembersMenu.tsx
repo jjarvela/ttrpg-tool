@@ -1,16 +1,19 @@
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import UserInfo from "@/app/_components/UserInfo";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
-import {
-  getServerData,
-  getServerMembers,
-} from "@/prisma/services/serverService";
+import { auth } from "@/auth";
+import { getServerMembers } from "@/prisma/services/serverService";
 import errorHandler from "@/utils/errorHandler";
+import { redirect } from "next/navigation";
 
 export default async function ServerMembersMenu({ id }: { id: string }) {
   const element: JSX.Element = await errorHandler(
     async () => {
-      const server = await getServerData(id);
+      const session = await auth();
+
+      if (!session) {
+        redirect("/welcome");
+      }
 
       const members = await getServerMembers(id);
 
@@ -22,14 +25,13 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
         <ColumnWrapper className="h-full w-40">
           <h5>Admin</h5>
           <UserInfo
-            username={admin.user!.username || ""}
-            screen_name={
-              admin.nickname
-                ? admin.nickname
-                : admin.user!.screen_name || admin.user!.username
-            }
-            image={admin.icon ? admin.icon : admin.user!.profile_image || ""}
-            isActive={admin.user!.socket_id ? true : false}
+            user={{
+              ...admin.user!,
+              id: admin.member_id,
+              profile_image: admin.icon || admin.user!.profile_image,
+              screen_name: admin.nickname || admin.user!.screen_name,
+            }}
+            self_id={(session as ExtendedSession).userId}
             width={40}
           />
           {mods.length > 0 && (
@@ -38,14 +40,13 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
               {mods.map((item) => (
                 <UserInfo
                   key={item.id}
-                  username={item.user!.username || ""}
-                  screen_name={
-                    item.nickname
-                      ? item.nickname
-                      : item.user!.screen_name || item.user!.username
-                  }
-                  image={item.icon ? item.icon : item.user!.profile_image || ""}
-                  isActive={item.user!.socket_id ? true : false}
+                  user={{
+                    ...item.user!,
+                    id: item.member_id,
+                    profile_image: item.icon || item.user!.profile_image,
+                    screen_name: item.nickname || item.user!.screen_name,
+                  }}
+                  self_id={(session as ExtendedSession).userId}
                   width={40}
                 />
               ))}
@@ -55,14 +56,13 @@ export default async function ServerMembersMenu({ id }: { id: string }) {
           {regulars.map((item) => (
             <UserInfo
               key={item.id}
-              username={item.user!.username || ""}
-              screen_name={
-                item.nickname
-                  ? item.nickname
-                  : item.user!.screen_name || item.user!.username
-              }
-              image={item.icon ? item.icon : item.user!.profile_image || ""}
-              isActive={item.user!.socket_id ? true : false}
+              user={{
+                ...item.user!,
+                id: item.member_id,
+                profile_image: item.icon || item.user!.profile_image,
+                screen_name: item.nickname || item.user!.screen_name,
+              }}
+              self_id={(session as ExtendedSession).userId}
               width={40}
             />
           ))}

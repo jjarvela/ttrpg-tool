@@ -95,7 +95,7 @@ export const createUser = async (data: {
   password_hash: string;
 }) => {
   const newUser = await db.user.create({
-    data: data,
+    data: { ...data, dm_permission: "friends", share_timezone: false },
   });
 
   await db.friendList.create({
@@ -116,7 +116,7 @@ export const updateUser = async (
     email?: string;
     timezone?: string;
     share_timezone?: boolean;
-    profile_image?: string;
+    profile_image?: string | null;
     person_description?: string;
     person_status?: string;
   },
@@ -266,4 +266,17 @@ export const isBlocked = async (
   }
 
   return false;
+};
+
+export const getUserPrivacyPref = async (user_id: string) => {
+  const user = await db.user.findUniqueOrThrow({
+    where: { id: user_id },
+    select: {
+      share_timezone: true,
+      dm_permission: true,
+      blocklist: true,
+    },
+  });
+
+  return user;
 };

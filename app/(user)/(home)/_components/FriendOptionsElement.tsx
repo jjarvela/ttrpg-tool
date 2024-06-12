@@ -21,9 +21,11 @@ import { twMerge } from "tailwind-merge";
 export default function FriendOptionsElement({
   name,
   user_id,
+  mode,
 }: {
   name: string;
   user_id: string;
+  mode?: "row" | "column";
 }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
@@ -78,7 +80,7 @@ export default function FriendOptionsElement({
       <RowWrapper
         align="items-center"
         justify="justify-items-center"
-        className="relative px-2 sm:flex-col"
+        className={twMerge("relative px-2", mode !== "row" && "sm:flex-col")}
       >
         <Link href={`/message/${user_id}`}>
           <MaterialSymbolsAndroidMessagesOutline className="flex-shrink-0 text-2xl" />
