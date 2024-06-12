@@ -85,18 +85,18 @@ export default function FriendOptionsElement({
         <Link href={`/message/${user_id}`}>
           <MaterialSymbolsAndroidMessagesOutline className="flex-shrink-0 text-2xl" />
         </Link>
-        <div id="hitbox" className="relative" ref={menuRef}>
-          <SolarMenuDotsBold
-            className="flex-shrink-0 cursor-pointer text-2xl"
-            onClick={() => {
-              document.addEventListener("mousedown", (event) =>
-                handleClickOutside(menuRef, event, () => setIsOpen(false)),
-              );
-              setIsOpen((prev) => !prev);
-            }}
-          />
+        <SolarMenuDotsBold
+          className="relative flex-shrink-0 cursor-pointer text-2xl"
+          onClick={() => {
+            document.addEventListener("mousedown", (event) =>
+              handleClickOutside(menuRef, event, () => setIsOpen(false)),
+            );
+            setIsOpen((prev) => !prev);
+          }}
+        />
+        <div id="hitbox" className="fixed translate-y-[4.5rem]" ref={menuRef}>
           {isOpen && (
-            <ColumnWrapper className="bg-color-default absolute left-[2rem] top-[1.5rem] rounded-lg border-[1px] border-black50">
+            <ColumnWrapper className="bg-color-default rounded-lg border-[1px] border-black50">
               <RowWrapper
                 className="cursor-pointer"
                 onClick={() => confirmRemoveRef.current?.showModal()}
