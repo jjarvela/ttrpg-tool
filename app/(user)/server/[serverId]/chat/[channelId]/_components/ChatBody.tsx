@@ -1,5 +1,4 @@
 import { getMessagesByChannelId } from "../../../../../../../prisma/services/conversationService";
-import MessageCell from "@/app/(user)/(home)/message/_components/MessageCell";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import { Refresher } from "@/app/_components/wrappers/Refresher";
 import { auth } from "@/auth";
@@ -8,12 +7,14 @@ import {
   getUnreadForUserChannel,
 } from "@/prisma/services/notificationService";
 import { redirect } from "next/navigation";
+import ChannelMessageCell from "./ChannelMessageCell";
 
 type ChatProps = {
+  server_id: string;
   channelId: string;
 };
 
-export default async function ChatBody({ channelId }: ChatProps) {
+export default async function ChatBody({ server_id, channelId }: ChatProps) {
   const session = await auth();
 
   if (!session) return redirect("/welcome");
@@ -47,8 +48,9 @@ export default async function ChatBody({ channelId }: ChatProps) {
             <div className="w-full border-t-[1px] border-primary text-center text-primary">
               New messages
             </div>
-            <MessageCell
+            <ChannelMessageCell
               key={message.uid}
+              server_id={server_id}
               sender_id={message.sender_id}
               message={message.message}
               created_at={message.created_at}
@@ -57,8 +59,9 @@ export default async function ChatBody({ channelId }: ChatProps) {
         );
       }
       return (
-        <MessageCell
+        <ChannelMessageCell
           key={message.uid}
+          server_id={server_id}
           sender_id={message.sender_id}
           message={message.message}
           created_at={message.created_at}

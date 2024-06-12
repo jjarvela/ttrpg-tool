@@ -19,13 +19,13 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     ref,
   ) => {
     return (
-      <ColumnWrapper className="w-full gap-0 p-0">
+      <ColumnWrapper className="w-full flex-grow gap-0 p-0">
         {error && (
           <small className="m-0 w-full text-left text-warning">{error}</small>
         )}
         <RowWrapper
           className={twMerge(
-            "m-2 w-max gap-1 rounded-xl border-[1px] border-black50 px-2 py-1",
+            "m-2 w-full gap-1 rounded-xl border-[1px] border-black50 px-2 py-1",
             borderless && "border-none",
             className,
           )}

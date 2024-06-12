@@ -62,14 +62,20 @@ export default function UserProfileModal({
   function selectContent() {
     if (!user) {
       return (
-        <RowWrapper className="flex-grow">
-          <div
-            className="flex h-12 w-12 flex-shrink-0 animate-pulse items-center justify-center overflow-hidden rounded-full bg-black50"
-            style={{ width: 40, height: 40 }}
-          ></div>
-          <h4 className="h-4 w-10 animate-pulse bg-black50"></h4>
-          <p className="h-3 w-8 animate-pulse bg-black50"></p>
-        </RowWrapper>
+        <Fragment>
+          <RowWrapper className="flex-grow">
+            <div
+              className="flex h-12 w-12 flex-shrink-0 animate-pulse items-center justify-center overflow-hidden rounded-full bg-black50"
+              style={{ width: 40, height: 40 }}
+            ></div>
+            <h4 className="h-4 w-10 animate-pulse bg-black50"></h4>
+            <p className="h-3 w-8 animate-pulse bg-black50"></p>
+          </RowWrapper>
+          <RowWrapper>
+            <p className="h-8 w-10 animate-pulse bg-black50"></p>
+            <p className="h-8 w-10 animate-pulse bg-black50"></p>
+          </RowWrapper>
+        </Fragment>
       );
     }
 
@@ -98,10 +104,11 @@ export default function UserProfileModal({
     return (
       <Fragment>
         <RowWrapper
+          breakPoint="sm"
           align="content-start items-start"
           className="w-full border-b-[1px] border-black50 pb-2"
         >
-          <RowWrapper className="flex-grow">
+          <RowWrapper breakPoint="xs" className="flex-grow">
             <div
               className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-black50"
               style={{ width: 40, height: 40 }}
@@ -125,7 +132,7 @@ export default function UserProfileModal({
           {user.isFriend ? (
             optionsElement
           ) : (
-            <RowWrapper>
+            <RowWrapper breakPoint="xs" className="gap-0">
               {optionsElement}{" "}
               {!user.isSelf &&
                 !user.onTheirBlocklist &&
@@ -145,12 +152,16 @@ export default function UserProfileModal({
             </RowWrapper>
           )}
         </RowWrapper>
-        <RowWrapper breakPoint="md" className="w-full">
-          <p className="my-4 flex-grow text-wrap pl-2 md:max-w-[60%]">
+        <RowWrapper breakPoint="md" className="w-full flex-grow">
+          <p className="my-4 h-[80%] w-full flex-grow text-wrap border-black50 pl-2 md:max-w-[50%] md:border-r-[1px]">
             {user.user.person_description}
           </p>
           {!user.isSelf && (
-            <ColumnWrapper align="items-start">
+            <ColumnWrapper
+              align="items-start"
+              justify="justify-start justify-items-start"
+              className="h-[80%] w-full pl-4 pt-0 md:max-w-[50%]"
+            >
               <h4>Mutual servers</h4>
               {mutualServers.length < 1 ? (
                 <p>You and this user have no mutual servers.</p>
@@ -173,7 +184,7 @@ export default function UserProfileModal({
       ref={refObject}
       className="h-full w-full bg-transparent backdrop:bg-black backdrop:bg-opacity-50"
     >
-      <ColumnWrapper className="bg-color-dark text-color-default mx-auto w-[90%] gap-2 rounded-lg border-[1px] border-black50 px-8 py-4 lg:w-[60%]">
+      <ColumnWrapper className="bg-color-dark text-color-default m-auto h-full w-[90%] gap-2 overflow-y-auto overflow-x-hidden rounded-lg border-[1px] border-black50 px-8 py-4 md:h-[75%] lg:w-[60%]">
         <MaterialSymbolsLightCloseRounded
           className="flex-shrink-0 cursor-pointer self-end text-2xl"
           onClick={() => refObject.current?.close()}
