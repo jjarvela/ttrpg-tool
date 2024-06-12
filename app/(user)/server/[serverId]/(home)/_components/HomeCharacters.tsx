@@ -12,6 +12,7 @@ export interface HomeCharactersProps {
     vitals: number[];
     vitals_max: number[];
     base: {
+      id: string;
       name: string;
       image: string | null;
     };

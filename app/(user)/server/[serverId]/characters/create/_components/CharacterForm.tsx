@@ -275,6 +275,7 @@ export default function CharacterForm({
         vitals: vitals.vitals,
         vitals_max: vitals.vitals_max,
         base: {
+          id: base.id,
           name: baseData.name,
           image: filename || null,
         },

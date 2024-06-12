@@ -42,6 +42,7 @@ export default async function ServerHome({ params }: { params: Params }) {
           class: true,
         },
         base: {
+          id: true,
           name: true,
           image: true,
         },
