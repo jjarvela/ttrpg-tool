@@ -28,13 +28,23 @@ export default function HomeCharacters({
 
   useEffect(() => {
     socket.emit("join-character-server", serverId);
+
     socket.on("updateCharacters", (newCharacters) => {
       setCharacters((prevCharacters) => [newCharacters, ...prevCharacters]);
+    });
+
+    socket.on("delete-character", (deletedCharacter) => {
+      setCharacters((prevCharacters) =>
+        prevCharacters.filter(
+          (character) => character.base.id !== deletedCharacter,
+        ),
+      );
     });
 
     return () => {
       socket.off("updateCharacters");
       socket.off("join-character-server");
+      socket.off("delete-character");
     };
   }, [serverId]);
   return (

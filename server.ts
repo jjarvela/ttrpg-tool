@@ -131,15 +131,15 @@ app.prepare().then(() => {
     // character management
     socket.on("join-character-server", (serverId) => {
       socket.join(serverId);
-      console.log("joined char server " + serverId);
     });
 
     socket.on("new-character", (data) => {
       const { serverId, character } = data;
       io.to(serverId).emit("updateCharacters", character);
-      console.log(
-        "new character added to server " + serverId + " " + character,
-      );
+    });
+
+    socket.on("delete-character", (serverId, characterId) => {
+      io.to(serverId).emit("delete-character", characterId);
     });
 
     // notes management
