@@ -72,7 +72,7 @@ export default function HomeCharacters({
       </h3>
       {characters.map((character) => (
         <div
-          key={character.base.name}
+          key={character.base.id}
           className="flex flex-row rounded-lg bg-black50 p-4 shadow dark:bg-black85"
         >
           <div className="me-4 flex h-12 w-12 items-center justify-center">
