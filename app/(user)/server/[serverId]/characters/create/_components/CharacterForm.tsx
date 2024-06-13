@@ -92,7 +92,6 @@ export default function CharacterForm({
   useEffect(() => {
     // Join the server-specific room on component mount
     socket.emit("join-character-server", config.server_id);
-    console.log("Joined character server", config.server_id);
 
     return () => {
       socket.off("join-character-server");
