@@ -1,22 +1,22 @@
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import ServerSubMenu from "./ServerSubMenu";
-import ServerSettingsMenu from "./SettingsMenu";
 import {
   getServerConfig,
   getServerData,
 } from "@/prisma/services/serverService";
-import ServerInnerNavLink from "./ServerInnerNavLink";
 import Link from "next/link";
 import { getChannels } from "@/prisma/services/channelService";
 import getServerAuth from "@/actions/getServerAuth";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
-import ContextMenu from "../chat/[channelId]/_components/ContextMenu";
+import ContextMenu from "../../chat/[channelId]/_components/ContextMenu";
 import errorHandler from "@/utils/errorHandler";
 import { getServerBoards } from "@/prisma/services/gameBoardService";
-import ActiveUserDisplay from "../../../../_components/ActiveUserDisplay";
+import ActiveUserDisplay from "../../../../../_components/ActiveUserDisplay";
+import ServerSettingsMenu from "./SettingsMenu";
+import ServerInnerNavLink from "./ServerInnerNavLink";
 
 export default async function ServerInnerNav({ id }: { id: string }) {
   const session = await auth();
