@@ -1,14 +1,14 @@
 "use client";
+import IconoirHexagonDice from "@/public/icons/IconoirHexagonDice";
+import MaterialSymbolsAndroidMessagesOutline from "@/public/icons/MaterialSymbolsAndroidMessagesOutline";
+import MaterialSymbolsCastleOutline from "@/public/icons/MaterialSymbolsCastleOutline";
+import MaterialSymbolsChessOutline from "@/public/icons/MaterialSymbolsChessOutline";
+import MaterialSymbolsGroupOutline from "@/public/icons/MaterialSymbolsGroupOutline";
+import MaterialSymbolsNoteStackOutline from "@/public/icons/MaterialSymbolsNoteStackOutline";
+import MaterialSymbolsPersonPlayOutline from "@/public/icons/MaterialSymbolsPersonPlayOutline";
+import MaterialSymbolsScheduleOutline from "@/public/icons/MaterialSymbolsScheduleOutline";
+import RiPushpinLine from "@/public/icons/RiPushpinLine";
 import Link from "next/link";
-import IconoirHexagonDice from "../../../../../public/icons/IconoirHexagonDice";
-import MaterialSymbolsAndroidMessagesOutline from "../../../../../public/icons/MaterialSymbolsAndroidMessagesOutline";
-import MaterialSymbolsCastleOutline from "../../../../../public/icons/MaterialSymbolsCastleOutline";
-import MaterialSymbolsChessOutline from "../../../../../public/icons/MaterialSymbolsChessOutline";
-import MaterialSymbolsGroupOutline from "../../../../../public/icons/MaterialSymbolsGroupOutline";
-import MaterialSymbolsNoteStackOutline from "../../../../../public/icons/MaterialSymbolsNoteStackOutline";
-import MaterialSymbolsPersonPlayOutline from "../../../../../public/icons/MaterialSymbolsPersonPlayOutline";
-import MaterialSymbolsScheduleOutline from "../../../../../public/icons/MaterialSymbolsScheduleOutline";
-import RiPushpinLine from "../../../../../public/icons/RiPushpinLine";
 import { usePathname } from "next/navigation";
 
 interface IconLinkProps {
