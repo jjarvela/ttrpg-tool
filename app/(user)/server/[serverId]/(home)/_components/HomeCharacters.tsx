@@ -41,12 +41,30 @@ export default function HomeCharacters({
       );
     });
 
+    socket.on("edit-character", (editedCharId, editedCharacter) => {
+      setCharacters((prevCharacters) => {
+        console.log("Editing character:", editedCharId, editedCharacter); // Debugging
+        return prevCharacters.map((character) =>
+          character.base.id === editedCharId
+            ? {
+                ...character,
+                level: editedCharacter.level,
+                class: editedCharacter.class,
+                vitals: editedCharacter.vitals,
+                vitals_max: editedCharacter.vitals_max,
+              }
+            : character,
+        );
+      });
+    });
+
     return () => {
       socket.off("updateCharacters");
       socket.off("join-character-server");
       socket.off("delete-character");
+      socket.off("edit-character");
     };
-  }, [serverId]);
+  }, [serverId, initialCharacters]);
   return (
     <div className="scrollbar-thin flex flex-col gap-4 overflow-auto bg-black25 p-4 dark:bg-black75">
       <h3 className="mx-auto text-lg font-bold dark:text-white">

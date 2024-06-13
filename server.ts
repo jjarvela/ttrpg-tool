@@ -136,10 +136,15 @@ app.prepare().then(() => {
     socket.on("new-character", (data) => {
       const { serverId, character } = data;
       io.to(serverId).emit("updateCharacters", character);
+      console.log(serverId, character);
     });
 
     socket.on("delete-character", (serverId, characterId) => {
       io.to(serverId).emit("delete-character", characterId);
+    });
+
+    socket.on("edit-character", (serverId, characterId, editedCharacter) => {
+      io.to(serverId).emit("edit-character", characterId, editedCharacter);
     });
 
     // notes management
