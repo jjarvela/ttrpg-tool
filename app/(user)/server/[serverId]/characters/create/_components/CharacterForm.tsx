@@ -3,7 +3,7 @@
 import TextAreaInput from "@/app/_components/inputs/TextAreaInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import VitalsForm from "./VitalsForm";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import InfoForm from "./InfoForm";
 import BaseSelect from "./BaseSelect";
@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import FeedbackCard from "@/app/_components/FeedbackCard";
 import Button from "@/app/_components/Button";
 import { io } from "socket.io-client";
+import { HomeCharactersProps } from "../../../(home)/_components/HomeCharacters";
 
 const socket = io();
 
@@ -88,6 +89,35 @@ export default function CharacterForm({
 
   const router = useRouter();
 
+  useEffect(() => {
+    // Join the server-specific room on component mount
+    socket.emit("join-character-server", config.server_id);
+    console.log("Joined character server", config.server_id);
+
+    return () => {
+      socket.off("join-character-server");
+    };
+  }, [config.server_id]);
+
+  async function emitCharacter(
+    character: HomeCharactersProps["initialCharacters"][number],
+  ) {
+    socket.emit("new-character", {
+      serverId: config.server_id,
+      character: {
+        level: character.level,
+        class: character.class,
+        vitals: character.vitals,
+        vitals_max: character.vitals_max,
+        base: {
+          id: character.base.id,
+          name: character.base.name,
+          image: character.base.image || null,
+        },
+      },
+    });
+  }
+
   function handleSubmit() {
     const isValid = formRef.current?.checkValidity();
     if (!isValid) {
@@ -104,6 +134,19 @@ export default function CharacterForm({
               ...vitals,
               attributes,
               statics,
+            });
+
+            emitCharacter({
+              ...character,
+              level: info.level,
+              class: info.class,
+              vitals: vitals.vitals,
+              vitals_max: vitals.vitals_max,
+              base: {
+                id: character.id,
+                name: character.name,
+                image: character.image || null,
+              },
             });
 
             router.push(`/server/${config.server_id}/characters`);
@@ -266,19 +309,15 @@ export default function CharacterForm({
       statics,
     });
 
-    // Emit the new character event to Socket.IO server
-    socket.emit("new-character", {
-      serverId: config.server_id,
-      character: {
-        level: info.level,
-        class: info.class,
-        vitals: vitals.vitals,
-        vitals_max: vitals.vitals_max,
-        base: {
-          id: base.id,
-          name: baseData.name,
-          image: filename || null,
-        },
+    emitCharacter({
+      level: info.level,
+      class: info.class,
+      vitals: vitals.vitals,
+      vitals_max: vitals.vitals_max,
+      base: {
+        id: base.id,
+        name: baseData.name,
+        image: base.image || null,
       },
     });
   }
