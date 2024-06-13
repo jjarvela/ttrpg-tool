@@ -27,7 +27,18 @@ export default function HomeCharacters({
   const [characters, setCharacters] = useState(initialCharacters);
 
   useEffect(() => {
-    socket.emit("join-character-server", serverId);
+    // Function to handle joining and leaving rooms
+    const joinServerRoom = (newServerId: string) => {
+      // Leave the old room if we were previously connected to a room
+      if (socket.connected) {
+        socket.emit("leave-character-server", serverId);
+      }
+      // Join the new server room
+      socket.emit("join-character-server", newServerId);
+    };
+
+    // Join the initial server room
+    joinServerRoom(serverId);
 
     socket.on("updateCharacters", (newCharacters) => {
       setCharacters((prevCharacters) => [newCharacters, ...prevCharacters]);
@@ -43,7 +54,6 @@ export default function HomeCharacters({
 
     socket.on("edit-character", (editedCharId, editedCharacter) => {
       setCharacters((prevCharacters) => {
-        console.log("Editing character:", editedCharId, editedCharacter); // Debugging
         return prevCharacters.map((character) =>
           character.base.id === editedCharId
             ? {
@@ -52,6 +62,7 @@ export default function HomeCharacters({
                 class: editedCharacter.class,
                 vitals: editedCharacter.vitals,
                 vitals_max: editedCharacter.vitals_max,
+                base: editedCharacter.base,
               }
             : character,
         );
@@ -60,11 +71,11 @@ export default function HomeCharacters({
 
     return () => {
       socket.off("updateCharacters");
-      socket.off("join-character-server");
       socket.off("delete-character");
       socket.off("edit-character");
+      socket.emit("leave-character-server", serverId);
     };
-  }, [serverId, initialCharacters]);
+  }, [serverId]);
   return (
     <div className="scrollbar-thin flex flex-col gap-4 overflow-auto bg-black25 p-4 dark:bg-black75">
       <h3 className="mx-auto text-lg font-bold dark:text-white">

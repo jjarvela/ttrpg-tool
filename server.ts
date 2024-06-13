@@ -133,10 +133,13 @@ app.prepare().then(() => {
       socket.join(serverId);
     });
 
+    socket.on("leave-character-server", (serverId) => {
+      socket.leave(serverId);
+    });
+
     socket.on("new-character", (data) => {
       const { serverId, character } = data;
       io.to(serverId).emit("updateCharacters", character);
-      console.log(serverId, character);
     });
 
     socket.on("delete-character", (serverId, characterId) => {
