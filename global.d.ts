@@ -144,6 +144,21 @@ type GamePiece = {
   };
 };
 
+type diceType = "d4" | "d6" | "d8" | "d10" | "d12" | "d20"
+
+type diceObject = {
+  diceType: diceType
+}
+
+type diceSet = diceType[];
+
+interface DiceThrow {
+  diceSet: diceSet,
+  delivery: "channel" | "server" | "private"
+  serverId?: string,
+  channelId?: string
+}
+
 /**
  * SELECT TYPES
  */
@@ -222,3 +237,4 @@ type ServerCharacterSelect = {
   skills?: boolean;
   items?: boolean;
 };
+
