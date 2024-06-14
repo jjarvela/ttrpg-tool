@@ -15,6 +15,7 @@ import { getUnreadForUser } from "@/prisma/services/notificationService";
 import errorHandler from "@/utils/errorHandler";
 import { redirect } from "next/navigation";
 import { getUserReceivedRequests } from "@/prisma/services/friendService";
+import MenuButtonExplore from "./menu_items/MenuButtonExplore";
 
 //global types file doesn't like imports so we're declaring this here for now
 declare global {
@@ -99,6 +100,10 @@ const SideMenu = async ({ className }: { className?: string }) => {
           <div className="group relative">
             <MenuButtonNewServer />
           </div>
+          <div className="group relative">
+            <MenuButtonExplore />
+          </div>
+
           <MenuButtonLogout />
         </ColumnWrapper>
       );
