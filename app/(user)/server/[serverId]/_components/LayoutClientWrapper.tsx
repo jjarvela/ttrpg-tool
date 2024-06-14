@@ -1,6 +1,5 @@
 "use client";
 
-import TopMenu from "@/app/(user)/server/[serverId]/_components/TopMenu";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsGroupOutline from "@/public/icons/MaterialSymbolsGroupOutline";
@@ -8,6 +7,7 @@ import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbo
 import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import TopMenu from "./navComponents/TopMenu";
 
 export default function LayoutClientWrapper({
   id,

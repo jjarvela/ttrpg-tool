@@ -59,7 +59,6 @@ export default function StackEdit({
               startTransition(async () => {
                 try {
                   const key = `${title.toLowerCase()}_names`;
-                  console.log(key);
                   await editCharacterConfig(server_id, {
                     [key]: statList,
                   });

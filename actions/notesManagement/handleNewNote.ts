@@ -27,7 +27,6 @@ export default async function handleNewNote(server_id: string) {
 
   try {
     const result = await createNote(newNoteData);
-    console.log("Note created successfully:", result);
     return result as NoteData; // Ensure it always returns a NoteData object
   } catch (error) {
     console.error("Error creating note:", error);

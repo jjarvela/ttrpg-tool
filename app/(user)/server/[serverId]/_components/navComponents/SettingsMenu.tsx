@@ -3,12 +3,12 @@
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import MaterialSymbolsManufacturing from "@/public/icons/MaterialSymbolsManufacturing";
 import { Fragment, useRef, useState } from "react";
-import NewInvitationModal from "./NewInvitationModal";
 import handleClickOutside from "@/utils/handleClickOutside";
 import { useRouter } from "next/navigation";
 import MaterialSymbolsLightLoginOutlineRounded from "@/public/icons/MaterialSymbolsLightLoginOutlineRounded";
 import leaveServer from "@/actions/serverMemberManagement/leaveServer";
 import ConfirmModal from "@/app/_components/ConfirmModal";
+import NewInvitationModal from "../NewInvitationModal";
 
 export default function ServerSettingsMenu({
   serverAuth,

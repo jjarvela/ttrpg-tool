@@ -48,11 +48,11 @@ type ServerConfig = {
   id: number;
   server_id: string;
   config_permission: string;
-  protected: boolean | null;
+  protected: boolean;
   password_hash: string | null;
-  explorable: boolean | null;
-  searchable: boolean | null;
-  join_permission: string | null;
+  explorable: boolean;
+  searchable: boolean;
+  join_permission: string;
 };
 
 type ServerMember = {
@@ -144,6 +144,21 @@ type GamePiece = {
   };
 };
 
+type diceType = "d4" | "d6" | "d8" | "d10" | "d12" | "d20"
+
+type diceObject = {
+  diceType: diceType
+}
+
+type diceSet = diceType[];
+
+interface DiceThrow {
+  diceSet: diceSet,
+  delivery: "channel" | "server" | "private"
+  serverId?: string,
+  channelId?: string
+}
+
 /**
  * SELECT TYPES
  */
@@ -178,14 +193,14 @@ type ServerDataSelect = {
 };
 
 type ServerConfigSelect = {
-  id: boolean;
-  server_id: boolean;
-  config_permission: boolean;
-  protected: boolean;
-  password_hash: boolean;
-  explorable: boolean;
-  searchable: boolean;
-  join_permission: boolean;
+  id?: boolean;
+  server_id?: boolean;
+  config_permission?: boolean;
+  protected?: boolean;
+  password_hash?: boolean;
+  explorable?: boolean;
+  searchable?: boolean;
+  join_permission?: boolean;
 };
 
 type ServerMemberSelect = {
@@ -222,3 +237,4 @@ type ServerCharacterSelect = {
   skills?: boolean;
   items?: boolean;
 };
+

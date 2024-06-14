@@ -19,7 +19,6 @@ export function Refresher({
   timeout?: number;
   children: React.ReactNode;
 }) {
-  console.log("refresher");
   const router = useRouter();
   useEffect(() => {
     if (array.length > 0) {

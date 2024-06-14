@@ -38,12 +38,12 @@ export const createServerEntry = async (data: {
  */
 export const createServerConfig = async (data: {
   server_id: string;
-  config_permission: string;
-  protected?: boolean;
+  protected: boolean;
   password_hash?: string;
-  explorable?: boolean;
-  searchable?: boolean;
-  join_permission?: string;
+  explorable: boolean;
+  searchable: boolean;
+  join_permission: string;
+  config_permission: string;
 }): Promise<ServerConfig> => {
   const serverConfig = await db.serverConfig.create({ data });
 
@@ -231,7 +231,11 @@ export const getServerJoinData = async (
  */
 export const updateServerData = async (
   server_id: string,
-  data: { server_name?: string; description?: string; image?: string },
+  data: {
+    server_name?: string;
+    description?: string | null;
+    image?: string | null;
+  },
 ): Promise<ServerData> => {
   const server = await db.server.update({ where: { id: server_id }, data });
   return server;
@@ -293,7 +297,7 @@ export const getServerConfig = async (
  * @param server_id - string
  * @param data - {
     config_permission?: string;
-    protected?: boolean | null;
+    protected?: boolean;
     password_hash?: string;
     explorable?: boolean;
     searchable?: boolean;
@@ -303,18 +307,18 @@ export const getServerConfig = async (
   id: number;
   server_id: string;
   config_permission: string;
-  protected: boolean | null;
+  protected: boolean;
   password_hash: string | null;
-  explorable: boolean | null;
-  searchable: boolean | null;
-  join_permission: string | null;
+  explorable: boolean;
+  searchable: boolean;
+  join_permission: string;
 }
  */
 export const updateServerConfig = async (
   server_id: string,
   data: {
     config_permission?: string;
-    protected?: boolean | null;
+    protected?: boolean;
     password_hash?: string;
     explorable?: boolean;
     searchable?: boolean;

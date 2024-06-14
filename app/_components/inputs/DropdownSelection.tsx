@@ -79,10 +79,13 @@ export default function DropdownSelection({
   };
 
   return (
-    <ColumnWrapper className="relative w-full gap-0" refObject={dropdownRef}>
+    <ColumnWrapper
+      className="relative w-full gap-0 p-0"
+      refObject={dropdownRef}
+    >
       {/**Phantom input to track required condition*/}
       <input
-        className="collapse h-0 w-0"
+        className="collapse absolute h-0 w-0"
         required={required}
         id={id}
         defaultValue={selected.length > 0 ? "1" : ""}
@@ -123,7 +126,7 @@ export default function DropdownSelection({
         </div>
         <div
           className={twMerge(
-            "bg-black50 transition-transform duration-100",
+            "flex-shrink-0 bg-black50 transition-transform duration-100",
             arrowClass,
           )}
         >
@@ -136,7 +139,7 @@ export default function DropdownSelection({
       <ColumnWrapper
         align="items-start"
         className={twMerge(
-          "bg-color-default z-[99] ml-[0.25rem] mt-[0.25rem] max-h-[20em] w-[95%] overflow-hidden overflow-y-auto border-[1px] border-black50 p-0",
+          "bg-color-default absolute top-14 z-[99] ml-[0.25rem] mt-[0.25rem] max-h-[20em] w-[95%] overflow-hidden overflow-y-auto border-[1px] border-black50 p-0",
           isOpen ? "h-max" : "collapse h-0",
         )}
       >

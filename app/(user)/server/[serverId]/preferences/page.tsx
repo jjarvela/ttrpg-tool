@@ -19,6 +19,7 @@ import errorHandler from "@/utils/errorHandler";
 import Link from "next/link";
 import MaterialSymbolsLightChevronLeftRounded from "@/public/icons/MaterialSymbolsLightChevronLeftRounded";
 import Divider from "@/app/_components/Divider";
+import FormContainer from "./_components/FormContainer";
 
 export default async function ServerPreferences({
   params,
@@ -32,7 +33,19 @@ export default async function ServerPreferences({
 
   const element: JSX.Element = await errorHandler(
     async () => {
-      const config = await getServerConfig(id);
+      const server = await getServerData(id, {
+        select: { server_name: true, description: true, image: true },
+        config: {
+          id: true,
+          server_id: true,
+          config_permission: true,
+          protected: true,
+          password_hash: true,
+          explorable: true,
+          searchable: true,
+          join_permission: true,
+        },
+      });
 
       const serverAuth = await getServerAuth(
         id,
@@ -41,50 +54,14 @@ export default async function ServerPreferences({
 
       if (!serverAuth) redirect("/server");
 
-      const info: unknown = await getServerData(id, {
-        select: { server_name: true, description: true, image: true },
-      });
-
-      const authMatch = checkAuthMatch(serverAuth, config);
-
       return (
         <Fragment>
-          <h2>Server information</h2>
-
-          <ServerInfo
-            info={info as ServerData}
-            serverAuth={serverAuth}
-            config={config}
-            editable={authMatch}
-            server_icon={
-              <Icon
-                filename={(info as ServerData).image || ""}
-                alt="server icon"
-                className="absolute left-0 top-0"
-              />
-            }
-          />
-
-          <Divider />
-
-          {authMatch && (
-            <Fragment>
-              <h2 className="my-2">Security</h2>
-              <ServerSecurity serverAuth={serverAuth} config={config} />{" "}
-              <Divider />
-            </Fragment>
-          )}
-
-          {authMatch && (
-            <Fragment>
-              <h2 className="my-2">Discoverability</h2>
-              <Discoverability serverAuth={serverAuth} config={config} />{" "}
-              <Divider />
-            </Fragment>
-          )}
-
+          <FormContainer server={server} serverAuth={serverAuth} />
           <h2 className="my-2">Invitations</h2>
-          <ServerInvitationsList serverId={id} authMatch={authMatch} />
+          <ServerInvitationsList
+            serverId={server.id}
+            authMatch={checkAuthMatch(serverAuth, server.config![0])}
+          />
         </Fragment>
       );
     },

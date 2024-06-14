@@ -36,8 +36,6 @@ export default async function ServerWorldClock({ params }: { params: Params }) {
 
       const sortedMembers = memberSort(members);
 
-      console.log(sortedMembers);
-
       return (
         <RowWrapper breakPoint="sm" className="flex-wrap">
           {sortedMembers.map((item) => {

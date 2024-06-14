@@ -60,7 +60,6 @@ export default function ConversationContextMenu({
   function handleMarkUnread() {
     if (!isPending) {
       startTransition(async () => {
-        console.log("handle mark unread");
         await markUnread(conversation.uid, conversation.messages[0].uid);
         router.refresh();
       });
