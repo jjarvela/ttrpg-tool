@@ -29,3 +29,7 @@ export function sendNotification(data: {
 export function friendRequestEvent(recipient_id: string) {
   socket.emit("friend-request-event", recipient_id);
 }
+
+export function serverUpdateEvent(server_id: string) {
+  socket.emit("server-update-event", server_id);
+}

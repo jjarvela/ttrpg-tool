@@ -9,6 +9,7 @@ import TextInput from "@/app/_components/inputs/TextInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightImageOutlineRounded from "@/public/icons/MaterialSymbolsLightImageOutlineRounded";
+import { serverUpdateEvent } from "@/socket";
 import errorHandler from "@/utils/errorHandler";
 import postUpload from "@/utils/postUpload";
 import { useRouter } from "next/navigation";
@@ -56,6 +57,7 @@ export default function CreateBoard({ server_id }: { server_id: string }) {
 
               const newBoard = await handleBoard(filename);
               router.push(`/server/${server_id}/boards/${newBoard.id}`);
+              serverUpdateEvent(server_id);
               router.refresh();
 
               return null;
@@ -63,6 +65,7 @@ export default function CreateBoard({ server_id }: { server_id: string }) {
           } else {
             const newBoard = await handleBoard();
             router.push(`/server/${server_id}/boards/${newBoard.id}`);
+            serverUpdateEvent(server_id);
             return null;
           }
         },
