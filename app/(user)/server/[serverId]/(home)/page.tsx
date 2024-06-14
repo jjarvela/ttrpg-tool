@@ -41,6 +41,7 @@ export default async function ServerHome({ params }: { params: Params }) {
           class: true,
         },
         base: {
+          id: true,
           name: true,
           image: true,
         },
@@ -52,7 +53,8 @@ export default async function ServerHome({ params }: { params: Params }) {
     return [];
   }
   const latestCharacters =
-    (await getHomeServerCharacters()) as unknown as HomeCharactersProps["latestCharacters"];
+    (await getHomeServerCharacters()) as unknown as HomeCharactersProps["initialCharacters"];
+  console.log(latestCharacters);
 
   return (
     <Main className="grid h-full grid-cols-1 gap-6 p-3 lg:grid-cols-2">
@@ -64,7 +66,10 @@ export default async function ServerHome({ params }: { params: Params }) {
         )}
       </div>
       <div className="h-full flex-grow">
-        <HomeCharacters latestCharacters={latestCharacters} />
+        <HomeCharacters
+          initialCharacters={latestCharacters}
+          serverId={serverId}
+        />
       </div>
       <div className="scrollbar-thin flex-grow bg-black25 p-5 dark:bg-black75">
         <h2 className="mx-auto mb-2 text-lg font-semibold text-gray-800 dark:text-white">
