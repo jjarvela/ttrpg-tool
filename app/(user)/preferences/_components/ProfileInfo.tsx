@@ -174,7 +174,10 @@ export default function ProfileInfo({
       }
     } else {
       try {
-        const result = await changeUserProfile(user.id, profileInfo);
+        const result = await changeUserProfile(user.id, {
+          ...profileInfo,
+          profile_image: removeIcon ? null : undefined,
+        });
       } catch (e) {
         throw new Error((e as Error).message);
       }
