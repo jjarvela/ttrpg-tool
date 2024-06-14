@@ -5,23 +5,6 @@ import handleClickOutside from "@/utils/handleClickOutside";
 import Link from "next/link";
 import { useRef, useState } from "react";
 
-type Conversation = {
-  uid: string;
-  channel_id: string | null;
-  created_at: Date;
-  participants: {
-    participant: {
-      id: string;
-      username: string;
-      screen_name: string | null;
-    };
-  }[];
-  messages: {
-    message: string;
-    created_at: Date;
-  }[];
-};
-
 export default function ConversationThumb({
   conversation,
   userId,

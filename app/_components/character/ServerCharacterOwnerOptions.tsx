@@ -10,7 +10,9 @@ import { useRef, useState } from "react";
 import errorHandler from "@/utils/errorHandler";
 import deleteCharacterFromServer from "@/actions/characterManagement/deleteCharacterFromServer";
 import { useRouter } from "next/navigation";
+import { io } from "socket.io-client";
 
+const socket = io();
 export default function ServerCharacterOwnerOptions({
   character,
   config,
@@ -47,6 +49,11 @@ export default function ServerCharacterOwnerOptions({
           const error: string | null = await errorHandler(
             async () => {
               await deleteCharacterFromServer(character.id);
+              socket.emit(
+                "delete-character",
+                config.server_id,
+                character.base.id,
+              );
             },
             () => {
               return "Something went wrong.";

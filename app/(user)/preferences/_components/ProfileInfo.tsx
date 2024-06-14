@@ -144,7 +144,7 @@ export default function ProfileInfo({
         borderless
         value={profileInfo.person_description}
         onChange={(e) =>
-          setProfileInfo({ ...profileInfo, person_status: e.target.value })
+          setProfileInfo({ ...profileInfo, person_description: e.target.value })
         }
         maxLength={200}
         className="ml-8 w-full bg-black25 md:w-[50%] dark:bg-black75"
@@ -174,7 +174,10 @@ export default function ProfileInfo({
       }
     } else {
       try {
-        const result = await changeUserProfile(user.id, profileInfo);
+        const result = await changeUserProfile(user.id, {
+          ...profileInfo,
+          profile_image: removeIcon ? null : undefined,
+        });
       } catch (e) {
         throw new Error((e as Error).message);
       }

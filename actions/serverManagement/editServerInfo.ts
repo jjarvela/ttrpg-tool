@@ -1,10 +1,12 @@
 "use server";
 
 import {
+  getServerData,
   getServerMember,
   updateServerData,
 } from "@/prisma/services/serverService";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
+import deleteBlob from "../deleteBlob";
 
 /**
  * This function can be used to update the information of a server
@@ -34,7 +36,19 @@ export default async function editServerInfo(
     );
   }
   try {
+    let filename = "";
+
+    if (data.image !== undefined) {
+      const original = await getServerData(serverConfig.server_id);
+      filename = original.image || "";
+    }
+
     const result = await updateServerData(serverConfig.server_id, data);
+
+    if (filename !== "") {
+      deleteBlob(filename);
+    }
+
     return result;
   } catch (e) {
     console.error(e);

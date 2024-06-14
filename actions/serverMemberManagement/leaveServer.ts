@@ -7,6 +7,7 @@ import {
   getServerMembers,
   updateServerMember,
 } from "@/prisma/services/serverService";
+import deleteBlob from "../deleteBlob";
 
 export default async function leaveServer(user_id: string, server_id: string) {
   const serverMembers = await getServerMembers(server_id);
@@ -15,6 +16,11 @@ export default async function leaveServer(user_id: string, server_id: string) {
   if (serverMembers.length === 1) {
     try {
       const deletedServer = await deleteServerData(server_id);
+
+      if (deletedServer.image) {
+        await deleteBlob(deletedServer.image);
+      }
+
       return deletedServer;
     } catch (e) {
       console.error(e);

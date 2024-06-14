@@ -139,7 +139,7 @@ export default function DropdownSelection({
       <ColumnWrapper
         align="items-start"
         className={twMerge(
-          "bg-color-default absolute top-14 z-[99] ml-[0.25rem] mt-[0.25rem] max-h-[20em] w-[95%] overflow-hidden overflow-y-auto border-[1px] border-black50 p-0",
+          "bg-color-default scrollbar-thin z-[99] ml-[0.25rem] mt-[0.25rem] max-h-[20em] w-[95%] overflow-hidden overflow-y-auto border-[1px] border-black50 p-0",
           isOpen ? "h-max" : "collapse h-0",
         )}
       >

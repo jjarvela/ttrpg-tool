@@ -14,6 +14,9 @@ import { useRouter } from "next/navigation";
 import Button from "../Button";
 import errorHandler from "@/utils/errorHandler";
 import updateCharacterForServer from "@/actions/characterManagement/updateCharacterForServer";
+import { io } from "socket.io-client";
+
+const socket = io();
 
 export default function ServerCharacterEdit({
   refObject,
@@ -61,6 +64,18 @@ export default function ServerCharacterEdit({
             ...info,
             ...vitals,
             attributes,
+          });
+
+          socket.emit("edit-character", config.server_id, character.base.id, {
+            level: info.level,
+            class: info.class,
+            vitals: vitals.vitals,
+            vitals_max: vitals.vitals_max,
+            base: {
+              id: character.base.id,
+              name: character.base.name,
+              image: character.base.image || null,
+            },
           });
         },
         () => {

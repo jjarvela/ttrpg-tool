@@ -100,6 +100,8 @@ export default function ServerInfo({
   };
 
   function setImageDisplay() {
+    console.log(removeIcon);
+
     if (!removeIcon && icon) {
       const url = URL.createObjectURL(icon);
       return (
@@ -167,12 +169,13 @@ export default function ServerInfo({
         {editable && (
           <Button
             className="btn-secondary mt-2"
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               setRemoveIcon(true);
             }}
             disabled={isPending}
           >
-            Remove profile image
+            Remove icon
           </Button>
         )}
         <h4 className="mt-5">Server description</h4>

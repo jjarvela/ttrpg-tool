@@ -6,7 +6,10 @@ import {
   getUserById,
   updateUser,
 } from "./prisma/services/userService";
-import { getServerMembersExcept } from "./prisma/services/serverService";
+import {
+  getServerMembers,
+  getServerMembersExcept,
+} from "./prisma/services/serverService";
 import { createNotification } from "./prisma/services/notificationService";
 import {
   getConversationByUid,
@@ -128,6 +131,40 @@ app.prepare().then(() => {
       }
     });
 
+    //server update
+    socket.on("server-update-event", async (server_id: string) => {
+      const recipients = await getServerMembers(server_id);
+
+      recipients.forEach((recipient) => {
+        if (recipient.user?.socket_id) {
+          socket.to(recipient.user.socket_id).emit("client-refresh");
+        }
+      });
+    });
+
+    // character management
+    socket.on("join-character-server", (serverId) => {
+      socket.join(serverId);
+    });
+
+    socket.on("leave-character-server", (serverId) => {
+      socket.leave(serverId);
+    });
+
+    socket.on("new-character", (data) => {
+      const { serverId, character } = data;
+      io.to(serverId).emit("updateCharacters", character);
+    });
+
+    socket.on("delete-character", (serverId, characterId) => {
+      io.to(serverId).emit("delete-character", characterId);
+    });
+
+    socket.on("edit-character", (serverId, characterId, editedCharacter) => {
+      io.to(serverId).emit("edit-character", characterId, editedCharacter);
+    });
+
+    // notes management
     socket.on("join-note-server", (serverId) => {
       socket.join(serverId);
     });
@@ -144,6 +181,7 @@ app.prepare().then(() => {
       io.to(data.serverId).emit("delete-note", data);
     });
 
+    // game board management
     socket.on("join-board", (board_id: string) => {
       socket.join(board_id);
     });

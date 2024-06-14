@@ -2,13 +2,16 @@
 
 import Button from "@/app/_components/Button";
 import FeedbackCard from "@/app/_components/FeedbackCard";
+import { serverUpdateEvent } from "@/socket";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 
 export default function ToggleCreation({
+  server_id,
   enable,
   disable,
 }: {
+  server_id: string;
   enable?: () => Promise<void>;
   disable?: () => Promise<void>;
 }) {
@@ -21,6 +24,8 @@ export default function ToggleCreation({
           try {
             enable && (await enable());
             disable && (await disable());
+            serverUpdateEvent(server_id);
+
             router.refresh();
           } catch (e) {
             setError("Something went wrong.");
