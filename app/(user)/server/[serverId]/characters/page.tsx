@@ -104,6 +104,7 @@ function renderToggle(characterConfig: CharacterConfig) {
   if (!characterConfig.enable_creation) {
     return (
       <ToggleCreation
+        server_id={characterConfig.server_id}
         enable={async () => {
           "use server";
           await updateServerCharacterConfig(characterConfig.server_id, {
@@ -116,6 +117,7 @@ function renderToggle(characterConfig: CharacterConfig) {
 
   return (
     <ToggleCreation
+      server_id={characterConfig.server_id}
       disable={async () => {
         "use server";
         await updateServerCharacterConfig(characterConfig.server_id, {

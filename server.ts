@@ -6,7 +6,10 @@ import {
   getUserById,
   updateUser,
 } from "./prisma/services/userService";
-import { getServerMembersExcept } from "./prisma/services/serverService";
+import {
+  getServerMembers,
+  getServerMembersExcept,
+} from "./prisma/services/serverService";
 import { createNotification } from "./prisma/services/notificationService";
 import {
   getConversationByUid,
@@ -126,6 +129,17 @@ app.prepare().then(() => {
       if (recipient.socket_id) {
         socket.to(recipient.socket_id).emit("client-refresh");
       }
+    });
+
+    //server update
+    socket.on("server-update-event", async (server_id: string) => {
+      const recipients = await getServerMembers(server_id);
+
+      recipients.forEach((recipient) => {
+        if (recipient.user?.socket_id) {
+          socket.to(recipient.user.socket_id).emit("client-refresh");
+        }
+      });
     });
 
     // character management
