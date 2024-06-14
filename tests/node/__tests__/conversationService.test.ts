@@ -10,7 +10,7 @@ import {
   addChannelConversationMember,
   getMessagesByChannelId,
   getConversationByChannelId,
-} from "../prisma/services/conversationService";
+} from "../../../prisma/services/conversationService";
 import { prismaMock } from "../singleton";
 
 const conversationData = {
