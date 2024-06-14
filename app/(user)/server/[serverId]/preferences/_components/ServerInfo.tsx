@@ -12,13 +12,15 @@ import FeedbackCard from "@/app/_components/FeedbackCard";
 import postUpload from "@/utils/postUpload";
 import checkAuthMatch from "@/utils/checkServerAuthMatch";
 import editServerInfo from "@/actions/serverManagement/editServerInfo";
+import Icon from "../../(home)/_components/ClientIcon";
 
 export default function ServerInfo({
   info,
   serverAuth,
   config,
   editable,
-  server_icon,
+  isPending,
+  startTransition,
 }: {
   info: {
     id: string;
@@ -29,14 +31,17 @@ export default function ServerInfo({
   serverAuth: ServerAuth;
   config: ServerConfig;
   editable: boolean;
-  server_icon: React.ReactNode;
+  isPending: boolean;
+  startTransition: React.TransitionStartFunction;
 }) {
-  const [serverName, setServerName] = useState(info.server_name);
-  const [description, setDescription] = useState(info.description || "");
+  const [serverData, setServerData] = useState({
+    server_name: info.server_name,
+    description: info.description,
+    image: info.image,
+  });
   const [icon, setIcon] = useState<File | undefined>(undefined);
   const [removeIcon, setRemoveIcon] = useState(false);
 
-  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -68,9 +73,8 @@ export default function ServerInfo({
           const filename = res.data.filename;
           try {
             const result = await editServerInfo(serverAuth.member_id, config, {
+              ...serverData,
               image: filename,
-              description,
-              server_name: serverName,
             });
             setSuccess(true);
             router.refresh();
@@ -82,8 +86,8 @@ export default function ServerInfo({
       } else {
         try {
           const result = await editServerInfo(serverAuth.member_id, config, {
-            description,
-            server_name: serverName,
+            ...serverData,
+            image: removeIcon ? null : undefined,
           });
           setSuccess(true);
           router.refresh();
@@ -94,6 +98,30 @@ export default function ServerInfo({
       }
     });
   };
+
+  function setImageDisplay() {
+    if (!removeIcon && icon) {
+      const url = URL.createObjectURL(icon);
+      return (
+        <img
+          src={url}
+          className="absolute left-0 top-0 z-0 min-h-[100%] min-w-[100%] object-cover"
+          alt="icon preview"
+          onDrop={() => URL.revokeObjectURL(url)}
+        />
+      );
+    } else if (!removeIcon && info.image) {
+      return (
+        <Icon
+          filename={serverData.image || ""}
+          alt="server icon"
+          className="absolute left-0 top-0"
+        />
+      );
+    }
+
+    return null;
+  }
 
   return (
     <form ref={formRef}>
@@ -106,8 +134,10 @@ export default function ServerInfo({
         <TextInput
           className="self-start px-2 py-0 text-xl"
           placeholder="Server name"
-          value={serverName}
-          onChange={(e) => setServerName(e.target.value)}
+          value={serverData.server_name}
+          onChange={(e) =>
+            setServerData({ ...serverData, server_name: e.target.value })
+          }
           required
           endElement={<span className="text-warning">*</span>}
           disabled={isPending}
@@ -118,15 +148,8 @@ export default function ServerInfo({
         <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-[3px] border-dashed border-black50">
           {
             /*Icon display priority: icon remove selected => icon uploaded => user original icon */
-            !removeIcon && icon && (
-              <img
-                src={URL.createObjectURL(icon)}
-                className="absolute left-0 top-0 z-0 min-h-[100%] min-w-[100%] object-cover"
-                alt="icon preview"
-              />
-            )
+            setImageDisplay()
           }
-          {!icon && !removeIcon && info.image && server_icon}
           <FileInput
             id="server-icon"
             accept=".jpg, .png, .svg, .gif"
@@ -145,7 +168,6 @@ export default function ServerInfo({
           <Button
             className="btn-secondary mt-2"
             onClick={() => {
-              setIcon(undefined);
               setRemoveIcon(true);
             }}
             disabled={isPending}
@@ -158,8 +180,10 @@ export default function ServerInfo({
           borderless
           className="w-[80%] bg-black25 dark:bg-black75"
           maxLength={200}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={serverData.description || ""}
+          onChange={(e) =>
+            setServerData({ ...serverData, description: e.target.value })
+          }
           disabled={isPending}
           readOnly={!editable}
         />

@@ -15,7 +15,6 @@ export default async function ServerHome({ params }: { params: Params }) {
   const session = await auth();
 
   async function fetchUnreadMessages() {
-    console.log(session, serverId);
     if (session && serverId) {
       const newMessagesData = await getUnreadForUserForServerWithSender(
         (session as ExtendedSession).userId,

@@ -30,23 +30,16 @@ export default async function FormLayout({
       const senderBlocked = await isBlocked(receiverId, userId);
 
       if (senderBlocked) {
-        return (
-          <p>
-            <MaterialSymbolsLightInfoOutlineRounded /> This user has restricted
-            who can message them.
-          </p>
-        );
+        return Restricted();
       }
 
       const recipientBlocked = await isBlocked(userId, receiverId);
 
       if (recipientBlocked) {
-        return (
-          <p>
-            <MaterialSymbolsLightInfoOutlineRounded /> You have blocked this
-            user, so you are unable to message them.
-          </p>
-        );
+        <p className="my-auto flex w-full justify-center gap-2">
+          <MaterialSymbolsLightInfoOutlineRounded className="self-center" /> You
+          have blocked this user, so you are unable to message them.
+        </p>;
       }
 
       const conversation = await getConversationByParticipants(
@@ -55,34 +48,19 @@ export default async function FormLayout({
       );
 
       if (conversation) {
-        return (
-          <Fragment>
-            {children}
-            <MessageForm userId={userId} receiverId={receiverId} />
-          </Fragment>
-        );
+        return Convo(userId, receiverId);
       }
 
       const recipientSettings = await getUserPrivacyPref(receiverId);
 
       if (recipientSettings.dm_permission === "anyone") {
-        return (
-          <Fragment>
-            {children}
-            <MessageForm userId={userId} receiverId={receiverId} />
-          </Fragment>
-        );
+        return Convo(userId, receiverId);
       }
 
       const friends = await isFriend(userId, receiverId);
 
-      if (recipientSettings.dm_permission === "friends" && friends) {
-        return (
-          <Fragment>
-            {children}
-            <MessageForm userId={userId} receiverId={receiverId} />
-          </Fragment>
-        );
+      if (friends) {
+        return Convo(userId, receiverId);
       }
 
       const serverMutuals = await getUserMutualServers(userId, receiverId);
@@ -91,20 +69,10 @@ export default async function FormLayout({
         recipientSettings.dm_permission === "servers" &&
         serverMutuals.length > 0
       ) {
-        return (
-          <Fragment>
-            {children}
-            <MessageForm userId={userId} receiverId={receiverId} />
-          </Fragment>
-        );
+        return Convo(userId, receiverId);
       }
 
-      return (
-        <p>
-          <MaterialSymbolsLightInfoOutlineRounded /> This user has restricted
-          who can message them.
-        </p>
-      );
+      return Restricted();
     },
     () => <p>Something went wrong. Please refresh the page.</p>,
   );
@@ -114,4 +82,22 @@ export default async function FormLayout({
       {element}
     </div>
   );
+
+  function Restricted() {
+    return (
+      <p className="my-auto flex w-full justify-center gap-2">
+        <MaterialSymbolsLightInfoOutlineRounded className="self-center" /> This
+        user has restricted who can message them.
+      </p>
+    );
+  }
+
+  function Convo(userId: string, receiverId: string) {
+    return (
+      <Fragment>
+        {children}
+        <MessageForm userId={userId} receiverId={receiverId} />
+      </Fragment>
+    );
+  }
 }

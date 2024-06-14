@@ -21,19 +21,21 @@ export default async function changeUserInfo(
   const validatedFields = UserInfoSchema.safeParse(data);
 
   if (!validatedFields.success) {
-    return {
-      error: validatedFields.error.message.split(`": "`)[3].split(`"`)[0],
-    };
+    const errorMessage = validatedFields.error.message
+      .split(`": "`)[3]
+      .split(`"`)[0];
+    throw new Error(errorMessage);
   }
 
   if (data.username) {
     try {
       const existingUsername = await getUserByUsername(data.username);
 
-      return { error: "Username unavailable." };
+      throw new Error("Username unavailable.");
     } catch (e) {
+      console.error(e);
       if ((e as Error).message !== "No user could be found") {
-        return { error: "Something went wrong" };
+        throw new Error("Something went wrong");
       }
     }
   }
@@ -42,10 +44,10 @@ export default async function changeUserInfo(
     try {
       const existingEmail = await getUserByEmail(data.email);
 
-      return { error: "Email already in use." };
+      throw new Error("Email already in use.");
     } catch (e) {
       if ((e as Error).message !== "No user could be found") {
-        return { error: "Something went wrong" };
+        throw new Error("Something went wrong.");
       }
     }
   }
@@ -57,6 +59,6 @@ export default async function changeUserInfo(
   try {
     const updatedUser = await updateUser(id, data);
   } catch (e) {
-    return { error: "Something went wrong. Please try again." };
+    throw new Error("Something went wrong. Please try again.");
   }
 }

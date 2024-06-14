@@ -9,6 +9,7 @@ import TextAreaInput from "@/app/_components/inputs/TextAreaInput";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightImageOutlineRounded from "@/public/icons/MaterialSymbolsLightImageOutlineRounded";
+import errorHandler from "@/utils/errorHandler";
 import postUpload from "@/utils/postUpload";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -21,8 +22,10 @@ export default function ProfileInfo({
   user: User;
   profile_image: React.ReactNode;
 }) {
-  const [status, setStatus] = useState(user.person_status || "");
-  const [about, setAbout] = useState(user.person_description || "");
+  const [profileInfo, setProfileInfo] = useState({
+    person_description: user.person_description || "",
+    person_status: user.person_status || "",
+  });
   const [icon, setIcon] = useState<File | undefined>(undefined);
   const [removeIcon, setRemoveIcon] = useState(false);
 
@@ -36,40 +39,32 @@ export default function ProfileInfo({
     setSuccess(false);
     setError("");
     startTransition(async () => {
-      if (!removeIcon && icon) {
-        if (icon.size / 1024 / 1024 > 3) {
-          setError("Image file is too large. The limit is 3MB.");
-          return;
-        }
-        postUpload(icon, async (res) => {
-          if (res.data.message) {
-            setError("Something went wrong!");
-            return;
+      await errorHandler(
+        async () => {
+          if (!removeIcon && icon) {
+            if (icon.size / 1024 / 1024 > 3) {
+              setError("Image file is too large. The limit is 3MB.");
+              return;
+            }
+            postUpload(icon, async (res) => {
+              if (res.data.message) {
+                setError("Something went wrong!");
+                return;
+              }
+              const filename = res.data.filename;
+
+              await handleUser(filename);
+            });
+          } else {
+            await handleUser();
           }
-          const filename = res.data.filename;
-          const result = await changeUserProfile(user.id, {
-            profile_image: filename,
-            person_description: about,
-            person_status: status,
-          });
-          if (result) setError(result.error);
-          else {
-            setSuccess(true);
-            router.refresh();
-          }
-        });
-      } else {
-        const result = await changeUserProfile(user.id, {
-          person_description: about,
-          person_status: status,
-          profile_image: removeIcon ? null : undefined,
-        });
-        if (result) setError(result.error);
-        else {
           setSuccess(true);
           router.refresh();
-        }
-      }
+        },
+        (e) => {
+          setError((e as Error).message);
+        },
+      );
     });
   };
 
@@ -134,8 +129,10 @@ export default function ProfileInfo({
           <h5>Status</h5>
           <TextAreaInput
             borderless
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            value={profileInfo.person_status}
+            onChange={(e) =>
+              setProfileInfo({ ...profileInfo, person_status: e.target.value })
+            }
             maxLength={50}
             className="ml-8 w-full bg-black25 md:w-[80%] dark:bg-black75"
             disabled={isPending}
@@ -145,8 +142,10 @@ export default function ProfileInfo({
       <h5>About me</h5>
       <TextAreaInput
         borderless
-        value={about}
-        onChange={(e) => setAbout(e.target.value)}
+        value={profileInfo.person_description}
+        onChange={(e) =>
+          setProfileInfo({ ...profileInfo, person_status: e.target.value })
+        }
         maxLength={200}
         className="ml-8 w-full bg-black25 md:w-[50%] dark:bg-black75"
         disabled={isPending}
@@ -162,4 +161,23 @@ export default function ProfileInfo({
       {success && <FeedbackCard type="success" message="Profile saved" />}
     </ColumnWrapper>
   );
+
+  async function handleUser(filename?: string) {
+    if (filename) {
+      try {
+        const result = await changeUserProfile(user.id, {
+          profile_image: filename,
+          ...profileInfo,
+        });
+      } catch (e) {
+        throw new Error((e as Error).message);
+      }
+    } else {
+      try {
+        const result = await changeUserProfile(user.id, profileInfo);
+      } catch (e) {
+        throw new Error((e as Error).message);
+      }
+    }
+  }
 }

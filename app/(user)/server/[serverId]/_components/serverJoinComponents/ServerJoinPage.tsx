@@ -1,4 +1,3 @@
-import FeedbackCard from "@/app/_components/FeedbackCard";
 import {
   getServerJoinData,
   getServerMembers,
@@ -17,10 +16,7 @@ export default async function ServerJoinPage({
 }) {
   try {
     const server = await getServerJoinData(server_id);
-    if (
-      !server.config[0].join_permission ||
-      server.config[0].join_permission === "invitation link"
-    )
+    if (server.config[0].join_permission === "invitation link")
       return (
         <NotOpen reason="Unfortunately this server can only be joined by a direct invitation." />
       );

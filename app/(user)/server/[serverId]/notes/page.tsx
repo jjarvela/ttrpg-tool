@@ -82,7 +82,6 @@ export default function ServerNotes() {
       try {
         if (serverId) {
           const data = await handleGetAllNotes(serverId);
-          console.log(data);
           setNotes(data);
         } else {
           // Handle the case when serverId is null
@@ -108,7 +107,6 @@ export default function ServerNotes() {
 
     socket.on("create-note", (data) => {
       if (data.serverId === serverId) {
-        console.log("Received note data:", data);
         setNotes((prevNotes) => {
           // Only add the note if it doesn't already exist in the array
           if (!prevNotes.find((note) => note.id === data.note.id)) {
@@ -162,7 +160,7 @@ export default function ServerNotes() {
         console.error("Error creating note:", error);
       }
     } else {
-      console.log("No serverId provided for new note creation.");
+      console.error("No serverId provided for new note creation.");
     }
   }
 

@@ -10,7 +10,6 @@ export const createCharacterBase = async (
   owner_id: string,
   data: { name: string; description?: string; image?: string; notes?: string },
 ): Promise<CharacterBase> => {
-  console.log(data);
   const character = await db.characterBase.create({
     data: {
       ...data,

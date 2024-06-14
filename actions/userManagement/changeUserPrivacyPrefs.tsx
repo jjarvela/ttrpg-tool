@@ -18,11 +18,13 @@ export default async function changeUserPrivacyPrefs(
     share_timezone?: boolean;
   },
 ) {
-  if (!data) return { error: "No data to be updated" };
+  if (!data) {
+    throw new Error("No data to be updated");
+  }
 
   try {
     const updatedUser = await updateUser(id, data);
   } catch {
-    return { error: "Something went wrong. Please try again." };
+    throw new Error("Something went wrong. Please try again.");
   }
 }

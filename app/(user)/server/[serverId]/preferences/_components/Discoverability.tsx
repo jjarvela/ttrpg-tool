@@ -11,26 +11,25 @@ import { useRef, useState, useTransition } from "react";
 type ServerDiscoverabilityProps = {
   serverAuth: ServerAuth;
   config: ServerConfig;
+  isPending: boolean;
+  startTransition: React.TransitionStartFunction;
 };
 
 export default function Discoverability({
   serverAuth,
   config,
+  isPending,
+  startTransition,
 }: ServerDiscoverabilityProps) {
-  const [explorePermission, setExplorePermission] = useState(
-    config.explorable || false,
-  );
-  const [searchPermission, setSearchPermission] = useState(
-    config.searchable || false,
-  );
-  const [joinPermission, setJoinPermission] = useState<
-    string | number | readonly string[] | undefined
-  >(config.join_permission || "invitation link");
+  const [discoverability, setDiscoverability] = useState({
+    explorable: config.explorable,
+    searchable: config.searchable,
+    join_permission: config.join_permission,
+  });
 
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [isPending, startTransition] = useTransition();
 
   const router = useRouter();
 
@@ -48,13 +47,7 @@ export default function Discoverability({
             const result = await editServerDiscoverability(
               serverAuth.member_id,
               config,
-              {
-                searchable: searchPermission,
-                explorable: explorePermission,
-                join_permission: joinPermission
-                  ? joinPermission.toString()
-                  : undefined,
-              },
+              discoverability,
             );
             setSuccess("success");
             router.refresh();
@@ -74,17 +67,21 @@ export default function Discoverability({
         <ToggleInput
           id="server-explore"
           label="Include server in explore"
-          onByDefault={explorePermission}
-          checked={explorePermission}
-          onToggle={(checked) => setExplorePermission(checked)}
+          onByDefault={discoverability.explorable}
+          checked={discoverability.explorable}
+          onToggle={(checked) =>
+            setDiscoverability({ ...discoverability, explorable: checked })
+          }
           disabled={isPending}
         />
         <ToggleInput
           id="server-search"
           label="Include server in search results"
-          onByDefault={searchPermission}
-          checked={searchPermission}
-          onToggle={(checked) => setSearchPermission(checked)}
+          onByDefault={discoverability.searchable}
+          checked={discoverability.searchable}
+          onToggle={(checked) =>
+            setDiscoverability({ ...discoverability, searchable: checked })
+          }
           disabled={isPending}
         />
 
@@ -101,8 +98,13 @@ export default function Discoverability({
             "If there is any type of available invitation",
           ]}
           values={["invitation link", "unlimited invitation", "any invitation"]}
-          selected={joinPermission}
-          setSelected={setJoinPermission}
+          selected={discoverability.join_permission}
+          setSelected={(s) =>
+            setDiscoverability({
+              ...discoverability,
+              join_permission: s!.toString(),
+            })
+          }
           disabled={isPending}
         />
 

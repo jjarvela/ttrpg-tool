@@ -48,7 +48,6 @@ export default function CreateBoard({ server_id }: { server_id: string }) {
             }
 
             postUpload(image, async (res) => {
-              console.log(res.data);
               if (res.data.message) {
                 setError("Something went wrong!");
                 return;
@@ -85,8 +84,6 @@ export default function CreateBoard({ server_id }: { server_id: string }) {
       setHeight(previewRef.current.naturalHeight);
       setWidth(previewRef.current.naturalWidth);
     }
-
-    console.log(height, width);
   }, [previewRef, height, width]);
 
   return (
