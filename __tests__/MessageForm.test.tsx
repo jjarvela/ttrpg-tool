@@ -4,8 +4,6 @@ import user from "@testing-library/user-event";
 
 import MessageForm from "@/app/(user)/(home)/message/_components/MessageForm";
 
-const mockGoToRegister = jest.fn();
-
 // Mock useRouter:
 jest.mock("next/navigation", () => ({
   useRouter() {
@@ -16,13 +14,30 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("MessageForm", () => {
-  it("renders form", () => {
+  it("should render the input", () => {
     render(<MessageForm userId={"a"} receiverId={"b"} />);
 
-    //const elem = screen.getByRole("textbox");
-    //const form = screen.getByRole("form");
-    const placehold = screen.getByPlaceholderText("Send message");
+    const placeholder = screen.getByPlaceholderText("Send message");
 
-    expect(placehold).toBeInTheDocument();
+    expect(placeholder).toBeInTheDocument();
+  });
+
+  it("should be able to add text to the input", async () => {
+    render(<MessageForm userId={"a"} receiverId={"b"} />);
+
+    const input = screen.getByPlaceholderText("Send message");
+    await user.type(input, "Hello");
+
+    expect(input).toHaveValue("Hello");
+  });
+
+  it("should empty the text input after submit", async () => {
+    render(<MessageForm userId={"a"} receiverId={"b"} />);
+
+    const input = screen.getByPlaceholderText("Send message");
+    await user.type(input, "Hello");
+    await user.keyboard("{Enter}");
+
+    expect(input).toHaveValue("");
   });
 });
