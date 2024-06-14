@@ -6,10 +6,10 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 export default function HomeClientWrapper({
-  conversationsMenu,
+  sideMenu,
   children,
 }: {
-  conversationsMenu: React.ReactNode;
+  sideMenu: React.ReactNode;
   children: React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -27,7 +27,7 @@ export default function HomeClientWrapper({
             isOpen ? "block" : "hidden",
           )}
         >
-          {conversationsMenu}
+          {sideMenu}
         </div>
         <div
           id="inner-nav-toggle"

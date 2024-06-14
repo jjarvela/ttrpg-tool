@@ -8,42 +8,12 @@ import MdiEmailOutline from "@/public/icons/MdiEmailOutline";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-type Conversation = {
-  uid: string;
-  channel_id: string | null;
-  created_at: Date;
-  participants: {
-    participant: {
-      id: string;
-      username: string;
-      screen_name: string | null;
-    };
-  }[];
-  messages: {
-    uid: string;
-    message: string;
-    created_at: Date;
-  }[];
-};
-
-type Notification = {
-  id: string;
-  recipient_id: string;
-  type: string;
-  read_status: boolean;
-  created_at: Date;
-  message_id: string | null;
-  conversation_id: string | null;
-  channel_id: string | null;
-  server_id: string | null;
-};
-
 export default function ConversationContextMenu({
   conversation,
   unread,
 }: {
   conversation: Conversation;
-  unread: Notification[];
+  unread: Notif[];
 }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();

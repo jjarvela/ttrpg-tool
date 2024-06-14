@@ -1,6 +1,6 @@
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import HomeClientWrapper from "./_components/homeNavElements/HomeClientWrapper";
-import ConversationsMenu from "./_components/homeNavElements/ConversationsMenu";
+import SideMenu from "./_components/homeNavElements/SideMenu";
 import HomeTopMenu from "./_components/homeNavElements/HomeTopMenu";
 import { auth } from "@/auth";
 import errorHandler from "@/utils/errorHandler";
@@ -24,7 +24,7 @@ export default async function HomeLayout({
     () => <HomeTopMenu friendRequests={[]} />,
   );
   return (
-    <HomeClientWrapper conversationsMenu={<ConversationsMenu />}>
+    <HomeClientWrapper sideMenu={<SideMenu />}>
       <ColumnWrapper className="home-layout h-full flex-grow p-0">
         {topMenu}
         {children}
