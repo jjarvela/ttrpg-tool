@@ -42,7 +42,7 @@ export default async function getBlobSASUrl(filename: string) {
 
     return blob.url + "?" + blobSAS;
   } catch (error) {
-    console.log((error as Error).message);
+    console.error((error as Error).message);
     return "error";
   }
 }

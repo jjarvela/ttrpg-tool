@@ -19,9 +19,7 @@ export default function ExploreSearchNav() {
 
 function ExploreNavLink({ to, label }: { to: string; label: string }) {
   const path = usePathname();
-  console.log(path);
   const ariaCurrent = to === path ? "page" : undefined;
-  console.log(ariaCurrent);
   return (
     <Link
       className={twMerge(

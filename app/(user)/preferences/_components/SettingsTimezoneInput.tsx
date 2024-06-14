@@ -23,12 +23,12 @@ export default function SettingsTimezoneInput({
       <DropdownSelection
         id="timezone"
         defaultSelected={timezone ? [{ label: timezone, value: timezone }] : []}
-        className="w-full text-lg"
+        className="my-2 max-h-[2.8rem] w-full text-lg"
         arrowClass="text-2xl py-[0.54rem] px-2"
         startElement={
           <label
             htmlFor="timezone"
-            className="me-4 bg-black25 px-4 py-2 text-lg dark:bg-black75"
+            className="me-4 bg-black25 px-4 py-8 text-lg dark:bg-black75"
           >
             Timezone
           </label>

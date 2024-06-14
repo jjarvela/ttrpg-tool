@@ -1,7 +1,7 @@
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import LayoutClientWrapper from "./_components/LayoutClientWrapper";
-import ServerInnerNav from "./_components/ServerInnerNav";
-import ServerMembersMenu from "./_components/ServerMembersMenu";
+import ServerInnerNav from "./_components/navComponents/ServerInnerNav";
+import ServerMembersMenu from "./_components/navComponents/ServerMembersMenu";
 import { auth } from "@/auth";
 import getServerAuth from "@/actions/getServerAuth";
 import ServerJoinPage from "./_components/serverJoinComponents/ServerJoinPage";

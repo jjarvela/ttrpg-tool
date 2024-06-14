@@ -4,7 +4,6 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import CharacterForm from "./_components/CharacterForm";
 import {
   getServerCharacterConfig,
-  getUserCharacterBases,
   getUserCharacterBasesExceptServer,
 } from "@/prisma/services/characterService";
 import { auth } from "@/auth";

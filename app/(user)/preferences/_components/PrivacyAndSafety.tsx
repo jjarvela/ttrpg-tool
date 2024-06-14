@@ -7,6 +7,7 @@ import RadioGroup from "@/app/_components/inputs/RadioGroup";
 import ColumnWrapper from "@/app/_components/wrappers/ColumnWrapper";
 import RowWrapper from "@/app/_components/wrappers/RowWrapper";
 import MaterialSymbolsLightInfoOutlineRounded from "@/public/icons/MaterialSymbolsLightInfoOutlineRounded";
+import errorHandler from "@/utils/errorHandler";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -70,17 +71,21 @@ export default function PrivacyAndSafety({ user }: { user: User }) {
           setSuccess(false);
           setError("");
           startTransition(async () => {
-            const result = await changeUserPrivacyPrefs(user.id, {
-              dm_permission: dm_permission
-                ? dm_permission.toString()
-                : "friends",
-              share_timezone: share_timezone ? share_timezone : undefined,
-            });
-            if (result) setError(result.error);
-            else {
-              setSuccess(true);
-              router.refresh();
-            }
+            await errorHandler(
+              async () => {
+                await changeUserPrivacyPrefs(user.id, {
+                  dm_permission: dm_permission
+                    ? dm_permission.toString()
+                    : "friends",
+                  share_timezone: share_timezone ? share_timezone : undefined,
+                });
+                setSuccess(true);
+                router.refresh();
+              },
+              (e) => {
+                setError((e as Error).message);
+              },
+            );
           });
         }}
       >

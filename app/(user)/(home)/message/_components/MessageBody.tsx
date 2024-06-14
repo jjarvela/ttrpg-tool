@@ -36,7 +36,6 @@ export default async function MessageBody({
 
       if (unread.length > 0) {
         setTimeout(() => {
-          console.log("timeout");
           unread.forEach(async (notification) => {
             await deleteNotification(notification.id);
           });

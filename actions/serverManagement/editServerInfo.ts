@@ -17,7 +17,11 @@ import checkAuthMatch from "@/utils/checkServerAuthMatch";
 export default async function editServerInfo(
   userId: string,
   serverConfig: ServerConfig,
-  data: { server_name: string; description: string; image?: string },
+  data: {
+    server_name: string;
+    description: string | null;
+    image?: string | null;
+  },
 ) {
   //get updater information to check their privileges before allowing updates
   const updater = await getServerMember(serverConfig.server_id, userId);

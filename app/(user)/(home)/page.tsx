@@ -8,7 +8,6 @@ import {
   getUserFriends,
   getUserPendingRequests,
 } from "@/prisma/services/friendService";
-import FriendOptionsElement from "./_components/FriendOptionsElement";
 import FriendListNavWrapper from "./_components/friendListDisplay/FriendListNavWrapper";
 import OnlineList from "./_components/friendListDisplay/OnlineList";
 import AllList from "./_components/friendListDisplay/AllList";
@@ -53,7 +52,7 @@ export default async function Home() {
       );
     },
     (e) => {
-      console.log(e);
+      console.error(e);
       return <p className="text-warning">Something went wrong</p>;
     },
   );

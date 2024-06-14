@@ -4,6 +4,7 @@ import Button from "../../../_components/Button";
 import ColumnWrapper from "../../../_components/wrappers/ColumnWrapper";
 import SettingsTextInput from "./SettingsTextInput";
 import SettingsTimezoneInput from "./SettingsTimezoneInput";
+import errorHandler from "@/utils/errorHandler";
 
 export default function AccountInfo({ user }: { user: User }) {
   return (
@@ -15,9 +16,17 @@ export default function AccountInfo({ user }: { user: User }) {
         editInfo={async (value) => {
           "use server";
           if (!user) return;
-          const result = await changeUserInfo(user.id, { screen_name: value });
-          if (result?.error) return result.error;
-          return;
+          const error = await errorHandler(
+            async () => {
+              await changeUserInfo(user.id, { screen_name: value });
+              return null;
+            },
+            (e) => {
+              console.log(e);
+              return (e as Error).message;
+            },
+          );
+          return error;
         }}
       />
       <SettingsTextInput
@@ -26,9 +35,16 @@ export default function AccountInfo({ user }: { user: User }) {
         editInfo={async (value) => {
           "use server";
           if (!user) return;
-          const result = await changeUserInfo(user.id, { username: value });
-          if (result?.error) return result.error;
-          return;
+          const error = await errorHandler(
+            async () => {
+              await changeUserInfo(user.id, { username: value });
+              return;
+            },
+            (e) => {
+              return (e as Error).message;
+            },
+          );
+          return error;
         }}
       />
       <SettingsTextInput
@@ -37,9 +53,16 @@ export default function AccountInfo({ user }: { user: User }) {
         editInfo={async (value) => {
           "use server";
           if (!user) return;
-          const result = await changeUserInfo(user.id, { email: value });
-          if (result?.error) return result.error;
-          return;
+          const error = await errorHandler(
+            async () => {
+              await changeUserInfo(user.id, { email: value });
+              return;
+            },
+            (e) => {
+              return (e as Error).message;
+            },
+          );
+          return error;
         }}
       />
       <SettingsTimezoneInput
@@ -47,11 +70,22 @@ export default function AccountInfo({ user }: { user: User }) {
         editInfo={async (selected) => {
           "use server";
           if (!user) return;
-          const result = await changeUserInfo(user.id, {
-            timezone: selected[0].value.toString(),
-          });
-          if (result?.error) return result.error;
-          return;
+          const error = await errorHandler(
+            async () => {
+              try {
+                changeUserInfo(user.id, {
+                  timezone: selected[0].value.toString(),
+                });
+                return;
+              } catch (e) {
+                throw new Error((e as Error).message);
+              }
+            },
+            (e) => {
+              return (e as Error).message;
+            },
+          );
+          return error;
         }}
       />
 

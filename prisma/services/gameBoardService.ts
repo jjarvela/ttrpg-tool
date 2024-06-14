@@ -49,7 +49,6 @@ export const createGamePiece = async (
     position_y: number;
   },
 ) => {
-  console.log(data);
   const piece = await db.gamePiece.create({
     data: {
       board_id,

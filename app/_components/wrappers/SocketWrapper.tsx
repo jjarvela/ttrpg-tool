@@ -26,7 +26,6 @@ export default function SocketWrapper({
         if (socket.connected) {
           onConnect();
         } else {
-          console.log("socket not connected, connecting");
           socket.connect();
         }
       })

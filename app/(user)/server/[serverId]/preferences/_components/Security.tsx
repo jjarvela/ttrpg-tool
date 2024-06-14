@@ -12,32 +12,37 @@ import { useRef, useState, useTransition } from "react";
 type ServerSecurityProps = {
   serverAuth: ServerAuth;
   config: ServerConfig;
+  isPending: boolean;
+  startTransition: React.TransitionStartFunction;
 };
 
 export default function ServerSecurity({
   serverAuth,
   config,
+  isPending,
+  startTransition,
 }: ServerSecurityProps) {
-  const [isProtected, setIsProtected] = useState(config.protected || false);
+  const [configData, setConfigData] =
+    useState<Omit<ServerConfig, "id" | "password_hash">>(config);
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [settingsRightsHolders, setSettingsRightsHolders] = useState(
-    config.config_permission,
-  );
-  const passwordsMatch = isProtected ? password === confirmPassword : true;
+
+  const passwordsMatch = configData.protected
+    ? password === confirmPassword
+    : true;
   const passwordExists = config.password_hash ? true : false;
 
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [isPending, startTransition] = useTransition();
+  const [success, setSuccess] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
+    setSuccess(false);
     if (!passwordsMatch) {
       setError("Password-protected is selected but passwords don't match.");
       return;
@@ -53,11 +58,11 @@ export default function ServerSecurity({
               serverAuth.member_id,
               config,
               {
-                protected: isProtected,
+                ...configData,
                 password: password === "" ? undefined : password,
-                config_permission: settingsRightsHolders,
               },
             );
+            setSuccess(true);
             router.refresh();
           } catch (e) {
             setError((e as Error).message);
@@ -80,14 +85,18 @@ export default function ServerSecurity({
           id="password-protection"
           label="Password-protected server"
           labelClass="text-md-lg xl:text-lg"
-          onToggle={(checked) => setIsProtected(checked)}
+          onByDefault={configData.protected}
+          checked={configData.protected}
+          onToggle={(checked) =>
+            setConfigData({ ...configData, protected: checked })
+          }
           disabled={isPending}
         />
         <small>Invitees must know the password to join</small>
         <PasswordInput
           className="self-start"
           placeholder="new password"
-          required={isProtected && !passwordExists}
+          required={configData.protected && !passwordExists}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           disabled={isPending}
@@ -98,7 +107,7 @@ export default function ServerSecurity({
         <PasswordInput
           className="self-start"
           placeholder="confirm new password"
-          required={isProtected && !passwordExists}
+          required={configData.protected && !passwordExists}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           disabled={isPending}
@@ -109,7 +118,7 @@ export default function ServerSecurity({
         <RadioGroup
           groupName="settings-rights-holders"
           values={["Admin", "Admin and Moderators", "All members"]}
-          selected={settingsRightsHolders}
+          selected={configData.config_permission}
           radioStyle={{
             radioBg: "bg-white",
             selectedColour: "fill-black75",
@@ -118,7 +127,7 @@ export default function ServerSecurity({
           className="w-[60%] flex-col gap-4 [&>*:nth-child(1)]:bg-[#5DA364] [&>*:nth-child(2)]:bg-[#B8AF5F] [&>*:nth-child(3)]:bg-[#9B3F3F]"
           labelStyle="w-full justify-between px-4 py-2 text-md-lg xl:text-lg"
           setSelected={(s) => {
-            setSettingsRightsHolders(s!.toString());
+            setConfigData({ ...configData, config_permission: s!.toString() });
           }}
           disabled={isPending}
           readonly={serverAuth.role !== "admin"}
@@ -126,7 +135,7 @@ export default function ServerSecurity({
         <Button className="btn-primary my-4" type="submit">
           Save
         </Button>
-        {success !== "" && (
+        {success && (
           <FeedbackCard type="success" message="Settings have been saved" />
         )}
         {error !== "" && <FeedbackCard type="error" message={error} />}

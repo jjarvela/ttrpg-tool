@@ -11,14 +11,14 @@ import checkAuthMatch from "@/utils/checkServerAuthMatch";
  * This function can be called to change the security preferences of a server
  * @param userId ID of the user calling the operation (to check authorisation)
  * @param serverConfig configuration options of the target server
- * @param data {protected?: boolean | null, config_permission?: string, password?: string}
+ * @param data {protected?: boolean, config_permission?: string, password?: string}
  * @returns
  */
 export default async function editServerConfig(
   userId: string,
   serverConfig: ServerConfig,
   data: {
-    protected?: boolean | null;
+    protected?: boolean;
     config_permission?: string;
     password?: string;
   },
