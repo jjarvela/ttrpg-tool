@@ -66,6 +66,24 @@ type ServerMember = {
   user?: Omit<UserDetailed, "id" | "person_description">;
 };
 
+type Conversation = {
+  uid: string;
+  channel_id: string | null;
+  created_at: Date;
+  participants: {
+    participant: {
+      id: string;
+      username: string;
+      screen_name: string | null;
+    };
+  }[];
+  messages: {
+    uid: string;
+    message: string;
+    created_at: Date;
+  }[];
+};
+
 type Notif = {
   id: string;
   recipient_id: string;
@@ -144,19 +162,19 @@ type GamePiece = {
   };
 };
 
-type diceType = "d4" | "d6" | "d8" | "d10" | "d12" | "d20"
+type diceType = "d4" | "d6" | "d8" | "d10" | "d12" | "d20";
 
 type diceObject = {
-  diceType: diceType
-}
+  diceType: diceType;
+};
 
 type diceSet = diceType[];
 
 interface DiceThrow {
-  diceSet: diceSet,
-  delivery: "channel" | "server" | "private"
-  serverId?: string,
-  channelId?: string
+  diceSet: diceSet;
+  delivery: "channel" | "server" | "private";
+  serverId?: string;
+  channelId?: string;
 }
 
 /**
@@ -237,4 +255,3 @@ type ServerCharacterSelect = {
   skills?: boolean;
   items?: boolean;
 };
-
