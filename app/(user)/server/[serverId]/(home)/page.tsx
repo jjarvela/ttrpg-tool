@@ -54,7 +54,7 @@ export default async function ServerHome({ params }: { params: Params }) {
   }
   const latestCharacters =
     (await getHomeServerCharacters()) as unknown as HomeCharactersProps["initialCharacters"];
-  console.log(latestCharacters);
+
 
   return (
     <Main className="grid h-full grid-cols-1 gap-6 p-3 lg:grid-cols-2">
