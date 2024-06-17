@@ -16,8 +16,8 @@ env:
 
 jobs:
   build:
-    # runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
     environment: development
     env:
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }} # Authentication secret
@@ -38,8 +38,8 @@ jobs:
           docker login -u ${{ secrets.IMAGEREG_USER }} -p ${{ secrets.IMAGEREG_PASS }} ${{ vars.IMAGEREG_HOST}} 
           docker push ${{ vars.IMAGEREG_HOST}}/${{ secrets.IMAGEREG_USER }}/${{ vars.PROD_NAME }}:${{ github.sha }}
   deploy:
-    # runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
     needs: build
     environment: "development"
 
