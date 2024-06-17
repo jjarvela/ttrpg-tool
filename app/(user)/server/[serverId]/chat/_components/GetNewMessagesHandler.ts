@@ -11,7 +11,6 @@ export default async function handleGetNewMessages(channel_id: string) {
     if (messages === null) {
       return [];
     }
-    console.log("messages", messages);
     return messages.messages as Message[];
   } catch (error) {
     console.error("Error getting all notes:", error);
