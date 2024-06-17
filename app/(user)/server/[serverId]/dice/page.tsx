@@ -8,15 +8,13 @@ import { useSearchParams } from "next/navigation";
 import DiceSelector from "./_components/DiceSelector";
 import { auth } from "@/auth";
 
-export default async function ServerDice({ params, searchParams }:
+export default async function ServerDice({ params }:
   {
-    params: Params,
-    searchParams?: [key: string]
+    params: Params
   }) {
 
   const id = params.serverId;
   const server = await getServerData(id);
-  const session = await auth();
 
 
 
@@ -27,7 +25,7 @@ export default async function ServerDice({ params, searchParams }:
 
   return (
     <Main className="mx-4">
-      <DiceSelector />
+      <DiceSelector params={params} />
     </Main>
   );
 }

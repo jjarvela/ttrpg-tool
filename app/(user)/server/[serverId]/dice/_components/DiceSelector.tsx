@@ -6,7 +6,9 @@ import { Dice, SelectedDices } from "./Dice";
 import { DiceRoller } from "dice-roller-parser";
 import ConfirmModal from "@/app/_components/ConfirmModal";
 import { useSearchParams } from 'next/navigation'
-import { sendRollAnnouncement } from "@/actions/diceRollActions/diceRoll";
+import { RollResult, sendRollAnnouncement } from "@/actions/diceRollActions/diceRoll";
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+
 /** 
  * This component presents dice selection dialog and intrepret the selection into 
  * dice notation that is sent to the server for the actual roll.
@@ -15,11 +17,12 @@ import { sendRollAnnouncement } from "@/actions/diceRollActions/diceRoll";
 
 
 
-export default function DiceSelector() {
+export default function DiceSelector({ params }: Params) {
   const [selectedDices, setDiceSet] = useState<diceSet>([]);
   const [throwResult, setResult] = useState<number>();
   const modalRef = useRef<HTMLDialogElement>(null);
   const urlQuery = useSearchParams();
+
 
   useEffect(() => {
     if (!modalRef.current?.open) {
@@ -50,10 +53,11 @@ export default function DiceSelector() {
     const diceRoller = new DiceRoller();
     const rollObject = diceRoller.roll(rollString.replaceAll(",", '+'))
     const channelId = urlQuery.get("channel");
+    // const serverId = urlQuery
 
     if (rollObject && channelId) {
 
-      sendRollAnnouncement(rollObject, channelId);
+      sendRollAnnouncement(rollObject as RollResult, channelId, params.serverId as string)
     }
 
     setResult(rollObject?.value);

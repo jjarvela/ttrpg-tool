@@ -1,4 +1,5 @@
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import { cookies } from "next/headers";
 import Main from "@/app/_components/wrappers/PageMain";
 import ChatBody from "./_components/ChatBody";
 import FeedbackCard from "../../../../../_components/FeedbackCard";
@@ -10,6 +11,11 @@ import errorHandler from "@/utils/errorHandler";
 export default async function ServerChat({ params }: { params: Params }) {
   const server_id = params.serverId;
   const channelId = params.channelId;
+
+  // Check for cookie set refresh request
+  const cookieStore = cookies()
+  const refresh = cookieStore.get('refreshReq')
+
 
   const element: JSX.Element = await errorHandler(
     async () => {
