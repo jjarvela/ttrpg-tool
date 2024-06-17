@@ -39,7 +39,7 @@ We've chosen to develop a Discord-like platform tailored for Tabletop Role-Playi
 
 ## Roles
 
-- **Anni**: Full-stack development responsibilities.
+- **Anni**: Full-stack development responsibilities. Private and Channel messaging. Unit testing
 - **Joona**: Test automation, end-to-end testing, frontend, and API development.
 - **Laura**: Full-stack development responsibilities.
 - **Sami**: Full-stack development responsibilities. Part of Menus, Notes-feature, Server Home-page.
