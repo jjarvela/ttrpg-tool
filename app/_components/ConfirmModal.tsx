@@ -41,6 +41,7 @@ export default function ConfirmModal({
 
     if (backOnClose === true) {
       router.back();
+      router.refresh();
     } else {
       refObject.current?.close();
     }

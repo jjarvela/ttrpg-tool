@@ -20,7 +20,7 @@ export default async function ServerChat({ params }: { params: Params }) {
       if (channeltype === "text") {
         return (
           <ConversationClientWrapper>
-            <div className="flex w-full justify-between">
+            <div className="flex z-3 sticky bg-white m-0 p-0 top-0 w-full justify-between">
               <div></div>
               <h3>{channelName}</h3>
               <IconLink href={`/server/${server_id}/dice?channel=${channelId}`} className="p-2" imgSrc="/icons/dices/icon.svg" width={30} height={30}></IconLink>

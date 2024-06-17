@@ -4,8 +4,15 @@ import {
   createMessage,
 } from "@/prisma/services/conversationService";
 
-export default async function addChatMessage(ids: string[], formData: FormData) {
-  const message = formData.get("message") as string;
+export default async function addChatMessage(ids: string[], formData: FormData | string) {
+
+  let message = '';
+  if (typeof formData === "string") {
+    message = formData as string
+  } else {
+    message = formData.get("message") as string
+
+  }
   const senderId = ids[0];
   const channelId = ids[1];
   const conversation = await getConversationByChannelId(channelId);

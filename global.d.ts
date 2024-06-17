@@ -30,6 +30,10 @@ type ServerAuth = {
   icon: string | null;
 };
 
+interface UserSession extends Session {
+  userId?: string
+}
+
 type ServerData = {
   id: string;
   socket_id: string | null;
@@ -87,7 +91,7 @@ type Conversation = {
 type Notif = {
   id: string;
   recipient_id: string;
-  type: string;
+  type: string | "";
   read_status: boolean;
   created_at: Date;
   message_id: string | null;

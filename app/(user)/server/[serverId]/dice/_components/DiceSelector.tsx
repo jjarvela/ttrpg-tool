@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Dice, SelectedDices } from "./Dice";
 import { DiceRoller } from "dice-roller-parser";
 import ConfirmModal from "@/app/_components/ConfirmModal";
+import { useSearchParams } from 'next/navigation'
+import { sendRollAnnouncement } from "@/actions/diceRollActions/diceRoll";
 /** 
  * This component presents dice selection dialog and intrepret the selection into 
  * dice notation that is sent to the server for the actual roll.
@@ -17,7 +19,7 @@ export default function DiceSelector() {
   const [selectedDices, setDiceSet] = useState<diceSet>([]);
   const [throwResult, setResult] = useState<number>();
   const modalRef = useRef<HTMLDialogElement>(null);
-
+  const urlQuery = useSearchParams();
 
   useEffect(() => {
     if (!modalRef.current?.open) {
@@ -29,6 +31,8 @@ export default function DiceSelector() {
     if (selectedDices.length < 18) {
       setDiceSet([...selectedDices, diceType]);
     }
+
+
   }
   function onRemoveHandler(diceIndex: number): void {
 
@@ -45,6 +49,13 @@ export default function DiceSelector() {
     const rollString = selectedDices.toString();
     const diceRoller = new DiceRoller();
     const rollObject = diceRoller.roll(rollString.replaceAll(",", '+'))
+    const channelId = urlQuery.get("channel");
+
+    if (rollObject && channelId) {
+
+      sendRollAnnouncement(rollObject, channelId);
+    }
+
     setResult(rollObject?.value);
 
 
