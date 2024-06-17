@@ -6,7 +6,7 @@ import LandingForm from "./_components/LandingForm";
 
 export default function Landing() {
   return (
-    <Main>
+    <Main className="h-screen">
       <RowWrapper breakPoint="sm" className="w-full border-b border-b-black50">
         <Hero />
         <LandingForm />

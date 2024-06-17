@@ -67,7 +67,7 @@ export default function RegisterForm({
                 setUsernameAutofill(data.username!);
                 goToLogin();
               } else {
-                setSuccess("Verification email sent.");
+                setSuccess("Registered successfully.");
               }
             });
           });
