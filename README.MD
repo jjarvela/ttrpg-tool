@@ -42,6 +42,6 @@ We've chosen to develop a Discord-like platform tailored for Tabletop Role-Playi
 - **Anni**: Full-stack development responsibilities.
 - **Joona**: Test automation, end-to-end testing, frontend, and API development.
 - **Laura**: Full-stack development responsibilities.
-- **Sami**: Full-stack development responsibilities.
+- **Sami**: Full-stack development responsibilities. Part of Menus, Notes-feature, Server Home-page.
 
 This project plan outlines our approach, technology stack, database choice, and team responsibilities for the successful development of the Discord-like platform tailored for TTRPGs using Next.js for both backend and frontend.
