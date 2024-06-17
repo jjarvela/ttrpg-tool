@@ -9,7 +9,6 @@ import { getChannels } from "@/prisma/services/channelService";
 
 export default async function ServerChat({ params }: { params: Params }) {
   const id = params.serverId;
-  const channelId = params.channelId;
 
   const element: JSX.Element = await errorHandler(
     async () => {

@@ -74,7 +74,7 @@ export default function ChannelThumb({ channel }: { channel: Channel }) {
         </div>
       )}
       <div>
-        <h4 className="absolute bottom-0 right-2">{channel.channel_name}</h4>
+        <h4 className="absolute bottom-0 right-2">#{channel.channel_name}</h4>
       </div>
     </Link>
   );
