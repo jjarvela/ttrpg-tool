@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App for Containers - ttrpg-tool-test
+
+on:
+  push:
+    branches:
+      - testing/deploy
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: "ttrpg-tool-test" # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: "." # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: "20.x" # set this to the node version to use
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: development
+    env:
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }} # Authentication secret
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: testing/deploy
+          path: .
+
+      - name: Docker build
+        run: |
+          echo "Build Next.js app production version."
+          npm install
+          npm run build
+          echo "Build ${{ vars.PROD_NAME }} and push to ${{ vars.IMAGEREG_HOST }}"
+          docker buildx build -t ${{ vars.IMAGEREG_HOST}}/${{ secrets.IMAGEREG_USER }}/${{ vars.PROD_NAME }}:${{ github.sha }} -f ./deployment/Dockerfile .
+          docker login -u ${{ secrets.IMAGEREG_USER }} -p ${{ secrets.IMAGEREG_PASS }} ${{ vars.IMAGEREG_HOST}} 
+          docker push ${{ vars.IMAGEREG_HOST}}/${{ secrets.IMAGEREG_USER }}/${{ vars.PROD_NAME }}:${{ github.sha }}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: "development"
+
+    steps:
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "ttrpg-dev"
+          publish-profile: ${{ secrets.WEBAPP_PROFILE }}
+          images: ${{ vars.IMAGEREG_HOST}}/${{ secrets.IMAGEREG_USER }}/${{ vars.PROD_NAME }}:${{ github.sha }}
