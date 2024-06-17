@@ -1,5 +1,4 @@
 "use client";
-import IconoirHexagonDice from "@/public/icons/IconoirHexagonDice";
 import MaterialSymbolsAndroidMessagesOutline from "@/public/icons/MaterialSymbolsAndroidMessagesOutline";
 import MaterialSymbolsCastleOutline from "@/public/icons/MaterialSymbolsCastleOutline";
 import MaterialSymbolsChessOutline from "@/public/icons/MaterialSymbolsChessOutline";
@@ -11,7 +10,7 @@ import RiPushpinLine from "@/public/icons/RiPushpinLine";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-interface IconLinkProps {
+export interface IconLinkProps {
   href: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isActive: boolean;
@@ -65,11 +64,7 @@ const TopMenu = ({
           icon={MaterialSymbolsNoteStackOutline}
           isActive={pathname.includes("notes")}
         />
-        <IconLink
-          href={`/server/${serverId}/dice`}
-          icon={IconoirHexagonDice}
-          isActive={pathname.includes("dice")}
-        />
+
         <IconLink
           href={`/server/${serverId}/worldclock`}
           icon={MaterialSymbolsScheduleOutline}

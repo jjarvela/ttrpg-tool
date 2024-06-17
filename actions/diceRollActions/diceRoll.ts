@@ -1,5 +1,13 @@
 "use server";
+import { sendMessage } from "@/socket"
 
-// Parse dice notation, generate randomized results and return result to
-// the connected clients.
 
+
+console.log("request throw result");
+function throwHandler() {
+  console.log("request throw result");
+  // Tarkista, että käyttäjä on kanavalla jäsenenä
+  // Tarkista botti-tilin id
+  // Lähetä viesti sendMessage funktiolla.
+
+}

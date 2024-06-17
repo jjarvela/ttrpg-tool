@@ -1,6 +1,6 @@
 'use client';
 import { ReactElement, ReactNode, useEffect, useRef } from "react";
-import Button from "../../../../../_components/Button";
+
 import { useState } from "react";
 import { Dice, SelectedDices } from "./Dice";
 import { DiceRoller } from "dice-roller-parser";
@@ -17,6 +17,7 @@ export default function DiceSelector() {
   const [selectedDices, setDiceSet] = useState<diceSet>([]);
   const [throwResult, setResult] = useState<number>();
   const modalRef = useRef<HTMLDialogElement>(null);
+
 
   useEffect(() => {
     if (!modalRef.current?.open) {
@@ -46,11 +47,12 @@ export default function DiceSelector() {
     const rollObject = diceRoller.roll(rollString.replaceAll(",", '+'))
     setResult(rollObject?.value);
 
+
   }
 
 
   return (
-    <ConfirmModal refObject={modalRef} title="Dice Selector" onConfirm={() => onConfirm(selectedDices)} confirmText="Throw!">
+    <ConfirmModal refObject={modalRef} title="Dice Selector" backOnClose={true} onConfirm={() => onConfirm(selectedDices)} confirmText="Throw!">
       <div className="container p-2 justify-center">
         <div className="grid p-2 gap-4 grid-cols-3 grid-rows-2" id="diceBox" >
           <Dice diceType="d4" eventHandler={onClickHandler} />

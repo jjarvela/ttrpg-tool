@@ -4,6 +4,7 @@ import ChatBody from "./_components/ChatBody";
 import FeedbackCard from "../../../../../_components/FeedbackCard";
 import ConversationClientWrapper from "@/app/(user)/(home)/message/_components/ConversationClientWrapper";
 import { getChannelByChannelId } from "@/prisma/services/channelService";
+import { IconLink } from "@/app/_components/Button"
 import errorHandler from "@/utils/errorHandler";
 
 export default async function ServerChat({ params }: { params: Params }) {
@@ -19,9 +20,14 @@ export default async function ServerChat({ params }: { params: Params }) {
       if (channeltype === "text") {
         return (
           <ConversationClientWrapper>
-            <h3>{channelName}</h3>
+            <div className="flex w-full justify-between">
+              <div></div>
+              <h3>{channelName}</h3>
+              <IconLink href={`/server/${server_id}/dice?channel=${channelId}`} className="p-2" imgSrc="/icons/dices/icon.svg" width={30} height={30}></IconLink>
+            </div>
             <ChatBody channelId={channelId} server_id={server_id} />
           </ConversationClientWrapper>
+
         );
       }
       return (

@@ -98,4 +98,19 @@ export const Users = [
       "Hello mortals, I'm Grim Reaper. Don't mind me, just here to collect some souls! 💀 Remember, life is short, but mine's eternal!",
     profile_image: "1712753350248.png",
   },
+  // User 8, Bot account do not delete.
+  {
+    username: "mrWizard",
+    password_hash:
+      "$2a$10$l.kUHe/Nx1tdmuK.U4vGBOJC6VHxUiVpU2oYq1bCf4UZHY3SwVcse", //plain text: unknownpass
+    email: "mrWizard@example.com",
+    created_at: new Date("2025-03-15T12:00:00Z"),
+    screen_name: "Mr. Wizard, the friendly bot.",
+    timezone: "America/Chicago",
+    share_timezone: true,
+    dm_permission: "servers",
+    person_description:
+      "Hello fellow gamers, I am the one keeping dices rolling.",
+    profile_image: "1712753350248.png",
+  }
 ];

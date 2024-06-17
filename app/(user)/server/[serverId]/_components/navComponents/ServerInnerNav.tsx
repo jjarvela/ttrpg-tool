@@ -99,7 +99,6 @@ export default async function ServerInnerNav({ id }: { id: string }) {
               />
             </ServerSubMenu>
             <ServerInnerNavLink title="Notes" to={`/server/${id}/notes`} />
-            <ServerInnerNavLink title="Dice" to={`/server/${id}/dice`} />
             <ServerInnerNavLink
               title="World Clock"
               to={`/server/${id}/worldclock`}

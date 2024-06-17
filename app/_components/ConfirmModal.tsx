@@ -3,12 +3,13 @@ import ColumnWrapper from "./wrappers/ColumnWrapper";
 import RowWrapper from "./wrappers/RowWrapper";
 import Button from "./Button";
 import { twMerge } from "tailwind-merge";
-import Divider from "./Divider";
+import { useRouter } from "next/navigation";
 
 type ConfirmModalProps = {
   refObject: React.RefObject<HTMLDialogElement>;
   children: React.ReactNode;
   title?: string;
+  backOnClose?: boolean;
   onConfirm: () => void;
   confirmText?: string;
   confirmButtonClass?: string;
@@ -28,11 +29,23 @@ export default function ConfirmModal({
   refObject,
   children,
   title = "Confirm",
+  backOnClose = false,
   onConfirm,
   confirmText,
   confirmButtonClass,
 }: ConfirmModalProps) {
 
+  const router = useRouter();
+
+  function onClose() {
+
+    if (backOnClose === true) {
+      router.back();
+    } else {
+      refObject.current?.close();
+    }
+
+  }
   return (
     <dialog
       ref={refObject}
@@ -47,7 +60,7 @@ export default function ConfirmModal({
           <h5>{title}</h5>
           <MaterialSymbolsLightCloseRounded
             className="cursor-pointer"
-            onClick={() => refObject.current?.close()}
+            onClick={() => onClose()}
           />
         </RowWrapper>
         {children}
@@ -60,7 +73,7 @@ export default function ConfirmModal({
           </Button>
           <Button
             className="btn-secondary"
-            onClick={() => refObject.current?.close()}
+            onClick={() => onClose()}
           >
             Cancel
           </Button>
