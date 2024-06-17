@@ -39,7 +39,7 @@ const LatestMessages = ({ newMessages, serverId }: LatestMessagesProps) => {
       (a, b) => b.message.created_at.getTime() - a.message.created_at.getTime(),
     );
     setLatestMessages(sortedMessages);
-  }, [newMessages]);
+  }, [latestMessages.length, newMessages]);
 
   const messageStyle: React.CSSProperties = {
     opacity: fadeIn ? 0 : 1,
