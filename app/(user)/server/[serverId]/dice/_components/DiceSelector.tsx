@@ -51,7 +51,16 @@ export default function DiceSelector({ params }: Params) {
 
     const rollString = selectedDices.toString();
     const diceRoller = new DiceRoller();
-    const rollObject = diceRoller.roll(rollString.replaceAll(",", '+'))
+    let rollObject
+
+    if (rollString.includes(",")) {
+      rollObject = diceRoller.roll(rollString.replaceAll(",", '+'))
+      console.log(rollObject)
+    } else {
+      rollObject = diceRoller.roll(rollString)
+      console.log(rollObject)
+    }
+
     const channelId = urlQuery.get("channel");
     // const serverId = urlQuery
 

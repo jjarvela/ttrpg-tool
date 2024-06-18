@@ -14,6 +14,8 @@ import { revalidatePath } from 'next/cache'
 
 export interface RollResult extends RollBase {
   dice: [{ value: number }]
+  die?: [{ value: number }]
+
 }
 export async function sendRollAnnouncement(rollObject: RollResult, channelId: string, serverId: string) {
 
@@ -24,10 +26,18 @@ export async function sendRollAnnouncement(rollObject: RollResult, channelId: st
 
   if (userSession.userId) {
     const userInfo = await getUserById(userSession.userId)
-    const diceSet = rollObject.dice.map((dice) => dice.value)
-    const screenName = userInfo.screen_name === null ? userInfo.username : userInfo.screen_name
-    await addChatMessage([userSession.userId, channelId], `User ${screenName} rolled ${diceSet.toString()} = ${rollObject.value}`)
-    revalidatePath(`/server/[serverId]/chat/${channelId}`, "layout")
+    if (rollObject.die) {
+
+      const screenName = userInfo.screen_name === null ? userInfo.username : userInfo.screen_name
+      await addChatMessage([userSession.userId, channelId], `User ${screenName} rolled ${rollObject.value}`)
+
+    } else {
+      const diceSet = rollObject.dice.map((dice) => dice.value)
+      const screenName = userInfo.screen_name === null ? userInfo.username : userInfo.screen_name
+      await addChatMessage([userSession.userId, channelId], `User ${screenName} rolled ${diceSet.toString()} = ${rollObject.value}`)
+    }
+
+
   }
 
 
