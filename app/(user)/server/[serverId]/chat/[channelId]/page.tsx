@@ -5,17 +5,17 @@ import ChatBody from "./_components/ChatBody";
 import FeedbackCard from "../../../../../_components/FeedbackCard";
 import ConversationClientWrapper from "@/app/(user)/(home)/message/_components/ConversationClientWrapper";
 import { getChannelByChannelId } from "@/prisma/services/channelService";
-import { IconLink } from "@/app/_components/Button"
+import { IconLink } from "@/app/_components/Button";
 import errorHandler from "@/utils/errorHandler";
+import OpenDiceModal from "./_components/OpenDiceModal";
 
 export default async function ServerChat({ params }: { params: Params }) {
   const server_id = params.serverId;
   const channelId = params.channelId;
 
   // Check for cookie set refresh request
-  const cookieStore = cookies()
-  const refresh = cookieStore.get('refreshReq')
-
+  const cookieStore = cookies();
+  const refresh = cookieStore.get("refreshReq");
 
   const element: JSX.Element = await errorHandler(
     async () => {
@@ -26,14 +26,12 @@ export default async function ServerChat({ params }: { params: Params }) {
       if (channeltype === "text") {
         return (
           <ConversationClientWrapper>
-            <div className="flex z-3 sticky bg-white m-0 p-0 top-0 w-full justify-between">
-              <div></div>
+            <div className="z-3 sticky top-0 m-0 flex w-full justify-between bg-white p-0 px-4 dark:bg-black">
               <h3>{channelName}</h3>
-              <IconLink href={`/server/${server_id}/dice?channel=${channelId}`} className="p-2" imgSrc="/icons/dices/icon.svg" width={30} height={30}></IconLink>
+              <OpenDiceModal channelId={channelId} serverId={server_id} />
             </div>
             <ChatBody channelId={channelId} server_id={server_id} />
           </ConversationClientWrapper>
-
         );
       }
       return (
